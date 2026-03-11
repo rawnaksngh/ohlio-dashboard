@@ -27,11 +27,11 @@ header{text-align:center;margin-bottom:40px;}
 header h1{font-size:3rem;margin-bottom:10px;}
 header p{color:var(--primary);font-weight:600;text-transform:uppercase;}
 
-/* SEARCH BAR */
+/* SEARCH */
 
 .search-box{
 text-align:center;
-margin-bottom:30px;
+margin-bottom:20px;
 }
 
 .search-box input{
@@ -40,6 +40,37 @@ width:300px;
 border-radius:8px;
 border:none;
 font-size:16px;
+}
+
+/* FILTER CARDS */
+
+.region-filters{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:12px;
+margin-bottom:30px;
+}
+
+.filter-card{
+padding:10px 18px;
+border-radius:25px;
+background:rgba(255,255,255,0.08);
+border:1px solid rgba(255,255,255,0.15);
+cursor:pointer;
+transition:.3s;
+font-size:14px;
+}
+
+.filter-card:hover{
+background:var(--secondary);
+transform:scale(1.05);
+}
+
+.filter-card.active{
+background:var(--primary);
+color:black;
+font-weight:bold;
 }
 
 /* GRID */
@@ -85,7 +116,7 @@ opacity:1;
 transform:scale(1.1);
 }
 
-/* DETAIL BOX */
+/* DETAIL POPUP */
 
 .detail-box{
 position:absolute;
@@ -123,8 +154,18 @@ border-right:8px solid transparent;
 border-bottom:8px solid white;
 }
 
-.detail-box h4{color:var(--secondary);margin-bottom:8px;border-bottom:2px solid #eee;padding-bottom:5px;}
-.detail-box p{font-size:13px;line-height:1.6;margin-bottom:5px;}
+.detail-box h4{
+color:var(--secondary);
+margin-bottom:8px;
+border-bottom:2px solid #eee;
+padding-bottom:5px;
+}
+
+.detail-box p{
+font-size:13px;
+line-height:1.6;
+margin-bottom:5px;
+}
 
 .tag{
 display:inline-block;
@@ -166,9 +207,18 @@ color:black;
 <p>Strategic Market Expansion — Q1-Q2 2026</p>
 </header>
 
-<!-- SEARCH BAR -->
 <div class="search-box">
 <input type="text" id="storeSearch" placeholder="Search Store Name...">
+</div>
+
+<div class="region-filters">
+
+<div class="filter-card active" data-region="all">All Stores</div>
+<div class="filter-card" data-region="Noida Sector">Noida Sector</div>
+<div class="filter-card" data-region="Gurgaon">Gurgaon</div>
+<div class="filter-card" data-region="Delhi NCR">Delhi NCR</div>
+<div class="filter-card" id="resetFilter">Reset</div>
+
 </div>
 
 <div class="roadmap-grid" id="roadmapGrid"></div>
@@ -177,6 +227,7 @@ color:black;
 
 const grid=document.getElementById('roadmapGrid');
 const stores=[];
+let activeRegion="all";
 
 /* CREATE 100 STORES */
 
@@ -184,9 +235,12 @@ for(let i=1;i<=100;i++){
 
 const storeDiv=document.createElement('div');
 storeDiv.className='store-item';
-storeDiv.setAttribute("data-store","store "+i);
 
 const region=i<=30?"Noida Sector":i<=60?"Gurgaon":"Delhi NCR";
+
+storeDiv.setAttribute("data-store","store "+i);
+storeDiv.setAttribute("data-region",region);
+
 const priority=i%5===0?"High Priority":"Standard";
 
 storeDiv.innerHTML=`
@@ -195,7 +249,7 @@ storeDiv.innerHTML=`
 
 <div class="detail-box">
 <h4>Retailer #${i} Details</h4>
-<p><strong>Region:</strong> ${region} ${Math.floor(Math.random()*100)}</p>
+<p><strong>Region:</strong> ${region}</p>
 <p><strong>Lead Owner:</strong> Sunil / VTC Sales</p>
 <p><strong>Target Date:</strong> April ${15+(i%15)}, 2026</p>
 <p><strong>Potential:</strong> Tier ${i%3===0?'A':'B'}</p>
@@ -206,18 +260,53 @@ storeDiv.innerHTML=`
 
 grid.appendChild(storeDiv);
 stores.push(storeDiv);
+
 }
 
-/* SEARCH FILTER */
+/* SEARCH */
 
-document.getElementById("storeSearch").addEventListener("keyup",function(){
+const search=document.getElementById("storeSearch");
+search.addEventListener("keyup",applyFilters);
 
-const value=this.value.toLowerCase();
+/* REGION FILTER */
+
+const cards=document.querySelectorAll(".filter-card");
+
+cards.forEach(card=>{
+
+card.addEventListener("click",()=>{
+
+if(card.id==="resetFilter"){
+activeRegion="all";
+search.value="";
+}else{
+activeRegion=card.dataset.region;
+}
+
+cards.forEach(c=>c.classList.remove("active"));
+if(card.dataset.region) card.classList.add("active");
+
+applyFilters();
+
+});
+
+});
+
+/* FILTER FUNCTION */
+
+function applyFilters(){
+
+const value=search.value.toLowerCase();
 
 stores.forEach(store=>{
-const name=store.getAttribute("data-store");
 
-if(name.includes(value)){
+const name=store.getAttribute("data-store");
+const region=store.getAttribute("data-region");
+
+const nameMatch=name.includes(value);
+const regionMatch=(activeRegion==="all" || region===activeRegion);
+
+if(nameMatch && regionMatch){
 store.style.display="block";
 }else{
 store.style.display="none";
@@ -225,7 +314,7 @@ store.style.display="none";
 
 });
 
-});
+}
 
 </script>
 
