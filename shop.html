@@ -1,156 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oli-Ohh | 100 Retailers Roadmap</title>
-    <style>
-        :root {
-            --primary: #00ffd5;
-            --secondary: #0077ff;
-            --bg: #0f2027;
-            --card-bg: rgba(255, 255, 255, 0.05);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oli-Ohh | 100 Retailers Roadmap</title>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        
-        body { 
-            background: linear-gradient(135deg, #0f2027, #2c5364); 
-            color: white; 
-            min-height: 100vh;
-            padding: 40px;
-        }
+<style>
 
-        header { text-align: center; margin-bottom: 50px; }
-        header h1 { font-size: 3rem; letter-spacing: -1px; margin-bottom: 10px; }
-        header p { color: var(--primary); font-weight: 600; text-transform: uppercase; }
+:root{
+--primary:#00ffd5;
+--secondary:#0077ff;
+--bg:#0f2027;
+--card-bg:rgba(255,255,255,0.05);
+}
 
-        /* The Grid */
-        .roadmap-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 15px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
 
-        /* Individual Store Card */
-        .store-item {
-            position: relative;
-            background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: visible; /* Necessary for the dropdown */
-        }
+body{
+background:linear-gradient(135deg,#0f2027,#2c5364);
+color:white;
+min-height:100vh;
+padding:40px;
+}
 
-        .store-item:hover {
-            transform: translateY(-10px);
-            background: var(--secondary);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0, 119, 255, 0.4);
-            z-index: 100;
-        }
+header{text-align:center;margin-bottom:40px;}
+header h1{font-size:3rem;margin-bottom:10px;}
+header p{color:var(--primary);font-weight:600;text-transform:uppercase;}
 
-        .store-item h3 { font-size: 14px; opacity: 0.8; transition: 0.3s; }
-        .store-item:hover h3 { opacity: 1; transform: scale(1.1); }
+/* SEARCH BAR */
 
-        /* Dropdown Detail Box */
-        .detail-box {
-            position: absolute;
-            top: 110%; /* Shows below the card */
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            width: 240px;
-            background: white;
-            color: #333;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s ease;
-            text-align: left;
-            z-index: 1000;
-            pointer-events: none;
-        }
+.search-box{
+text-align:center;
+margin-bottom:30px;
+}
 
-        /* Show Dropdown on Hover */
-        .store-item:hover .detail-box {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
+.search-box input{
+padding:12px;
+width:300px;
+border-radius:8px;
+border:none;
+font-size:16px;
+}
 
-        .detail-box::before {
-            content: '';
-            position: absolute;
-            top: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-bottom: 8px solid white;
-        }
+/* GRID */
 
-        .detail-box h4 { color: var(--secondary); margin-bottom: 8px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
-        .detail-box p { font-size: 13px; line-height: 1.6; margin-bottom: 5px; }
-        .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; background: #eef2f3; color: #555; margin-top: 10px; }
+.roadmap-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+gap:15px;
+max-width:1400px;
+margin:0 auto;
+}
 
-        .back-btn {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: bold;
-            border: 1px solid var(--primary);
-            padding: 8px 20px;
-            border-radius: 30px;
-            transition: 0.3s;
-        }
-        .back-btn:hover { background: var(--primary); color: black; }
-    </style>
+/* STORE CARD */
+
+.store-item{
+position:relative;
+background:var(--card-bg);
+border:1px solid rgba(255,255,255,0.1);
+padding:20px;
+border-radius:12px;
+text-align:center;
+cursor:pointer;
+transition:all .4s cubic-bezier(.175,.885,.32,1.275);
+overflow:visible;
+}
+
+.store-item:hover{
+transform:translateY(-10px);
+background:var(--secondary);
+border-color:var(--primary);
+box-shadow:0 10px 30px rgba(0,119,255,0.4);
+z-index:100;
+}
+
+.store-item h3{
+font-size:14px;
+opacity:.8;
+transition:.3s;
+}
+
+.store-item:hover h3{
+opacity:1;
+transform:scale(1.1);
+}
+
+/* DETAIL BOX */
+
+.detail-box{
+position:absolute;
+top:110%;
+left:50%;
+transform:translateX(-50%) translateY(20px);
+width:240px;
+background:white;
+color:#333;
+padding:20px;
+border-radius:15px;
+box-shadow:0 15px 40px rgba(0,0,0,0.5);
+opacity:0;
+visibility:hidden;
+transition:.4s;
+text-align:left;
+z-index:1000;
+pointer-events:none;
+}
+
+.store-item:hover .detail-box{
+opacity:1;
+visibility:visible;
+transform:translateX(-50%) translateY(0);
+}
+
+.detail-box::before{
+content:'';
+position:absolute;
+top:-8px;
+left:50%;
+transform:translateX(-50%);
+border-left:8px solid transparent;
+border-right:8px solid transparent;
+border-bottom:8px solid white;
+}
+
+.detail-box h4{color:var(--secondary);margin-bottom:8px;border-bottom:2px solid #eee;padding-bottom:5px;}
+.detail-box p{font-size:13px;line-height:1.6;margin-bottom:5px;}
+
+.tag{
+display:inline-block;
+padding:2px 8px;
+border-radius:10px;
+font-size:10px;
+font-weight:bold;
+background:#eef2f3;
+color:#555;
+margin-top:10px;
+}
+
+.back-btn{
+display:inline-block;
+margin-bottom:20px;
+color:var(--primary);
+text-decoration:none;
+font-weight:bold;
+border:1px solid var(--primary);
+padding:8px 20px;
+border-radius:30px;
+transition:.3s;
+}
+
+.back-btn:hover{
+background:var(--primary);
+color:black;
+}
+
+</style>
 </head>
+
 <body>
 
-    <a href="index.html" class="back-btn">← Back to Command Center</a>
+<a href="index.html" class="back-btn">← Back to Command Center</a>
 
-    <header>
-        <h1>100 Retailers Roadmap</h1>
-        <p>Strategic Market Expansion — Q1-Q2 2026</p>
-    </header>
+<header>
+<h1>100 Retailers Roadmap</h1>
+<p>Strategic Market Expansion — Q1-Q2 2026</p>
+</header>
 
-    <div class="roadmap-grid" id="roadmapGrid">
-        </div>
+<!-- SEARCH BAR -->
+<div class="search-box">
+<input type="text" id="storeSearch" placeholder="Search Store Name...">
+</div>
 
-    <script>
-        const grid = document.getElementById('roadmapGrid');
+<div class="roadmap-grid" id="roadmapGrid"></div>
 
-        // Loop to create 100 stores
-        for (let i = 1; i <= 100; i++) {
-            const storeDiv = document.createElement('div');
-            storeDiv.className = 'store-item';
-            
-            // Random data generation for demonstration
-            const region = i <= 30 ? "Noida Sector" : i <= 60 ? "Gurgaon" : "Delhi NCR";
-            const priority = i % 5 === 0 ? "High Priority" : "Standard";
+<script>
 
-            storeDiv.innerHTML = `
-                <h3>Store ${i}</h3>
-                <div class="detail-box">
-                    <h4>Retailer #${i} Details</h4>
-                    <p><strong>Region:</strong> ${region} ${Math.floor(Math.random() * 100)}</p>
-                    <p><strong>Lead Owner:</strong> Sunil / VTC Sales</p>
-                    <p><strong>Target Date:</strong> April ${15 + (i % 15)}, 2026</p>
-                    <p><strong>Potential:</strong> Tier ${i % 3 === 0 ? 'A' : 'B'}</p>
-                    <span class="tag">${priority}</span>
-                </div>
-            `;
-            grid.appendChild(storeDiv);
-        }
-    </script>
+const grid=document.getElementById('roadmapGrid');
+const stores=[];
+
+/* CREATE 100 STORES */
+
+for(let i=1;i<=100;i++){
+
+const storeDiv=document.createElement('div');
+storeDiv.className='store-item';
+storeDiv.setAttribute("data-store","store "+i);
+
+const region=i<=30?"Noida Sector":i<=60?"Gurgaon":"Delhi NCR";
+const priority=i%5===0?"High Priority":"Standard";
+
+storeDiv.innerHTML=`
+
+<h3>Store ${i}</h3>
+
+<div class="detail-box">
+<h4>Retailer #${i} Details</h4>
+<p><strong>Region:</strong> ${region} ${Math.floor(Math.random()*100)}</p>
+<p><strong>Lead Owner:</strong> Sunil / VTC Sales</p>
+<p><strong>Target Date:</strong> April ${15+(i%15)}, 2026</p>
+<p><strong>Potential:</strong> Tier ${i%3===0?'A':'B'}</p>
+<span class="tag">${priority}</span>
+</div>
+
+`;
+
+grid.appendChild(storeDiv);
+stores.push(storeDiv);
+}
+
+/* SEARCH FILTER */
+
+document.getElementById("storeSearch").addEventListener("keyup",function(){
+
+const value=this.value.toLowerCase();
+
+stores.forEach(store=>{
+const name=store.getAttribute("data-store");
+
+if(name.includes(value)){
+store.style.display="block";
+}else{
+store.style.display="none";
+}
+
+});
+
+});
+
+</script>
+
 </body>
 </html>
