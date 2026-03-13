@@ -2,21 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oli-Ohh Launch Command Center</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial; }
-        body { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); color: white; min-height: 100vh; }
-        header { padding: 25px; text-align: center; font-size: 32px; font-weight: bold; background: rgba(0, 0, 0, 0.4); border-bottom: 1px solid rgba(0, 255, 213, 0.2); }
-        nav { display: flex; justify-content: center; gap: 30px; padding: 12px; background: #111; position: sticky; top: 0; z-index: 100; }
+        
+        body { 
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); 
+            color: white; 
+            min-height: 100vh; 
+        }
+
+        /* --- NEON HEADER CARD --- */
+        header {
+            padding: 40px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 213, 0.2);
+            border-radius: 20px;
+            margin: 25px auto;
+            width: 95%;
+            max-width: 1200px;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: default;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        header:hover {
+            transform: scale(1.03) translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #00ffd5;
+            box-shadow: 0 0 30px rgba(0, 255, 213, 0.4);
+        }
+
+        header h1 {
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #ffffff;
+            transition: 0.5s;
+        }
+
+        header:hover h1 {
+            color: #00ffd5;
+            text-shadow: 0 0 15px #00ffd5;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 12px;
+            background: #111;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
         nav a { color: white; text-decoration: none; font-weight: 600; }
         nav a:hover { color: #00ffd5; }
+
         .container { padding: 30px; }
 
         /* KPI Cards */
         .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
         .card { background: white; color: black; padding: 20px; border-radius: 12px; text-align: center; cursor: pointer; transition: .3s; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 3px solid transparent; }
-        .card:hover { transform: translateY(-6px) scale(1.02); }
+        .card:hover { transform: translateY(-6px); }
         .card.active { border-color: #00ffd5; background: #e0fcf8; }
 
         /* Owner Panel */
@@ -37,13 +90,12 @@
         .activity-link { color: #0077ff; text-decoration: none; font-weight: 700; }
         .special-link-container:hover .activity-link { color: white; }
 
-        .pulse-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
-        .dot-orange { background: #f39c12; }
+        .pulse-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; background: #f39c12; }
         @keyframes pulse { 0% { transform: scale(0.95); } 70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); } 100% { transform: scale(0.95); } }
 
-        .status { padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase; display: inline-block; }
-        .progressing { background: #f39c12; color: white; }
-        .pending { background: #e74c3c; color: white; }
+        .status { padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase; display: inline-block; color: white; }
+        .progressing { background: #f39c12; }
+        .pending { background: #e74c3c; }
 
         .controls-row { display: flex; gap: 15px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
         .search-box input { padding: 12px; width: 100%; min-width: 300px; border-radius: 8px; border: none; font-size: 16px; outline: none; }
@@ -61,7 +113,9 @@
 
 <body>
 
-<header>Oli-Ohh Pasta Launch Command Center</header>
+<header>
+    <h1>Oli-Ohh Pasta Launch Command Center</h1>
+</header>
 
 <nav>
     <a href="#dashboard">Dashboard</a>
@@ -81,7 +135,7 @@
         <div class="owner-panel">
             <h3>Filter by Owner</h3>
             <div class="owner-list">
-                <div class="owner active" onclick="setFilter('owner', 'all', this)">All</div>
+                <div class="owner active" onclick="setFilter('owner', 'all', this)">All Stakeholders</div>
                 <div class="owner" data-owner="Sunil" onclick="setFilter('owner', 'Sunil', this)">Sunil <span class="task-count">0</span></div>
                 <div class="owner" data-owner="Akshay" onclick="setFilter('owner', 'Akshay', this)">Akshay <span class="task-count">0</span></div>
                 <div class="owner" data-owner="Lindt Team" onclick="setFilter('owner', 'Lindt Team', this)">Lindt Team <span class="task-count">0</span></div>
@@ -105,15 +159,15 @@
                 <tr><th>Category</th><th>Activity</th><th>Owner</th><th>Status</th></tr>
             </thead>
             <tbody>
-                <tr><td>Launching</td><td><a href="3-tier-launch.html" class="special-link-container"><span class="pulse-dot dot-orange"></span><span class="activity-link">3 Tier Launch Plan</span></a></td><td>Sunil</td><td><span class="status progressing">In Progress</span></td></tr>
+                <tr><td>Launching</td><td><a href="3-tier-launch.html" class="special-link-container"><span class="pulse-dot"></span><span class="activity-link">3 Tier Launch Plan</span></a></td><td>Sunil</td><td><span class="status progressing">In Progress</span></td></tr>
                 <tr><td>Launching</td><td>Oli-Ohh Launch Ceremony</td><td>Akshay</td><td><span class="status progressing">In Progress</span></td></tr>
                 <tr><td>Launching</td><td>Product Launch via Lindt Operations</td><td>Lindt Team</td><td><span class="status pending">Pending</span></td></tr>
-                <tr><td>Coasting</td><td><a href="margin-structure.html" class="special-link-container"><span class="pulse-dot dot-orange"></span><span class="activity-link">Margin Structure</span></a></td><td>Sunil</td><td><span class="status progressing">In Progress</span></td></tr>
-                <tr><td>Coverage</td><td><a href="ecommerce-listing.html" class="special-link-container"><span class="pulse-dot dot-orange"></span><span class="activity-link">E-Commerce Listing</span></a></td><td>Vishal Chopra</td><td><span class="status progressing">In Progress</span></td></tr>
+                <tr><td>Coasting</td><td><a href="margin-structure.html" class="special-link-container"><span class="pulse-dot"></span><span class="activity-link">Margin Structure</span></a></td><td>Sunil</td><td><span class="status progressing">In Progress</span></td></tr>
+                <tr><td>Coverage</td><td><a href="ecommerce-listing.html" class="special-link-container"><span class="pulse-dot"></span><span class="activity-link">E-Commerce Listing</span></a></td><td>Vishal Chopra</td><td><span class="status progressing">In Progress</span></td></tr>
                 <tr><td>Coverage</td><td>Quick Commerce Listing</td><td>Ajit</td><td><span class="status progressing">In Progress</span></td></tr>
                 <tr><td>Activation</td><td>Mandi Activation</td><td>Vipin</td><td><span class="status pending">Pending</span></td></tr>
                 <tr><td>Activation</td><td>Railway Channel Listing</td><td>TBD</td><td><span class="status pending">Pending</span></td></tr>
-                <tr><td>Strategy</td><td><a href="shop.html" class="special-link-container"><span class="pulse-dot dot-orange"></span><span class="activity-link">100 Retailors Roadmap</span></a></td><td>Sunil</td><td><span class="status progressing">In Progress</span></td></tr>
+                <tr><td>Strategy</td><td><a href="shop.html" class="special-link-container"><span class="pulse-dot"></span><span class="activity-link">100 Retailors Roadmap</span></a></td><td>Sunil</td><td><span class="status progressing">In Progress</span></td></tr>
                 <tr><td>Strategy</td><td>Terms of Trade</td><td>Sunil</td><td><span class="status pending">Pending</span></td></tr>
             </tbody>
         </table>
@@ -216,4 +270,3 @@ applyFilters();
 </script>
 </body>
 </html>
-
