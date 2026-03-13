@@ -60,19 +60,40 @@
         td { padding: 12px; border-bottom: 1px solid #eee; }
         tr:hover { background: rgba(0,0,0,0.02); }
 
-        /* PULSE DOT ANIMATION RESTORED */
+        /* BLINKING DOTS */
         .pulse-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 8px; animation: pulse 1.5s infinite; }
         .dot-green { background: #2ecc71; } 
         .dot-orange { background: #f39c12; }
         @keyframes pulse { 
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); } 
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); } 
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } 
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2); } 
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 0, 0, 0); } 
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); } 
         }
 
-        .special-link-container { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; background: rgba(0, 119, 255, 0.05); border-radius: 8px; text-decoration: none; transition: 0.3s; }
-        .activity-link { color: #0077ff; text-decoration: none; font-weight: 700; }
+        /* ENHANCED HOVER EFFECT ON LINKS */
+        .special-link-container { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+            padding: 8px 15px; 
+            background: rgba(0, 119, 255, 0.05); 
+            border-radius: 10px; 
+            text-decoration: none; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            border: 1px solid transparent;
+        }
+
+        .special-link-container:hover { 
+            transform: scale(1.1) translateX(10px); 
+            background: #0077ff; 
+            box-shadow: 0 5px 15px rgba(0, 119, 255, 0.3);
+            border-color: #00ffd5;
+        }
+
+        .activity-link { color: #0077ff; text-decoration: none; font-weight: 700; transition: color 0.3s; }
+        .special-link-container:hover .activity-link { color: white; }
         
+        /* Table Status Badges */
         .status { padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase; display: inline-block; color: white; }
         .done { background: #2ecc71; } .progressing { background: #f39c12; } .pending { background: #e74c3c; }
         
@@ -159,7 +180,6 @@
 <footer>&copy; 2026 Developed by <span style="color:#00ffd5">Rounak Singh</span> | VTC Tradewings Pvt Ltd.</footer>
 
 <script>
-    // [Keeping your standard functional JS logic]
     const rows = document.querySelectorAll("#taskTable tbody tr");
     const cards = document.querySelectorAll(".card");
     const owners = document.querySelectorAll(".owner");
