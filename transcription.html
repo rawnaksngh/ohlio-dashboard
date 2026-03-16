@@ -27,10 +27,12 @@
         .transcript-content { line-height: 1.8; font-size: 16px; color: #333; white-space: pre-wrap; }
         
         .controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
-        .btn { padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; transition: 0.3s; font-size: 13px; }
+        .btn { padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; transition: 0.3s; font-size: 13px; display: flex; align-items: center; gap: 8px; }
         .btn-start { background: #a55eea; color: white; }
+        .btn-copy { background: #0077ff; color: white; }
         .btn-pdf { background: #27ae60; color: white; }
         .btn-clear { background: #555; color: white; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
         footer { text-align: center; margin-top: 50px; opacity: 0.6; font-size: 13px; }
     </style>
@@ -44,7 +46,7 @@
 
 <div class="container">
     <div class="status-panel">
-        <span class="ai-status" id="status-text">Ready</span>
+        <span class="ai-status" id="status-text">Ready to Transcribe</span>
         <div class="wave-container" id="wave-visual" style="display: none;">
             <div class="wave-bar" style="animation-delay: 0.0s"></div>
             <div class="wave-bar" style="animation-delay: 0.1s"></div>
@@ -53,6 +55,7 @@
         </div>
         <div class="controls">
             <button class="btn btn-start" id="toggle-btn">⏺ START AI</button>
+            <button class="btn btn-copy" onclick="copyText()">📋 COPY</button>
             <button class="btn btn-pdf" onclick="saveAsPDF()">📄 SAVE PDF</button>
             <button class="btn btn-clear" onclick="clearTranscript()">🗑️ CLEAR</button>
         </div>
@@ -66,7 +69,7 @@
             </div>
             <span id="current-date" style="font-weight: bold;"></span>
         </div>
-        <div class="transcript-content" id="output"><em>Waiting for voice...</em></div>
+        <div class="transcript-content" id="output"><em>Waiting for voice input...</em></div>
     </div>
 </div>
 
@@ -80,38 +83,40 @@
     const statusText = document.getElementById('status-text');
     const waveVisual = document.getElementById('wave-visual');
 
-    document.getElementById('current-date').innerText = new Date().toLocaleDateString();
+    document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         recognition = new SpeechRecognition();
         
-        // Settings to reduce popup frequency
         recognition.continuous = true;
-        recognition.interimResults = true; 
+        recognition.interimResults = false; // Disable guessing to prevent repetition
         recognition.lang = 'en-IN';
 
         recognition.onresult = (event) => {
-            let finalTranscript = '';
+            let finalResult = '';
+            // Only process results that are new (at the current resultIndex)
             for (let i = event.resultIndex; i < event.results.length; ++i) {
-                if (event.results[i].isFinal) finalTranscript += event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                    finalResult += event.results[i][0].transcript;
+                }
             }
-            if (finalTranscript) {
+
+            if (finalResult) {
                 if (output.innerHTML.includes("Waiting for voice")) output.innerHTML = "";
-                output.innerHTML += finalTranscript + ". ";
+                // Append unique confirmed text
+                output.innerHTML += finalResult.trim() + ". ";
+                window.scrollTo(0, document.body.scrollHeight);
             }
         };
 
         recognition.onend = () => {
-            // Restart automatically if isListening is true to prevent "Paused" state
-            if (isListening) {
-                recognition.start();
-            }
+            if (isListening) recognition.start(); // Auto-restart heartbeat
         };
 
         recognition.onerror = (e) => {
             if(e.error === 'not-allowed') {
-                alert("Please click the LOCK icon in your browser URL bar and change Microphone to 'ALLOW'.");
+                alert("Microphone access denied. Please allow it in browser settings.");
                 stopListening();
             }
         };
@@ -127,7 +132,7 @@
         recognition.start();
         toggleBtn.innerText = "⏹ STOP AI";
         toggleBtn.style.background = "#ff4757";
-        statusText.innerText = "AI is Listening...";
+        statusText.innerText = "AI is Listening & Writing...";
         waveVisual.style.display = "flex";
     }
 
@@ -140,15 +145,21 @@
         waveVisual.style.display = "none";
     }
 
+    function copyText() {
+        const text = output.innerText.replace("Waiting for voice input...", "");
+        navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!"));
+    }
+
     function clearTranscript() {
-        if(confirm("Clear transcript?")) output.innerHTML = "<em>Waiting for voice...</em>";
+        if(confirm("Clear transcript?")) output.innerHTML = "<em>Waiting for voice input...</em>";
     }
 
     function saveAsPDF() {
         const element = document.getElementById('pdf-content');
         html2pdf().from(element).set({
             margin: 10,
-            filename: 'Oli-Ohh_Transcript.pdf',
+            filename: 'Meeting_Transcript.pdf',
+            html2canvas: { scale: 2 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         }).save();
     }
