@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Transcription | Oli-Ohh Command</title>
+    <title>AI Transcription Pro | Oli-Ohh Command</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial; }
@@ -22,10 +22,12 @@
         .wave-bar { width: 4px; background: #a55eea; border-radius: 10px; animation: wave-anim 1s infinite ease-in-out; }
         @keyframes wave-anim { 0%, 100% { height: 10px; } 50% { height: 40px; } }
 
-        .transcript-window { background: white; color: #333; border-radius: 15px; padding: 40px; min-height: 450px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
+        .transcript-window { background: white; color: #333; border-radius: 15px; padding: 40px; min-height: 500px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
         .transcript-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #a55eea; padding-bottom: 15px; margin-bottom: 20px; }
-        .transcript-content { line-height: 1.8; font-size: 16px; color: #333; white-space: pre-wrap; }
+        .transcript-content { line-height: 1.8; font-size: 16px; color: #333; white-space: pre-wrap; word-wrap: break-word; }
         
+        .timestamp { color: #a55eea; font-weight: bold; font-family: monospace; font-size: 12px; margin-right: 10px; }
+
         .controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
         .btn { padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; transition: 0.3s; font-size: 13px; display: flex; align-items: center; gap: 8px; }
         .btn-start { background: #a55eea; color: white; }
@@ -41,12 +43,12 @@
 
 <header>
     <a href="index.html" class="back-btn">← DASHBOARD</a>
-    <h1>AI Meeting Transcription</h1>
+    <h1>AI Meeting Transcription Pro</h1>
 </header>
 
 <div class="container">
     <div class="status-panel">
-        <span class="ai-status" id="status-text">Ready to Transcribe</span>
+        <span class="ai-status" id="status-text">Ready for Long Meeting</span>
         <div class="wave-container" id="wave-visual" style="display: none;">
             <div class="wave-bar" style="animation-delay: 0.0s"></div>
             <div class="wave-bar" style="animation-delay: 0.1s"></div>
@@ -54,9 +56,9 @@
             <div class="wave-bar" style="animation-delay: 0.3s"></div>
         </div>
         <div class="controls">
-            <button class="btn btn-start" id="toggle-btn">⏺ START AI</button>
+            <button class="btn btn-start" id="toggle-btn">⏺ START AI LISTENING</button>
             <button class="btn btn-copy" onclick="copyText()">📋 COPY</button>
-            <button class="btn btn-pdf" onclick="saveAsPDF()">📄 SAVE PDF</button>
+            <button class="btn btn-pdf" onclick="saveAsPDF()">📄 PDF</button>
             <button class="btn btn-clear" onclick="clearTranscript()">🗑️ CLEAR</button>
         </div>
     </div>
@@ -64,7 +66,7 @@
     <div class="transcript-window" id="pdf-content">
         <div class="transcript-header">
             <div>
-                <strong style="color: #a55eea; font-size: 18px;">Oli-Ohh Meeting Transcript</strong><br>
+                <strong style="color: #a55eea; font-size: 18px;">Oli-Ohh Official Transcript</strong><br>
                 <small style="color: #666;">VTC Tradewings Pvt Ltd.</small>
             </div>
             <span id="current-date" style="font-weight: bold;"></span>
@@ -73,11 +75,12 @@
     </div>
 </div>
 
-<footer>&copy; 2026 Developed by Rounak Singh</footer>
+<footer>&copy; 2026 AI Transcription Portal | Developed by Rounak Singh</footer>
 
 <script>
     let recognition;
     let isListening = false;
+    let fullTranscript = ""; // Memory buffer
     const output = document.getElementById('output');
     const toggleBtn = document.getElementById('toggle-btn');
     const statusText = document.getElementById('status-text');
@@ -90,35 +93,40 @@
         recognition = new SpeechRecognition();
         
         recognition.continuous = true;
-        recognition.interimResults = false; // Disable guessing to prevent repetition
+        recognition.interimResults = true; // Enabled for smoother flow, but filtered in logic
         recognition.lang = 'en-IN';
 
         recognition.onresult = (event) => {
-            let finalResult = '';
-            // Only process results that are new (at the current resultIndex)
+            let interimResults = '';
             for (let i = event.resultIndex; i < event.results.length; ++i) {
                 if (event.results[i].isFinal) {
-                    finalResult += event.results[i][0].transcript;
+                    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    const text = event.results[i][0].transcript.trim();
+                    
+                    // Add timestamped line
+                    const newLine = `<span class="timestamp">[${time}]</span>${text}.<br>`;
+                    
+                    if (output.innerHTML.includes("Waiting for voice")) output.innerHTML = "";
+                    output.innerHTML += newLine;
+                    
+                    // Ensure the view stays at the bottom
+                    window.scrollTo(0, document.body.scrollHeight);
                 }
-            }
-
-            if (finalResult) {
-                if (output.innerHTML.includes("Waiting for voice")) output.innerHTML = "";
-                // Append unique confirmed text
-                output.innerHTML += finalResult.trim() + ". ";
-                window.scrollTo(0, document.body.scrollHeight);
             }
         };
 
         recognition.onend = () => {
-            if (isListening) recognition.start(); // Auto-restart heartbeat
+            // INFINITE LOOP LOGIC: 
+            // If the browser stops the service but we are still in "Listening" mode, restart it.
+            if (isListening) {
+                console.log("Restarting AI for continuous meeting capture...");
+                recognition.start();
+            }
         };
 
         recognition.onerror = (e) => {
-            if(e.error === 'not-allowed') {
-                alert("Microphone access denied. Please allow it in browser settings.");
-                stopListening();
-            }
+            console.error("AI Capture Error:", e.error);
+            if (e.error === 'network') alert("Network error. AI requires an active internet connection.");
         };
     }
 
@@ -128,40 +136,45 @@
     };
 
     function startListening() {
-        isListening = true;
-        recognition.start();
-        toggleBtn.innerText = "⏹ STOP AI";
-        toggleBtn.style.background = "#ff4757";
-        statusText.innerText = "AI is Listening & Writing...";
-        waveVisual.style.display = "flex";
+        try {
+            isListening = true;
+            recognition.start();
+            toggleBtn.innerHTML = "⏹ STOP CAPTURING";
+            toggleBtn.style.background = "#ff4757";
+            statusText.innerText = "AI ACTIVE: Capturing Meeting...";
+            waveVisual.style.display = "flex";
+        } catch (e) { console.error(e); }
     }
 
     function stopListening() {
         isListening = false;
         recognition.stop();
-        toggleBtn.innerText = "⏺ START AI";
+        toggleBtn.innerHTML = "⏺ START AI LISTENING";
         toggleBtn.style.background = "#a55eea";
-        statusText.innerText = "Paused";
+        statusText.innerText = "Capture Paused";
         waveVisual.style.display = "none";
     }
 
     function copyText() {
         const text = output.innerText.replace("Waiting for voice input...", "");
-        navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!"));
+        navigator.clipboard.writeText(text).then(() => alert("Transcript copied to clipboard!"));
     }
 
     function clearTranscript() {
-        if(confirm("Clear transcript?")) output.innerHTML = "<em>Waiting for voice input...</em>";
+        if(confirm("This will permanently delete current meeting notes. Proceed?")) {
+            output.innerHTML = "<em>Waiting for voice input...</em>";
+        }
     }
 
     function saveAsPDF() {
         const element = document.getElementById('pdf-content');
-        html2pdf().from(element).set({
+        const opt = {
             margin: 10,
-            filename: 'Meeting_Transcript.pdf',
+            filename: `Oli_Ohh_Transcript_${new Date().toLocaleDateString()}.pdf`,
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        }).save();
+        };
+        html2pdf().from(element).set(opt).save();
     }
 </script>
 </body>
