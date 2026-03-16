@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,9 +10,47 @@
         body { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); color: white; min-height: 100vh; position: relative; }
         
         header { padding: 25px; text-align: center; font-size: 32px; font-weight: bold; background: rgba(0, 0, 0, 0.4); }
-        nav { display: flex; justify-content: center; gap: 30px; padding: 12px; background: #111; position: sticky; top: 0; z-index: 100; }
+        
+        /* UPDATED NAV FOR HIGHLIGHT LINK */
+        nav { display: flex; justify-content: center; align-items: center; gap: 30px; padding: 12px; background: #111; position: sticky; top: 0; z-index: 100; }
         nav a { color: white; text-decoration: none; font-weight: 600; }
         nav a:hover { color: #00ffd5; }
+
+        /* ATTRACTIVE HIGHLIGHT LINK CSS */
+        .highlight-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 2px solid #00ffd5;
+            color: #00ffd5 !important;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            animation: neonPulse 2s infinite alternate;
+        }
+        .highlight-link:hover {
+            background: #00ffd5;
+            color: #111 !important;
+            box-shadow: 0 0 20px #00ffd5;
+            transform: scale(1.05);
+        }
+        .moving-icon {
+            display: inline-block;
+            animation: moveIcon 2s ease-in-out infinite;
+        }
+        @keyframes neonPulse {
+            from { box-shadow: 0 0 5px rgba(0, 255, 213, 0.2); }
+            to { box-shadow: 0 0 20px rgba(0, 255, 213, 0.6); }
+        }
+        @keyframes moveIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
         .container { padding: 30px; position: relative; }
 
         /* KPI Cards */
@@ -118,6 +157,9 @@
 <nav>
     <a href="#dashboard">Dashboard</a>
     <a href="#tasks">Launch Tasks</a>
+    <a href="meeting-highlights.html" class="highlight-link">
+        <span class="moving-icon">📝</span> Last Meeting Highlights
+    </a>
 </nav>
 
 <div class="container">
