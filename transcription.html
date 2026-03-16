@@ -80,89 +80,86 @@
 <script>
     let recognition;
     let isListening = false;
-    let fullTranscript = ""; // Memory buffer
+    let lastProcessedIndex = 0; // CRITICAL: Stops multiple writing
+    
     const output = document.getElementById('output');
     const toggleBtn = document.getElementById('toggle-btn');
     const statusText = document.getElementById('status-text');
     const waveVisual = document.getElementById('wave-visual');
 
-    document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    document.getElementById('current-date').innerText = "Date: " + new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         recognition = new SpeechRecognition();
         
         recognition.continuous = true;
-        recognition.interimResults = true; // Enabled for smoother flow, but filtered in logic
+        recognition.interimResults = false; // Set to FALSE to prevent duplicate guessing
         recognition.lang = 'en-IN';
 
         recognition.onresult = (event) => {
-            let interimResults = '';
+            // We only process results from the NEW index onwards
             for (let i = event.resultIndex; i < event.results.length; ++i) {
                 if (event.results[i].isFinal) {
                     const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                     const text = event.results[i][0].transcript.trim();
                     
-                    // Add timestamped line
-                    const newLine = `<span class="timestamp">[${time}]</span>${text}.<br>`;
-                    
-                    if (output.innerHTML.includes("Waiting for voice")) output.innerHTML = "";
-                    output.innerHTML += newLine;
-                    
-                    // Ensure the view stays at the bottom
-                    window.scrollTo(0, document.body.scrollHeight);
+                    if (text.length > 0) {
+                        const newLine = `<p style="margin-bottom:10px;"><span class="timestamp">[${time}]</span> ${text}.</p>`;
+                        
+                        if (output.innerHTML.includes("Waiting for voice")) output.innerHTML = "";
+                        output.innerHTML += newLine;
+                        
+                        // Scroll to the latest text
+                        window.scrollTo(0, document.body.scrollHeight);
+                    }
                 }
             }
         };
 
+        recognition.onstart = () => {
+            console.log("AI Listening...");
+        };
+
         recognition.onend = () => {
-            // INFINITE LOOP LOGIC: 
-            // If the browser stops the service but we are still in "Listening" mode, restart it.
+            // Infinite loop check: only restart if we haven't manually stopped
             if (isListening) {
-                console.log("Restarting AI for continuous meeting capture...");
                 recognition.start();
             }
         };
 
         recognition.onerror = (e) => {
             console.error("AI Capture Error:", e.error);
-            if (e.error === 'network') alert("Network error. AI requires an active internet connection.");
         };
     }
 
     toggleBtn.onclick = () => {
-        if (!isListening) startListening();
-        else stopListening();
-    };
-
-    function startListening() {
-        try {
+        if (!isListening) {
             isListening = true;
             recognition.start();
             toggleBtn.innerHTML = "⏹ STOP CAPTURING";
             toggleBtn.style.background = "#ff4757";
             statusText.innerText = "AI ACTIVE: Capturing Meeting...";
             waveVisual.style.display = "flex";
-        } catch (e) { console.error(e); }
-    }
-
-    function stopListening() {
-        isListening = false;
-        recognition.stop();
-        toggleBtn.innerHTML = "⏺ START AI LISTENING";
-        toggleBtn.style.background = "#a55eea";
-        statusText.innerText = "Capture Paused";
-        waveVisual.style.display = "none";
-    }
+        } else {
+            isListening = false;
+            recognition.stop();
+            toggleBtn.innerHTML = "⏺ START AI LISTENING";
+            toggleBtn.style.background = "#a55eea";
+            statusText.innerText = "Capture Paused";
+            waveVisual.style.display = "none";
+        }
+    };
 
     function copyText() {
         const text = output.innerText.replace("Waiting for voice input...", "");
-        navigator.clipboard.writeText(text).then(() => alert("Transcript copied to clipboard!"));
+        navigator.clipboard.writeText(text).then(() => alert("Transcript copied!"));
     }
 
     function clearTranscript() {
-        if(confirm("This will permanently delete current meeting notes. Proceed?")) {
+        if(confirm("Clear current meeting notes?")) {
             output.innerHTML = "<em>Waiting for voice input...</em>";
+            lastProcessedIndex = 0;
         }
     }
 
