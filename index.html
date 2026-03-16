@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,25 +10,30 @@
         
         header { padding: 25px; text-align: center; font-size: 32px; font-weight: bold; background: rgba(0, 0, 0, 0.4); }
         
-        /* UPDATED NAV FOR HIGHLIGHT LINK */
-        nav { display: flex; justify-content: center; align-items: center; gap: 30px; padding: 12px; background: #111; position: sticky; top: 0; z-index: 100; }
+        /* UPDATED NAV FOR HIGHLIGHTS & AI LINKS */
+        nav { display: flex; justify-content: center; align-items: center; gap: 20px; padding: 12px; background: #111; position: sticky; top: 0; z-index: 100; }
         nav a { color: white; text-decoration: none; font-weight: 600; }
         nav a:hover { color: #00ffd5; }
 
-        /* ATTRACTIVE HIGHLIGHT LINK CSS */
-        .highlight-link {
+        /* ATTRACTIVE SPECIAL LINKS CSS */
+        .special-nav-link {
             display: flex;
             align-items: center;
             gap: 10px;
             background: rgba(255, 255, 255, 0.05);
             padding: 8px 20px;
             border-radius: 50px;
-            border: 2px solid #00ffd5;
-            color: #00ffd5 !important;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.3s ease;
+            font-size: 13px;
+        }
+
+        /* HIGHLIGHT LINK STYLE */
+        .highlight-link {
+            border: 2px solid #00ffd5;
+            color: #00ffd5 !important;
             animation: neonPulse 2s infinite alternate;
         }
         .highlight-link:hover {
@@ -38,13 +42,32 @@
             box-shadow: 0 0 20px #00ffd5;
             transform: scale(1.05);
         }
+
+        /* AI TRANSCRIPT LINK STYLE */
+        .ai-link {
+            border: 2px solid #a55eea;
+            color: #a55eea !important;
+            animation: purplePulse 2s infinite alternate;
+        }
+        .ai-link:hover {
+            background: #a55eea;
+            color: #fff !important;
+            box-shadow: 0 0 20px #a55eea;
+            transform: scale(1.05);
+        }
+
         .moving-icon {
             display: inline-block;
             animation: moveIcon 2s ease-in-out infinite;
         }
+
         @keyframes neonPulse {
             from { box-shadow: 0 0 5px rgba(0, 255, 213, 0.2); }
             to { box-shadow: 0 0 20px rgba(0, 255, 213, 0.6); }
+        }
+        @keyframes purplePulse {
+            from { box-shadow: 0 0 5px rgba(165, 94, 234, 0.2); }
+            to { box-shadow: 0 0 20px rgba(165, 94, 234, 0.6); }
         }
         @keyframes moveIcon {
             0%, 100% { transform: translateY(0); }
@@ -66,7 +89,7 @@
         /* Owner Panel */
         .owner-panel { margin-top: 30px; background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 12px; margin-bottom: 40px; }
         .owner-list { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 15px; }
-        .owner { padding: 10px 18px; border-radius: 30px; font-weight: 600; cursor: pointer; transition: .3s; background: linear-gradient(135deg, #00c6ff, #0072ff); display: flex; align-items: center; gap: 8px; }
+        .owner { padding: 10px 18px; border-radius: 30px; font-weight: 600; cursor: pointer; transition: .3s; background: linear-gradient(135deg, #00c6ff, #0072ff); display: flex; align-items: center; gap: 8px; color:white; }
         .owner:hover { transform: scale(1.05); }
         .owner.active { outline: 3px solid white; box-shadow: 0 0 15px #00ffd5; }
         .task-count { background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 10px; font-size: 12px; }
@@ -81,7 +104,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             margin-bottom: 40px;
         }
-
         .background-watermark {
             position: absolute;
             top: 55%; left: 50%;
@@ -91,9 +113,7 @@
             z-index: 0;
             pointer-events: none;
         }
-
         .table-content { position: relative; z-index: 1; color: black; }
-        
         table { width: 100%; border-collapse: collapse; background: transparent; color: black; }
         th { background: #0077ff; color: white; padding: 12px; text-align: left; }
         td { padding: 12px; border-bottom: 1px solid #eee; }
@@ -121,14 +141,12 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             border: 1px solid transparent;
         }
-
         .special-link-container:hover { 
             transform: scale(1.1) translateX(10px); 
             background: #0077ff; 
             box-shadow: 0 5px 15px rgba(0, 119, 255, 0.3);
             border-color: #00ffd5;
         }
-
         .activity-link { color: #0077ff; text-decoration: none; font-weight: 700; transition: color 0.3s; }
         .special-link-container:hover .activity-link { color: white; }
         
@@ -157,8 +175,13 @@
 <nav>
     <a href="#dashboard">Dashboard</a>
     <a href="#tasks">Launch Tasks</a>
-    <a href="meeting-highlights.html" class="highlight-link">
+    
+    <a href="meeting-highlights.html" class="special-nav-link highlight-link">
         <span class="moving-icon">📝</span> Last Meeting Highlights
+    </a>
+
+    <a href="transcription.html" class="special-nav-link ai-link">
+        <span class="moving-icon">🎙️</span> AI Transcript
     </a>
 </nav>
 
