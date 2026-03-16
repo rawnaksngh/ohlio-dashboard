@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Transcription | Oli-Ohh Command</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial; }
+        body { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); color: white; min-height: 100vh; padding-bottom: 50px; }
+
+        header { padding: 30px; text-align: center; background: rgba(0, 0, 0, 0.4); border-bottom: 2px solid #a55eea; position: relative; }
+        .back-btn { position: absolute; left: 20px; top: 35px; color: #a55eea; text-decoration: none; font-weight: bold; border: 1px solid #a55eea; padding: 5px 15px; border-radius: 20px; transition: 0.3s; }
+        .back-btn:hover { background: #a55eea; color: #000; }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+
+        .status-panel { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(165, 94, 234, 0.3); border-radius: 15px; padding: 30px; text-align: center; margin-bottom: 30px; backdrop-filter: blur(10px); }
+        .ai-status { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; color: #a55eea; margin-bottom: 15px; display: block; }
+        
+        .wave-container { display: flex; justify-content: center; align-items: flex-end; gap: 5px; height: 40px; margin-bottom: 20px; }
+        .wave-bar { width: 4px; background: #a55eea; border-radius: 10px; animation: wave-anim 1s infinite ease-in-out; }
+        @keyframes wave-anim { 0%, 100% { height: 10px; } 50% { height: 40px; } }
+
+        .transcript-window { background: white; color: #333; border-radius: 15px; padding: 40px; min-height: 450px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
+        .transcript-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #a55eea; padding-bottom: 15px; margin-bottom: 20px; }
+        .transcript-content { line-height: 1.8; font-size: 16px; color: #333; white-space: pre-wrap; }
+        
+        .controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+        .btn { padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; transition: 0.3s; font-size: 13px; }
+        .btn-start { background: #a55eea; color: white; }
+        .btn-pdf { background: #27ae60; color: white; }
+        .btn-clear { background: #555; color: white; }
+
+        footer { text-align: center; margin-top: 50px; opacity: 0.6; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="back-btn">← DASHBOARD</a>
+    <h1>AI Meeting Transcription</h1>
+</header>
+
+<div class="container">
+    <div class="status-panel">
+        <span class="ai-status" id="status-text">Ready</span>
+        <div class="wave-container" id="wave-visual" style="display: none;">
+            <div class="wave-bar" style="animation-delay: 0.0s"></div>
+            <div class="wave-bar" style="animation-delay: 0.1s"></div>
+            <div class="wave-bar" style="animation-delay: 0.2s"></div>
+            <div class="wave-bar" style="animation-delay: 0.3s"></div>
+        </div>
+        <div class="controls">
+            <button class="btn btn-start" id="toggle-btn">⏺ START AI</button>
+            <button class="btn btn-pdf" onclick="saveAsPDF()">📄 SAVE PDF</button>
+            <button class="btn btn-clear" onclick="clearTranscript()">🗑️ CLEAR</button>
+        </div>
+    </div>
+
+    <div class="transcript-window" id="pdf-content">
+        <div class="transcript-header">
+            <div>
+                <strong style="color: #a55eea; font-size: 18px;">Oli-Ohh Meeting Transcript</strong><br>
+                <small style="color: #666;">VTC Tradewings Pvt Ltd.</small>
+            </div>
+            <span id="current-date" style="font-weight: bold;"></span>
+        </div>
+        <div class="transcript-content" id="output"><em>Waiting for voice...</em></div>
+    </div>
+</div>
+
+<footer>&copy; 2026 Developed by Rounak Singh</footer>
+
+<script>
+    let recognition;
+    let isListening = false;
+    const output = document.getElementById('output');
+    const toggleBtn = document.getElementById('toggle-btn');
+    const statusText = document.getElementById('status-text');
+    const waveVisual = document.getElementById('wave-visual');
+
+    document.getElementById('current-date').innerText = new Date().toLocaleDateString();
+
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        
+        // Settings to reduce popup frequency
+        recognition.continuous = true;
+        recognition.interimResults = true; 
+        recognition.lang = 'en-IN';
+
+        recognition.onresult = (event) => {
+            let finalTranscript = '';
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) finalTranscript += event.results[i][0].transcript;
+            }
+            if (finalTranscript) {
+                if (output.innerHTML.includes("Waiting for voice")) output.innerHTML = "";
+                output.innerHTML += finalTranscript + ". ";
+            }
+        };
+
+        recognition.onend = () => {
+            // Restart automatically if isListening is true to prevent "Paused" state
+            if (isListening) {
+                recognition.start();
+            }
+        };
+
+        recognition.onerror = (e) => {
+            if(e.error === 'not-allowed') {
+                alert("Please click the LOCK icon in your browser URL bar and change Microphone to 'ALLOW'.");
+                stopListening();
+            }
+        };
+    }
+
+    toggleBtn.onclick = () => {
+        if (!isListening) startListening();
+        else stopListening();
+    };
+
+    function startListening() {
+        isListening = true;
+        recognition.start();
+        toggleBtn.innerText = "⏹ STOP AI";
+        toggleBtn.style.background = "#ff4757";
+        statusText.innerText = "AI is Listening...";
+        waveVisual.style.display = "flex";
+    }
+
+    function stopListening() {
+        isListening = false;
+        recognition.stop();
+        toggleBtn.innerText = "⏺ START AI";
+        toggleBtn.style.background = "#a55eea";
+        statusText.innerText = "Paused";
+        waveVisual.style.display = "none";
+    }
+
+    function clearTranscript() {
+        if(confirm("Clear transcript?")) output.innerHTML = "<em>Waiting for voice...</em>";
+    }
+
+    function saveAsPDF() {
+        const element = document.getElementById('pdf-content');
+        html2pdf().from(element).set({
+            margin: 10,
+            filename: 'Oli-Ohh_Transcript.pdf',
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        }).save();
+    }
+</script>
+</body>
+</html>
