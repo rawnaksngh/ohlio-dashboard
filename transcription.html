@@ -3,36 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Transcription Pro | Oli-Ohh Command</title>
+    <title>AI Transcription Pro | VTC Command Center</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://apis.google.com/js/api.js" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial; }
         body { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); color: white; min-height: 100vh; padding-bottom: 50px; }
-
         header { padding: 30px; text-align: center; background: rgba(0, 0, 0, 0.4); border-bottom: 2px solid #a55eea; position: relative; }
         .back-btn { position: absolute; left: 20px; top: 35px; color: #a55eea; text-decoration: none; font-weight: bold; border: 1px solid #a55eea; padding: 5px 15px; border-radius: 20px; transition: 0.3s; }
         .back-btn:hover { background: #a55eea; color: #000; }
 
-        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
-
+        .container { max-width: 950px; margin: 40px auto; padding: 0 20px; }
         .status-panel { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(165, 94, 234, 0.3); border-radius: 15px; padding: 30px; text-align: center; margin-bottom: 30px; backdrop-filter: blur(10px); }
-        .ai-status { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; color: #a55eea; margin-bottom: 15px; display: block; }
         
-        .wave-container { display: flex; justify-content: center; align-items: flex-end; gap: 5px; height: 40px; margin-bottom: 20px; }
-        .wave-bar { width: 4px; background: #a55eea; border-radius: 10px; animation: wave-anim 1s infinite ease-in-out; }
-        @keyframes wave-anim { 0%, 100% { height: 10px; } 50% { height: 40px; } }
+        /* Connection Dot */
+        .sync-status { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 15px; font-size: 12px; font-weight: bold; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #ff4757; transition: 0.3s; }
+        .dot.connected { background: #2ecc71; box-shadow: 0 0 10px #2ecc71; }
 
-        .transcript-window { background: white; color: #333; border-radius: 15px; padding: 40px; min-height: 500px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
+        /* Transcript Window */
+        .transcript-window { background: white; color: #333; border-radius: 15px; padding: 40px; min-height: 600px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
         .transcript-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #a55eea; padding-bottom: 15px; margin-bottom: 20px; }
-        .transcript-content { line-height: 1.8; font-size: 16px; color: #333; white-space: pre-wrap; word-wrap: break-word; }
         
+        .mom-box { background: #f8f1ff; border: 2px dashed #a55eea; border-radius: 10px; padding: 20px; margin-bottom: 30px; display: none; }
+        .mom-box h3 { color: #a55eea; margin-bottom: 10px; }
+
+        .transcript-content { line-height: 1.8; font-size: 16px; color: #333; }
         .timestamp { color: #a55eea; font-weight: bold; font-family: monospace; font-size: 12px; margin-right: 10px; }
 
+        /* Buttons */
         .controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
         .btn { padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; transition: 0.3s; font-size: 13px; display: flex; align-items: center; gap: 8px; }
         .btn-start { background: #a55eea; color: white; }
-        .btn-copy { background: #0077ff; color: white; }
-        .btn-pdf { background: #27ae60; color: white; }
+        .btn-mom { background: #f39c12; color: white; }
+        .btn-drive { background: #4285F4; color: white; }
         .btn-clear { background: #555; color: white; }
         .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
@@ -43,136 +49,166 @@
 
 <header>
     <a href="index.html" class="back-btn">← DASHBOARD</a>
-    <h1>AI Meeting Transcription Pro</h1>
+    <h1>AI Meeting Command Pro</h1>
 </header>
 
 <div class="container">
     <div class="status-panel">
-        <span class="ai-status" id="status-text">Ready for Long Meeting</span>
-        <div class="wave-container" id="wave-visual" style="display: none;">
-            <div class="wave-bar" style="animation-delay: 0.0s"></div>
-            <div class="wave-bar" style="animation-delay: 0.1s"></div>
-            <div class="wave-bar" style="animation-delay: 0.2s"></div>
-            <div class="wave-bar" style="animation-delay: 0.3s"></div>
-        </div>
+        <span class="ai-status" id="status-text">Ready to Transcribe</span>
         <div class="controls">
             <button class="btn btn-start" id="toggle-btn">⏺ START AI LISTENING</button>
-            <button class="btn btn-copy" onclick="copyText()">📋 COPY</button>
-            <button class="btn btn-pdf" onclick="saveAsPDF()">📄 PDF</button>
+            <button class="btn btn-mom" onclick="generateMoM()">✨ GENERATE MoM</button>
+            <button class="btn btn-drive" onclick="handleDriveSave()">📁 SAVE TO DRIVE</button>
             <button class="btn btn-clear" onclick="clearTranscript()">🗑️ CLEAR</button>
+        </div>
+        <div class="sync-status">
+            <div id="sync-dot" class="dot"></div>
+            <span id="sync-text">Google Drive: Not Connected</span>
         </div>
     </div>
 
     <div class="transcript-window" id="pdf-content">
         <div class="transcript-header">
             <div>
-                <strong style="color: #a55eea; font-size: 18px;">Oli-Ohh Official Transcript</strong><br>
+                <strong style="color: #a55eea; font-size: 20px;">Oli-Ohh Official Minutes</strong><br>
                 <small style="color: #666;">VTC Tradewings Pvt Ltd.</small>
             </div>
             <span id="current-date" style="font-weight: bold;"></span>
         </div>
+
+        <div id="mom-section" class="mom-box">
+            <h3>📝 Minutes of Meeting Summary</h3>
+            <div id="mom-body"></div>
+        </div>
+
         <div class="transcript-content" id="output"><em>Waiting for voice input...</em></div>
     </div>
 </div>
 
-<footer>&copy; 2026 AI Transcription Portal | Developed by Rounak Singh</footer>
+<footer>&copy; 2026 Developed by Rounak Singh</footer>
 
 <script>
+    // --- GOOGLE CONFIG ---
+    const CLIENT_ID = '730981301069-q2du7d2l72sjeiqql12hd21fo3jldngl.apps.googleusercontent.com';
+    const API_KEY = 'PASTE_YOUR_API_KEY_HERE'; 
+    const SCOPES = 'https://www.googleapis.com/auth/drive.file';
+
+    let tokenClient;
+    let accessToken = null;
+
+    // 1. Initialize API Client
+    function gapiLoaded() {
+        gapi.load('client', async () => {
+            await gapi.client.init({
+                apiKey: API_KEY,
+                discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
+            });
+        });
+    }
+
+    // 2. Initialize Identity Services (Fixes Policy Error)
+    function gisLoaded() {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+            client_id: CLIENT_ID,
+            scope: SCOPES,
+            callback: (resp) => {
+                if (resp.access_token) {
+                    accessToken = resp.access_token;
+                    document.getElementById('sync-dot').classList.add('connected');
+                    document.getElementById('sync-text').innerText = "Google Drive: Connected";
+                    uploadToDrive();
+                }
+            },
+        });
+    }
+
+    // 3. User Triggered Save
+    function handleDriveSave() {
+        if (!accessToken) {
+            tokenClient.requestAccessToken({prompt: 'consent'});
+        } else {
+            uploadToDrive();
+        }
+    }
+
+    // 4. Actual Upload
+    async function uploadToDrive() {
+        const element = document.getElementById('pdf-content');
+        const pdfBlob = await html2pdf().from(element).set({margin: 10, filename: 'Meeting.pdf'}).output('blob');
+        
+        const metadata = {
+            name: `Oli_Ohh_Transcript_${new Date().toLocaleDateString()}.pdf`,
+            mimeType: 'application/pdf'
+        };
+
+        const form = new FormData();
+        form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+        form.append('file', pdfBlob);
+
+        fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+            method: 'POST',
+            headers: new Headers({ 'Authorization': 'Bearer ' + accessToken }),
+            body: form
+        }).then(res => {
+            if (res.ok) alert("✅ Saved to Google Drive!");
+            else alert("❌ Upload Failed. Check API Key and Drive Permissions.");
+        });
+    }
+
+    // --- TRANSCRIPTION LOGIC ---
     let recognition;
     let isListening = false;
-    let lastProcessedIndex = 0; // CRITICAL: Stops multiple writing
-    
     const output = document.getElementById('output');
-    const toggleBtn = document.getElementById('toggle-btn');
-    const statusText = document.getElementById('status-text');
-    const waveVisual = document.getElementById('wave-visual');
+    
+    document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
-    document.getElementById('current-date').innerText = "Date: " + new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        recognition = new SpeechRecognition();
-        
+    if ('webkitSpeechRecognition' in window) {
+        recognition = new webkitSpeechRecognition();
         recognition.continuous = true;
-        recognition.interimResults = false; // Set to FALSE to prevent duplicate guessing
+        recognition.interimResults = false;
         recognition.lang = 'en-IN';
 
         recognition.onresult = (event) => {
-            // We only process results from the NEW index onwards
+            let result = '';
             for (let i = event.resultIndex; i < event.results.length; ++i) {
-                if (event.results[i].isFinal) {
-                    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const text = event.results[i][0].transcript.trim();
-                    
-                    if (text.length > 0) {
-                        const newLine = `<p style="margin-bottom:10px;"><span class="timestamp">[${time}]</span> ${text}.</p>`;
-                        
-                        if (output.innerHTML.includes("Waiting for voice")) output.innerHTML = "";
-                        output.innerHTML += newLine;
-                        
-                        // Scroll to the latest text
-                        window.scrollTo(0, document.body.scrollHeight);
-                    }
-                }
+                if (event.results[i].isFinal) result += event.results[i][0].transcript;
+            }
+            if (result) {
+                if (output.innerHTML.includes("Waiting")) output.innerHTML = "";
+                const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                output.innerHTML += `<p style="margin-bottom:10px;"><span class="timestamp">[${time}]</span> ${result.trim()}.</p>`;
+                window.scrollTo(0, document.body.scrollHeight);
             }
         };
-
-        recognition.onstart = () => {
-            console.log("AI Listening...");
-        };
-
-        recognition.onend = () => {
-            // Infinite loop check: only restart if we haven't manually stopped
-            if (isListening) {
-                recognition.start();
-            }
-        };
-
-        recognition.onerror = (e) => {
-            console.error("AI Capture Error:", e.error);
-        };
+        recognition.onend = () => { if (isListening) recognition.start(); };
     }
 
-    toggleBtn.onclick = () => {
+    document.getElementById('toggle-btn').onclick = () => {
         if (!isListening) {
-            isListening = true;
-            recognition.start();
-            toggleBtn.innerHTML = "⏹ STOP CAPTURING";
-            toggleBtn.style.background = "#ff4757";
-            statusText.innerText = "AI ACTIVE: Capturing Meeting...";
-            waveVisual.style.display = "flex";
+            isListening = true; recognition.start();
+            document.getElementById('toggle-btn').innerHTML = "⏹ STOP";
+            document.getElementById('status-text').innerText = "AI Listening...";
         } else {
-            isListening = false;
-            recognition.stop();
-            toggleBtn.innerHTML = "⏺ START AI LISTENING";
-            toggleBtn.style.background = "#a55eea";
-            statusText.innerText = "Capture Paused";
-            waveVisual.style.display = "none";
+            isListening = false; recognition.stop();
+            document.getElementById('toggle-btn').innerHTML = "⏺ START AI";
+            document.getElementById('status-text').innerText = "Paused";
         }
     };
 
-    function copyText() {
-        const text = output.innerText.replace("Waiting for voice input...", "");
-        navigator.clipboard.writeText(text).then(() => alert("Transcript copied!"));
+    function generateMoM() {
+        const text = output.innerText;
+        if (text.length < 20) return alert("Transcript too short.");
+        const actionItems = text.split('.').filter(s => s.toLowerCase().includes('need') || s.toLowerCase().includes('will'));
+        let html = "<strong>Key Actions:</strong><ul>";
+        actionItems.forEach(item => html += `<li>${item.trim()}</li>`);
+        html += "</ul>";
+        document.getElementById('mom-body').innerHTML = html;
+        document.getElementById('mom-section').style.display = "block";
     }
 
-    function clearTranscript() {
-        if(confirm("Clear current meeting notes?")) {
-            output.innerHTML = "<em>Waiting for voice input...</em>";
-            lastProcessedIndex = 0;
-        }
-    }
+    function clearTranscript() { if(confirm("Clear?")) location.reload(); }
 
-    function saveAsPDF() {
-        const element = document.getElementById('pdf-content');
-        const opt = {
-            margin: 10,
-            filename: `Oli_Ohh_Transcript_${new Date().toLocaleDateString()}.pdf`,
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-        html2pdf().from(element).set(opt).save();
-    }
+    window.onload = () => { gapiLoaded(); gisLoaded(); };
 </script>
 </body>
 </html>
