@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Transcription Pro | VTC Command Center</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://apis.google.com/js/api.js" async defer></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial; }
@@ -14,34 +12,29 @@
         header { padding: 30px; text-align: center; background: rgba(0, 0, 0, 0.4); border-bottom: 2px solid #a55eea; position: relative; }
         .back-btn { position: absolute; left: 20px; top: 35px; color: #a55eea; text-decoration: none; font-weight: bold; border: 1px solid #a55eea; padding: 5px 15px; border-radius: 20px; transition: 0.3s; }
         .back-btn:hover { background: #a55eea; color: #000; }
-
+        
         .container { max-width: 950px; margin: 40px auto; padding: 0 20px; }
         .status-panel { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(165, 94, 234, 0.3); border-radius: 15px; padding: 30px; text-align: center; margin-bottom: 30px; backdrop-filter: blur(10px); }
         
-        /* Connection Dot */
-        .sync-status { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 15px; font-size: 12px; font-weight: bold; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; background: #ff4757; transition: 0.3s; }
-        .dot.connected { background: #2ecc71; box-shadow: 0 0 10px #2ecc71; }
-
         /* Transcript Window */
         .transcript-window { background: white; color: #333; border-radius: 15px; padding: 40px; min-height: 600px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
         .transcript-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #a55eea; padding-bottom: 15px; margin-bottom: 20px; }
         
         .mom-box { background: #f8f1ff; border: 2px dashed #a55eea; border-radius: 10px; padding: 20px; margin-bottom: 30px; display: none; }
         .mom-box h3 { color: #a55eea; margin-bottom: 10px; }
-
+        
         .transcript-content { line-height: 1.8; font-size: 16px; color: #333; }
         .timestamp { color: #a55eea; font-weight: bold; font-family: monospace; font-size: 12px; margin-right: 10px; }
-
+        
         /* Buttons */
         .controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
         .btn { padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; transition: 0.3s; font-size: 13px; display: flex; align-items: center; gap: 8px; }
         .btn-start { background: #a55eea; color: white; }
         .btn-mom { background: #f39c12; color: white; }
-        .btn-drive { background: #4285F4; color: white; }
+        .btn-download { background: #2ecc71; color: white; } /* Updated color for Download */
         .btn-clear { background: #555; color: white; }
         .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-
+        
         footer { text-align: center; margin-top: 50px; opacity: 0.6; font-size: 13px; }
     </style>
 </head>
@@ -58,12 +51,8 @@
         <div class="controls">
             <button class="btn btn-start" id="toggle-btn">⏺ START AI LISTENING</button>
             <button class="btn btn-mom" onclick="generateMoM()">✨ GENERATE MoM</button>
-            <button class="btn btn-drive" onclick="handleDriveSave()">📁 SAVE TO DRIVE</button>
+            <button class="btn btn-download" onclick="downloadPDF()">📥 DOWNLOAD PDF</button>
             <button class="btn btn-clear" onclick="clearTranscript()">🗑️ CLEAR</button>
-        </div>
-        <div class="sync-status">
-            <div id="sync-dot" class="dot"></div>
-            <span id="sync-text">Google Drive: Not Connected</span>
         </div>
     </div>
 
@@ -88,78 +77,25 @@
 <footer>&copy; 2026 Developed by Rounak Singh</footer>
 
 <script>
-    // --- GOOGLE CONFIG ---
-    const CLIENT_ID = '730981301069-q2du7d2l72sjeiqql12hd21fo3jldngl.apps.googleusercontent.com';
-    const API_KEY = 'PASTE_YOUR_API_KEY_HERE'; 
-    const SCOPES = 'https://www.googleapis.com/auth/drive.file';
-
-    let tokenClient;
-    let accessToken = null;
-
-    // 1. Initialize API Client
-    function gapiLoaded() {
-        gapi.load('client', async () => {
-            await gapi.client.init({
-                apiKey: API_KEY,
-                discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
-            });
-        });
-    }
-
-    // 2. Initialize Identity Services (Fixes Policy Error)
-    function gisLoaded() {
-        tokenClient = google.accounts.oauth2.initTokenClient({
-            client_id: CLIENT_ID,
-            scope: SCOPES,
-            callback: (resp) => {
-                if (resp.access_token) {
-                    accessToken = resp.access_token;
-                    document.getElementById('sync-dot').classList.add('connected');
-                    document.getElementById('sync-text').innerText = "Google Drive: Connected";
-                    uploadToDrive();
-                }
-            },
-        });
-    }
-
-    // 3. User Triggered Save
-    function handleDriveSave() {
-        if (!accessToken) {
-            tokenClient.requestAccessToken({prompt: 'consent'});
-        } else {
-            uploadToDrive();
-        }
-    }
-
-    // 4. Actual Upload
-    async function uploadToDrive() {
+    // --- PDF DOWNLOAD LOGIC ---
+    function downloadPDF() {
         const element = document.getElementById('pdf-content');
-        const pdfBlob = await html2pdf().from(element).set({margin: 10, filename: 'Meeting.pdf'}).output('blob');
-        
-        const metadata = {
-            name: `Oli_Ohh_Transcript_${new Date().toLocaleDateString()}.pdf`,
-            mimeType: 'application/pdf'
+        const opt = {
+            margin:       10,
+            filename:     `Oli_Ohh_Meeting_${new Date().toLocaleDateString()}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
-        const form = new FormData();
-        form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
-        form.append('file', pdfBlob);
-
-        fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-            method: 'POST',
-            headers: new Headers({ 'Authorization': 'Bearer ' + accessToken }),
-            body: form
-        }).then(res => {
-            if (res.ok) alert("✅ Saved to Google Drive!");
-            else alert("❌ Upload Failed. Check API Key and Drive Permissions.");
-        });
+        // New Promise-based usage:
+        html2pdf().set(opt).from(element).save();
     }
 
     // --- TRANSCRIPTION LOGIC ---
     let recognition;
     let isListening = false;
     const output = document.getElementById('output');
-    
     document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
     if ('webkitSpeechRecognition' in window) {
@@ -185,11 +121,13 @@
 
     document.getElementById('toggle-btn').onclick = () => {
         if (!isListening) {
-            isListening = true; recognition.start();
+            isListening = true; 
+            recognition.start();
             document.getElementById('toggle-btn').innerHTML = "⏹ STOP";
             document.getElementById('status-text').innerText = "AI Listening...";
         } else {
-            isListening = false; recognition.stop();
+            isListening = false; 
+            recognition.stop();
             document.getElementById('toggle-btn').innerHTML = "⏺ START AI";
             document.getElementById('status-text').innerText = "Paused";
         }
@@ -200,15 +138,22 @@
         if (text.length < 20) return alert("Transcript too short.");
         const actionItems = text.split('.').filter(s => s.toLowerCase().includes('need') || s.toLowerCase().includes('will'));
         let html = "<strong>Key Actions:</strong><ul>";
-        actionItems.forEach(item => html += `<li>${item.trim()}</li>`);
+        if (actionItems.length === 0) {
+            html += "<li>No specific action items detected.</li>";
+        } else {
+            actionItems.forEach(item => html += `<li>${item.trim()}</li>`);
+        }
         html += "</ul>";
         document.getElementById('mom-body').innerHTML = html;
         document.getElementById('mom-section').style.display = "block";
     }
 
-    function clearTranscript() { if(confirm("Clear?")) location.reload(); }
-
-    window.onload = () => { gapiLoaded(); gisLoaded(); };
+    function clearTranscript() { 
+        if(confirm("Are you sure you want to clear the transcript?")) {
+            output.innerHTML = "<em>Waiting for voice input...</em>";
+            document.getElementById('mom-section').style.display = "none";
+        }
+    }
 </script>
 </body>
 </html>
