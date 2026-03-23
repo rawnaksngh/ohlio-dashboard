@@ -10,12 +10,10 @@
         
         header { padding: 25px; text-align: center; font-size: 32px; font-weight: bold; background: rgba(0, 0, 0, 0.4); }
         
-        /* UPDATED NAV FOR HIGHLIGHTS & AI LINKS */
         nav { display: flex; justify-content: center; align-items: center; gap: 20px; padding: 12px; background: #111; position: sticky; top: 0; z-index: 100; }
         nav a { color: white; text-decoration: none; font-weight: 600; }
         nav a:hover { color: #00ffd5; }
 
-        /* ATTRACTIVE SPECIAL LINKS CSS */
         .special-nav-link {
             display: flex;
             align-items: center;
@@ -30,7 +28,6 @@
             font-size: 13px;
         }
 
-        /* HIGHLIGHT LINK STYLE */
         .highlight-link {
             border: 2px solid #00ffd5;
             color: #00ffd5 !important;
@@ -43,7 +40,6 @@
             transform: scale(1.05);
         }
 
-        /* AI TRANSCRIPT LINK STYLE */
         .ai-link {
             border: 2px solid #a55eea;
             color: #a55eea !important;
@@ -76,7 +72,6 @@
 
         .container { padding: 30px; position: relative; }
 
-        /* KPI Cards */
         .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
         .card { 
             background: white; color: black; padding: 20px; border-radius: 12px; text-align: center; cursor: pointer; 
@@ -86,7 +81,6 @@
         .card:hover { transform: translateY(-12px) scale(1.07); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
         .card.active { outline: 3px solid #00ffd5; }
         
-        /* Owner Panel */
         .owner-panel { margin-top: 30px; background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 12px; margin-bottom: 40px; }
         .owner-list { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 15px; }
         .owner { padding: 10px 18px; border-radius: 30px; font-weight: 600; cursor: pointer; transition: .3s; background: linear-gradient(135deg, #00c6ff, #0072ff); display: flex; align-items: center; gap: 8px; color:white; }
@@ -94,7 +88,6 @@
         .owner.active { outline: 3px solid white; box-shadow: 0 0 15px #00ffd5; }
         .task-count { background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 10px; font-size: 12px; }
 
-        /* TABLE SECTION WITH WATERMARK */
         .table-section-container {
             position: relative;
             background: white; 
@@ -119,7 +112,6 @@
         td { padding: 12px; border-bottom: 1px solid #eee; }
         tr:hover { background: rgba(0,0,0,0.02); }
 
-        /* BLINKING DOTS */
         .pulse-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 8px; animation: pulse 1.5s infinite; }
         .dot-green { background: #2ecc71; } 
         .dot-orange { background: #f39c12; }
@@ -129,7 +121,6 @@
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); } 
         }
 
-        /* ENHANCED HOVER EFFECT ON LINKS */
         .special-link-container { 
             display: inline-flex; 
             align-items: center; 
@@ -150,7 +141,6 @@
         .activity-link { color: #0077ff; text-decoration: none; font-weight: 700; transition: color 0.3s; }
         .special-link-container:hover .activity-link { color: white; }
         
-        /* Table Status Badges */
         .status { padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase; display: inline-block; color: white; }
         .done { background: #2ecc71; } .progressing { background: #f39c12; } .pending { background: #e74c3c; }
         
@@ -175,11 +165,9 @@
 <nav>
     <a href="#dashboard">Dashboard</a>
     <a href="#tasks">Launch Tasks</a>
-    
     <a href="meeting-highlights.html" class="special-nav-link highlight-link">
         <span class="moving-icon">📝</span> Last Meeting Highlights
     </a>
-
     <a href="transcription.html" class="special-nav-link ai-link">
         <span class="moving-icon">🎙️</span> AI Transcript
     </a>
@@ -221,16 +209,16 @@
                         <tr><th>Category</th><th>Activity</th><th>Owner</th><th>Status</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>Launching</td><td><a href="3-tier-launch.html" class="special-link-container"><span class="pulse-dot dot-orange"></span><span class="activity-link">3 Tier Launch Plan</span></a></td><td>Sunil</td><td><span class="status progressing">In Progress</span></td></tr>
                         <tr><td>Launching</td><td>Oli-Ohh Launch Ceremony</td><td>Akshay</td><td><span class="status progressing">In Progress</span></td></tr>
-                        <tr><td>Launching</td><td><a href="lindt-operations.html" class="special-link-container"><span class="pulse-dot dot-green"></span><span class="activity-link">Product Launch via Lindt Operations</span></a></td><td>Lindt Team</td><td><span class="status done">Completed</span></td></tr>
                         <tr><td>Coasting</td><td><a href="margin-structure.html" class="special-link-container"><span class="pulse-dot dot-orange"></span><span class="activity-link">Margin Structure</span></a></td><td>Sunil</td><td><span class="status progressing">In Progress</span></td></tr>
+                        <tr><td>Strategy</td><td><a href="shop.html" class="special-link-container"><span class="pulse-dot dot-orange"></span><span class="activity-link">100 Retailors Roadmap</span></a></td><td>Sunil</td><td><span class="status pending">Pending</span></td></tr>
+                        <tr><td>Launching</td><td><a href="lindt-operations.html" class="special-link-container"><span class="pulse-dot dot-green"></span><span class="activity-link">Product Launch via Lindt Operations</span></a></td><td>Lindt Team</td><td><span class="status done">Completed</span></td></tr>
                         <tr><td>Coverage</td><td><a href="ecommerce-listing.html" class="special-link-container"><span class="pulse-dot dot-green"></span><span class="activity-link">E-Commerce Listing</span></a></td><td>Vishal Chopra</td><td><span class="status done">Completed</span></td></tr>
                         <tr><td>Coverage</td><td><a href="meesho-listing.html" class="special-link-container"><span class="pulse-dot dot-green"></span><span class="activity-link">Meesho Listing</span></a></td><td>Surendra</td><td><span class="status done">Completed</span></td></tr>
                         <tr><td>Coverage</td><td>Quick Commerce Listing</td><td>Ajit</td><td><span class="status progressing">In Progress</span></td></tr>
+                        
                         <tr><td>Activation</td><td>Mandi Activation</td><td>Vipin</td><td><span class="status pending">Pending</span></td></tr>
                         <tr><td>Activation</td><td>Railway Channel Listing</td><td>TBD</td><td><span class="status pending">Pending</span></td></tr>
-                        <tr><td>Strategy</td><td><a href="shop.html" class="special-link-container"><span class="pulse-dot dot-orange"></span><span class="activity-link">100 Retailors Roadmap</span></a></td><td>Sunil</td><td><span class="status pending">Pending</span></td></tr>
                     </tbody>
                 </table>
             </section>
