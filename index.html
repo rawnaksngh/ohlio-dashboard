@@ -112,6 +112,12 @@
         .status { padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase; display: inline-block; color: white; }
         .done { background: #2ecc71; } .progressing { background: #f39c12; } .pending { background: #e74c3c; }
 
+        /* CONTROLS ROW */
+        .controls-row { display: flex; gap: 15px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .search-box input { padding: 12px; width: 100%; min-width: 300px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; color: black; }
+        .reset-btn { padding: 12px 20px; border-radius: 8px; border: 2px solid #0077ff; background: transparent; color: #0077ff; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .reset-btn:hover { background: #0077ff; color: white; }
+
         .suggestion-widget { position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; align-items: center; z-index: 9999; animation: floatWidget 3s ease-in-out infinite; }
         .suggestion-btn { background: linear-gradient(135deg, #00c6ff, #0072ff); width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; text-decoration: none; color: white; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); }
         @keyframes floatWidget { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(12px); } }
@@ -128,8 +134,10 @@
             .dashboard { grid-template-columns: 1fr 1fr; gap: 10px; }
             .card h1 { font-size: 24px; }
             .owner-list { justify-content: center; }
+            .controls-row { flex-direction: column; align-items: stretch; }
+            .search-box input { min-width: auto; }
             .table-section-container { overflow-x: auto; padding: 10px; }
-            table { min-width: 600px; } /* Allows horizontal scroll for the table only */
+            table { min-width: 600px; }
             .chart-container { width: 100%; max-width: 300px; }
         }
     </style>
@@ -180,6 +188,10 @@
         <img src="logo.png" alt="Watermark" class="background-watermark">
         <div class="table-content">
             <section id="tasks">
+                <div class="controls-row">
+                    <div class="search-box"><input type="text" id="searchInput" placeholder="Search tasks or owners..."></div>
+                    <button class="reset-btn" onclick="resetFilters()">Reset All Filters</button>
+                </div>
                 <table id="taskTable">
                     <thead>
                         <tr><th>Category</th><th>Activity</th><th>Owner</th><th>Status</th></tr>
@@ -210,6 +222,7 @@
     const rows = document.querySelectorAll("#taskTable tbody tr");
     const cards = document.querySelectorAll(".card");
     const owners = document.querySelectorAll(".owner");
+    const searchInput = document.getElementById("searchInput");
     let activeStatus = "all", activeOwner = "all", taskChart;
 
     function initializeKPIs() {
@@ -239,13 +252,23 @@
     }
 
     function applyFilters() {
+        const searchTerm = searchInput.value.toLowerCase();
         rows.forEach(row => {
             const rowStatus = row.cells[3].innerText;
             const rowOwner = row.cells[2].innerText;
             const sMatch = (activeStatus === "all" || rowStatus.includes(activeStatus));
             const oMatch = (activeOwner === "all" || rowOwner === activeOwner);
-            row.style.display = (sMatch && oMatch) ? "" : "none";
+            const tMatch = row.innerText.toLowerCase().includes(searchTerm);
+            row.style.display = (sMatch && oMatch && tMatch) ? "" : "none";
         });
+    }
+
+    function resetFilters() {
+        activeStatus = "all"; activeOwner = "all";
+        searchInput.value = "";
+        cards.forEach(c => { c.classList.remove("active"); if (c.dataset.status === "all") c.classList.add("active"); });
+        owners.forEach(o => o.classList.remove("active"));
+        applyFilters();
     }
 
     cards.forEach(card => {
@@ -264,6 +287,8 @@
             applyFilters();
         };
     });
+
+    searchInput.addEventListener("keyup", applyFilters);
 
     function initChart(comp, prog, pend) {
         const ctx = document.getElementById('taskChart').getContext('2d');
