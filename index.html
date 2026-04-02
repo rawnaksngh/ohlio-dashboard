@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oli-Ohh | Launch Command Center</title>
+    <link rel="icon" href="https://img.icons8.com/fluency/48/rocket.png">
     <style>
         :root {
             --glass: rgba(255, 255, 255, 0.08);
@@ -31,117 +32,149 @@
             overflow-x: hidden;
         }
 
-        /* --- ENHANCED HEADER --- */
+        nav {
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .nav-logo { font-weight: 800; font-size: 1.2rem; letter-spacing: -1px; color: var(--ios-cyan); }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: white; text-decoration: none; font-size: 0.9rem; font-weight: 500; opacity: 0.7; transition: 0.3s; }
+        .nav-links a:hover { opacity: 1; color: var(--ios-cyan); }
+
         header {
             text-align: center;
-            padding: 80px 20px 50px;
+            padding: 100px 20px 60px;
             width: 100%;
         }
 
         header .main-title {
-            font-size: clamp(2rem, 8vw, 3.8rem);
+            font-size: clamp(2.2rem, 8vw, 4rem);
             font-weight: 900;
             letter-spacing: -3px;
             text-transform: uppercase;
             background: linear-gradient(180deg, #ffffff 30%, #00ffd5 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 30px var(--text-glow);
-            margin-bottom: 5px;
-            animation: titleEntrance 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+            text-shadow: 0 10px 40px var(--text-glow);
+            margin-bottom: 10px;
+            line-height: 1.1;
         }
 
         header .subtitle {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.5);
-            letter-spacing: 4px;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 5px;
             text-transform: uppercase;
-            animation: subtitleFade 2s ease;
         }
 
-        @keyframes titleEntrance {
-            from { opacity: 0; transform: translateY(30px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        @keyframes subtitleFade {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* --- THREE CARD GRID --- */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
             gap: 30px;
             width: 90%;
-            max-width: 1200px;
+            max-width: 1250px;
             padding: 20px;
+            margin-bottom: 50px;
         }
 
         .glass-card {
             background: var(--glass);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             border: 1px solid var(--glass-border);
             border-radius: 40px;
-            padding: 35px;
+            padding: 40px;
             transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         .glass-card:hover {
-            transform: translateY(-12px);
-            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-15px);
+            border-color: rgba(255, 255, 255, 0.35);
             background: rgba(255, 255, 255, 0.12);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5);
         }
 
-        .card-icon { font-size: 2.8rem; margin-bottom: 20px; display: block; }
-        .card-title { font-size: 1.7rem; font-weight: 700; margin-bottom: 25px; letter-spacing: -0.5px; }
+        /* CARD LINK STYLE */
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: opacity 0.3s ease;
+        }
+        .card-link:hover {
+            opacity: 0.8;
+        }
 
-        /* --- LIST ITEMS --- */
+        .card-icon { font-size: 3rem; margin-bottom: 25px; display: block; filter: drop-shadow(0 5px 15px rgba(0,255,213,0.3)); }
+        .card-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 30px; letter-spacing: -0.5px; }
+
         .item-row {
             background: rgba(255, 255, 255, 0.04);
-            padding: 18px 22px;
-            border-radius: 22px;
+            padding: 20px;
+            border-radius: 24px;
             margin-bottom: 15px;
             cursor: pointer;
-            transition: 0.3s ease;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid transparent;
         }
 
         .item-row:hover {
             background: rgba(255, 255, 255, 0.1);
             border-color: var(--ios-cyan);
-            transform: translateX(5px);
+            transform: scale(1.03);
         }
 
         .item-header { display: flex; justify-content: space-between; align-items: center; }
-        .item-name { font-weight: 600; font-size: 1.05rem; }
+        .item-name { font-weight: 700; font-size: 1.1rem; }
         
         .item-info {
             max-height: 0;
             overflow: hidden;
             transition: 0.4s ease;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.55);
-            line-height: 1.4;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.5;
         }
 
         .item-row:hover .item-info {
-            max-height: 120px;
-            margin-top: 12px;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255,255,255,0.08);
+            max-height: 150px;
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* --- FLOATING UI --- */
+        .highlight-tag {
+            background: var(--ios-purple);
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; }
+        .dot-cyan { background-color: var(--ios-cyan); box-shadow: 0 0 10px var(--ios-cyan); }
+        .dot-purple { background-color: var(--ios-purple); box-shadow: 0 0 10px var(--ios-purple); }
+
         .floating-controls {
             position: fixed;
-            bottom: 35px;
-            right: 35px;
+            bottom: 40px;
+            right: 40px;
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -149,9 +182,9 @@
         }
 
         .fab {
-            width: 65px;
-            height: 65px;
-            border-radius: 22px; /* iOS Squircle Shape */
+            width: 70px;
+            height: 70px;
+            border-radius: 24px;
             background: var(--glass);
             backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
@@ -159,124 +192,123 @@
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            font-size: 26px;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            font-size: 28px;
+            transition: 0.4s;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        .fab:hover {
-            transform: scale(1.1);
-            background: var(--ios-cyan);
-            color: black;
-        }
-
-        .highlight-tag {
-            background: var(--ios-purple);
-            padding: 5px 12px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            display: inline-block;
-        }
+        .fab:hover { background: var(--ios-cyan); color: black; transform: scale(1.1); }
 
         footer {
-            margin: 60px 0;
-            opacity: 0.4;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
+            margin: 80px 0 40px;
+            opacity: 0.3;
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
         }
 
         @media (max-width: 768px) {
             .grid-container { grid-template-columns: 1fr; }
-            header .main-title { font-size: 2.2rem; letter-spacing: -1px; }
-            header .subtitle { font-size: 0.8rem; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
 
+    <nav>
+        <div class="nav-logo">OLI-OHH / OPS</div>
+        <div class="nav-links">
+            <a href="#">Dashboard</a>
+            <a href="about oli-ohh.html">About Product</a>
+            <a href="meeting-highlights.html">Reports</a>
+        </div>
+    </nav>
+
     <header>
         <div class="main-title">Oli-Ohh Launch Command Center</div>
-        <div class="subtitle">Global GTM Operations & Monitoring</div>
+        <div class="subtitle">Mission Control v2.0</div>
     </header>
 
     <div class="grid-container">
         
+        <!-- PRE-LAUNCH SECTION (LINKED) -->
         <div class="glass-card">
-            <span class="card-icon">🚀</span>
-            <h2 class="card-title">Pre-Launch Tasks</h2>
+            <a href="prelaunchtask.html" class="card-link">
+                <span class="card-icon">🚀</span>
+                <h2 class="card-title">Pre-Launch Tasks →</h2>
+            </a>
             
             <div class="item-row">
                 <div class="item-header">
-                    <span class="item-name">Scheme & Distribution</span>
-                    <span style="color:var(--ios-cyan)">●</span>
+                    <span class="item-name">Margin & Scheme Logic</span>
+                    <span class="dot dot-cyan"></span>
                 </div>
                 <div class="item-info">
-                    Finalized distributor margin slabs (8%) and retail scheme structure for North India launch.
+                    Distributor ROI set at 8%. Retailer buy-in schemes optimized for initial Mandi penetration.
                 </div>
             </div>
 
             <div class="item-row">
                 <div class="item-header">
-                    <span class="item-name">Ceremony Readiness</span>
-                    <span style="color:var(--ios-cyan)">●</span>
+                    <span class="item-name">Sample Distribution</span>
+                    <span class="dot dot-cyan"></span>
                 </div>
                 <div class="item-info">
-                    Launch event samples and kits ready for VIP distribution and trade partners.
+                    8,000 unit sampling drive locked for North India regional distributors.
                 </div>
             </div>
         </div>
 
+        <!-- GTM SECTION -->
         <div class="glass-card">
             <span class="card-icon">🌍</span>
-            <h2 class="card-title">GTM Strategy</h2>
+            <h2 class="card-title">GTM Operations</h2>
             
             <div class="item-row">
                 <div class="item-header">
-                    <span class="item-name">E-Com & Q-Comm</span>
-                    <span style="color:var(--ios-cyan)">●</span>
+                    <span class="item-name">Quick Commerce (Q-Com)</span>
+                    <span class="dot dot-cyan"></span>
                 </div>
                 <div class="item-info">
-                    Monitoring 0-1 Cr goal on Blinkit, Zepto, and Amazon. Inventory synced across warehouses.
+                    Inventory mapping active for Zepto, Blinkit, and BigBasket (NCR Region).
                 </div>
             </div>
 
             <div class="item-row">
                 <div class="item-header">
-                    <span class="item-name">100 Retailers Project</span>
-                    <span style="color:var(--ios-cyan)">●</span>
+                    <span class="item-name">100 Retailers Roadmap</span>
+                    <span class="dot dot-cyan"></span>
                 </div>
                 <div class="item-info">
-                    North-focused retail expansion roadmap active. Tracking conversion of brick-and-mortar stores.
+                    Direct-to-Retail store projects for North India. Tracking conversion of Tier-1 counters.
                 </div>
             </div>
         </div>
 
+        <!-- MARKETING SECTION -->
         <div class="glass-card">
             <span class="card-icon">📣</span>
             <h2 class="card-title">Marketing Hub</h2>
             
-            <div class="highlight-tag">LAST MEETING HIGHLIGHT</div>
+            <div class="highlight-tag">QUICK HIGHLIGHT</div>
             
             <div class="item-row">
                 <div class="item-header">
-                    <span class="item-name">Regional Awareness</span>
-                    <span style="color:var(--ios-purple)">●</span>
+                    <span class="item-name">Mandi Awareness</span>
+                    <span class="dot dot-purple"></span>
                 </div>
                 <div class="item-info">
-                    Mandi activation campaign posters deployed. Influencer kits for regional channels finalized.
+                    BTL activation kits and on-ground posters deployed across Punjab & Haryana Mandis.
                 </div>
             </div>
 
             <div class="item-row">
                 <div class="item-header">
-                    <span class="item-name">Market Feedback</span>
-                    <span style="color:var(--ios-purple)">●</span>
+                    <span class="item-name">Digital Influencers</span>
+                    <span class="dot dot-purple"></span>
                 </div>
                 <div class="item-info">
-                    Sampling data indicates high demand for the new OHLIO pasta texture profile.
+                    Food-vlogger review series scheduled for launch week. Tracking engagement KPIs.
                 </div>
             </div>
         </div>
@@ -284,12 +316,12 @@
     </div>
 
     <div class="floating-controls">
-        <a href="suggestion.html" class="fab" title="Suggestion Box">💡</a>
-        <a href="meeting-highlights.html" class="fab" title="View Highlights">📝</a>
+        <a href="suggestion.html" class="fab" title="Feedback">💡</a>
+        <a href="meeting-highlights.html" class="fab" title="Highlights">📝</a>
     </div>
 
     <footer>
-        &copy; 2026 Developed by <span style="color:var(--ios-cyan)">Rounak Singh</span> | VTC Tradewings
+        &copy; 2026 Developed by <span style="color:var(--ios-cyan); font-weight:800;">Rounak Singh</span> | VTC Tradewings
     </footer>
 
 </body>
