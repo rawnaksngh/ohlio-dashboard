@@ -7,38 +7,29 @@
     <link rel="icon" href="https://img.icons8.com/fluency/48/rocket.png">
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.04);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.18);
             --ios-blue: #007AFF;
             --ios-cyan: #00ffd5;
             --ios-purple: #af52de;
-            --text-glow: rgba(0, 255, 213, 0.3);
-            /* Spring Physics Easing */
-            --spring: cubic-bezier(0.16, 1, 0.3, 1);
+            --text-glow: rgba(0, 255, 213, 0.4);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; }
 
         body {
-            background-color: #05070a;
-            /* Animated Living Background */
             background: 
-                radial-gradient(circle at 10% 10%, rgba(0, 122, 255, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(175, 82, 222, 0.12) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(0, 255, 213, 0.05) 0%, transparent 50%),
-                #05070a;
+                radial-gradient(at 0% 0%, rgba(15, 32, 39, 1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, rgba(32, 58, 67, 1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, rgba(44, 83, 100, 1) 0, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(0, 122, 255, 0.12) 0, transparent 50%),
+                #0b0e11;
             color: white;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             overflow-x: hidden;
-            animation: bgDrift 20s infinite alternate ease-in-out;
-        }
-
-        @keyframes bgDrift {
-            from { background-position: 0% 0%; }
-            to { background-position: 10% 5%; }
         }
 
         nav {
@@ -50,47 +41,41 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            backdrop-filter: blur(40px) saturate(180%);
-            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.2);
         }
 
-        .nav-logo { font-weight: 800; font-size: 1.1rem; letter-spacing: 2px; color: var(--ios-cyan); text-transform: uppercase; }
-        .nav-links { display: flex; gap: 25px; }
-        .nav-links a { color: white; text-decoration: none; font-size: 0.85rem; font-weight: 500; opacity: 0.5; transition: 0.4s var(--spring); }
-        .nav-links a:hover { opacity: 1; color: var(--ios-cyan); transform: translateY(-1px); }
+        .nav-logo { font-weight: 800; font-size: 1.2rem; letter-spacing: -1px; color: var(--ios-cyan); }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: white; text-decoration: none; font-size: 0.9rem; font-weight: 500; opacity: 0.7; transition: 0.3s; }
+        .nav-links a:hover { opacity: 1; color: var(--ios-cyan); }
 
         header {
             text-align: center;
-            padding: 120px 20px 60px;
+            padding: 100px 20px 60px;
             width: 100%;
-            animation: slideUp 1s var(--spring);
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         header .main-title {
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-size: clamp(2.2rem, 8vw, 4rem);
             font-weight: 900;
-            letter-spacing: -4px;
-            background: linear-gradient(180deg, #ffffff 40%, rgba(255,255,255,0.6) 100%);
+            letter-spacing: -3px;
+            text-transform: uppercase;
+            background: linear-gradient(180deg, #ffffff 30%, #00ffd5 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-            line-height: 1;
+            text-shadow: 0 10px 40px var(--text-glow);
+            margin-bottom: 10px;
+            line-height: 1.1;
         }
 
         header .subtitle {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--ios-cyan);
-            letter-spacing: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 5px;
             text-transform: uppercase;
-            opacity: 0.8;
         }
 
         .grid-container {
@@ -100,49 +85,53 @@
             width: 90%;
             max-width: 1250px;
             padding: 20px;
-            margin-bottom: 100px;
+            margin-bottom: 50px;
         }
 
         .glass-card {
             background: var(--glass);
-            backdrop-filter: blur(40px) saturate(180%);
-            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             border: 1px solid var(--glass-border);
             border-radius: 40px;
             padding: 40px;
-            transition: all 0.6s var(--spring);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
             display: flex;
             flex-direction: column;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
         .glass-card:hover {
-            transform: translateY(-12px) scale(1.01);
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(0, 255, 213, 0.4);
-            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+            transform: translateY(-15px);
+            border-color: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5);
         }
 
-        .card-link { text-decoration: none; color: inherit; display: block; }
-        
-        .card-icon { font-size: 3rem; margin-bottom: 25px; display: block; filter: drop-shadow(0 0 15px var(--ios-cyan)); transition: 0.4s var(--spring); }
-        .glass-card:hover .card-icon { transform: scale(1.2) rotate(-5deg); }
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: opacity 0.3s ease;
+        }
+        .card-link:hover { opacity: 0.8; }
 
+        .card-icon { font-size: 3rem; margin-bottom: 25px; display: block; filter: drop-shadow(0 5px 15px rgba(0,255,213,0.3)); }
         .card-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 30px; letter-spacing: -0.5px; }
 
         .item-row {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 24px;
-            border-radius: 28px;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 20px;
+            border-radius: 24px;
             margin-bottom: 15px;
-            transition: 0.5s var(--spring);
+            cursor: pointer;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid transparent;
         }
 
         .item-row:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.1);
             border-color: var(--ios-cyan);
-            transform: scale(1.04) translateX(5px);
+            transform: scale(1.03);
         }
 
         .item-header { display: flex; justify-content: space-between; align-items: center; }
@@ -151,34 +140,33 @@
         .item-info {
             max-height: 0;
             overflow: hidden;
-            transition: 0.5s var(--spring);
+            transition: 0.4s ease;
             font-size: 0.95rem;
             color: rgba(255, 255, 255, 0.5);
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         .item-row:hover .item-info {
-            max-height: 200px;
+            max-height: 150px;
             margin-top: 15px;
-            padding-top: 15px;
+            padding-top: 12px;
             border-top: 1px solid rgba(255,255,255,0.1);
         }
 
         .highlight-tag {
-            background: linear-gradient(90deg, var(--ios-purple), #7c3aed);
+            background: var(--ios-purple);
             padding: 6px 14px;
             border-radius: 12px;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 800;
             letter-spacing: 1px;
             margin-bottom: 15px;
             display: inline-block;
-            box-shadow: 0 4px 15px rgba(175, 82, 222, 0.3);
         }
 
-        .dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; }
-        .dot-cyan { background-color: var(--ios-cyan); box-shadow: 0 0 12px var(--ios-cyan); }
-        .dot-purple { background-color: var(--ios-purple); box-shadow: 0 0 12px var(--ios-purple); }
+        .dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; }
+        .dot-cyan { background-color: var(--ios-cyan); box-shadow: 0 0 10px var(--ios-cyan); }
+        .dot-purple { background-color: var(--ios-purple); box-shadow: 0 0 10px var(--ios-purple); }
 
         .floating-controls {
             position: fixed;
@@ -191,36 +179,34 @@
         }
 
         .fab {
-            width: 65px;
-            height: 65px;
-            border-radius: 22px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
+            width: 70px;
+            height: 70px;
+            border-radius: 24px;
+            background: var(--glass);
+            backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             display: flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            font-size: 24px;
-            transition: 0.5s var(--spring);
+            font-size: 28px;
+            transition: 0.4s;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        .fab:hover { background: var(--ios-cyan); transform: scale(1.15) rotate(10deg); }
+        .fab:hover { background: var(--ios-cyan); color: black; transform: scale(1.1); }
 
         footer {
-            margin: 100px 0 50px;
-            opacity: 0.4;
-            font-size: 0.75rem;
-            letter-spacing: 2px;
+            margin: 80px 0 40px;
+            opacity: 0.3;
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            text-align: center;
         }
 
         @media (max-width: 768px) {
             .grid-container { grid-template-columns: 1fr; }
             .nav-links { display: none; }
-            header .main-title { letter-spacing: -2px; }
         }
     </style>
 </head>
@@ -236,13 +222,13 @@
     </nav>
 
     <header>
-        <div class="main-title">Launch Command Center</div>
-        <div class="subtitle">Mission Control 0 to 1</div>
+        <div class="main-title">Oli-Ohh Launch Command Center</div>
+        <div class="subtitle">Mission Control v2.0</div>
     </header>
 
     <div class="grid-container">
         
-        <!-- PRE-LAUNCH SECTION -->
+        <!-- UPDATED PRE-LAUNCH SECTION -->
         <div class="glass-card">
             <a href="prelaunchtask.html" class="card-link">
                 <span class="card-icon">🚀</span>
@@ -256,7 +242,7 @@
                         <span class="dot dot-purple"></span>
                     </div>
                     <div class="item-info">
-                        Direct integration with Meesho portal. Includes employee sampling drive, 5-star review strategy, and reimbursement tracking via Raman Jha.
+                        Executed via Meesho portal. Includes employee sampling, 5-star review strategy, and reimbursement tracking via Raman Jha.
                     </div>
                 </div>
             </a>
@@ -273,7 +259,7 @@
                     <span class="dot dot-cyan"></span>
                 </div>
                 <div class="item-info">
-                    Live inventory mapping for Zepto, Blinkit, and BigBasket. Initial focus on NCR Region expansion.
+                    Inventory mapping active for Zepto, Blinkit, and BigBasket (NCR Region).
                 </div>
             </div>
 
@@ -283,7 +269,7 @@
                     <span class="dot dot-cyan"></span>
                 </div>
                 <div class="item-info">
-                    North India store projects. Real-time conversion tracking for Tier-1 counter placements.
+                    Direct-to-Retail store projects for North India. Tracking conversion of Tier-1 counters.
                 </div>
             </div>
         </div>
@@ -293,7 +279,7 @@
             <span class="card-icon">📣</span>
             <h2 class="card-title">Marketing Hub</h2>
             
-            <div class="highlight-tag">LIVE FEED</div>
+            <div class="highlight-tag">QUICK HIGHLIGHT</div>
             
             <div class="item-row">
                 <div class="item-header">
@@ -301,7 +287,7 @@
                     <span class="dot dot-purple"></span>
                 </div>
                 <div class="item-info">
-                    High-impact BTL kits and on-ground posters deployed across Punjab & Haryana Mandis.
+                    BTL activation kits and on-ground posters deployed across Punjab & Haryana Mandis.
                 </div>
             </div>
 
@@ -311,7 +297,7 @@
                     <span class="dot dot-purple"></span>
                 </div>
                 <div class="item-info">
-                    Viral food-vlogger series locked for launch week. Engagement KPI tracking active.
+                    Food-vlogger review series scheduled for launch week. Tracking engagement KPIs.
                 </div>
             </div>
         </div>
