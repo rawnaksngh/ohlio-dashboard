@@ -15,358 +15,57 @@
             --ios-red: #ff3b30;
             --text-glow: rgba(0, 255, 213, 0.4);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; }
-
-        body {
-            background: 
-                radial-gradient(at 0% 0%, rgba(15, 32, 39, 1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, rgba(32, 58, 67, 1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, rgba(44, 83, 100, 1) 0, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(0, 122, 255, 0.12) 0, transparent 50%),
-                #0b0e11;
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
-        }
-
-        nav {
-            width: 100%;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            background: rgba(0,0,0,0.2);
-        }
-
-        .nav-logo { font-weight: 800; font-size: 1.1rem; letter-spacing: -0.5px; color: var(--ios-cyan); text-transform: uppercase; }
-        .nav-links { display: flex; gap: 20px; align-items: center; }
-        .nav-links a { color: white; text-decoration: none; font-size: 0.9rem; font-weight: 500; opacity: 0.7; transition: 0.3s; }
-        .nav-links a:hover { opacity: 1; color: var(--ios-cyan); }
-
-        .logout-btn {
-            background: rgba(255, 59, 48, 0.1);
-            border: 1px solid rgba(255, 59, 48, 0.3);
-            padding: 6px 15px;
-            border-radius: 12px;
-            color: var(--ios-red) !important;
-            opacity: 1 !important;
-            transition: all 0.3s ease !important;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255, 59, 48, 0.25);
-            box-shadow: 0 0 15px rgba(255, 59, 48, 0.2);
-            transform: scale(1.05);
-        }
-
-        header {
-            text-align: center;
-            padding: 80px 20px 60px;
-            width: 100%;
-        }
-
-        header .main-title {
-            font-size: clamp(2.2rem, 7vw, 3.8rem);
-            font-weight: 900;
-            letter-spacing: -2.5px;
-            text-transform: uppercase;
-            background: linear-gradient(180deg, #ffffff 40%, #00ffd5 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 40px var(--text-glow);
-            margin-bottom: 10px;
-            line-height: 1.1;
-        }
-
-        header .subtitle {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.4);
-            letter-spacing: 6px;
-            text-transform: uppercase;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-            gap: 30px;
-            width: 90%;
-            max-width: 1250px;
-            padding: 20px;
-            margin-bottom: 50px;
-        }
-
-        .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid var(--glass-border);
-            border-radius: 40px;
-            padding: 40px;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            display: flex;
-            flex-direction: column;
-            transform: translateZ(0);
-        }
-
-        .glass-card:hover {
-            transform: translateY(-12px);
-            border-color: rgba(255, 255, 255, 0.35);
-            background: rgba(255, 255, 255, 0.12);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.5);
-        }
-
-        .card-icon { font-size: 3rem; margin-bottom: 25px; display: block; filter: drop-shadow(0 5px 15px rgba(0,255,213,0.3)); }
-        .card-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 30px; letter-spacing: -0.5px; }
-
-        .item-row-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-
-        .item-row {
-            background: rgba(255, 255, 255, 0.04);
-            padding: 20px;
-            border-radius: 24px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid transparent;
-        }
-
-        .item-row:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--ios-cyan);
-            transform: scale(1.03);
-        }
-
-        .item-header { display: flex; justify-content: space-between; align-items: center; }
-        .item-name { font-weight: 700; font-size: 1.1rem; }
-        
-        .item-info {
-            max-height: 0;
-            overflow: hidden;
-            transition: 0.4s ease;
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.5);
-            line-height: 1.5;
-        }
-
-        .item-row:hover .item-info {
-            max-height: 150px;
-            margin-top: 15px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .highlight-tag {
-            background: var(--ios-purple);
-            padding: 6px 14px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            display: inline-block;
-        }
-
-        .dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; }
-        .dot-cyan { background-color: var(--ios-cyan); box-shadow: 0 0 10px var(--ios-cyan); }
-        .dot-purple { background-color: var(--ios-purple); box-shadow: 0 0 10px var(--ios-purple); }
-
-        .floating-controls {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 1000;
-        }
-
-        .fab {
-            width: 65px;
-            height: 65px;
-            border-radius: 22px;
-            background: var(--glass);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            font-size: 22px;
-            transition: 0.4s;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
+        body {            background:                 radial-gradient(at 0% 0%, rgba(15, 32, 39, 1) 0, transparent 50%),                 radial-gradient(at 50% 0%, rgba(32, 58, 67, 1) 0, transparent 50%),                 radial-gradient(at 100% 0%, rgba(44, 83, 100, 1) 0, transparent 50%),                radial-gradient(at 50% 50%, rgba(0, 122, 255, 0.12) 0, transparent 50%),                #0b0e11;            color: white;            min-height: 100vh;            display: flex;            flex-direction: column;            align-items: center;            overflow-x: hidden;        }
+        nav {            width: 100%;            padding: 20px 40px;            display: flex;            justify-content: space-between;            align-items: center;            position: sticky;            top: 0;            z-index: 1000;            backdrop-filter: blur(20px);            -webkit-backdrop-filter: blur(20px);            border-bottom: 1px solid var(--glass-border);            background: rgba(0,0,0,0.2);        }
+        .nav-logo { font-weight: 800; font-size: 1.1rem; letter-spacing: -0.5px; color: var(--ios-cyan); text-transform: uppercase; }        .nav-links { display: flex; gap: 20px; align-items: center; }        .nav-links a { color: white; text-decoration: none; font-size: 0.9rem; font-weight: 500; opacity: 0.7; transition: 0.3s; }        .nav-links a:hover { opacity: 1; color: var(--ios-cyan); }
+        .logout-btn {            background: rgba(255, 59, 48, 0.1);            border: 1px solid rgba(255, 59, 48, 0.3);            padding: 6px 15px;            border-radius: 12px;            color: var(--ios-red) !important;            opacity: 1 !important;            transition: all 0.3s ease !important;        }
+        .logout-btn:hover {            background: rgba(255, 59, 48, 0.25);            box-shadow: 0 0 15px rgba(255, 59, 48, 0.2);            transform: scale(1.05);        }
+        header {            text-align: center;            padding: 80px 20px 60px;            width: 100%;        }
+        header .main-title {            font-size: clamp(2.2rem, 7vw, 3.8rem);            font-weight: 900;            letter-spacing: -2.5px;            text-transform: uppercase;            background: linear-gradient(180deg, #ffffff 40%, #00ffd5 100%);            -webkit-background-clip: text;            -webkit-text-fill-color: transparent;            text-shadow: 0 10px 40px var(--text-glow);            margin-bottom: 10px;            line-height: 1.1;        }
+        header .subtitle {            font-size: 0.9rem;            font-weight: 500;            color: rgba(255, 255, 255, 0.4);            letter-spacing: 6px;            text-transform: uppercase;        }
+        .grid-container {            display: grid;            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));            gap: 30px;            width: 90%;            max-width: 1250px;            padding: 20px;            margin-bottom: 50px;        }
+        .glass-card {            background: var(--glass);            backdrop-filter: blur(30px);            -webkit-backdrop-filter: blur(30px);            border: 1px solid var(--glass-border);            border-radius: 40px;            padding: 40px;            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);            display: flex;            flex-direction: column;            transform: translateZ(0);        }
+        .glass-card:hover {            transform: translateY(-12px);            border-color: rgba(255, 255, 255, 0.35);            background: rgba(255, 255, 255, 0.12);            box-shadow: 0 40px 80px rgba(0,0,0,0.5);        }
+        .card-icon { font-size: 3rem; margin-bottom: 25px; display: block; filter: drop-shadow(0 5px 15px rgba(0,255,213,0.3)); }        .card-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 30px; letter-spacing: -0.5px; }
+        .item-row-link {            text-decoration: none;            color: inherit;            display: block;        }
+        .item-row {            background: rgba(255, 255, 255, 0.04);            padding: 20px;            border-radius: 24px;            margin-bottom: 15px;            cursor: pointer;            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);            border: 1px solid transparent;        }
+        .item-row:hover {            background: rgba(255, 255, 255, 0.1);            border-color: var(--ios-cyan);            transform: scale(1.03);        }
+        .item-header { display: flex; justify-content: space-between; align-items: center; }        .item-name { font-weight: 700; font-size: 1.1rem; }                .item-info {            max-height: 0;            overflow: hidden;            transition: 0.4s ease;            font-size: 0.95rem;            color: rgba(255, 255, 255, 0.5);            line-height: 1.5;        }
+        .item-row:hover .item-info {            max-height: 150px;            margin-top: 15px;            padding-top: 12px;            border-top: 1px solid rgba(255,255,255,0.1);        }
+        .highlight-tag {            background: var(--ios-purple);            padding: 6px 14px;            border-radius: 12px;            font-size: 0.75rem;            font-weight: 800;            letter-spacing: 1px;            margin-bottom: 15px;            display: inline-block;        }
+        .dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; }        .dot-cyan { background-color: var(--ios-cyan); box-shadow: 0 0 10px var(--ios-cyan); }        .dot-purple { background-color: var(--ios-purple); box-shadow: 0 0 10px var(--ios-purple); }
+        .floating-controls {            position: fixed;            bottom: 40px;            right: 40px;            display: flex;            flex-direction: column;            gap: 15px;            z-index: 1000;        }
+        .fab {            width: 65px;            height: 65px;            border-radius: 22px;            background: var(--glass);            backdrop-filter: blur(25px);            -webkit-backdrop-filter: blur(25px);            border: 1px solid var(--glass-border);            display: flex;            align-items: center;            justify-content: center;            text-decoration: none;            font-size: 22px;            transition: 0.4s;            box-shadow: 0 20px 40px rgba(0,0,0,0.4);        }
         .fab:hover { background: var(--ios-cyan); color: black; transform: scale(1.1); }
+        footer {            margin: 60px 0 40px;            opacity: 0.3;            font-size: 0.8rem;            letter-spacing: 1.5px;            text-transform: uppercase;        }
+        @media (max-width: 768px) {            .grid-container { grid-template-columns: 1fr; }            .nav-links { gap: 10px; }            .nav-links a { font-size: 0.8rem; }            header .main-title { font-size: 2.2rem; }        }    </style></head><body>
+    <nav>        <div class="nav-logo">Oli Ohh Pasta / OPS</div>        <div class="nav-links">            <a href="#">Dashboard</a>            <a href="about oli-ohh.html">About Product</a>            <a href="meeting-highlights.html">Reports</a>            <a href="index.html" class="logout-btn">Logout</a>        </div>    </nav>
+    <header>        <div class="main-title">Oli Ohh Pasta Launch Command Center</div>        <div class="subtitle">Mission Control 0 To 1</div>    </header>
+    <div class="grid-container">                <!-- PRE-LAUNCH SECTION -->        <div class="glass-card">            <span class="card-icon">🚀</span>            <h2 class="card-title">Pre-Launch Tasks</h2>                        <a href="oliohh inhouse.html" class="item-row-link">                <div class="item-row">                    <div class="item-header">                        <span class="item-name">Inhouse Marketing Protocol</span>                        <span class="dot dot-purple"></span>                    </div>                    <div class="item-info">                        Employee sampling, 5-star review strategy via Meesho, and reimbursement tracking for Oli Ohh Pasta.                    </div>                </div>            </a>
+            <a href="margin-structure.html" class="item-row-link">                <div class="item-row">                    <div class="item-header">                        <span class="item-name">Margin Structure</span>                        <span class="dot dot-cyan"></span>                    </div>                    <div class="item-info">                        Distribution of profits across channels and retailer incentive frameworks.                    </div>                </div>            </a>
+            <a href="ecommerce-listing.html" class="item-row-link">                <div class="item-row">                    <div class="item-header">                        <span class="item-name">Listing Status: E-commerce</span>                        <span class="dot dot-cyan"></span>                    </div>                    <div class="item-info">                        Catalog health and visibility status across Amazon, Flipkart, and Meesho portals.                    </div>                </div>            </a>
+            <a href="quick-commerce.html" class="item-row-link">                <div class="item-row">                    <div class="item-header">                        <span class="item-name">Listing Status: Q-Commerce</span>                        <span class="dot dot-cyan"></span>                    </div>                    <div class="item-info">                        Dark store inventory status for Zepto, Blinkit, and Swiggy Instamart.                    </div>                </div>            </a>        </div>
 
-        footer {
-            margin: 60px 0 40px;
-            opacity: 0.3;
-            font-size: 0.8rem;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
+        <!-- GTM SECTION -->        <div class="glass-card">            <span class="card-icon">🌍</span>            <h2 class="card-title">GTM Operations</h2>                        <div class="item-row">                <div class="item-header">                    <span class="item-name">Quick Commerce (Q-Com)</span>                    <span class="dot dot-cyan"></span>                </div>                <div class="item-info">                    Inventory mapping active for Zepto, Blinkit, and BigBasket (NCR Region).                </div>            </div>
 
-        @media (max-width: 768px) {
-            .grid-container { grid-template-columns: 1fr; }
-            .nav-links { gap: 10px; }
-            .nav-links a { font-size: 0.8rem; }
-            header .main-title { font-size: 2.2rem; }
-        }
-    </style>
-</head>
-<body>
-
-    <nav>
-        <div class="nav-logo">Oli Ohh Pasta / OPS</div>
-        <div class="nav-links">
-            <a href="#">Dashboard</a>
-            <a href="about oli-ohh.html">About Product</a>
-            <a href="meeting-highlights.html">Reports</a>
-            <a href="index.html" class="logout-btn">Logout</a>
-        </div>
-    </nav>
-
-    <header>
-        <div class="main-title">Oli Ohh Pasta Launch Command Center</div>
-        <div class="subtitle">Mission Control 0 To 1</div>
-    </header>
-
-    <div class="grid-container">
-        
-        <!-- PRE-LAUNCH SECTION -->
-        <div class="glass-card">
-            <span class="card-icon">🚀</span>
-            <h2 class="card-title">Pre-Launch Tasks</h2>
-            
-            <a href="oliohh inhouse.html" class="item-row-link">
+            <!-- LINKED ROADMAP ITEM -->
+            <a href="shop.html" class="item-row-link">
                 <div class="item-row">
                     <div class="item-header">
-                        <span class="item-name">Inhouse Marketing Protocol</span>
-                        <span class="dot dot-purple"></span>
-                    </div>
-                    <div class="item-info">
-                        Employee sampling, 5-star review strategy via Meesho, and reimbursement tracking for Oli Ohh Pasta.
-                    </div>
-                </div>
-            </a>
-
-            <a href="margin-structure.html" class="item-row-link">
-                <div class="item-row">
-                    <div class="item-header">
-                        <span class="item-name">Margin Structure</span>
+                        <span class="item-name">100 Retailers Roadmap</span>
                         <span class="dot dot-cyan"></span>
                     </div>
                     <div class="item-info">
-                        Distribution of profits across channels and retailer incentive frameworks.
-                    </div>
-                </div>
-            </a>
-
-            <a href="ecommerce-listing.html" class="item-row-link">
-                <div class="item-row">
-                    <div class="item-header">
-                        <span class="item-name">Listing Status: E-commerce</span>
-                        <span class="dot dot-cyan"></span>
-                    </div>
-                    <div class="item-info">
-                        Catalog health and visibility status across Amazon, Flipkart, and Meesho portals.
-                    </div>
-                </div>
-            </a>
-
-            <a href="quick-commerce.html" class="item-row-link">
-                <div class="item-row">
-                    <div class="item-header">
-                        <span class="item-name">Listing Status: Q-Commerce</span>
-                        <span class="dot dot-cyan"></span>
-                    </div>
-                    <div class="item-info">
-                        Dark store inventory status for Zepto, Blinkit, and Swiggy Instamart.
+                        Direct-to-Retail store projects for North India. Tracking conversion of Tier-1 counters.
                     </div>
                 </div>
             </a>
         </div>
 
-        <!-- GTM SECTION -->
-        <div class="glass-card">
-            <span class="card-icon">🌍</span>
-            <h2 class="card-title">GTM Operations</h2>
-            
-            <div class="item-row">
-                <div class="item-header">
-                    <span class="item-name">Quick Commerce (Q-Com)</span>
-                    <span class="dot dot-cyan"></span>
-                </div>
-                <div class="item-info">
-                    Inventory mapping active for Zepto, Blinkit, and BigBasket (NCR Region).
-                </div>
-            </div>
-
-            <div class="item-row">
-                <div class="item-header">
-                    <span class="item-name">100 Retailers Roadmap</span>
-                    <span class="dot dot-cyan"></span>
-                </div>
-                <div class="item-info">
-                    Direct-to-Retail store projects for North India. Tracking conversion of Tier-1 counters.
-                </div>
-            </div>
-        </div>
-
-        <!-- MARKETING SECTION -->
-        <div class="glass-card">
-            <span class="card-icon">📣</span>
-            <h2 class="card-title">Marketing Hub</h2>
-            
-            <div class="highlight-tag">QUICK HIGHLIGHT</div>
-            
-            <div class="item-row">
-                <div class="item-header">
-                    <span class="item-name">Mandi Awareness</span>
-                    <span class="dot dot-purple"></span>
-                </div>
-                <div class="item-info">
-                    BTL activation kits and on-ground posters deployed across Punjab & Haryana Mandis.
-                </div>
-            </div>
-
-            <div class="item-row">
-                <div class="item-header">
-                    <span class="item-name">Digital Influencers</span>
-                    <span class="dot dot-purple"></span>
-                </div>
-                <div class="item-info">
-                    Food-vlogger review series scheduled for launch week of Oli Ohh Pasta.
-                </div>
-            </div>
-        </div>
-
+        <!-- MARKETING SECTION -->        <div class="glass-card">            <span class="card-icon">📣</span>            <h2 class="card-title">Marketing Hub</h2>                        <div class="highlight-tag">QUICK HIGHLIGHT</div>                        <div class="item-row">                <div class="item-header">                    <span class="item-name">Mandi Awareness</span>                    <span class="dot dot-purple"></span>                </div>                <div class="item-info">                    BTL activation kits and on-ground posters deployed across Punjab & Haryana Mandis.                </div>            </div>
+            <div class="item-row">                <div class="item-header">                    <span class="item-name">Digital Influencers</span>                    <span class="dot dot-purple"></span>                </div>                <div class="item-info">                    Food-vlogger review series scheduled for launch week of Oli Ohh Pasta.                </div>            </div>        </div>
     </div>
-
-    <div class="floating-controls">
-        <a href="suggestion.html" class="fab" title="Feedback">💡</a>
-        <a href="meeting-highlights.html" class="fab" title="Highlights">📝</a>
-    </div>
-
-    <footer>
-        &copy; 2026 Developed by <span style="color:var(--ios-cyan); font-weight:800;">Rounak Singh</span> | VTC Tradewings
-    </footer>
-
-</body>
-</html>
+    <div class="floating-controls">        <a href="suggestion.html" class="fab" title="Feedback">💡</a>        <a href="meeting-highlights.html" class="fab" title="Highlights">📝</a>    </div>
+    <footer>        &copy; 2026 Developed by <span style="color:var(--ios-cyan); font-weight:800;">Rounak Singh</span> | VTC Tradewings    </footer>
+</body></html>
