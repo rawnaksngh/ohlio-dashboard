@@ -5,120 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oli-Ohh | Secure Access</title>
     <link rel="icon" href="https://img.icons8.com/fluency/48/lock.png">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.12);
+            /* Using solid colors instead of heavy blurs for TV performance */
+            --glass: rgba(20, 20, 25, 0.95); 
+            --glass-border: rgba(255, 255, 255, 0.15);
             --ios-cyan: #00ffd5;
             --ios-red: #ff3b30;
-            --spring: cubic-bezier(0.16, 1, 0.3, 1);
-            --text-glow: rgba(0, 255, 213, 0.5);
+            --text-glow: 0 0 15px rgba(0, 255, 213, 0.4);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; cursor: default; }
 
         body {
-            background-color: #020205;
+            background-color: #050508;
             color: white;
             height: 100vh;
             display: flex; justify-content: center; align-items: center;
             overflow: hidden;
+            /* Static gradient is much faster than animated ones on TV hardware */
+            background: radial-gradient(circle at center, #111 0%, #050508 100%);
         }
-
-        .ambient-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 20% 30%, rgba(10, 132, 255, 0.15) 0%, transparent 40%),
-                        radial-gradient(circle at 80% 70%, rgba(175, 82, 222, 0.1) 0%, transparent 40%);
-            filter: blur(80px); animation: drift 20s ease infinite alternate;
-        }
-
-        @keyframes drift { from { transform: scale(1); } to { transform: scale(1.1) translate(5%, 5%); } }
 
         .login-card {
             background: var(--glass);
-            backdrop-filter: blur(50px) saturate(200%);
             border: 1px solid var(--glass-border);
-            border-radius: 54px; padding: 60px 40px;
-            width: 90%; max-width: 440px; text-align: center;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.7);
-            animation: entrance 1.4s var(--spring);
-            position: relative; z-index: 10;
+            border-radius: 40px; padding: 50px 40px;
+            width: 90%; max-width: 420px; text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            /* Hardware acceleration triggers */
+            transform: translateZ(0);
+            will-change: transform, opacity;
+            animation: entrance 0.8s ease-out forwards;
         }
 
-        @keyframes entrance { from { opacity: 0; transform: scale(0.9) translateY(40px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        @keyframes entrance { 
+            from { opacity: 0; transform: translateY(20px) scale(0.98); } 
+            to { opacity: 1; transform: translateY(0) scale(1); } 
+        }
 
         .hi-akshay {
-            font-size: 3.2rem; font-weight: 800; letter-spacing: -2.5px; margin-bottom: 8px;
-            background: linear-gradient(180deg, #ffffff 40%, var(--ios-cyan) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 40px var(--text-glow);
+            font-size: 3rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 10px;
+            color: #fff;
+            text-shadow: var(--text-glow);
         }
 
-        .status-label { font-size: 0.85rem; font-weight: 600; color: rgba(255, 255, 255, 0.35); text-transform: uppercase; letter-spacing: 4px; }
+        .status-label { font-size: 0.8rem; font-weight: 600; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 3px; }
 
-        /* PIN Inputs */
-        .pin-wrapper { display: flex; justify-content: center; gap: 15px; margin: 40px 0; }
+        .pin-wrapper { display: flex; justify-content: center; gap: 12px; margin: 35px 0; }
+        
         .pin-box {
-            width: 60px; height: 80px; background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border); border-radius: 20px;
-            font-size: 2rem; font-weight: 700; color: white; text-align: center; outline: none; transition: 0.4s var(--spring);
-        }
-        .pin-box:focus {
-            border-color: var(--ios-cyan); box-shadow: 0 0 25px var(--text-glow); transform: scale(1.05) translateY(-5px);
+            width: 55px; height: 75px; 
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--glass-border); border-radius: 15px;
+            font-size: 1.8rem; font-weight: 700; color: white; text-align: center; outline: none;
+            transition: border-color 0.2s, transform 0.2s;
         }
 
-        /* Reset View Container */
-        .reset-container { display: none; flex-direction: column; gap: 12px; margin-top: 20px; }
-        .input-field {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);
-            border-radius: 15px; padding: 15px; color: white; font-size: 1rem; text-align: center; outline: none;
+        .pin-box:focus {
+            border-color: var(--ios-cyan);
+            transform: scale(1.05);
         }
-        .input-field:focus { border-color: var(--ios-cyan); }
+
+        .reset-container { display: none; flex-direction: column; gap: 10px; margin-top: 15px; }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.07); border: 1px solid var(--glass-border);
+            border-radius: 12px; padding: 14px; color: white; font-size: 1rem; text-align: center; outline: none;
+        }
 
         .unlock-btn {
-            background: var(--ios-cyan); color: #000; border: none; padding: 18px 50px; border-radius: 24px;
-            font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 2px;
-            cursor: pointer; transition: 0.5s var(--spring); box-shadow: 0 15px 35px rgba(0, 255, 213, 0.3);
-            width: 100%;
+            background: var(--ios-cyan); color: #000; border: none; padding: 16px; border-radius: 20px;
+            font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; width: 100%;
+            transition: transform 0.2s;
         }
-        .unlock-btn:hover { transform: translateY(-3px); background: #fff; }
+
+        .unlock-btn:active { transform: scale(0.95); }
 
         .reset-link {
-            margin-top: 25px; font-size: 0.75rem; color: rgba(255, 255, 255, 0.3); 
-            letter-spacing: 1px; cursor: pointer; transition: 0.3s;
+            margin-top: 20px; font-size: 0.7rem; color: rgba(255, 255, 255, 0.3); 
+            letter-spacing: 1px; cursor: pointer;
         }
-        .reset-link:hover { color: var(--ios-cyan); }
 
-        .shake { animation: hapticShake 0.4s ease-in-out; }
-        @keyframes hapticShake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
+        /* Simplified Shake for TV */
+        .shake { animation: haptic 0.3s ease-in-out; }
+        @keyframes haptic { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
         
-        .success-exit { animation: exitOut 0.6s var(--spring) forwards; }
-        @keyframes exitOut { to { opacity: 0; transform: scale(0.85) translateY(-30px); filter: blur(20px); } }
+        .success-exit { opacity: 0; transform: scale(0.95); transition: 0.4s ease-in; }
     </style>
 </head>
 <body>
-    <div class="ambient-bg"></div>
 
     <div class="login-card" id="loginCard">
         <h1 class="hi-akshay" id="titleText">Hi Akshay</h1>
         <p class="status-label" id="statusText">Authentication Required</p>
 
-        <!-- LOGIN VIEW -->
         <div id="loginView">
             <div class="pin-wrapper">
-                <input type="password" maxlength="1" class="pin-box" autofocus>
-                <input type="password" maxlength="1" class="pin-box">
-                <input type="password" maxlength="1" class="pin-box">
-                <input type="password" maxlength="1" class="pin-box">
+                <input type="password" inputmode="numeric" maxlength="1" class="pin-box" autofocus>
+                <input type="password" inputmode="numeric" maxlength="1" class="pin-box">
+                <input type="password" inputmode="numeric" maxlength="1" class="pin-box">
+                <input type="password" inputmode="numeric" maxlength="1" class="pin-box">
             </div>
             <button class="unlock-btn" onclick="validateAccess()">Unlock Dashboard</button>
             <p class="reset-link" onclick="toggleView('reset')">SETTINGS / RESET PIN</p>
         </div>
 
-        <!-- RESET VIEW -->
         <div id="resetView" class="reset-container">
-            <input type="password" id="oldPin" class="input-field" placeholder="Enter Current User PIN">
+            <input type="password" id="oldPin" class="input-field" placeholder="Verify Current PIN">
             <input type="password" id="newPin" class="input-field" placeholder="New 4-Digit PIN">
             <input type="password" id="confirmPin" class="input-field" placeholder="Confirm New PIN">
             <button class="unlock-btn" style="margin-top: 10px;" onclick="handlePinUpdate()">Update PIN</button>
@@ -130,21 +126,17 @@
         const boxes = document.querySelectorAll('.pin-box');
         const card = document.getElementById('loginCard');
         
-        // PIN KEYS
-        const MASTER_PIN = "1090"; // Permanent Master Key
-        let akshayPin = localStorage.getItem('akshay_pin') || "1234"; // Initial User Key
+        const MASTER_PIN = "1090"; 
+        let akshayPin = localStorage.getItem('akshay_pin') || "1234"; 
 
-        // 1. Auto-focus and Auto-Login
         boxes.forEach((box, i) => {
             box.addEventListener('input', (e) => {
                 if (e.target.value.length === 1 && i < boxes.length - 1) {
                     boxes[i + 1].focus();
                 }
-                
-                // Automatic check when last box is filled
                 const typedPin = Array.from(boxes).map(b => b.value).join('');
                 if (typedPin.length === 4) {
-                    setTimeout(validateAccess, 250);
+                    setTimeout(validateAccess, 100);
                 }
             });
 
@@ -155,18 +147,13 @@
             });
         });
 
-        // 2. Validate function
         function validateAccess() {
             const enteredPin = Array.from(boxes).map(b => b.value).join('');
             
             if (enteredPin === MASTER_PIN || enteredPin === akshayPin) {
-                // Success logic
                 card.classList.add('success-exit');
-                setTimeout(() => { 
-                    window.location.href = 'home.html'; 
-                }, 600);
+                setTimeout(() => { window.location.href = 'home.html'; }, 400);
             } else {
-                // Shake and clear on error
                 card.classList.add('shake');
                 boxes.forEach(b => {
                     b.value = '';
@@ -176,11 +163,10 @@
                     card.classList.remove('shake');
                     boxes.forEach(b => b.style.borderColor = '');
                     boxes[0].focus();
-                }, 400);
+                }, 300);
             }
         }
 
-        // 3. UI Switcher
         function toggleView(view) {
             const loginView = document.getElementById('loginView');
             const resetView = document.getElementById('resetView');
@@ -194,37 +180,29 @@
                 loginView.style.display = 'block';
                 resetView.style.display = 'none';
                 title.innerText = "Hi Akshay";
-                boxes[0].focus();
             }
         }
 
-        // 4. Update Logic (For Akshay's PIN)
         function handlePinUpdate() {
             const oldVal = document.getElementById('oldPin').value;
             const newVal = document.getElementById('newPin').value;
             const confVal = document.getElementById('confirmPin').value;
 
-            // Must know current user pin or master pin to change user pin
             if (oldVal !== akshayPin && oldVal !== MASTER_PIN) {
-                alert("Incorrect authorization PIN.");
+                alert("Auth failed.");
                 return;
             }
-
-            if (newVal.length !== 4 || isNaN(newVal)) {
-                alert("Please enter a 4-digit number.");
+            if (newVal.length !== 4) {
+                alert("Need 4 digits.");
                 return;
             }
-
             if (newVal !== confVal) {
-                alert("New PINs do not match.");
+                alert("Mismatch.");
                 return;
             }
 
-            // Save to browser memory
             localStorage.setItem('akshay_pin', newVal);
-            akshayPin = newVal;
-            
-            alert("Akshay's PIN updated successfully!");
+            alert("Updated!");
             location.reload(); 
         }
     </script>
