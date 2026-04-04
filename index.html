@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oli-Ohh | Secure Access</title>
+    <link rel="icon" href="https://img.icons8.com/fluency/48/lock.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --ios-cyan: #00ffd5;
+            --spring: cubic-bezier(0.16, 1, 0.3, 1);
+            --text-glow: rgba(0, 255, 213, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; cursor: default; }
+
+        body {
+            background-color: #020205;
+            color: white;
+            height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
+        }
+
+        .ambient-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(10, 132, 255, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(175, 82, 222, 0.1) 0%, transparent 40%);
+            filter: blur(80px); animation: drift 20s ease infinite alternate;
+        }
+
+        @keyframes drift { from { transform: scale(1); } to { transform: scale(1.1) translate(5%, 5%); } }
+
+        .login-card {
+            background: var(--glass);
+            backdrop-filter: blur(50px) saturate(200%);
+            border: 1px solid var(--glass-border);
+            border-radius: 54px; padding: 80px 50px;
+            width: 90%; max-width: 440px; text-align: center;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.7);
+            animation: entrance 1.4s var(--spring);
+        }
+
+        @keyframes entrance { from { opacity: 0; transform: scale(0.9) translateY(40px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+        .hi-akshay {
+            font-size: 3.2rem; font-weight: 800; letter-spacing: -2.5px; margin-bottom: 8px;
+            background: linear-gradient(180deg, #ffffff 40%, var(--ios-cyan) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 40px var(--text-glow);
+        }
+
+        .status-label { font-size: 0.85rem; font-weight: 600; color: rgba(255, 255, 255, 0.35); text-transform: uppercase; letter-spacing: 4px; }
+
+        .pin-wrapper { display: flex; justify-content: center; gap: 18px; margin: 50px 0; }
+
+        .pin-box {
+            width: 65px; height: 85px; background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border); border-radius: 22px;
+            font-size: 2.2rem; font-weight: 700; color: white; text-align: center; outline: none; transition: 0.4s var(--spring);
+        }
+
+        .pin-box:focus {
+            border-color: var(--ios-cyan); box-shadow: 0 0 25px var(--text-glow); transform: scale(1.08) translateY(-5px);
+        }
+
+        .unlock-btn {
+            background: var(--ios-cyan); color: #000; border: none; padding: 18px 50px; border-radius: 24px;
+            font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 2px;
+            cursor: pointer; transition: 0.5s var(--spring); box-shadow: 0 15px 35px rgba(0, 255, 213, 0.3);
+        }
+
+        .unlock-btn:hover { transform: translateY(-5px) scale(1.05); background: #fff; }
+
+        .shake { animation: hapticShake 0.4s ease-in-out; }
+        @keyframes hapticShake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-12px); } 40%, 80% { transform: translateX(12px); } }
+
+        .success-exit { animation: exitOut 0.6s var(--spring) forwards; }
+        @keyframes exitOut { to { opacity: 0; transform: scale(0.85) translateY(-30px); filter: blur(20px); } }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-bg"></div>
+
+    <div class="login-card" id="loginCard">
+        <h1 class="hi-akshay">Hi Akshay</h1>
+        <p class="status-label">Authentication Required</p>
+
+        <div class="pin-wrapper">
+            <input type="password" maxlength="1" class="pin-box" autofocus>
+            <input type="password" maxlength="1" class="pin-box">
+            <input type="password" maxlength="1" class="pin-box">
+            <input type="password" maxlength="1" class="pin-box">
+        </div>
+
+        <button class="unlock-btn" onclick="validateAccess()">Unlock Dashboard</button>
+    </div>
+
+    <script>
+        const boxes = document.querySelectorAll('.pin-box');
+        const card = document.getElementById('loginCard');
+        const targetPin = "1090";
+
+        boxes.forEach((box, i) => {
+            box.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && i < boxes.length - 1) boxes[i + 1].focus();
+                if (Array.from(boxes).every(b => b.value)) setTimeout(validateAccess, 300);
+            });
+            box.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && i > 0) boxes[i - 1].focus();
+            });
+        });
+
+        function validateAccess() {
+            const enteredPin = Array.from(boxes).map(b => b.value).join('');
+            if (enteredPin === targetPin) {
+                card.classList.add('success-exit');
+                setTimeout(() => { window.location.href = 'home.html'; }, 600);
+            } else {
+                card.classList.add('shake');
+                boxes.forEach(b => { b.value = ''; b.style.borderColor = '#ff3b30'; });
+                setTimeout(() => { card.classList.remove('shake'); boxes.forEach(b => b.style.borderColor = ''); boxes[0].focus(); }, 400);
+            }
+        }
+    </script>
+</body>
+</html>
