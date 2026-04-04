@@ -107,16 +107,14 @@
             box-shadow: 0 40px 80px rgba(0,0,0,0.5);
         }
 
-        .card-link {
+        .card-icon { font-size: 3rem; margin-bottom: 25px; display: block; filter: drop-shadow(0 5px 15px rgba(0,255,213,0.3)); }
+        .card-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 30px; letter-spacing: -0.5px; }
+
+        .item-row-link {
             text-decoration: none;
             color: inherit;
             display: block;
-            transition: opacity 0.3s ease;
         }
-        .card-link:hover { opacity: 0.8; }
-
-        .card-icon { font-size: 3rem; margin-bottom: 25px; display: block; filter: drop-shadow(0 5px 15px rgba(0,255,213,0.3)); }
-        .card-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 30px; letter-spacing: -0.5px; }
 
         .item-row {
             background: rgba(255, 255, 255, 0.04);
@@ -189,7 +187,7 @@
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            font-size: 28px;
+            font-size: 24px;
             transition: 0.4s;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
@@ -228,21 +226,59 @@
 
     <div class="grid-container">
         
-        <!-- UPDATED PRE-LAUNCH SECTION -->
+        <!-- PRE-LAUNCH SECTION -->
         <div class="glass-card">
-            <a href="prelaunchtask.html" class="card-link">
-                <span class="card-icon">🚀</span>
-                <h2 class="card-title">Pre-Launch Tasks →</h2>
-            </a>
+            <span class="card-icon">🚀</span>
+            <h2 class="card-title">Pre-Launch Tasks</h2>
             
-            <a href="oliohh inhouse.html" style="text-decoration: none; color: inherit;">
+            <!-- Inhouse Marketing Link -->
+            <a href="oliohh inhouse.html" class="item-row-link">
                 <div class="item-row">
                     <div class="item-header">
                         <span class="item-name">Inhouse Marketing Protocol</span>
                         <span class="dot dot-purple"></span>
                     </div>
                     <div class="item-info">
-                        Executed via Meesho portal. Includes employee sampling, 5-star review strategy, and reimbursement tracking via Raman Jha.
+                        Employee sampling, 5-star review strategy via Meesho, and reimbursement tracking.
+                    </div>
+                </div>
+            </a>
+
+            <!-- Margin Structure Link -->
+            <a href="margin-structure.html" class="item-row-link">
+                <div class="item-row">
+                    <div class="item-header">
+                        <span class="item-name">Margin Structure</span>
+                        <span class="dot dot-cyan"></span>
+                    </div>
+                    <div class="item-info">
+                        Distribution of profits across channels and retailer incentive frameworks.
+                    </div>
+                </div>
+            </a>
+
+            <!-- E-commerce Listing Link -->
+            <a href="ecommerce-listing.html" class="item-row-link">
+                <div class="item-row">
+                    <div class="item-header">
+                        <span class="item-name">Listing Status: E-commerce</span>
+                        <span class="dot dot-cyan"></span>
+                    </div>
+                    <div class="item-info">
+                        Catalog health and visibility status across Amazon, Flipkart, and Meesho.
+                    </div>
+                </div>
+            </a>
+
+            <!-- Quick Commerce Listing Link -->
+            <a href="quick-commerce.html" class="item-row-link">
+                <div class="item-row">
+                    <div class="item-header">
+                        <span class="item-name">Listing Status: Q-Commerce</span>
+                        <span class="dot dot-cyan"></span>
+                    </div>
+                    <div class="item-info">
+                        Dark store inventory status for Zepto, Blinkit, and Swiggy Instamart.
                     </div>
                 </div>
             </a>
