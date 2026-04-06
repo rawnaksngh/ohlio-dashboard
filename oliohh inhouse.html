@@ -63,6 +63,114 @@
             transform: translateX(-5px);
         }
 
+        /* LIVE ORDER COUNTER STYLES */
+        .metrics-container {
+            width: 100%;
+            margin-bottom: 40px;
+            perspective: 1000px;
+        }
+
+        .metric-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .metric-card:hover {
+            transform: scale(1.01);
+            border-color: rgba(10, 132, 255, 0.3);
+        }
+
+        .metric-status {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--accent);
+            animation: beacon 2s infinite;
+        }
+
+        @keyframes beacon {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.8); opacity: 0.5; }
+            100% { transform: scale(2.8); opacity: 0; }
+        }
+
+        .metric-value {
+            font-size: 5rem;
+            font-weight: 800;
+            letter-spacing: -4px;
+            background: linear-gradient(to bottom, #FFFFFF 30%, #444444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .metric-label {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+        }
+
+        .metric-progress-wrapper {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .metric-progress-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-fill {
+            width: 0%; /* Animated via JS */
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #5AC8FA);
+            box-shadow: 0 0 20px var(--accent-glow);
+            border-radius: 10px;
+            transition: width 2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .metric-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* REST OF EXISTING STYLES */
         .aurora {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
@@ -170,7 +278,11 @@
 
         .wide-card { grid-column: span 2; }
 
-        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .wide-card { grid-column: span 1; } }
+        @media (max-width: 768px) { 
+            .grid { grid-template-columns: 1fr; } 
+            .wide-card { grid-column: span 1; }
+            .metric-value { font-size: 3.5rem; }
+        }
     </style>
 </head>
 <body>
@@ -178,7 +290,6 @@
 <div class="aurora"></div>
 
 <div class="back-nav">
-    <!-- Updated link to home.html as requested -->
     <a href="home.html" class="back-link"><span>←</span> Return to Dashboard</a>
 </div>
 
@@ -188,17 +299,39 @@
         <h1>OLI OHH<span style="color:var(--accent)">.</span></h1>
     </header>
 
+    <div class="metrics-container">
+        <div class="metric-card">
+            <div class="metric-status">
+                <span class="pulse-dot"></span>
+                System Live: Monitoring Orders
+            </div>
+            <div class="metric-value" id="orderCount">0</div>
+            <div class="metric-label">Total Orders Placed</div>
+            
+            <div class="metric-progress-wrapper">
+                <div class="metric-progress-bg">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+                <div class="metric-footer">
+                    <span>Target: 5,000</span>
+                    <span id="percentText">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="marquee-wrapper">
         <div class="marquee-content">
             <div class="marquee-item">ADS: Executed on Meesho Portal to increase order velocity</div>
             <div class="marquee-item">PROMO: Running on every SKU with dynamic review-based updates</div>
             <div class="marquee-item">VISIBILITY: Catalogs displayed on Top Slots for high-intent searches</div>
             <div class="marquee-item">TRACKING: Real-time performance metrics for orders and cost impact</div>
+            <div class="marquee-item">ADS: Executed on Meesho Portal to increase order velocity</div>
+            <div class="marquee-item">PROMO: Running on every SKU with dynamic review-based updates</div>
         </div>
     </div>
 
     <div class="grid">
-        <!-- AWARENESS CARD (FULL DATA) -->
         <div class="card wide-card">
             <span class="tag">Awareness & Advertising</span>
             <h3 class="title">Meesho Advertisement Strategy</h3>
@@ -229,7 +362,6 @@
             </div>
         </div>
 
-        <!-- OPERATIONS CARD -->
         <div class="card">
             <span class="tag">Operations</span>
             <h3 class="title">Inhouse Ops</h3>
@@ -245,7 +377,6 @@
             </div>
         </div>
 
-        <!-- SEARCH STRATEGY CARD -->
         <div class="card">
             <span class="tag">Search Strategy</span>
             <h3 class="title">Algorithm Reach</h3>
@@ -261,7 +392,6 @@
             </div>
         </div>
 
-        <!-- TRANSMISSION CARD -->
         <div class="card wide-card" style="background: linear-gradient(135deg, rgba(10, 132, 255, 0.05), transparent);">
             <span class="tag">Transmission</span>
             <h3 class="title">Launch Protocol</h3>
@@ -274,6 +404,46 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Counter Animation Configuration
+    const targetOrders = 13;
+    const goalOrders = 5000;
+    const duration = 2500; // 2.5 seconds
+
+    function animateDisplay() {
+        const orderElement = document.getElementById("orderCount");
+        const progressFill = document.getElementById("progressBar");
+        const percentText = document.getElementById("percentText");
+        
+        let startTimestamp = null;
+
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            
+            // Calculate current number
+            const currentCount = Math.floor(progress * targetOrders);
+            orderElement.innerHTML = currentCount.toLocaleString();
+
+            // Calculate percentage based on goal
+            const currentPercent = ((currentCount / goalOrders) * 100).toFixed(1);
+            
+            // Update Progress Bar and Text
+            progressFill.style.width = ((currentCount / goalOrders) * 100) + "%";
+            percentText.innerHTML = currentPercent + "%";
+
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+
+        window.requestAnimationFrame(step);
+    }
+
+    // Initialize on load
+    window.onload = animateDisplay;
+</script>
 
 </body>
 </html>
