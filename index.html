@@ -237,6 +237,14 @@
             alert("PIN Updated!");
             location.reload(); 
         }
+        
     </script>
+    <script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/ohlio-dashboard/service-worker.js")
+    .then(() => console.log("Service Worker Registered"))
+    .catch(err => console.log(err));
+}
+</script>
 </body>
 </html>
