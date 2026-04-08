@@ -30,6 +30,70 @@
             align-items: center; 
             overflow-x: hidden; 
         }
+
+        /* --- NOTIFICATION ANIMATION --- */
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 5px rgba(0, 255, 213, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(0, 255, 213, 0.6); }
+            100% { box-shadow: 0 0 5px rgba(0, 255, 213, 0.2); }
+        }
+
+        .notification-banner {
+            margin-top: 20px;
+            width: 90%;
+            max-width: 600px;
+            background: rgba(0, 255, 213, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--ios-cyan);
+            border-radius: 20px;
+            padding: 12px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            animation: pulse-glow 3s infinite ease-in-out;
+            transition: 0.3s;
+            z-index: 900;
+        }
+        .notification-banner:hover { background: rgba(0, 255, 213, 0.2); transform: scale(1.02); }
+        .notif-text { font-size: 0.9rem; font-weight: 600; color: var(--ios-cyan); display: flex; align-items: center; gap: 10px; }
+        
+        /* --- TASK OVERLAY MODAL --- */
+        .task-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 2000;
+            justify-content: center; align-items: center;
+        }
+        .task-modal {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 35px;
+            padding: 40px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+        }
+        .task-modal h3 { font-size: 1.5rem; margin-bottom: 20px; color: var(--ios-cyan); }
+        .task-item-box {
+            background: rgba(255,255,255,0.05);
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: left;
+            border-left: 4px solid var(--ios-cyan);
+        }
+        .task-item-box p { font-size: 0.95rem; font-weight: 500; }
+        .task-item-box span { font-size: 0.8rem; opacity: 0.5; display: block; margin-top: 5px; }
+        .close-modal { margin-top: 20px; background: var(--ios-cyan); color: black; border: none; padding: 10px 30px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+
+        /* --- PREVIOUS STYLES --- */
         nav { 
             width: 100%; 
             padding: 20px 40px; 
@@ -64,7 +128,7 @@
         }
         header { 
             text-align: center; 
-            padding: 80px 20px 60px; 
+            padding: 40px 20px 60px; 
             width: 100%; 
         }
         header .main-title { 
@@ -214,10 +278,36 @@
             <a href="index.html" class="logout-btn">Logout</a>        
         </div>    
     </nav>
+
+    <!-- NEW NOTIFICATION BANNER -->
+    <div class="notification-banner" onclick="toggleTasks(true)">
+        <div class="notif-text">
+            <span>🔔</span> 2 Pending Critical Tasks
+        </div>
+        <div style="font-size: 0.7rem; opacity: 0.7;">View Details →</div>
+    </div>
+
+    <!-- NEW TASK OVERLAY -->
+    <div class="task-overlay" id="taskOverlay" onclick="toggleTasks(false)">
+        <div class="task-modal" onclick="event.stopPropagation()">
+            <h3>Mission Critical Tasks</h3>
+            <div class="task-item-box">
+                <p>Finalizing Detailer for Oli Ohh</p>
+                <span>Owner: Ajit</span>
+            </div>
+            <div class="task-item-box">
+                <p>Quick Commerce Listing Status</p>
+                <span>Owner: Ajit</span>
+            </div>
+            <button class="close-modal" onclick="toggleTasks(false)">Acknowledged</button>
+        </div>
+    </div>
+
     <header>        
         <div class="main-title">Oli Ohh Pasta Launch Command Center</div>        
         <div class="subtitle">Mission Control 0 To 1</div>    
     </header>
+    
     <div class="grid-container">        
         
         <div class="glass-card">            
@@ -333,12 +423,21 @@
             </div>        
         </div>
     </div>
+    
     <div class="floating-controls">        
         <a href="suggestion.html" class="fab" title="Feedback">💡</a>        
         <a href="meeting-highlights.html" class="fab" title="Highlights">📝</a>    
     </div>
+
     <footer>        
         &copy; 2026 Developed by <span style="color:var(--ios-cyan); font-weight:800;">Rounak Singh</span> | VTC Tradewings    
     </footer>
+
+    <script>
+        function toggleTasks(show) {
+            const overlay = document.getElementById('taskOverlay');
+            overlay.style.display = show ? 'flex' : 'none';
+        }
+    </script>
 </body>
 </html>
