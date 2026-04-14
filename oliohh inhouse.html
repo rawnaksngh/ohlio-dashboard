@@ -15,6 +15,7 @@
             --accent-glow: rgba(10, 132, 255, 0.35);
             --text-main: #FFFFFF;
             --text-dim: #8E8E93;
+            --ios-green: #34C759;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; cursor: default; }
@@ -64,10 +65,13 @@
         }
 
         /* LIVE ORDER COUNTER STYLES */
-        .metrics-container {
-            width: 100%;
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 25px;
+            width: 90%;
+            max-width: 1100px;
             margin-bottom: 40px;
-            perspective: 1000px;
         }
 
         .metric-card {
@@ -118,9 +122,9 @@
         }
 
         .metric-value {
-            font-size: 5rem;
+            font-size: 4rem;
             font-weight: 800;
-            letter-spacing: -4px;
+            letter-spacing: -3px;
             background: linear-gradient(to bottom, #FFFFFF 30%, #444444 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -130,9 +134,9 @@
 
         .metric-label {
             color: var(--text-dim);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             text-transform: uppercase;
             margin-bottom: 25px;
         }
@@ -153,7 +157,7 @@
         }
 
         .progress-fill {
-            width: 0%; /* Animated via JS */
+            width: 0%; 
             height: 100%;
             background: linear-gradient(90deg, var(--accent), #5AC8FA);
             box-shadow: 0 0 20px var(--accent-glow);
@@ -161,10 +165,16 @@
             transition: width 2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
+        .reimbursement-card .metric-value {
+            background: linear-gradient(to bottom, #FFFFFF 30%, var(--ios-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         .metric-footer {
             display: flex;
             justify-content: space-between;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-dim);
             font-weight: 700;
             letter-spacing: 1px;
@@ -278,10 +288,11 @@
 
         .wide-card { grid-column: span 2; }
 
-        @media (max-width: 768px) { 
+        @media (max-width: 900px) { 
+            .metrics-grid { grid-template-columns: 1fr; }
             .grid { grid-template-columns: 1fr; } 
             .wide-card { grid-column: span 1; }
-            .metric-value { font-size: 3.5rem; }
+            .metric-value { font-size: 3rem; }
         }
     </style>
 </head>
@@ -299,7 +310,7 @@
         <h1>OLI OHH<span style="color:var(--accent)">.</span></h1>
     </header>
 
-    <div class="metrics-container">
+    <div class="metrics-grid">
         <div class="metric-card">
             <div class="metric-status">
                 <span class="pulse-dot"></span>
@@ -317,6 +328,16 @@
                     <span id="percentText">0%</span>
                 </div>
             </div>
+        </div>
+
+        <div class="metric-card reimbursement-card">
+            <div class="metric-status" style="color:var(--ios-green)">
+                <span class="pulse-dot" style="background:var(--ios-green); box-shadow:0 0 15px var(--ios-green)"></span>
+                Verified Balance
+            </div>
+            <div class="metric-value" id="reimburseCount">0</div>
+            <div class="metric-label">Inhouse Reimbursement</div>
+            <div style="font-size: 0.7rem; color: var(--text-dim); font-weight: 700;">VALUATION: INR /-</div>
         </div>
     </div>
 
@@ -391,28 +412,19 @@
                 </div>
             </div>
         </div>
-
-        <div class="card wide-card" style="background: linear-gradient(135deg, rgba(10, 132, 255, 0.05), transparent);">
-            <span class="tag">Transmission</span>
-            <h3 class="title">Launch Protocol</h3>
-            <p class="summary">Official employee broadcast script.</p>
-            <div class="details-box">
-                <p style="font-style: italic; border-left: 2px solid var(--accent); padding-left: 20px; line-height: 1.8; color: var(--text-main); font-size: 1.1rem;">
-                    "हमारी कंपनी ने अपना नया प्रोडक्ट Oli Ohh Pasta लॉन्च किया है। यह एक रेस्टोरेंट जैसा स्वाद देने वाला पास्ता है।"
-                </p>
-            </div>
-        </div>
     </div>
 </div>
 
 <script>
     // Counter Animation Configuration
     const targetOrders = 35;
+    const targetReimburse = 1718;
     const goalOrders = 5000;
     const duration = 2500; // 2.5 seconds
 
     function animateDisplay() {
         const orderElement = document.getElementById("orderCount");
+        const reimburseElement = document.getElementById("reimburseCount");
         const progressFill = document.getElementById("progressBar");
         const percentText = document.getElementById("percentText");
         
@@ -422,14 +434,16 @@
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
             
-            // Calculate current number
+            // Order Count Animation
             const currentCount = Math.floor(progress * targetOrders);
             orderElement.innerHTML = currentCount.toLocaleString();
 
-            // Calculate percentage based on goal
+            // Reimbursement Animation
+            const currentReimburse = Math.floor(progress * targetReimburse);
+            reimburseElement.innerHTML = "₹" + currentReimburse.toLocaleString();
+
+            // Progress Logic
             const currentPercent = ((currentCount / goalOrders) * 100).toFixed(1);
-            
-            // Update Progress Bar and Text
             progressFill.style.width = ((currentCount / goalOrders) * 100) + "%";
             percentText.innerHTML = currentPercent + "%";
 
@@ -441,7 +455,6 @@
         window.requestAnimationFrame(step);
     }
 
-    // Initialize on load
     window.onload = animateDisplay;
 </script>
 
