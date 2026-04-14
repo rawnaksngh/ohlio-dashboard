@@ -187,7 +187,7 @@
         <div class="nav-links">            
             <a href="#">Dashboard</a>            
             <a href="about oli-ohh.html">About Product</a>            
-            <a href="meeting-highlights.html">Reports</a>            
+            <a href="meeting-highlights.html">Last Meeting Highlights</a>            
             <a href="index.html" class="logout-btn">Logout</a>        
         </div>    
     </nav>
@@ -311,11 +311,13 @@
             window.open(url, "SurveyAnalytics", `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no`);
         }
 
-        // Close dropdown if clicking outside
         window.onclick = function(event) {
             if (!event.target.closest('.deadline-container')) {
-                document.getElementById('deadlineDropdown').classList.remove('active');
-                document.getElementById('dd-arrow').style.transform = 'rotate(0deg)';
+                const dropdown = document.getElementById('deadlineDropdown');
+                if (dropdown && dropdown.classList.contains('active')) {
+                    dropdown.classList.remove('active');
+                    document.getElementById('dd-arrow').style.transform = 'rotate(0deg)';
+                }
             }
         }
     </script>
