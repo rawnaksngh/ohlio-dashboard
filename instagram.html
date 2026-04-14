@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Strategy | Oli Ohh</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --ios-cyan: #00ffd5;
+            --ios-purple: #af52de;
+            --text-glow: rgba(0, 255, 213, 0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; }
+
+        body {            
+            background: 
+                radial-gradient(at 0% 0%, rgba(15, 32, 39, 1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, rgba(44, 83, 100, 1) 0, transparent 50%), 
+                #0b0e11; 
+            color: white; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            overflow: hidden;
+        }
+
+        /* --- SMOOTH MARQUEE --- */
+        .marquee-container {
+            width: 100%;
+            background: rgba(0, 255, 213, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 12px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--ios-cyan);
+            font-size: 0.85rem;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* --- MAIN LAYOUT --- */
+        nav { 
+            width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; 
+            backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); 
+        }
+        
+        .nav-logo { font-weight: 800; color: var(--ios-cyan); text-transform: uppercase; text-decoration: none; }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            background: linear-gradient(180deg, #ffffff 40%, #af52de 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            background: rgba(175, 82, 222, 0.2);
+            border: 1px solid var(--ios-purple);
+            color: var(--ios-purple);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        /* --- DEADLINE COUNTER --- */
+        .deadline-box {
+            margin-top: 20px;
+        }
+
+        .timer {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .time-segment {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 20px;
+            min-width: 80px;
+        }
+
+        .time-val {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--ios-cyan);
+            display: block;
+        }
+
+        .time-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            opacity: 0.5;
+            letter-spacing: 1px;
+        }
+
+        .back-btn {
+            margin-top: 40px;
+            text-decoration: none;
+            color: white;
+            font-size: 0.9rem;
+            opacity: 0.6;
+            transition: 0.3s;
+        }
+        .back-btn:hover { opacity: 1; color: var(--ios-cyan); }
+
+    </style>
+</head>
+<body>
+
+    <div class="marquee-container">
+        <div class="marquee-content">
+            🚀 INSTAGRAM CAMPAIGN IN PROGRESS • SYSTEM SYNCING ASSETS • INFLUENCER WHITELISTING ACTIVE • CONTENT BATCHING FOR OLI OHH PASTA •
+        </div>
+    </div>
+
+    <nav>
+        <a href="index.html" class="nav-logo">← Back to Ops</a>
+        <div style="font-size: 0.8rem; opacity: 0.5;">INSTAGRAM_MODULE_V1.0</div>
+    </nav>
+
+    <div class="content-wrapper">
+        <div class="glass-panel">
+            <div class="status-badge">Phase: Execution</div>
+            <h1>Instagram Launch</h1>
+            <p style="color: rgba(255,255,255,0.5); margin-bottom: 40px;">Finalizing creative assets and grid layout.</p>
+
+            <div class="deadline-box">
+                <p style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.8;">Countdown to Deadline: 15 April</p>
+                <div class="timer" id="countdown">
+                    <div class="time-segment"><span class="time-val" id="days">00</span><span class="time-label">Days</span></div>
+                    <div class="time-segment"><span class="time-val" id="hours">00</span><span class="time-label">Hours</span></div>
+                    <div class="time-segment"><span class="time-val" id="mins">00</span><span class="time-label">Mins</span></div>
+                </div>
+            </div>
+        </div>
+        <a href="index.html" class="back-btn">Return to Command Center</a>
+    </div>
+
+    <script>
+        // Set the deadline to April 15, 2026
+        const deadline = new Date("April 15, 2026 00:00:00").getTime();
+
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = deadline - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+            document.getElementById("days").innerHTML = days;
+            document.getElementById("hours").innerHTML = hours;
+            document.getElementById("mins").innerHTML = minutes;
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "CAMPAIGN LIVE";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
