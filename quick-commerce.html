@@ -13,83 +13,19 @@
             --bg-dark: #05070a;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'SF Pro Display', -apple-system, sans-serif; }
         
-        body { 
-            background-color: var(--bg-dark); 
-            color: white; 
-            min-height: 100vh; 
-            padding: 100px 20px 40px 20px; /* Kept padding for top elements */
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            overflow-x: hidden; 
-        }
+        body { background-color: var(--bg-dark); color: white; min-height: 100vh; padding: 100px 20px 40px 20px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
 
-        /* --- MINI GLASS HOME BUTTON --- */
-        .home-card-container {
-            position: fixed;
-            top: 25px;
-            left: 25px;
-            z-index: 1000;
-        }
-
+        /* --- HOME BUTTON --- */
+        .home-card-container { position: fixed; top: 25px; left: 25px; z-index: 1000; }
         .home-card {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            color: #fff;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 100px; /* Pill shape */
-            padding: 12px 20px;
-            font-size: 15px;
-            font-weight: 500;
-            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            overflow: hidden; /* For shine effect */
+            display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff;
+            background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-border);
+            border-radius: 100px; padding: 12px 20px; font-size: 14px; font-weight: 500; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
-        .home-card:hover {
-            border-color: rgba(255,255,255,0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-
-        .home-card:active {
-            transform: translateY(1px);
-            opacity: 0.7;
-        }
-
-        /* Icon styling */
-        .home-card svg {
-            width: 18px;
-            height: 18px;
-            fill: var(--ios-cyan);
-            transition: 0.3s;
-        }
-
-        .home-card:hover svg {
-            filter: drop-shadow(0 0 5px var(--ios-cyan));
-        }
-
-        /* Subtle shine animation */
-        .home-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: 0.5s;
-        }
-
-        .home-card:hover::after {
-            left: 100%;
-        }
+        .home-card:hover { border-color: rgba(255,255,255,0.4); transform: translateY(-2px); background: rgba(255,255,255,0.06); }
+        .home-card svg { width: 16px; height: 16px; fill: var(--ios-cyan); }
 
         /* --- BACKGROUND --- */
         .aurora { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; filter: blur(100px); opacity: 0.3; }
@@ -109,36 +45,41 @@
         .glass-card { 
             background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); 
             border-radius: 30px; padding: 25px; cursor: pointer; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            overflow: hidden;
+            overflow: hidden; position: relative;
         }
         .glass-card:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-5px); }
 
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .brand-name { font-size: 1.5rem; font-weight: 800; }
         
-        .mini-bar-container { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 15px 0; overflow: hidden; }
-        .mini-bar-fill { width: 0%; height: 100%; background: var(--ios-cyan); transition: width 0.6s ease; box-shadow: 0 0 10px var(--ios-cyan); }
+        /* --- DYNAMIC BAR WITH PERCENTAGE --- */
+        .bar-wrapper { position: relative; width: 100%; height: 24px; margin: 10px 0 25px 0; display: flex; align-items: center; }
+        .mini-bar-container { width: calc(100% - 60px); height: 6px; background: rgba(255,255,255,0.08); border-radius: 10px; position: relative; }
+        .mini-bar-fill { width: 0%; height: 100%; background: var(--ios-cyan); transition: width 0.6s cubic-bezier(0.33, 1, 0.68, 1); box-shadow: 0 0 15px var(--ios-cyan); border-radius: 10px; z-index: 2; }
+        
+        .pips-container { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; justify-content: space-between; align-items: center; z-index: 3; pointer-events: none; }
+        .pip { width: 4px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 50%; transition: 0.3s; }
+        .pip.active { background: #fff; box-shadow: 0 0 8px #fff; transform: scale(1.2); }
 
-        .steps-content { 
-            max-height: 0; opacity: 0; transition: all 0.5s ease; 
-            display: flex; flex-direction: column; gap: 12px;
+        .dynamic-perc { 
+            width: 50px; margin-left: 10px; font-size: 11px; font-weight: 900; color: rgba(255,255,255,0.4);
+            text-align: right; font-variant-numeric: tabular-nums; transition: 0.3s;
         }
-        .glass-card.active .steps-content { max-height: 400px; opacity: 1; padding-top: 20px; }
+        .dynamic-perc.reached { color: var(--ios-cyan); text-shadow: 0 0 10px rgba(0,255,213,0.5); }
+
+        /* Dropdown */
+        .steps-content { max-height: 0; opacity: 0; transition: all 0.5s ease; display: flex; flex-direction: column; gap: 12px; }
+        .glass-card.active .steps-content { max-height: 400px; opacity: 1; padding-top: 10px; }
 
         .step-item { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; color: rgba(255,255,255,0.4); transition: 0.3s; cursor: pointer; }
         .step-item.completed { color: #fff; font-weight: 600; }
 
-        input[type="checkbox"] { 
-            appearance: none; width: 18px; height: 18px; border: 2px solid var(--glass-border); 
-            border-radius: 6px; cursor: pointer; transition: 0.3s; position: relative; flex-shrink: 0;
-        }
+        input[type="checkbox"] { appearance: none; width: 18px; height: 18px; border: 2px solid var(--glass-border); border-radius: 6px; cursor: pointer; position: relative; flex-shrink: 0; }
         input[type="checkbox"]:checked { background: var(--ios-cyan); border-color: var(--ios-cyan); }
         input[type="checkbox"]:checked::after { content: '✓'; position: absolute; color: #000; font-size: 12px; left: 3px; top: -1px; font-weight: 900; }
 
-        .overall-progress { 
-            background: var(--glass); backdrop-filter: blur(40px); padding: 40px; border-radius: 40px; 
-            border: 1px solid var(--glass-border); width: 100%; max-width: 1200px; 
-        }
+        /* Overall Global Progress */
+        .overall-progress { background: var(--glass); backdrop-filter: blur(40px); padding: 40px; border-radius: 40px; border: 1px solid var(--glass-border); width: 100%; max-width: 1200px; }
         .progress-meta { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; }
         .main-bar-container { width: 100%; height: 12px; background: rgba(255,255,255,0.05); border-radius: 100px; overflow: hidden; }
         .main-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--ios-purple), var(--ios-cyan)); transition: 1s ease; }
@@ -151,28 +92,23 @@
 
     <div class="home-card-container">
         <a href="home.html" class="home-card">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-            </svg>
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             Home
         </a>
     </div>
 
-    <div class="aurora">
-        <div class="blob b1"></div>
-        <div class="blob b2"></div>
-    </div>
+    <div class="aurora"><div class="blob b1"></div><div class="blob b2"></div></div>
 
     <div class="header">
         <h1>Integration Grid</h1>
-        <div class="meta">Ops: Ajit • Status: Syncing Nodes</div>
+        <div class="meta">Operations: Ajit • Real-time Nodes</div>
     </div>
 
     <div class="platform-grid" id="grid"></div>
 
     <div class="overall-progress">
         <div class="progress-meta">
-            <span style="letter-spacing: 2px; font-weight: 700; color: var(--ios-cyan);">UNIFIED SYNC</span>
+            <span style="letter-spacing: 2px; font-weight: 700; color: var(--ios-cyan);">TOTAL ECOSYSTEM SYNC</span>
             <span id="global-perc" style="font-size: 2.5rem; font-weight: 900;">0%</span>
         </div>
         <div class="main-bar-container">
@@ -190,46 +126,36 @@
             { id: 'bb', name: 'BigBasket', class: 'bigbasket' }
         ];
 
-        const steps = [
-            "Contacting Merchant",
-            "Emailing Details",
-            "Signing TOTs",
-            "Brand Listed",
-            "Receiving PO",
-            "PO Fulfilled"
-        ];
-
+        const steps = ["Contacting", "Emailing", "TOT Signed", "Listed", "PO Received", "Fulfilled"];
         const grid = document.getElementById('grid');
         const savedData = JSON.parse(localStorage.getItem('oliOhhProgress')) || {};
 
-        platforms.forEach((p, pIdx) => {
+        platforms.forEach((p) => {
             const card = document.createElement('div');
             card.className = 'glass-card';
             card.id = `card-${p.id}`;
-            
-            card.onclick = (e) => {
-                if(e.target.type !== 'checkbox' && !e.target.classList.contains('step-item')) {
-                    card.classList.toggle('active');
-                }
-            };
+            card.onclick = (e) => { if(e.target.type !== 'checkbox' && !e.target.closest('.step-item')) card.classList.toggle('active'); };
 
             card.innerHTML = `
                 <div class="card-header">
                     <span class="brand-name ${p.class}">${p.name}</span>
-                    <span style="font-size: 0.7rem; opacity: 0.3;">▼</span>
+                    <span style="font-size: 0.6rem; opacity: 0.3;">DETAILS ▼</span>
                 </div>
-                <div class="mini-bar-container">
-                    <div class="mini-bar-fill" id="bar-${p.id}"></div>
+                <div class="bar-wrapper">
+                    <div class="mini-bar-container">
+                        <div class="mini-bar-fill" id="bar-${p.id}"></div>
+                        <div class="pips-container" id="pips-${p.id}">
+                            ${steps.map(() => `<div class="pip"></div>`).join('')}
+                        </div>
+                    </div>
+                    <div class="dynamic-perc" id="perc-${p.id}">0%</div>
                 </div>
                 <div class="steps-content">
                     ${steps.map((step, sIdx) => {
                         const isChecked = savedData[p.id] && savedData[p.id][sIdx] ? 'checked' : '';
                         return `
                             <label class="step-item ${isChecked ? 'completed' : ''}">
-                                <input type="checkbox" 
-                                    ${isChecked} 
-                                    onchange="saveAndSync('${p.id}', ${sIdx})" 
-                                    class="check-${p.id}">
+                                <input type="checkbox" ${isChecked} onchange="saveAndSync('${p.id}', ${sIdx})" class="check-${p.id}">
                                 ${sIdx + 1}. ${step}
                             </label>
                         `;
@@ -237,7 +163,7 @@
                 </div>
             `;
             grid.appendChild(card);
-            updateCardBar(p.id);
+            updateCardUI(p.id);
         });
 
         function saveAndSync(platformId, stepIndex) {
@@ -248,15 +174,33 @@
             savedData[platformId][stepIndex] = checkboxes[stepIndex].checked;
             localStorage.setItem('oliOhhProgress', JSON.stringify(savedData));
 
-            updateCardBar(platformId);
+            updateCardUI(platformId);
             calculateGlobal();
         }
 
-        function updateCardBar(platformId) {
+        function updateCardUI(platformId) {
             const checks = document.querySelectorAll(`.check-${platformId}`);
+            const pips = document.querySelectorAll(`#pips-${platformId} .pip`);
             const completed = Array.from(checks).filter(c => c.checked).length;
-            const percent = (completed / steps.length) * 100;
+            const percent = Math.round((completed / steps.length) * 100);
+
+            // Update Bar
             document.getElementById(`bar-${platformId}`).style.width = percent + '%';
+            
+            // Update Pips
+            pips.forEach((pip, idx) => {
+                pip.classList.toggle('active', idx < completed);
+            });
+
+            // Update Dynamic Percentage Label
+            const percLabel = document.getElementById(`perc-${platformId}`);
+            percLabel.innerText = percent === 100 ? "DONE" : percent + "%";
+            
+            if(percent === 100) {
+                percLabel.classList.add('reached');
+            } else {
+                percLabel.classList.remove('reached');
+            }
         }
 
         function calculateGlobal() {
