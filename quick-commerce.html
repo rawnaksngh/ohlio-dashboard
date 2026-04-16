@@ -4,229 +4,272 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oli-Ohh | Q-Com Command Center</title>
-    <link rel="icon" href="https://img.icons8.com/fluency/48/rocket.png">
     <style>
         :root {
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
             --ios-cyan: #00ffd5;
             --ios-purple: #af52de;
-            --ios-yellow: #f7b731;
             --bg-dark: #05070a;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'SF Pro Display', -apple-system, system-ui, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif; }
         
-        body {            
-            background-color: var(--bg-dark);
+        body { 
+            background-color: var(--bg-dark); 
             color: white; 
             min-height: 100vh; 
-            padding: 40px; 
-            overflow-x: hidden;
+            padding: 100px 20px 40px 20px; /* Kept padding for top elements */
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            overflow-x: hidden; 
+        }
+
+        /* --- MINI GLASS HOME BUTTON --- */
+        .home-card-container {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            z-index: 1000;
+        }
+
+        .home-card {
             display: flex;
-            flex-direction: column;
             align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #fff;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 100px; /* Pill shape */
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            overflow: hidden; /* For shine effect */
         }
 
-        /* --- DYNAMIC BACKGROUND ANIMATION --- */
-        .aurora {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; overflow: hidden; filter: blur(100px); opacity: 0.5;
-        }
-        .blob {
-            position: absolute; width: 500px; height: 500px; border-radius: 50%;
-            animation: move 20s infinite alternate;
-        }
-        .b1 { background: rgba(0, 255, 213, 0.15); top: -10%; left: -10%; }
-        .b2 { background: rgba(175, 82, 222, 0.15); bottom: -10%; right: -10%; animation-delay: -5s; }
-
-        @keyframes move { 
-            from { transform: translate(0, 0) scale(1); } 
-            to { transform: translate(100px, 100px) scale(1.2); } 
+        .home-card:hover {
+            border-color: rgba(255,255,255,0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
 
-        /* --- NAVIGATION --- */
-        .back-btn { 
-            align-self: flex-start;
-            display: inline-flex; align-items: center; margin-bottom: 40px; color: var(--ios-cyan); 
-            text-decoration: none; font-size: 0.75rem; font-weight: 700; border: 1px solid var(--glass-border); 
-            padding: 12px 24px; border-radius: 100px; transition: 0.5s cubic-bezier(0.2, 1, 0.2, 1); 
-            background: var(--glass); backdrop-filter: blur(10px);
-            text-transform: uppercase; letter-spacing: 2px;
+        .home-card:active {
+            transform: translateY(1px);
+            opacity: 0.7;
         }
-        .back-btn:hover { 
-            background: var(--ios-cyan); color: #000; 
-            box-shadow: 0 0 30px rgba(0, 255, 213, 0.4); 
-            transform: translateY(-2px); 
+
+        /* Icon styling */
+        .home-card svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--ios-cyan);
+            transition: 0.3s;
         }
+
+        .home-card:hover svg {
+            filter: drop-shadow(0 0 5px var(--ios-cyan));
+        }
+
+        /* Subtle shine animation */
+        .home-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: 0.5s;
+        }
+
+        .home-card:hover::after {
+            left: 100%;
+        }
+
+        /* --- BACKGROUND --- */
+        .aurora { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; filter: blur(100px); opacity: 0.3; }
+        .blob { position: absolute; width: 500px; height: 500px; border-radius: 50%; animation: move 20s infinite alternate; }
+        .b1 { background: var(--ios-cyan); top: -10%; left: -10%; }
+        .b2 { background: var(--ios-purple); bottom: -10%; right: -10%; animation-delay: -5s; }
+        @keyframes move { from { transform: translate(0, 0); } to { transform: translate(100px, 100px); } }
 
         /* --- HEADER --- */
-        .header { text-align: center; margin-bottom: 60px; }
-        h1 { 
-            font-size: clamp(2rem, 6vw, 3.5rem); 
-            font-weight: 900; letter-spacing: -3px; 
-            background: linear-gradient(180deg, #fff 30%, rgba(255,255,255,0.2) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-transform: uppercase; line-height: 1;
-        }
-        .meta-info { color: var(--ios-cyan); font-size: 0.8rem; margin-top: 15px; letter-spacing: 4px; font-weight: 600; opacity: 0.8; }
+        .header { text-align: center; margin-bottom: 50px; }
+        h1 { font-size: 3rem; font-weight: 900; letter-spacing: -2px; text-transform: uppercase; background: linear-gradient(#fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .meta { color: var(--ios-cyan); font-size: 0.7rem; letter-spacing: 4px; margin-top: 10px; opacity: 0.8; text-transform: uppercase; }
 
-        /* --- Q-COMM GRID --- */
-        .platform-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px; width: 100%; max-width: 1200px;
-            margin-bottom: 60px;
-        }
+        /* --- GRID --- */
+        .platform-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; width: 100%; max-width: 1200px; margin-bottom: 50px; }
 
-        .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(40px) saturate(150%);
-            border: 1px solid var(--glass-border);
-            border-radius: 40px;
-            padding: 40px;
-            text-align: center;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            animation: slideUp 0.8s ease backwards;
+        .glass-card { 
+            background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); 
+            border-radius: 30px; padding: 25px; cursor: pointer; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
         }
+        .glass-card:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-5px); }
+
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .brand-name { font-size: 1.5rem; font-weight: 800; }
         
-        /* Staggered Animation */
-        .glass-card:nth-child(1) { animation-delay: 0.1s; }
-        .glass-card:nth-child(2) { animation-delay: 0.2s; }
-        .glass-card:nth-child(3) { animation-delay: 0.3s; }
-        .glass-card:nth-child(4) { animation-delay: 0.4s; }
-        .glass-card:nth-child(5) { animation-delay: 0.5s; }
-        .glass-card:nth-child(6) { animation-delay: 0.6s; }
+        .mini-bar-container { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 15px 0; overflow: hidden; }
+        .mini-bar-fill { width: 0%; height: 100%; background: var(--ios-cyan); transition: width 0.6s ease; box-shadow: 0 0 10px var(--ios-cyan); }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-
-        .glass-card:hover { 
-            transform: translateY(-15px) scale(1.02); 
-            border-color: rgba(255,255,255,0.4);
-            background: rgba(255,255,255,0.08);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+        .steps-content { 
+            max-height: 0; opacity: 0; transition: all 0.5s ease; 
+            display: flex; flex-direction: column; gap: 12px;
         }
+        .glass-card.active .steps-content { max-height: 400px; opacity: 1; padding-top: 20px; }
 
-        .brand-name { font-size: 26px; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; }
-        .sub-text { font-size: 0.7rem; color: rgba(255,255,255,0.4); margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; }
+        .step-item { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; color: rgba(255,255,255,0.4); transition: 0.3s; cursor: pointer; }
+        .step-item.completed { color: #fff; font-weight: 600; }
 
-        .status-pill {
-            display: inline-flex; align-items: center; gap: 10px;
-            padding: 8px 20px; background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border); border-radius: 100px;
-            font-size: 0.75rem; font-weight: 700; color: #fff;
+        input[type="checkbox"] { 
+            appearance: none; width: 18px; height: 18px; border: 2px solid var(--glass-border); 
+            border-radius: 6px; cursor: pointer; transition: 0.3s; position: relative; flex-shrink: 0;
         }
-        .pulse-dot {
-            width: 8px; height: 8px; background: var(--ios-cyan); border-radius: 50%;
-            box-shadow: 0 0 15px var(--ios-cyan);
-            animation: pulse 2s infinite linear;
+        input[type="checkbox"]:checked { background: var(--ios-cyan); border-color: var(--ios-cyan); }
+        input[type="checkbox"]:checked::after { content: '✓'; position: absolute; color: #000; font-size: 12px; left: 3px; top: -1px; font-weight: 900; }
+
+        .overall-progress { 
+            background: var(--glass); backdrop-filter: blur(40px); padding: 40px; border-radius: 40px; 
+            border: 1px solid var(--glass-border); width: 100%; max-width: 1200px; 
         }
+        .progress-meta { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; }
+        .main-bar-container { width: 100%; height: 12px; background: rgba(255,255,255,0.05); border-radius: 100px; overflow: hidden; }
+        .main-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--ios-purple), var(--ios-cyan)); transition: 1s ease; }
 
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.4; } 100% { transform: scale(1); opacity: 1; } }
-
-        /* VIBRANT BRAND ACCENTS */
-        .blinkit { color: #f8cb46; text-shadow: 0 0 20px rgba(248, 203, 70, 0.3); }
-        .zepto { color: #af52de; text-shadow: 0 0 20px rgba(175, 82, 222, 0.3); }
-        .instamart { color: #ff6d2e; text-shadow: 0 0 20px rgba(255, 109, 46, 0.3); }
-        .amazon { color: #00a8e1; text-shadow: 0 0 20px rgba(0, 168, 225, 0.3); }
-        .flipkart { color: #2874f0; text-shadow: 0 0 20px rgba(40, 116, 240, 0.3); }
-        .bigbasket { color: #84c225; text-shadow: 0 0 20px rgba(132, 194, 37, 0.3); }
-
-        /* --- PROGRESS SECTION --- */
-        .overall-progress {
-            background: var(--glass);
-            backdrop-filter: blur(40px);
-            padding: 50px; border-radius: 50px;
-            border: 1px solid var(--glass-border);
-            width: 100%; max-width: 1200px;
-            animation: slideUp 1s ease 0.7s backwards;
-        }
-        .progress-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
-        .info-text { font-size: 1rem; font-weight: 700; color: var(--ios-cyan); text-transform: uppercase; letter-spacing: 2px; }
-        .percentage { font-size: 3rem; font-weight: 900; letter-spacing: -2px; }
-
-        .progress-container {
-            width: 100%; height: 12px; background: rgba(255,255,255,0.05);
-            border-radius: 100px; overflow: hidden; margin-bottom: 30px;
-        }
-        .progress-bar {
-            width: 35%; height: 100%;
-            background: linear-gradient(90deg, #af52de, var(--ios-cyan));
-            box-shadow: 0 0 30px rgba(0, 255, 213, 0.4);
-            animation: grow 2.5s cubic-bezier(0.16, 1, 0.3, 1) 1s backwards;
-        }
-
-        @keyframes grow { from { width: 0%; } to { width: 35%; } }
-        
-        .footer-note { font-size: 1rem; color: rgba(255,255,255,0.5); line-height: 1.8; max-width: 900px; }
-        .highlight { color: #fff; font-weight: 800; border-bottom: 1px solid var(--ios-cyan); }
-
+        .blinkit { color: #f8cb46; } .zepto { color: #af52de; } .instamart { color: #ff6d2e; }
+        .amazon { color: #00a8e1; } .flipkart { color: #2874f0; } .bigbasket { color: #84c225; }
     </style>
 </head>
 <body>
+
+    <div class="home-card-container">
+        <a href="home.html" class="home-card">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+            Home
+        </a>
+    </div>
 
     <div class="aurora">
         <div class="blob b1"></div>
         <div class="blob b2"></div>
     </div>
 
-    <a href="javascript:history.back()" class="back-btn">← Back to Dashboard</a>
-
     <div class="header">
         <h1>Integration Grid</h1>
-        <div class="meta-info">PROJECT OLI-OHH • OPS: AJIT • STATUS: DOCUMENTATION</div>
+        <div class="meta">Ops: Ajit • Status: Syncing Nodes</div>
     </div>
 
-    <div class="platform-grid">
-        <div class="glass-card">
-            <div class="brand-name blinkit">Blinkit</div>
-            <p class="sub-text">Merchant Auth</p>
-            <div class="status-pill"><div class="pulse-dot"></div> IN PROCESS</div>
-        </div>
-
-        <div class="glass-card">
-            <div class="brand-name zepto">Zepto</div>
-            <p class="sub-text">Brand Listing</p>
-            <div class="status-pill"><div class="pulse-dot"></div> IN PROCESS</div>
-        </div>
-
-        <div class="glass-card">
-            <div class="brand-name instamart">Instamart</div>
-            <p class="sub-text">KYC Portal</p>
-            <div class="status-pill"><div class="pulse-dot"></div> IN PROCESS</div>
-        </div>
-
-        <div class="glass-card">
-            <div class="brand-name amazon">Amazon Now</div>
-            <p class="sub-text">Fresh Connect</p>
-            <div class="status-pill"><div class="pulse-dot"></div> IN PROCESS</div>
-        </div>
-
-        <div class="glass-card">
-            <div class="brand-name flipkart">FK Minutes</div>
-            <p class="sub-text">Hyperlocal Map</p>
-            <div class="status-pill"><div class="pulse-dot"></div> IN PROCESS</div>
-        </div>
-
-        <div class="glass-card">
-            <div class="brand-name bigbasket">BigBasket</div>
-            <p class="sub-text">BB Now Sync</p>
-            <div class="status-pill"><div class="pulse-dot"></div> IN PROCESS</div>
-        </div>
-    </div>
+    <div class="platform-grid" id="grid"></div>
 
     <div class="overall-progress">
-        <div class="progress-header">
-            <div class="info-text">Unified Sync Progress</div>
-            <div class="percentage">35%</div>
+        <div class="progress-meta">
+            <span style="letter-spacing: 2px; font-weight: 700; color: var(--ios-cyan);">UNIFIED SYNC</span>
+            <span id="global-perc" style="font-size: 2.5rem; font-weight: 900;">0%</span>
         </div>
-        <div class="progress-container">
-            <div class="progress-bar"></div>
+        <div class="main-bar-container">
+            <div class="main-bar-fill" id="global-bar"></div>
         </div>
-        <p class="footer-note">
-            The documentation phase for <span class="highlight">Oli-Ohh</span> is now active across all hyper-local nodes. Currently, <span class="highlight">Ajit</span> is resolving verification tickets for Flipkart Minutes and Zepto. Dark-store mapping is scheduled to begin as soon as the brand authorizations are finalized.
-        </p>
     </div>
 
+    <script>
+        const platforms = [
+            { id: 'blink', name: 'Blinkit', class: 'blinkit' },
+            { id: 'zep', name: 'Zepto', class: 'zepto' },
+            { id: 'insta', name: 'Instamart', class: 'instamart' },
+            { id: 'amz', name: 'Amazon Now', class: 'amazon' },
+            { id: 'fk', name: 'FK Minutes', class: 'flipkart' },
+            { id: 'bb', name: 'BigBasket', class: 'bigbasket' }
+        ];
+
+        const steps = [
+            "Contacting Merchant",
+            "Emailing Details",
+            "Signing TOTs",
+            "Brand Listed",
+            "Receiving PO",
+            "PO Fulfilled"
+        ];
+
+        const grid = document.getElementById('grid');
+        const savedData = JSON.parse(localStorage.getItem('oliOhhProgress')) || {};
+
+        platforms.forEach((p, pIdx) => {
+            const card = document.createElement('div');
+            card.className = 'glass-card';
+            card.id = `card-${p.id}`;
+            
+            card.onclick = (e) => {
+                if(e.target.type !== 'checkbox' && !e.target.classList.contains('step-item')) {
+                    card.classList.toggle('active');
+                }
+            };
+
+            card.innerHTML = `
+                <div class="card-header">
+                    <span class="brand-name ${p.class}">${p.name}</span>
+                    <span style="font-size: 0.7rem; opacity: 0.3;">▼</span>
+                </div>
+                <div class="mini-bar-container">
+                    <div class="mini-bar-fill" id="bar-${p.id}"></div>
+                </div>
+                <div class="steps-content">
+                    ${steps.map((step, sIdx) => {
+                        const isChecked = savedData[p.id] && savedData[p.id][sIdx] ? 'checked' : '';
+                        return `
+                            <label class="step-item ${isChecked ? 'completed' : ''}">
+                                <input type="checkbox" 
+                                    ${isChecked} 
+                                    onchange="saveAndSync('${p.id}', ${sIdx})" 
+                                    class="check-${p.id}">
+                                ${sIdx + 1}. ${step}
+                            </label>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+            grid.appendChild(card);
+            updateCardBar(p.id);
+        });
+
+        function saveAndSync(platformId, stepIndex) {
+            const checkboxes = document.querySelectorAll(`.check-${platformId}`);
+            checkboxes[stepIndex].parentElement.classList.toggle('completed', checkboxes[stepIndex].checked);
+            
+            if (!savedData[platformId]) savedData[platformId] = {};
+            savedData[platformId][stepIndex] = checkboxes[stepIndex].checked;
+            localStorage.setItem('oliOhhProgress', JSON.stringify(savedData));
+
+            updateCardBar(platformId);
+            calculateGlobal();
+        }
+
+        function updateCardBar(platformId) {
+            const checks = document.querySelectorAll(`.check-${platformId}`);
+            const completed = Array.from(checks).filter(c => c.checked).length;
+            const percent = (completed / steps.length) * 100;
+            document.getElementById(`bar-${platformId}`).style.width = percent + '%';
+        }
+
+        function calculateGlobal() {
+            const allChecks = document.querySelectorAll('input[type="checkbox"]');
+            const total = allChecks.length;
+            const completed = Array.from(allChecks).filter(c => c.checked).length;
+            const globalPercent = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+            document.getElementById('global-bar').style.width = globalPercent + '%';
+            document.getElementById('global-perc').innerText = globalPercent + '%';
+        }
+
+        calculateGlobal();
+    </script>
 </body>
 </html>
