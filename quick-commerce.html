@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oli-Ohh | Q-Com Command Center</title>
+    <title>Oli-Ohh | Q-Com Sync Center</title>
     <style>
         :root {
             --glass: rgba(255, 255, 255, 0.03);
@@ -12,86 +12,78 @@
             --ios-purple: #af52de;
             --bg-dark: #05070a;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'SF Pro Display', -apple-system, sans-serif; }
-        
         body { background-color: var(--bg-dark); color: white; min-height: 100vh; padding: 100px 20px 40px 20px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
-
-        /* --- HOME BUTTON --- */
+        
         .home-card-container { position: fixed; top: 25px; left: 25px; z-index: 1000; }
         .home-card {
             display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff;
             background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-border);
-            border-radius: 100px; padding: 12px 20px; font-size: 14px; font-weight: 500; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 100px; padding: 12px 20px; font-size: 14px; font-weight: 500; transition: 0.4s;
         }
-        .home-card:hover { border-color: rgba(255,255,255,0.4); transform: translateY(-2px); background: rgba(255,255,255,0.06); }
         .home-card svg { width: 16px; height: 16px; fill: var(--ios-cyan); }
 
-        /* --- BACKGROUND --- */
         .aurora { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; filter: blur(100px); opacity: 0.3; }
         .blob { position: absolute; width: 500px; height: 500px; border-radius: 50%; animation: move 20s infinite alternate; }
         .b1 { background: var(--ios-cyan); top: -10%; left: -10%; }
         .b2 { background: var(--ios-purple); bottom: -10%; right: -10%; animation-delay: -5s; }
         @keyframes move { from { transform: translate(0, 0); } to { transform: translate(100px, 100px); } }
 
-        /* --- HEADER --- */
         .header { text-align: center; margin-bottom: 50px; }
         h1 { font-size: 3rem; font-weight: 900; letter-spacing: -2px; text-transform: uppercase; background: linear-gradient(#fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .meta { color: var(--ios-cyan); font-size: 0.7rem; letter-spacing: 4px; margin-top: 10px; opacity: 0.8; text-transform: uppercase; }
 
-        /* --- GRID --- */
         .platform-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; width: 100%; max-width: 1200px; margin-bottom: 50px; }
-
+        
+        /* --- DROPDOWN CARD LOGIC --- */
         .glass-card { 
             background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); 
-            border-radius: 30px; padding: 25px; cursor: pointer; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            overflow: hidden; position: relative;
+            border-radius: 30px; padding: 25px; position: relative; cursor: pointer;
+            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); overflow: hidden;
         }
         .glass-card:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-5px); }
-
+        
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .brand-name { font-size: 1.5rem; font-weight: 800; }
-        
-        /* --- DYNAMIC BAR WITH PERCENTAGE --- */
-        .bar-wrapper { position: relative; width: 100%; height: 24px; margin: 10px 0 25px 0; display: flex; align-items: center; }
+        .dropdown-icon { font-size: 0.6rem; opacity: 0.3; transition: 0.4s; }
+        .glass-card.active .dropdown-icon { transform: rotate(180deg); opacity: 1; color: var(--ios-cyan); }
+
+        .bar-wrapper { position: relative; width: 100%; height: 24px; margin: 10px 0 10px 0; display: flex; align-items: center; }
         .mini-bar-container { width: calc(100% - 60px); height: 6px; background: rgba(255,255,255,0.08); border-radius: 10px; position: relative; }
-        .mini-bar-fill { width: 0%; height: 100%; background: var(--ios-cyan); transition: width 0.6s cubic-bezier(0.33, 1, 0.68, 1); box-shadow: 0 0 15px var(--ios-cyan); border-radius: 10px; z-index: 2; }
+        .mini-bar-fill { height: 100%; background: var(--ios-cyan); transition: width 1s ease; box-shadow: 0 0 15px var(--ios-cyan); border-radius: 10px; }
         
-        .pips-container { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; justify-content: space-between; align-items: center; z-index: 3; pointer-events: none; }
-        .pip { width: 4px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 50%; transition: 0.3s; }
+        .pips-container { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
+        .pip { width: 4px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 50%; }
         .pip.active { background: #fff; box-shadow: 0 0 8px #fff; transform: scale(1.2); }
 
-        .dynamic-perc { 
-            width: 50px; margin-left: 10px; font-size: 11px; font-weight: 900; color: rgba(255,255,255,0.4);
-            text-align: right; font-variant-numeric: tabular-nums; transition: 0.3s;
+        .dynamic-perc { width: 50px; margin-left: 10px; font-size: 11px; font-weight: 900; color: rgba(255,255,255,0.4); text-align: right; }
+        .dynamic-perc.reached { color: var(--ios-cyan); }
+
+        /* --- DROPDOWN ANIMATION --- */
+        .steps-content { 
+            max-height: 0; opacity: 0; overflow: hidden;
+            display: flex; flex-direction: column; gap: 12px; 
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .dynamic-perc.reached { color: var(--ios-cyan); text-shadow: 0 0 10px rgba(0,255,213,0.5); }
+        .glass-card.active .steps-content { max-height: 350px; opacity: 1; padding-top: 20px; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); }
 
-        /* Dropdown */
-        .steps-content { max-height: 0; opacity: 0; transition: all 0.5s ease; display: flex; flex-direction: column; gap: 12px; }
-        .glass-card.active .steps-content { max-height: 400px; opacity: 1; padding-top: 10px; }
+        .step-item { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; color: rgba(255,255,255,0.15); transition: 0.3s; }
+        .step-item.active { color: #fff; font-weight: 600; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.05); }
+        .step-item.active .status-dot { background: var(--ios-cyan); box-shadow: 0 0 10px var(--ios-cyan); }
 
-        .step-item { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; color: rgba(255,255,255,0.4); transition: 0.3s; cursor: pointer; }
-        .step-item.completed { color: #fff; font-weight: 600; }
-
-        input[type="checkbox"] { appearance: none; width: 18px; height: 18px; border: 2px solid var(--glass-border); border-radius: 6px; cursor: pointer; position: relative; flex-shrink: 0; }
-        input[type="checkbox"]:checked { background: var(--ios-cyan); border-color: var(--ios-cyan); }
-        input[type="checkbox"]:checked::after { content: '✓'; position: absolute; color: #000; font-size: 12px; left: 3px; top: -1px; font-weight: 900; }
-
-        /* Overall Global Progress */
         .overall-progress { background: var(--glass); backdrop-filter: blur(40px); padding: 40px; border-radius: 40px; border: 1px solid var(--glass-border); width: 100%; max-width: 1200px; }
         .progress-meta { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; }
         .main-bar-container { width: 100%; height: 12px; background: rgba(255,255,255,0.05); border-radius: 100px; overflow: hidden; }
-        .main-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--ios-purple), var(--ios-cyan)); transition: 1s ease; }
+        .main-bar-fill { height: 100%; background: linear-gradient(90deg, var(--ios-purple), var(--ios-cyan)); transition: 1.5s ease; }
 
         .blinkit { color: #f8cb46; } .zepto { color: #af52de; } .instamart { color: #ff6d2e; }
         .amazon { color: #00a8e1; } .flipkart { color: #2874f0; } .bigbasket { color: #84c225; }
     </style>
 </head>
 <body>
-
     <div class="home-card-container">
-        <a href="home.html" class="home-card">
+        <a href="index.html" class="home-card">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             Home
         </a>
@@ -101,14 +93,14 @@
 
     <div class="header">
         <h1>Integration Grid</h1>
-        <div class="meta">Operations: Ajit • Real-time Nodes</div>
+        <div class="meta">Operations Sync • Verified April 2026</div>
     </div>
 
     <div class="platform-grid" id="grid"></div>
 
     <div class="overall-progress">
         <div class="progress-meta">
-            <span style="letter-spacing: 2px; font-weight: 700; color: var(--ios-cyan);">TOTAL ECOSYSTEM SYNC</span>
+            <span style="letter-spacing: 2px; font-weight: 700; color: var(--ios-cyan);">ECOSYSTEM SYNC STATUS</span>
             <span id="global-perc" style="font-size: 2.5rem; font-weight: 900;">0%</span>
         </div>
         <div class="main-bar-container">
@@ -117,6 +109,18 @@
     </div>
 
     <script>
+        /* MASTER CONTROL: 
+           Update these numbers based on your progress.
+        */
+        const currentProgress = {
+            blink: 3, // Blinkit: TOT Signed
+            zep: 4,   // Zepto: Listed
+            insta: 4, // Instamart: Listed
+            amz: 0,
+            fk: 0,
+            bb: 0     
+        };
+
         const platforms = [
             { id: 'blink', name: 'Blinkit', class: 'blinkit' },
             { id: 'zep', name: 'Zepto', class: 'zepto' },
@@ -128,92 +132,50 @@
 
         const steps = ["Contacting", "Emailing", "TOT Signed", "Listed", "PO Received", "Fulfilled"];
         const grid = document.getElementById('grid');
-        const savedData = JSON.parse(localStorage.getItem('oliOhhProgress')) || {};
 
         platforms.forEach((p) => {
+            const completedCount = currentProgress[p.id];
+            const percent = Math.round((completedCount / steps.length) * 100);
+
             const card = document.createElement('div');
             card.className = 'glass-card';
-            card.id = `card-${p.id}`;
-            card.onclick = (e) => { if(e.target.type !== 'checkbox' && !e.target.closest('.step-item')) card.classList.toggle('active'); };
-
+            card.onclick = () => card.classList.toggle('active');
+            
             card.innerHTML = `
                 <div class="card-header">
                     <span class="brand-name ${p.class}">${p.name}</span>
-                    <span style="font-size: 0.6rem; opacity: 0.3;">DETAILS ▼</span>
+                    <span class="dropdown-icon">DETAILS ▼</span>
                 </div>
                 <div class="bar-wrapper">
                     <div class="mini-bar-container">
-                        <div class="mini-bar-fill" id="bar-${p.id}"></div>
-                        <div class="pips-container" id="pips-${p.id}">
-                            ${steps.map(() => `<div class="pip"></div>`).join('')}
+                        <div class="mini-bar-fill" style="width: ${percent}%"></div>
+                        <div class="pips-container">
+                            ${steps.map((_, i) => `<div class="pip ${i < completedCount ? 'active' : ''}"></div>`).join('')}
                         </div>
                     </div>
-                    <div class="dynamic-perc" id="perc-${p.id}">0%</div>
+                    <div class="dynamic-perc ${percent === 100 ? 'reached' : ''}">${percent}%</div>
                 </div>
                 <div class="steps-content">
-                    ${steps.map((step, sIdx) => {
-                        const isChecked = savedData[p.id] && savedData[p.id][sIdx] ? 'checked' : '';
-                        return `
-                            <label class="step-item ${isChecked ? 'completed' : ''}">
-                                <input type="checkbox" ${isChecked} onchange="saveAndSync('${p.id}', ${sIdx})" class="check-${p.id}">
-                                ${sIdx + 1}. ${step}
-                            </label>
-                        `;
-                    }).join('')}
+                    ${steps.map((step, idx) => `
+                        <div class="step-item ${idx < completedCount ? 'active' : ''}">
+                            <div class="status-dot"></div>
+                            ${idx + 1}. ${step}
+                        </div>
+                    `).join('')}
                 </div>
             `;
             grid.appendChild(card);
-            updateCardUI(p.id);
         });
 
-        function saveAndSync(platformId, stepIndex) {
-            const checkboxes = document.querySelectorAll(`.check-${platformId}`);
-            checkboxes[stepIndex].parentElement.classList.toggle('completed', checkboxes[stepIndex].checked);
-            
-            if (!savedData[platformId]) savedData[platformId] = {};
-            savedData[platformId][stepIndex] = checkboxes[stepIndex].checked;
-            localStorage.setItem('oliOhhProgress', JSON.stringify(savedData));
+        // Global Calculation
+        const totalPossible = platforms.length * steps.length;
+        const currentTotal = Object.values(currentProgress).reduce((a, b) => a + b, 0);
+        const globalPercent = Math.round((currentTotal / totalPossible) * 100);
 
-            updateCardUI(platformId);
-            calculateGlobal();
-        }
-
-        function updateCardUI(platformId) {
-            const checks = document.querySelectorAll(`.check-${platformId}`);
-            const pips = document.querySelectorAll(`#pips-${platformId} .pip`);
-            const completed = Array.from(checks).filter(c => c.checked).length;
-            const percent = Math.round((completed / steps.length) * 100);
-
-            // Update Bar
-            document.getElementById(`bar-${platformId}`).style.width = percent + '%';
-            
-            // Update Pips
-            pips.forEach((pip, idx) => {
-                pip.classList.toggle('active', idx < completed);
-            });
-
-            // Update Dynamic Percentage Label
-            const percLabel = document.getElementById(`perc-${platformId}`);
-            percLabel.innerText = percent === 100 ? "DONE" : percent + "%";
-            
-            if(percent === 100) {
-                percLabel.classList.add('reached');
-            } else {
-                percLabel.classList.remove('reached');
-            }
-        }
-
-        function calculateGlobal() {
-            const allChecks = document.querySelectorAll('input[type="checkbox"]');
-            const total = allChecks.length;
-            const completed = Array.from(allChecks).filter(c => c.checked).length;
-            const globalPercent = total > 0 ? Math.round((completed / total) * 100) : 0;
-
+        setTimeout(() => {
             document.getElementById('global-bar').style.width = globalPercent + '%';
             document.getElementById('global-perc').innerText = globalPercent + '%';
-        }
-
-        calculateGlobal();
+        }, 300);
     </script>
 </body>
 </html>
