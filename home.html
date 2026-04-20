@@ -15,202 +15,88 @@
             --ios-red: #ff3b30;
             --text-glow: rgba(0, 255, 213, 0.4);
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; }
         
-        body {            
-            background: 
-                radial-gradient(at 0% 0%, rgba(15, 32, 39, 1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, rgba(32, 58, 67, 1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, rgba(44, 83, 100, 1) 0, transparent 50%), 
-                radial-gradient(at 50% 50%, rgba(0, 122, 255, 0.12) 0, transparent 50%), 
-                #0b0e11; 
-            color: white; 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            overflow-x: hidden; 
+        body {
+            background: radial-gradient(at 0% 0%, rgba(15, 32, 39, 1) 0, transparent 50%), radial-gradient(at 50% 0%, rgba(32, 58, 67, 1) 0, transparent 50%), radial-gradient(at 100% 0%, rgba(44, 83, 100, 1) 0, transparent 50%), radial-gradient(at 50% 50%, rgba(0, 122, 255, 0.12) 0, transparent 50%), #0b0e11; 
+            color: white; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; 
         }
 
         /* --- DEADLINE REMINDER UI --- */
-        .deadline-container {
-            margin-top: 15px;
-            width: fit-content;
-            z-index: 1100;
-        }
-        .deadline-pill {
-            background: rgba(255, 59, 48, 0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 59, 48, 0.4);
-            padding: 8px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .deadline-pill:hover { background: rgba(255, 59, 48, 0.25); transform: scale(1.02); }
+        .deadline-container { margin-top: 15px; width: fit-content; z-index: 1100; position: relative; }
+        .deadline-pill { background: rgba(255, 59, 48, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 59, 48, 0.4); padding: 8px 20px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .deadline-pill span { font-size: 0.8rem; font-weight: 700; color: #ff6b6b; text-transform: uppercase; letter-spacing: 1px; }
-        
-        .deadline-dropdown {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out, margin-top 0.3s;
-            background: rgba(22, 27, 34, 0.8);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            width: 250px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            margin-top: 0;
-            border: 1px solid var(--glass-border);
-        }
-        .deadline-dropdown.active { max-height: 200px; margin-top: 10px; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .deadline-dropdown { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; background: rgba(22, 27, 34, 0.9); backdrop-filter: blur(20px); border-radius: 20px; width: 250px; position: absolute; left: 50%; transform: translateX(-50%); margin-top: 10px; border: 1px solid var(--glass-border); }
+        .deadline-dropdown.active { max-height: 200px; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.1); }
         .dd-item { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .dd-item:last-child { border-bottom: none; }
         .dd-task { font-size: 0.85rem; font-weight: 600; display: block; color: var(--ios-cyan); }
         .dd-date { font-size: 0.75rem; opacity: 0.6; }
 
-        /* --- NOTIFICATION ANIMATION --- */
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 5px rgba(0, 255, 213, 0.2); }
-            50% { box-shadow: 0 0 20px rgba(0, 255, 213, 0.6); }
-            100% { box-shadow: 0 0 5px rgba(0, 255, 213, 0.2); }
-        }
+        /* --- NOTIFICATION & MODAL --- */
+        .notification-banner { margin-top: 20px; width: 90%; max-width: 600px; background: rgba(0, 255, 213, 0.1); backdrop-filter: blur(15px); border: 1px solid var(--ios-cyan); border-radius: 20px; padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; z-index: 900; }
+        .task-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); z-index: 2000; justify-content: center; align-items: center; }
+        .task-modal { background: #161b22; border: 1px solid var(--glass-border); border-radius: 35px; padding: 40px; width: 90%; max-width: 450px; text-align: center; }
+        .task-item-box { background: rgba(255,255,255,0.05); margin: 10px 0; padding: 15px; border-radius: 15px; text-align: left; border-left: 4px solid var(--ios-cyan); }
 
-        .notification-banner {
-            margin-top: 20px;
-            width: 90%;
-            max-width: 600px;
-            background: rgba(0, 255, 213, 0.1);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--ios-cyan);
-            border-radius: 20px;
-            padding: 12px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            animation: pulse-glow 3s infinite ease-in-out;
-            transition: 0.3s;
-            z-index: 900;
-        }
-        .notification-banner:hover { background: rgba(0, 255, 213, 0.2); transform: scale(1.02); }
-        .notif-text { font-size: 0.9rem; font-weight: 600; color: var(--ios-cyan); display: flex; align-items: center; gap: 10px; }
-        
-        /* --- TASK OVERLAY MODAL --- */
-        .task-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(15px);
-            z-index: 2000;
-            justify-content: center; align-items: center;
-        }
-        .task-modal {
-            background: #161b22;
-            border: 1px solid var(--glass-border);
-            border-radius: 35px;
-            padding: 40px;
-            width: 90%;
-            max-width: 450px;
-            text-align: center;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
-        }
-        .task-item-box {
-            background: rgba(255,255,255,0.05);
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 15px;
-            text-align: left;
-            border-left: 4px solid var(--ios-cyan);
-        }
-        .task-item-box p { font-size: 0.95rem; font-weight: 500; }
-        .task-item-box span { font-size: 0.8rem; opacity: 0.5; display: block; margin-top: 5px; }
+        /* --- NAV & HEADER --- */
+        nav { width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); }
+        .nav-logo { font-weight: 800; font-size: 1.1rem; color: var(--ios-cyan); text-transform: uppercase; }
+        header .main-title { font-size: clamp(1.8rem, 5vw, 3.2rem); font-weight: 900; letter-spacing: -2px; text-transform: uppercase; background: linear-gradient(180deg, #ffffff 40%, #00ffd5 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 10px 40px var(--text-glow); padding: 30px 0 10px; }
+        header .subtitle { font-size: 0.8rem; font-weight: 500; color: rgba(255, 255, 255, 0.4); letter-spacing: 5px; text-transform: uppercase; text-align: center; margin-bottom: 30px; }
 
-        /* --- UI COMPONENTS --- */
-        nav { 
-            width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; 
-            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); 
-        }
-        .nav-logo { font-weight: 800; font-size: 1.1rem; letter-spacing: -0.5px; color: var(--ios-cyan); text-transform: uppercase; }        
-        .nav-links { display: flex; gap: 20px; align-items: center; }        
-        .nav-links a { color: white; text-decoration: none; font-size: 0.9rem; font-weight: 500; opacity: 0.7; transition: 0.3s; }        
-        .nav-links a:hover { opacity: 1; color: var(--ios-cyan); }
-        .logout-btn { background: rgba(255, 59, 48, 0.1); border: 1px solid rgba(255, 59, 48, 0.3); padding: 6px 15px; border-radius: 12px; color: var(--ios-red) !important; }
+        /* --- 3-IN-A-ROW AUTO HOVER GRID --- */
+        .grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 95%; max-width: 1200px; padding: 20px; align-items: start; }
+        .glass-card { background: var(--glass); backdrop-filter: blur(30px); border: 1px solid var(--glass-border); border-radius: 35px; padding: 25px; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; max-height: 120px; position: relative; }
+        .glass-card:hover { max-height: 1000px; background: rgba(255, 255, 255, 0.12); border-color: var(--ios-cyan); transform: translateY(-5px); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
 
-        header { text-align: center; padding: 30px 20px 60px; width: 100%; }
-        header .main-title { 
-            font-size: clamp(2.2rem, 7vw, 3.8rem); font-weight: 900; letter-spacing: -2.5px; text-transform: uppercase; 
-            background: linear-gradient(180deg, #ffffff 40%, #00ffd5 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-            text-shadow: 0 10px 40px var(--text-glow); margin-bottom: 10px; line-height: 1.1; 
-        }
-        header .subtitle { font-size: 0.9rem; font-weight: 500; color: rgba(255, 255, 255, 0.4); letter-spacing: 6px; text-transform: uppercase; }
+        .card-icon { font-size: 2.2rem; display: block; text-align: center; margin-bottom: 10px; }
+        .card-title { font-size: 1.1rem; font-weight: 800; text-align: center; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
 
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 30px; width: 90%; max-width: 1250px; padding: 20px; margin-bottom: 50px; }
-        .glass-card { 
-            background: var(--glass); backdrop-filter: blur(30px); border: 1px solid var(--glass-border); border-radius: 40px; padding: 40px; 
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); display: flex; flex-direction: column; 
-        }
-        .glass-card:hover { transform: translateY(-12px); border-color: rgba(255, 255, 255, 0.35); background: rgba(255, 255, 255, 0.12); box-shadow: 0 40px 80px rgba(0,0,0,0.5); }
-        
-        .card-icon { font-size: 3rem; margin-bottom: 25px; display: block; filter: drop-shadow(0 5px 15px rgba(0,255,213,0.3)); }        
-        .card-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 30px; letter-spacing: -0.5px; }
-        .item-row-link { text-decoration: none; color: inherit; display: block; }
-        .item-row { 
-            background: rgba(255, 255, 255, 0.04); padding: 20px; border-radius: 24px; margin-bottom: 15px; cursor: pointer; transition: 0.3s; 
-            border: 1px solid transparent; 
-        }
+        /* --- CONTENT ROWS --- */
+        .card-content { opacity: 0; transition: 0.4s ease; transform: translateY(10px); }
+        .glass-card:hover .card-content { opacity: 1; transform: translateY(0); }
+        .item-row { background: rgba(255, 255, 255, 0.04); padding: 15px; border-radius: 20px; margin-bottom: 12px; transition: 0.3s; border: 1px solid transparent; }
         .item-row:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--ios-cyan); transform: scale(1.03); }
-        .item-header { display: flex; justify-content: space-between; align-items: center; }        
-        .item-name { font-weight: 700; font-size: 1.1rem; }                
-        .item-info { max-height: 0; overflow: hidden; transition: 0.4s ease; font-size: 0.95rem; color: rgba(255, 255, 255, 0.5); line-height: 1.5; }
-        .item-row:hover .item-info { max-height: 150px; margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1); }
-        
-        .dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; }        
-        .dot-cyan { background-color: var(--ios-cyan); box-shadow: 0 0 10px var(--ios-cyan); }        
+        .item-name { font-weight: 700; font-size: 0.95rem; display: block; }
+        .item-info { font-size: 0.8rem; color: rgba(255, 255, 255, 0.5); margin-top: 5px; line-height: 1.4; }
+        .dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; float: right; margin-top: 5px; }
+        .dot-cyan { background-color: var(--ios-cyan); box-shadow: 0 0 10px var(--ios-cyan); }
         .dot-purple { background-color: var(--ios-purple); box-shadow: 0 0 10px var(--ios-purple); }
 
+        /* --- FLOATING CONTROLS --- */
         .floating-controls { position: fixed; bottom: 40px; right: 40px; display: flex; flex-direction: column; gap: 15px; z-index: 1000; }
-        .fab { width: 65px; height: 65px; border-radius: 22px; background: var(--glass); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 22px; transition: 0.4s; }
+        .fab { width: 60px; height: 60px; border-radius: 20px; background: var(--glass); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 22px; transition: 0.4s; backdrop-filter: blur(10px); }
         .fab:hover { background: var(--ios-cyan); color: black; transform: scale(1.1); }
-        footer { margin: 60px 0 40px; opacity: 0.3; font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase; }
+
+        @media (max-width: 900px) { .grid-container { grid-template-columns: 1fr; } }
+        footer { margin: 60px 0 40px; opacity: 0.3; font-size: 0.8rem; text-align: center; }
     </style>
 </head>
 <body>
-    <nav>        
-        <div class="nav-logo">Oli Ohh Pasta / OPS</div>        
-        <div class="nav-links">            
-            <a href="#">Dashboard</a>            
-            <a href="about oli-ohh.html">About Product</a>            
-            <a href="meeting-highlights.html">Last Meeting Highlights</a>            
-            <a href="index.html" class="logout-btn">Logout</a>        
-        </div>    
+
+    <nav>
+        <div class="nav-logo">Oli Ohh Pasta / OPS</div>
+        <div class="nav-links" style="display: flex; gap: 20px;">
+            <a href="#" style="color:white; text-decoration:none; font-size:0.9rem; opacity:0.7;">Dashboard</a>
+            <a href="about oli-ohh.html" style="color:white; text-decoration:none; font-size:0.9rem; opacity:0.7;">About Product</a>
+            <a href="index.html" style="background: rgba(255, 59, 48, 0.1); border: 1px solid rgba(255, 59, 48, 0.3); padding: 6px 15px; border-radius: 12px; color: var(--ios-red); text-decoration:none; font-size:0.8rem; font-weight:bold;">Logout</a>
+        </div>
     </nav>
 
     <div class="deadline-container">
         <div class="deadline-pill" onclick="toggleDeadline()">
             <span>⚠️ Deadline Tasks</span>
-            <div style="font-size: 10px; color: #ff6b6b; transform: rotate(0deg); transition: 0.3s;" id="dd-arrow">▼</div>
+            <div id="dd-arrow" style="font-size: 10px; color: #ff6b6b; transition: 0.3s;">▼</div>
         </div>
         <div class="deadline-dropdown" id="deadlineDropdown">
-            <div class="dd-item">
-                <span class="dd-task">Instagram Marketing</span>
-                <span class="dd-date">Due: 16 may 2026</span>
-            </div>
-            <div class="dd-item">
-                <span class="dd-task">Shopify Storefront</span>
-                <span class="dd-date">Due: 15 April 2026</span>
-            </div>
+            <div class="dd-item"><span class="dd-task">Instagram Marketing</span><span class="dd-date">Due: 16 May 2026</span></div>
+            <div class="dd-item"><span class="dd-task">Shopify Storefront</span><span class="dd-date">Due: 15 April 2026</span></div>
         </div>
     </div>
 
     <div class="notification-banner" onclick="toggleTasks(true)">
-        <div class="notif-text"><span>🔔</span> 2 Pending Critical Tasks</div>
+        <div style="font-size: 0.9rem; font-weight: 600; color: var(--ios-cyan);">🔔 2 Pending Critical Tasks</div>
         <div style="font-size: 0.7rem; opacity: 0.7;">View Details →</div>
     </div>
 
@@ -223,127 +109,70 @@
         </div>
     </div>
 
-    <header>        
-        <div class="main-title">Oli Ohh Pasta Launch Command Center</div>        
-        <div class="subtitle">Mission Control 0 To 1</div>    
+    <header>
+        <div class="main-title">Oli Ohh Pasta Launch Command Center</div>
+        <div class="subtitle">Mission Control 0 To 1</div>
     </header>
-    
-    <div class="grid-container">        
-        <div class="glass-card">            
-            <span class="card-icon">🚀</span>            
-            <h2 class="card-title">Pre-Launch Tasks</h2>                        
-            <a href="oliohh inhouse.html" class="item-row-link">
-                <div class="item-row">
-                    <div class="item-header">
-                        <span class="item-name">Inhouse Marketing Protocol</span>
-                        <span class="dot dot-purple"></span>
-                    </div>
-                    <div class="item-info">Employee sampling and strategy.</div>
-                </div>
-            </a>
-            <a href="margin-structure.html" class="item-row-link">
-                <div class="item-row">
-                    <div class="item-header">
-                        <span class="item-name">Margin Structure</span>
-                        <span class="dot dot-cyan"></span>
-                    </div>
-                    <div class="item-info">Distribution of profits.</div>
-                </div>
-            </a>
-            <a href="CHANNEL CLASSIFICATION.html" class="item-row-link">
-                <div class="item-row">
-                    <div class="item-header">
-                        <span class="item-name">Channel Classification</span>
-                        <span class="dot dot-cyan"></span>
-                    </div>
-                    <div class="item-info">Supply chain supply standards.</div>
-                </div>
-            </a>
-            <a href="ecommerce.html" class="item-row-link">
-                <div class="item-row">
-                    <div class="item-header">
-                        <span class="item-name">E-Commerce</span>
-                        <span class="dot dot-cyan"></span>
-                    </div>
-                    <div class="item-info">Access centralized marketplace management.</div>
-                </div>
-            </a>
-        </div>
 
-        <div class="glass-card">            
-            <span class="card-icon">🌍</span>            
-            <h2 class="card-title">GTM Operations</h2>                        
-            <a href="quick-commerce.html" class="item-row-link">
-                <div class="item-row">
-                    <div class="item-header">
-                        <span class="item-name">Quick Commerce (Q-Com)</span>
-                        <span class="dot dot-cyan"></span>
-                    </div>
-                    <div class="item-info">Inventory mapping active (NCR).</div>
-                </div>
-            </a>
-            <a href="shop.html" class="item-row-link"><div class="item-row"><div class="item-header"><span class="item-name">100 Retailers Roadmap</span><span class="dot dot-cyan"></span></div><div class="item-info">D2R North India project.</div></div></a>
-            
-            <a href="review.html" class="item-row-link">
-                <div class="item-row">
-                    <div class="item-header">
-                        <span class="item-name">Reviews Tracker</span>
-                        <span class="dot dot-cyan"></span>
-                    </div>
-                    <div class="item-info">Global customer sentiment and feedback node.</div>
-                </div>
-            </a>
-
-            <a href="subdnorm.html" class="item-row-link">
-                <div class="item-row">
-                    <div class="item-header">
-                        <span class="item-name">Sub-D Norms for Oli Ohh</span>
-                        <span class="dot dot-cyan"></span>
-                    </div>
-                    <div class="item-info">Standard operating procedures and secondary distribution guidelines.</div>
-                </div>
-            </a>
-
-            <div class="item-row" onclick="openSurveyPopup()">
-                <div class="item-header">
-                    <span class="item-name">Market Survey Feedback</span>
-                    <span class="dot dot-purple"></span>
-                </div>
-                <div class="item-info">Live analytics and ground-level feedback from the pasta launch survey.</div>
+    <div class="grid-container">
+        <div class="glass-card">
+            <span class="card-icon">🚀</span>
+            <h2 class="card-title">Pre-Launch Tasks</h2>
+            <div class="card-content">
+                <a href="quick-commerce.html" style="text-decoration:none; color:inherit;">
+                    <div class="item-row"><span class="dot dot-cyan"></span><span class="item-name">Quick Commerce (Q-Com)</span><p class="item-info">Inventory mapping active (NCR).</p></div>
+                </a>
+                <a href="oliohh inhouse.html" style="text-decoration:none; color:inherit;">
+                    <div class="item-row"><span class="dot dot-purple"></span><span class="item-name">Inhouse Marketing Protocol</span><p class="item-info">Employee sampling and strategy.</p></div>
+                </a>
+                <a href="margin-structure.html" style="text-decoration:none; color:inherit;">
+                    <div class="item-row"><span class="dot dot-cyan"></span><span class="item-name">Margin Structure</span><p class="item-info">Distribution of profits.</p></div>
+                </a>
+                <a href="CHANNEL CLASSIFICATION.html" style="text-decoration:none; color:inherit;">
+                    <div class="item-row"><span class="dot dot-cyan"></span><span class="item-name">Channel Classification</span><p class="item-info">Supply chain supply standards.</p></div>
+                </a>
+                <a href="ecommerce.html" style="text-decoration:none; color:inherit;">
+                    <div class="item-row"><span class="dot dot-cyan"></span><span class="item-name">E-Commerce</span><p class="item-info">Access centralized marketplace management.</p></div>
+                </a>
             </div>
         </div>
 
-        <div class="glass-card">            
-            <span class="card-icon">📣</span>            
-            <h2 class="card-title">Marketing Hub</h2>                        
-            <a href="instagram.html" class="item-row-link">
-                <div class="item-row">
-                    <div class="item-header">
-                        <span class="item-name">Instagram</span>
-                        <span class="dot dot-purple"></span>
-                    </div>
-                    <div class="item-info">Social media engagement and brand presence.</div>
-                </div>
-            </a>
+        <div class="glass-card">
+            <span class="card-icon">🌍</span>
+            <h2 class="card-title">GTM Operations</h2>
+            <div class="card-content">
+                <a href="shop.html" style="text-decoration:none; color:inherit;">
+                    <div class="item-row"><span class="dot dot-cyan"></span><span class="item-name">100 Retailers Roadmap</span><p class="item-info">D2R North India project.</p></div>
+                </a>
+                <a href="review.html" style="text-decoration:none; color:inherit;">
+                    <div class="item-row"><span class="dot dot-cyan"></span><span class="item-name">Reviews Tracker</span><p class="item-info">Global customer sentiment feedback node.</p></div>
+                </a>
+                <a href="subdnorm.html" style="text-decoration:none; color:inherit;">
+                    <div class="item-row"><span class="dot dot-cyan"></span><span class="item-name">Sub-D Norms for Oli Ohh</span><p class="item-info">SOPs and secondary distribution guidelines.</p></div>
+                </a>
+                <div class="item-row" onclick="openSurveyPopup()" style="cursor:pointer;"><span class="dot dot-purple"></span><span class="item-name">Market Survey Feedback</span><p class="item-info">Live analytics and ground-level feedback.</p></div>
+            </div>
+        </div>
 
-            <a href="shopify.html" class="item-row-link">
-                <div class="item-row">
-                    <div class="item-header">
-                        <span class="item-name">Shopify</span>
-                        <span class="dot dot-purple"></span>
-                    </div>
-                    <div class="item-info">E-commerce storefront and direct sales tracking.</div>
-                </div>
-            </a>
-
-            <div class="item-row"><div class="item-header"><span class="item-name">Mandi Awareness</span><span class="dot dot-purple"></span></div><div class="item-info">BTL kits in Punjab/Haryana.</div></div>
-            <div class="item-row"><div class="item-header"><span class="item-name">Digital Influencers</span><span class="dot dot-purple"></span></div><div class="item-info">Vlogger series scheduled.</div></div>        
+        <div class="glass-card">
+            <span class="card-icon">📣</span>
+            <h2 class="card-title">Marketing Hub</h2>
+            <div class="card-content">
+                <a href="instagram.html" style="text-decoration:none; color:inherit;">
+                    <div class="item-row"><span class="dot dot-purple"></span><span class="item-name">Instagram</span><p class="item-info">Social media engagement and brand presence.</p></div>
+                </a>
+                <a href="shopify.html" style="text-decoration:none; color:inherit;">
+                    <div class="item-row"><span class="dot dot-purple"></span><span class="item-name">Shopify</span><p class="item-info">E-commerce storefront and sales tracking.</p></div>
+                </a>
+                <div class="item-row"><span class="dot dot-purple"></span><span class="item-name">Mandi Awareness</span><p class="item-info">BTL kits in Punjab/Haryana.</p></div>
+                <div class="item-row"><span class="dot dot-purple"></span><span class="item-name">Digital Influencers</span><p class="item-info">Vlogger series scheduled.</p></div>
+            </div>
         </div>
     </div>
-    
-    <div class="floating-controls">        
-        <a href="suggestion.html" class="fab">💡</a>        
-        <a href="meeting-highlights.html" class="fab">📝</a>    
+
+    <div class="floating-controls">
+        <a href="suggestion.html" class="fab">💡</a>
+        <a href="meeting-highlights.html" class="fab">📝</a>
     </div>
 
     <footer>&copy; 2026 Developed by <span style="color:var(--ios-cyan); font-weight:800;">Rounak Singh</span> | VTC Tradewings</footer>
@@ -355,28 +184,12 @@
             dropdown.classList.toggle('active');
             arrow.style.transform = dropdown.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
         }
-
-        function toggleTasks(show) {
-            document.getElementById('taskOverlay').style.display = show ? 'flex' : 'none';
-        }
-
+        function toggleTasks(show) { document.getElementById('taskOverlay').style.display = show ? 'flex' : 'none'; }
         function openSurveyPopup() {
-            const width = 850;
-            const height = 650;
+            const width = 850; const height = 650;
             const left = (window.innerWidth / 2) - (width / 2);
             const top = (window.innerHeight / 2) - (height / 2);
-            const url = "https://docs.google.com/forms/d/1ESLZNsWBnxQVW6ApgSmyUokE3ENvX1Vj75ELEMSbqes/viewanalytics";
-            window.open(url, "SurveyAnalytics", `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no`);
-        }
-
-        window.onclick = function(event) {
-            if (!event.target.closest('.deadline-container')) {
-                const dropdown = document.getElementById('deadlineDropdown');
-                if (dropdown && dropdown.classList.contains('active')) {
-                    dropdown.classList.remove('active');
-                    document.getElementById('dd-arrow').style.transform = 'rotate(0deg)';
-                }
-            }
+            window.open("https://docs.google.com/forms/d/1ESLZNsWBnxQVW6ApgSmyUokE3ENvX1Vj75ELEMSbqes/viewanalytics", "SurveyAnalytics", `width=${width},height=${height},top=${top},left=${left},resizable=yes`);
         }
     </script>
 </body>
