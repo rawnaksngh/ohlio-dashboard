@@ -40,6 +40,11 @@
 
         nav { width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); }
         .nav-logo { font-weight: 800; font-size: 1.1rem; color: var(--ios-cyan); text-transform: uppercase; }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; font-size: 0.9rem; font-weight: 500; opacity: 0.7; transition: 0.3s; }
+        .nav-links a:hover { opacity: 1; color: var(--ios-cyan); }
+        .logout-btn { background: rgba(255, 59, 48, 0.1); border: 1px solid rgba(255, 59, 48, 0.3); padding: 6px 15px; border-radius: 12px; color: var(--ios-red) !important; }
+
         header .main-title { font-size: clamp(1.8rem, 5vw, 3.2rem); font-weight: 900; letter-spacing: -2px; text-transform: uppercase; background: linear-gradient(180deg, #ffffff 40%, #00ffd5 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 10px 40px var(--text-glow); padding: 30px 0 10px; text-align: center; }
 
         /* --- GRID & DIVIDER --- */
@@ -75,7 +80,7 @@
         .dot-purple { background-color: var(--ios-purple); box-shadow: 0 0 10px var(--ios-purple); }
 
         .floating-controls { position: fixed; bottom: 40px; right: 40px; display: flex; flex-direction: column; gap: 15px; z-index: 1000; }
-        .fab { width: 60px; height: 60px; border-radius: 20px; background: var(--glass); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 22px; transition: 0.4s; backdrop-filter: blur(10px); }
+        .fab { width: 60px; height: 60px; border-radius: 20px; background: var(--glass); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 22px; transition: 0.4s; backdrop-filter: blur(10px); color: white; }
         .fab:hover { background: var(--ios-cyan); color: black; transform: scale(1.1); }
 
         @media (max-width: 900px) { .grid-container { grid-template-columns: 1fr; } }
@@ -86,10 +91,11 @@
 
     <nav>
         <div class="nav-logo">Oli Ohh Pasta / OPS</div>
-        <div class="nav-links" style="display: flex; gap: 20px;">
-            <a href="#" style="color:white; text-decoration:none; font-size:0.9rem; opacity:0.7;">Dashboard</a>
-            <a href="about oli-ohh.html" style="color:white; text-decoration:none; font-size:0.9rem; opacity:0.7;">About Product</a>
-            <a href="index.html" style="background: rgba(255, 59, 48, 0.1); border: 1px solid rgba(255, 59, 48, 0.3); padding: 6px 15px; border-radius: 12px; color: var(--ios-red); text-decoration:none; font-size:0.8rem; font-weight:bold;">Logout</a>
+        <div class="nav-links">
+            <a href="#">Dashboard</a>
+            <a href="about oli-ohh.html">About Product</a>
+            <a href="meeting-highlights.html">Last Meeting Highlights</a>
+            <a href="index.html" class="logout-btn">Logout</a>
         </div>
     </nav>
 
