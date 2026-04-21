@@ -3,303 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Futuristic NCR Operations</title>
+    <title>NCR Operations | Snake Roadmap</title>
     <style>
         :root {
             --bg: #050505;
-            --card-bg: rgba(255, 255, 255, 0.04);
             --accent: #007AFF; 
             --accent-glow: rgba(0, 122, 255, 0.4);
-            --text-main: #FFFFFF;
-            --text-dim: #A1A1A6;
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 50% 0%, rgba(0, 122, 255, 0.12) 0%, transparent 50%),
-                radial-gradient(circle at 0% 100%, rgba(0, 122, 255, 0.05) 0%, transparent 30%);
-            min-height: 100vh;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-bottom: 80px;
-        }
-
-        /* --- STICKY HOME BUTTON --- */
-        .home-nav {
-            position: absolute;
-            top: clamp(15px, 4vw, 30px);
-            left: clamp(15px, 4vw, 30px);
-            z-index: 1000;
-        }
-
-        .home-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            text-decoration: none;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .home-btn span {
-            color: white;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-
-        .home-btn svg {
-            fill: white;
-            width: 16px;
-            height: 16px;
-        }
-
-        .home-btn:hover {
-            background: rgba(255, 255, 255, 0.12);
-            transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.3);
+            padding-bottom: 100px;
+            overflow-x: hidden;
         }
 
         /* --- HEADER --- */
-        header {
-            padding: 120px 24px 60px 24px;
-            text-align: center;
-            width: 100%;
-        }
+        header { padding: 80px 20px 40px; text-align: center; }
+        header h1 { font-size: 2.5rem; letter-spacing: -1px; margin-bottom: 10px; }
+        header p { color: var(--accent); font-weight: 700; letter-spacing: 2px; font-size: 0.8rem; text-transform: uppercase; }
 
-        header h1 {
-            font-size: clamp(2.2rem, 8vw, 3.8rem);
-            font-weight: 700;
-            letter-spacing: -0.04em;
-            background: linear-gradient(180deg, #fff 20%, #888 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 12px;
-        }
-
-        header p {
-            color: var(--text-dim);
-            font-size: clamp(0.95rem, 4vw, 1.2rem);
-            font-weight: 400;
-            letter-spacing: 0.02em;
-        }
-
-        /* --- FLOW CONTAINER --- */
-        .flow-container {
+        /* --- SNAKE CONTAINER --- */
+        .snake-container {
             position: relative;
             width: 100%;
-            max-width: 600px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0 20px;
+            max-width: 800px;
+            height: 2200px; /* Long enough to fit the snake curves */
         }
 
-        .central-line {
+        /* SVG Road Styling */
+        #snake-svg {
             position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            width: 2px;
-            background: rgba(255, 255, 255, 0.06);
-            transform: translateX(-50%);
-            z-index: 0;
-        }
-
-        .energy-beam {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 2px;
-            height: 20vh;
-            background: linear-gradient(to bottom, transparent, var(--accent), transparent);
-            transform: translateX(-50%);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: 1;
-            animation: beamMove 5s infinite ease-in-out;
         }
 
-        @keyframes beamMove {
-            0% { top: -20vh; }
-            100% { top: 100%; }
+        .road-bg { fill: none; stroke: rgba(255, 255, 255, 0.05); stroke-width: 80; stroke-linecap: round; }
+        .road-progress {
+            fill: none; stroke: var(--accent); stroke-width: 6; 
+            stroke-linecap: round; stroke-dasharray: 3000; stroke-dashoffset: 3000;
+            filter: drop-shadow(0 0 10px var(--accent));
+            animation: drawPath 4s ease-out forwards;
         }
 
-        .step-wrapper {
-            position: relative;
-            width: 100%;
+        @keyframes drawPath { to { stroke-dashoffset: 0; } }
+
+        /* --- CHECKPOINTS --- */
+        .checkpoint {
+            position: absolute;
+            z-index: 10;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            margin: 40px 0;
-            z-index: 2;
+            gap: 20px;
+            width: 320px;
             opacity: 0;
-            transform: scale(0.9) translateY(40px);
-            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(20px);
+            transition: 0.6s ease-out;
         }
 
-        .step-wrapper.active {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-        }
+        .checkpoint.active { opacity: 1; transform: translateY(0); }
+
+        /* Right side nodes */
+        .cp-right { flex-direction: row; }
+        /* Left side nodes */
+        .cp-left { flex-direction: row-reverse; text-align: right; }
 
         .node {
-            width: 14px;
-            height: 14px;
-            background: var(--bg);
-            border: 2px solid var(--accent);
+            width: 50px; height: 50px;
+            background: #000;
+            border: 4px solid var(--accent);
             border-radius: 50%;
-            margin-bottom: 25px;
-            box-shadow: 0 0 15px var(--accent-glow);
-            transition: all 0.6s ease;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; box-shadow: 0 0 20px var(--accent-glow);
+            flex-shrink: 0;
         }
 
-        .step-wrapper.active .node {
-            background: var(--accent);
-            transform: scale(1.1);
-            box-shadow: 0 0 25px var(--accent);
-        }
-
-        /* --- UPDATED CARD WITH SMOOTH ZOOM --- */
         .card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 15px 20px;
             width: 100%;
-            max-width: 460px;
-            background: var(--card-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
-            border-radius: 28px;
-            padding: clamp(24px, 6vw, 35px);
-            text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-            /* Smooth Zoom Transition */
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), 
-                        border-color 0.4s ease,
-                        background-color 0.4s ease;
-            cursor: pointer;
+            transition: 0.3s;
         }
 
-        .card:hover {
-            transform: scale(1.03); /* Subtle Smooth Zoom */
-            border-color: rgba(255, 255, 255, 0.25);
-            background: rgba(255, 255, 255, 0.07);
+        .card:hover { border-color: var(--accent); background: rgba(255,255,255,0.08); }
+        .card h3 { font-size: 0.95rem; margin-bottom: 4px; }
+        .card p { font-size: 0.75rem; color: #888; }
+
+        /* --- HOME BUTTON --- */
+        .back-btn {
+            position: fixed; top: 20px; left: 20px; z-index: 100;
+            background: var(--glass); border: 1px solid var(--border);
+            padding: 10px 20px; border-radius: 50px; color: white;
+            text-decoration: none; font-weight: 600; font-size: 0.8rem;
+            backdrop-filter: blur(10px);
         }
 
-        .step-label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--accent);
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .step-title {
-            font-size: clamp(1.2rem, 5vw, 1.5rem);
-            font-weight: 600;
-            color: var(--text-main);
-            line-height: 1.35;
-        }
-
-        .step-num {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: clamp(5rem, 18vw, 8rem);
-            font-weight: 900;
-            color: rgba(255, 255, 255, 0.02);
-            pointer-events: none;
-            width: 100%;
-            text-align: center;
-            z-index: -1;
-        }
-
-        @media only screen and (max-width: 480px) {
-            header { padding-top: 100px; }
-            .home-nav { top: 20px; left: 20px; }
-            .step-wrapper { margin: 25px 0; }
-            .card:hover { transform: scale(1.02); } /* Slightly less zoom on mobile to prevent clipping */
+        /* Mobile specific positioning overrides */
+        @media (max-width: 600px) {
+            .snake-container { height: 2500px; }
+            .checkpoint { width: 260px; }
+            #snake-svg { left: -10%; width: 120%; }
         }
     </style>
 </head>
 <body>
 
-    <nav class="home-nav">
-        <a href="home.html" class="home-btn">
-            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            <span>Home</span>
-        </a>
-    </nav>
+    <a href="index.html" class="back-btn">← BACK</a>
 
     <header>
         <h1>Operational Flow</h1>
-        <p>Delhi NCR Activation Roadmap</p>
+        <p>NCR Activation Snake Path</p>
     </header>
 
-    <main class="flow-container" id="flow">
-        <div class="central-line"></div>
-        <div class="energy-beam"></div>
-    </main>
+    <div class="snake-container">
+        <svg id="snake-svg" viewBox="0 0 800 2200">
+            <path id="road-path" class="road-bg" d="M 400 50 Q 750 300 400 550 Q 50 800 400 1050 Q 750 1300 400 1550 Q 50 1800 400 2050" />
+            <path class="road-progress" d="M 400 50 Q 750 300 400 550 Q 50 800 400 1050 Q 750 1300 400 1550 Q 50 1800 400 2050" />
+        </svg>
+
+        <div class="checkpoint cp-right" style="top: 20px; left: 240px;">
+            <div class="node">1</div>
+            <div class="card"><h3>Operations Initiated</h3><p>Project Launch & Kickoff</p></div>
+        </div>
+
+        <div class="checkpoint cp-right" style="top: 250px; left: 450px;">
+            <div class="node">2</div>
+            <div class="card"><h3>POSM Deployment</h3><p>Dangler, Poster, Banner</p></div>
+        </div>
+
+        <div class="checkpoint cp-left" style="top: 520px; left: 240px;">
+            <div class="node">3</div>
+            <div class="card"><h3>Wet Sampling</h3><p>Live tasting phase</p></div>
+        </div>
+
+        <div class="checkpoint cp-left" style="top: 770px; left: 40px;">
+            <div class="node">4</div>
+            <div class="card"><h3>Full Store Activation</h3><p>Visual Merchandising</p></div>
+        </div>
+
+        <div class="checkpoint cp-right" style="top: 1020px; left: 240px;">
+            <div class="node">5</div>
+            <div class="card"><h3>Top Store Visits</h3><p>Feedback Loops</p></div>
+        </div>
+
+        <div class="checkpoint cp-right" style="top: 1270px; left: 450px;">
+            <div class="node">6</div>
+            <div class="card"><h3>Taste Confirmation</h3><p>Order Finalization</p></div>
+        </div>
+
+        <div class="checkpoint cp-left" style="top: 1520px; left: 240px;">
+            <div class="node">7</div>
+            <div class="card"><h3>PO Receiving</h3><p>Purchase Order entry</p></div>
+        </div>
+
+        <div class="checkpoint cp-left" style="top: 1770px; left: 40px;">
+            <div class="node">8</div>
+            <div class="card"><h3>PO Fullfiled</h3><p>Fulfillment of PO</p></div>
+        </div>
+
+        <div class="checkpoint cp-right" style="top: 2020px; left: 240px;">
+            <div class="node">9</div>
+            <div class="card"><h3>Expansion</h3><p>All Available Stores</p></div>
+        </div>
+
+        <div class="checkpoint cp-right" style="top: 2270px; left: 450px;">
+            <div class="node">10</div>
+            <div class="card"><h3>Strategic Visits</h3><p>Long-term Seller Growth</p></div>
+        </div>
+    </div>
 
     <script>
-        const data = [
-            { id: "01", title: "Delhi NCR Operations Initiated" },
-            { id: "02", title: "POSM Deployment (Dangler, Poster, Banner)" },
-            { id: "03", title: "Wet Sampling Phase" },
-            { id: "04", title: "Full Store Activation" },
-            { id: "05", title: "Top Store Visits & Feedback Loops" },
-            { id: "06", title: "Taste Confirmation & Order Finalization" },
-            { id: "07", title: "Purchase Order (PO) Receiving" },
-            { id: "08", title: "PO Fulfillment & Logistics" },
-            { id: "09", title: "Expansion to All Available Stores (DRCP)" },
-            { id: "10", title: "Strategic Seller Visits" }
-        ];
-
-        const container = document.getElementById('flow');
-
-        data.forEach((item) => {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'step-wrapper';
-            wrapper.innerHTML = `
-                <div class="step-num">${item.id}</div>
-                <div class="node"></div>
-                <div class="card">
-                    <span class="step-label">Phase ${item.id}</span>
-                    <div class="step-title">${item.title}</div>
-                </div>
-            `;
-            container.appendChild(wrapper);
-        });
-
+        // Reveal checkpoints on scroll
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
                 }
             });
-        }, { threshold: 0.15 });
+        }, { threshold: 0.5 });
 
-        document.querySelectorAll('.step-wrapper').forEach(el => observer.observe(el));
+        document.querySelectorAll('.checkpoint').forEach(cp => observer.observe(cp));
     </script>
 </body>
 </html>
