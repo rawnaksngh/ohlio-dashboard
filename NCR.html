@@ -41,33 +41,46 @@
         
         .status-tag { font-size: 0.6rem; text-transform: uppercase; font-weight: 800; padding: 2px 8px; border-radius: 4px; margin-top: 5px; display: inline-block; background: var(--success); color: black; }
         
-        .card { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--border); border-radius: 20px; padding: 15px 20px; width: 100%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .card { position: relative; background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--border); border-radius: 20px; padding: 15px 20px; width: 100%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .card h3 { font-size: 0.95rem; margin-bottom: 4px; }
         .card p { font-size: 0.75rem; color: #888; }
 
-        /* --- EXCELLENT HOVER EFFECT FOR TOP STORE --- */
-        .interactive-card:hover {
-            transform: scale(1.05);
-            background: rgba(0, 122, 255, 0.1);
-            border-color: var(--accent);
-            box-shadow: 0 0 30px rgba(0, 122, 255, 0.2);
-        }
-        .interactive-card:hover .node {
-            transform: rotate(360deg);
-        }
-        .hover-cta {
-            font-size: 0.6rem; 
-            color: var(--accent); 
-            text-decoration: underline; 
-            display: block; 
-            margin-top: 5px;
-            opacity: 0.8;
-            transition: 0.3s;
-        }
-        .interactive-card:hover .hover-cta {
-            letter-spacing: 0.5px;
-            opacity: 1;
+        /* --- LOG BADGE (OUTSIDE PADDED) --- */
+        .log-badge {
+            position: absolute;
+            top: -15px;
+            right: -10px;
+            background: var(--accent);
             color: white;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 5px 12px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px var(--accent-glow);
+            z-index: 20;
+            white-space: nowrap;
+            border: 1px solid rgba(255,255,255,0.3);
+            letter-spacing: 0.5px;
+            animation: pulseGlow 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: translateY(0) scale(1); box-shadow: 0 5px 10px var(--accent-glow); }
+            50% { transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 20px var(--accent-glow); }
+            100% { transform: translateY(0) scale(1); box-shadow: 0 5px 10px var(--accent-glow); }
+        }
+
+        .interactive-card:hover .card {
+            transform: scale(1.02);
+            border-color: var(--accent);
+            background: rgba(0, 122, 255, 0.08);
+        }
+
+        .interactive-card:hover .log-badge {
+            background: white;
+            color: var(--accent);
+            transform: scale(1.1) translateY(-5px);
         }
 
         /* --- POPUP STYLES --- */
@@ -84,7 +97,12 @@
         .visit-date { font-size: 0.65rem; color: var(--success); display: block; margin-top: 5px; font-weight: bold; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: #888; }
 
-        @media (max-width: 768px) { .checkpoint { width: 45%; } .cp-right { left: 52% !important; } .cp-left { left: 3% !important; } }
+        @media (max-width: 768px) { 
+            .checkpoint { width: 45%; } 
+            .cp-right { left: 52% !important; } 
+            .cp-left { left: 3% !important; } 
+            .log-badge { font-size: 0.55rem; padding: 4px 10px; right: -5px; }
+        }
     </style>
 </head>
 <body>
@@ -122,10 +140,10 @@
 
         <div class="checkpoint cp-right completed interactive-card" style="top: 1020px; left: 52%; cursor: pointer;" onclick="togglePopup(true)">
             <div class="node">✓</div>
+            <div class="log-badge">17 Logs: Click to check</div>
             <div class="card">
                 <h3>Top Store Visits</h3>
-                <p>Feedback logs,Free samples.</p>
-                <span class="hover-cta">17 logs click and check</span>
+                <p>Feedback logs, Free samples.</p>
                 <span class="status-tag">Done</span>
             </div>
         </div>
