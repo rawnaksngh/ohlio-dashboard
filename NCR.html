@@ -9,6 +9,8 @@
             --bg: #050505;
             --accent: #007AFF; 
             --accent-glow: rgba(0, 122, 255, 0.4);
+            --success: #34C759; 
+            --success-glow: rgba(52, 199, 89, 0.4);
             --glass: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.1);
         }
@@ -36,10 +38,9 @@
             position: relative;
             width: 100%;
             max-width: 800px;
-            height: 2200px; /* Long enough to fit the snake curves */
+            height: 2550px; 
         }
 
-        /* SVG Road Styling */
         #snake-svg {
             position: absolute;
             top: 0; left: 0;
@@ -49,9 +50,9 @@
 
         .road-bg { fill: none; stroke: rgba(255, 255, 255, 0.05); stroke-width: 80; stroke-linecap: round; }
         .road-progress {
-            fill: none; stroke: var(--accent); stroke-width: 6; 
-            stroke-linecap: round; stroke-dasharray: 3000; stroke-dashoffset: 3000;
-            filter: drop-shadow(0 0 10px var(--accent));
+            fill: none; stroke: var(--success); stroke-width: 6; 
+            stroke-linecap: round; stroke-dasharray: 3500; stroke-dashoffset: 3500;
+            filter: drop-shadow(0 0 10px var(--success-glow));
             animation: drawPath 4s ease-out forwards;
         }
 
@@ -71,10 +72,7 @@
         }
 
         .checkpoint.active { opacity: 1; transform: translateY(0); }
-
-        /* Right side nodes */
         .cp-right { flex-direction: row; }
-        /* Left side nodes */
         .cp-left { flex-direction: row-reverse; text-align: right; }
 
         .node {
@@ -85,6 +83,30 @@
             display: flex; align-items: center; justify-content: center;
             font-weight: 900; box-shadow: 0 0 20px var(--accent-glow);
             flex-shrink: 0;
+        }
+
+        /* --- COMPLETED STATE --- */
+        .completed .node {
+            border-color: var(--success);
+            box-shadow: 0 0 25px var(--success-glow);
+            background: var(--success);
+            color: black;
+        }
+        .completed .card {
+            border-color: rgba(52, 199, 89, 0.3);
+            background: rgba(52, 199, 89, 0.05);
+        }
+        .status-tag {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 5px;
+            display: inline-block;
+            background: var(--success);
+            color: black;
         }
 
         .card {
@@ -101,7 +123,6 @@
         .card h3 { font-size: 0.95rem; margin-bottom: 4px; }
         .card p { font-size: 0.75rem; color: #888; }
 
-        /* --- HOME BUTTON --- */
         .back-btn {
             position: fixed; top: 20px; left: 20px; z-index: 100;
             background: var(--glass); border: 1px solid var(--border);
@@ -110,10 +131,9 @@
             backdrop-filter: blur(10px);
         }
 
-        /* Mobile specific positioning overrides */
         @media (max-width: 600px) {
-            .snake-container { height: 2500px; }
-            .checkpoint { width: 260px; }
+            .snake-container { height: 2600px; }
+            .checkpoint { width: 280px; }
             #snake-svg { left: -10%; width: 120%; }
         }
     </style>
@@ -128,64 +148,63 @@
     </header>
 
     <div class="snake-container">
-        <svg id="snake-svg" viewBox="0 0 800 2200">
-            <path id="road-path" class="road-bg" d="M 400 50 Q 750 300 400 550 Q 50 800 400 1050 Q 750 1300 400 1550 Q 50 1800 400 2050" />
-            <path class="road-progress" d="M 400 50 Q 750 300 400 550 Q 50 800 400 1050 Q 750 1300 400 1550 Q 50 1800 400 2050" />
+        <svg id="snake-svg" viewBox="0 0 800 2550">
+            <path class="road-bg" d="M 400 50 Q 750 300 400 550 Q 50 800 400 1050 Q 750 1300 400 1550 Q 50 1800 400 2050 Q 750 2300 400 2500" />
+            <path class="road-progress" d="M 400 50 Q 750 300 400 550 Q 50 800 400 1050 Q 750 1300 400 1550 Q 50 1800 400 2050 Q 750 2300 400 2500" />
         </svg>
 
-        <div class="checkpoint cp-right" style="top: 20px; left: 240px;">
-            <div class="node">1</div>
-            <div class="card"><h3>Operations Initiated</h3><p>Project Launch & Kickoff</p></div>
+        <div class="checkpoint cp-right completed" style="top: 20px; left: 240px;">
+            <div class="node">✓</div>
+            <div class="card"><h3>Operations Initiated</h3><p>Project Launch Complete</p><span class="status-tag">Done</span></div>
         </div>
 
-        <div class="checkpoint cp-right" style="top: 250px; left: 450px;">
-            <div class="node">2</div>
-            <div class="card"><h3>POSM Deployment</h3><p>Dangler, Poster, Banner</p></div>
+        <div class="checkpoint cp-right completed" style="top: 250px; left: 450px;">
+            <div class="node">✓</div>
+            <div class="card"><h3>POSM Deployment</h3><p>All materials installed</p><span class="status-tag">Done</span></div>
         </div>
 
-        <div class="checkpoint cp-left" style="top: 520px; left: 240px;">
-            <div class="node">3</div>
-            <div class="card"><h3>Wet Sampling</h3><p>Live tasting phase</p></div>
+        <div class="checkpoint cp-left completed" style="top: 520px; left: 240px;">
+            <div class="node">✓</div>
+            <div class="card"><h3>Wet Sampling</h3><p>Live tasting concluded</p><span class="status-tag">Done</span></div>
         </div>
 
-        <div class="checkpoint cp-left" style="top: 770px; left: 40px;">
-            <div class="node">4</div>
-            <div class="card"><h3>Full Store Activation</h3><p>Visual Merchandising</p></div>
+        <div class="checkpoint cp-left completed" style="top: 770px; left: 40px;">
+            <div class="node">✓</div>
+            <div class="card"><h3>Full Store Activation</h3><p>Merchandising complete</p><span class="status-tag">Done</span></div>
         </div>
 
-        <div class="checkpoint cp-right" style="top: 1020px; left: 240px;">
-            <div class="node">5</div>
-            <div class="card"><h3>Top Store Visits</h3><p>Feedback Loops</p></div>
+        <div class="checkpoint cp-right completed" style="top: 1020px; left: 240px;">
+            <div class="node">✓</div>
+            <div class="card"><h3>Top Store Visits</h3><p>Feedback logs closed</p><span class="status-tag">Done</span></div>
         </div>
 
-        <div class="checkpoint cp-right" style="top: 1270px; left: 450px;">
-            <div class="node">6</div>
-            <div class="card"><h3>Taste Confirmation</h3><p>Order Finalization</p></div>
+        <div class="checkpoint cp-right completed" style="top: 1270px; left: 450px;">
+            <div class="node">✓</div>
+            <div class="card"><h3>Taste Confirmation</h3><p>Order specs finalized</p><span class="status-tag">Done</span></div>
         </div>
 
-        <div class="checkpoint cp-left" style="top: 1520px; left: 240px;">
-            <div class="node">7</div>
-            <div class="card"><h3>PO Receiving</h3><p>Purchase Order entry</p></div>
+        <div class="checkpoint cp-left completed" style="top: 1520px; left: 240px;">
+            <div class="node">✓</div>
+            <div class="card"><h3>PO Receiving</h3><p>Order officially acknowledged</p><span class="status-tag">Done</span></div>
         </div>
 
-        <div class="checkpoint cp-left" style="top: 1770px; left: 40px;">
-            <div class="node">8</div>
-            <div class="card"><h3>PO Fullfiled</h3><p>Fulfillment of PO</p></div>
+        <div class="checkpoint cp-left completed" style="top: 1770px; left: 40px;">
+            <div class="node">✓</div>
+            <div class="card"><h3>PO Fulfilled</h3><p>Stock successfully dispatched</p><span class="status-tag">Done</span></div>
         </div>
 
         <div class="checkpoint cp-right" style="top: 2020px; left: 240px;">
             <div class="node">9</div>
-            <div class="card"><h3>Expansion</h3><p>All Available Stores</p></div>
+            <div class="card"><h3>Expansion</h3><p>All Available Stores (In-Progress)</p></div>
         </div>
 
         <div class="checkpoint cp-right" style="top: 2270px; left: 450px;">
             <div class="node">10</div>
-            <div class="card"><h3>Strategic Visits</h3><p>Long-term Seller Growth</p></div>
+            <div class="card"><h3>Strategic Visits</h3><p>Seller Growth scheduled</p></div>
         </div>
     </div>
 
     <script>
-        // Reveal checkpoints on scroll
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -193,7 +212,6 @@
                 }
             });
         }, { threshold: 0.5 });
-
         document.querySelectorAll('.checkpoint').forEach(cp => observer.observe(cp));
     </script>
 </body>
