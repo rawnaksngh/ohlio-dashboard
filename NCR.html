@@ -58,11 +58,11 @@
             transform: translateY(-2px);
         }
 
-        /* --- ANIMATED STATS CARD (NOW ON LEFT) --- */
+        /* --- STATS CARD (LEFT) --- */
         .stats-glass-card {
             position: fixed;
-            top: 20px; /* Aligned with home button height */
-            left: 20px; /* Moved to Left */
+            top: 20px; 
+            left: 20px; 
             z-index: 999;
             width: 200px;
             background: rgba(255, 255, 255, 0.04);
@@ -155,7 +155,6 @@
         .card p { font-size: 0.75rem; color: #888; }
         .status-tag { font-size: 0.6rem; text-transform: uppercase; font-weight: 800; padding: 2px 8px; border-radius: 4px; margin-top: 5px; display: inline-block; background: var(--success); color: black; }
 
-        /* --- BADGES --- */
         .log-badge {
             position: absolute; top: -15px; right: -10px; background: var(--accent); color: white;
             font-size: 0.65rem; font-weight: 800; padding: 5px 12px; border-radius: 50px;
@@ -175,14 +174,13 @@
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: #888; transition: 0.3s; }
         .close-btn:hover { color: #fff; }
 
-        /* --- STORE LIST --- */
+        /* --- LIST ITEMS --- */
         .store-item { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
         .store-info h4 { font-size: 0.9rem; color: #fff; }
         .store-info p { font-size: 0.7rem; color: var(--accent); margin-top: 4px; }
         .visit-by { font-size: 0.6rem; background: var(--accent); color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold; text-transform: uppercase; }
         .visit-date { font-size: 0.65rem; color: var(--success); display: block; margin-top: 5px; font-weight: bold; }
 
-        /* --- ORDER TABLE --- */
         .order-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
         .order-table th { text-align: left; padding: 12px; background: rgba(255,255,255,0.05); color: var(--cyan-glow); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; border-bottom: 1px solid var(--border); }
         .order-table td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -218,16 +216,16 @@
         <div class="stats-grid">
             <div class="stats-item">
                 <span class="stats-label">Visited</span>
-                <span class="stats-value">17 <small>/ 38</small></span>
+                <span class="stats-value">27 <small>/ 38</small></span>
             </div>
             <div class="stats-item">
                 <span class="stats-label">PO</span>
                 <span class="stats-value">11</span>
             </div>
         </div>
-       <marquee></marquee> <div class="stats-divider"></div>
-         <marquee> <div class="stats-footer-text">More stores will be added later.</div></marquee>
-    </div></marquee>
+        <div class="stats-divider"></div>
+        <marquee><div class="stats-footer-text">More stores will be added later.</div></marquee>
+    </div>
 
     <header>
         <h1>Delhi NCR</h1>
@@ -247,7 +245,7 @@
 
         <div class="checkpoint cp-right completed interactive-card" style="top: 1020px; left: 52%; cursor: pointer;" onclick="togglePopup('visitPopup', true)">
             <div class="node">✓</div>
-            <div class="log-badge">17 Logs: Click to check</div>
+            <div class="log-badge">27 Logs: Click to check</div>
             <div class="card"><h3>Top Store Visits</h3><p>Feedback logs, Free samples.</p><span class="status-tag">Done</span></div>
         </div>
 
@@ -267,7 +265,7 @@
     <div id="visitPopup" class="popup-overlay">
         <div class="popup-card">
             <span class="close-btn" onclick="togglePopup('visitPopup', false)">&times;</span>
-            <h2 style="color:var(--accent); margin-bottom: 20px;">Visit Intelligence (17 Stores)</h2>
+            <h2 style="color:var(--accent); margin-bottom: 20px;">Visit Intelligence (27 Stores)</h2>
             <div class="list-container" id="storeList"></div>
         </div>
     </div>
@@ -294,24 +292,35 @@
     </div>
 
     <script>
+        // NEW STORE DATA WITH FULL NAMES
         const stores = [
-            { name: "Modern Bazaar", phone: "9811022341", date: "12 Apr", by: "Deepak & Surendra Singh", ch: "MT" },
-            { name: "Le Marche", phone: "9910044552", date: "14 Apr", by: "Ajit Kumar", ch: "MT" },
-            { name: "Geom365", phone: "9871100223", date: "15 Apr", by: "Deepak & Ajit Kumar", ch: "GT" },
-            { name: "Needs Gourmet", phone: "9818222334", date: "16 Apr", by: "Surendra Singh", ch: "GT" },
-            { name: "Reliance Fresh", phone: "9560011223", date: "16 Apr", by: "Deepak", ch: "MT" },
-            { name: "Foodhall", phone: "9810055443", date: "17 Apr", by: "Ajit Kumar", ch: "MT" },
-            { name: "Spencer's Retail", phone: "9999112233", date: "18 Apr", by: "Surendra Singh", ch: "MT" },
-            { name: "Honey Money Top", phone: "9811223344", date: "19 Apr", by: "Deepak", ch: "GT" },
-            { name: "Daily Needs", phone: "9312233445", date: "20 Apr", by: "Ajit Kumar", ch: "GT" },
-            { name: "Big Bazaar", phone: "9711022991", date: "20 Apr", by: "Deepak & Surendra Singh", ch: "MT" },
-            { name: "More Megastore", phone: "9212033445", date: "21 Apr", by: "Ajit Kumar", ch: "MT" },
-            { name: "Easy Day", phone: "9810122334", date: "21 Apr", by: "Surendra Singh", ch: "MT" },
-            { name: "In & Out", phone: "9873322114", date: "22 Apr", by: "Deepak", ch: "GT" },
-            { name: "General Store S15", phone: "9818822331", date: "22 Apr", by: "Ajit Kumar", ch: "GT" },
-            { name: "24 Seven", phone: "9582233114", date: "23 Apr", by: "Deepak & Ajit Kumar", ch: "GT" },
-            { name: "Nature's Basket", phone: "9810566778", date: "24 Apr", by: "Surendra Singh", ch: "MT" },
-            { name: "Smart Bazaar", phone: "9911922334", date: "24 Apr", by: "Deepak", ch: "MT" }
+            { name: "Shree Jee Foods", phone: "9891766363", date: "10-Apr-26", by: "Deepak Thakkar / Ajit Kumar", ch: "MT Standalone" },
+            { name: "Stop And Shop", phone: "8800977730", date: "10-Apr-26", by: "Deepak Thakkar / Ajit Kumar", ch: "MT Standalone" },
+            { name: "Kondli Bazar Pvt Ltd", phone: "9811292206", date: "10-Apr-26", by: "Deepak Thakkar / Ajit Kumar", ch: "MT Regional" },
+            { name: "M/S Freshlee Retail Pvt Ltd", phone: "8510057861", date: "11-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Regional" },
+            { name: "V.M. Traders", phone: "9999456849", date: "11-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Standalone" },
+            { name: "R.R. Management Consultants", phone: "7290014728", date: "11-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Regional" },
+            { name: "Shiv Shakti Genral Store", phone: "9811327399", date: "11-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Standalone" },
+            { name: "Goel Store", phone: "9717517944", date: "18-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Standalone" },
+            { name: "Hind Super Store", phone: "9818390800", date: "18-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Standalone" },
+            { name: "Vdh Store", phone: "8802571305", date: "18-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Regional" },
+            { name: "Balaji Provision Store", phone: "9582350189", date: "18-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Standalone" },
+            { name: "Sankush Builders Pvt Ltd", phone: "9958281530", date: "18-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Standalone" },
+            { name: "NEW NODA GROCERY BAZAR", phone: "9899983330", date: "20-Apr-26", by: "Surinder Sagwal", ch: "MT Standalone" },
+            { name: "Maa Annapoorna Store", phone: "9198629499", date: "20-Apr-26", by: "Surinder Sagwal", ch: "MT Standalone" },
+            { name: "Noida Grocery Bazar", phone: "8510008647", date: "20-Apr-26", by: "Surinder Sagwal", ch: "MT Standalone" },
+            { name: "Aggarwal Store", phone: "9717144069", date: "20-Apr-26", by: "Surinder Sagwal", ch: "MT Standalone" },
+            { name: "Maa Medical Store And Cosmetics", phone: "-", date: "20-Apr-26", by: "Surinder Sagwal", ch: "General" },
+            { name: "Jay Cee Grand", phone: "9650062780", date: "20-Apr-26", by: "Surinder Sagwal", ch: "MT Standalone" },
+            { name: "Maa Narayani Super Store", phone: "-", date: "21-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
+            { name: "0m Retail Mart", phone: "-", date: "21-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
+            { name: "Every Day Shopping Mart P.Ltd.", phone: "-", date: "21-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
+            { name: "Day Today Shopping Mart Pvt Ltd", phone: "-", date: "21-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
+            { name: "Safety Store", phone: "-", date: "22-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
+            { name: "7 Days Mart", phone: "-", date: "22-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
+            { name: "G One Super Mart", phone: "-", date: "22-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
+            { name: "GROCETERIA BY RCN", phone: "-", date: "22-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
+            { name: "7 Days Mart (Duplicate Entry)", phone: "-", date: "22-Apr-26", by: "Surinder Sagwal", ch: "Pending" }
         ];
 
         const orders = [
@@ -328,15 +337,17 @@
             { name: "Kondli Bazar Pvt Ltd", date: "18-Apr", ch: "MT Regional", qty: 10 }
         ];
 
+        // Populate Visit List
         const visitList = document.getElementById('storeList');
         stores.forEach(s => {
             visitList.innerHTML += `
                 <div class="store-item">
                     <div class="store-info"><h4>${s.name}</h4><p>${s.phone} | ${s.ch}</p></div>
-                    <div class="store-meta"><span class="visit-by">${s.by}</span><span class="visit-date">Visited Date: ${s.date}</span></div>
+                    <div class="store-meta"><span class="visit-by">${s.by}</span><span class="visit-date">Visited: ${s.date}</span></div>
                 </div>`;
         });
 
+        // Populate Order Table
         const orderBody = document.getElementById('orderBody');
         orders.forEach(o => {
             orderBody.innerHTML += `
