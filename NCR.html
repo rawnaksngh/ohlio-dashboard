@@ -58,6 +58,74 @@
             transform: translateY(-2px);
         }
 
+        /* --- ANIMATED STATS CARD (NOW ON LEFT) --- */
+        .stats-glass-card {
+            position: fixed;
+            top: 20px; /* Aligned with home button height */
+            left: 20px; /* Moved to Left */
+            z-index: 999;
+            width: 200px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            animation: cardRevealLeft 1s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        @keyframes cardRevealLeft {
+            0% { opacity: 0; transform: translateX(-50px) scale(0.9); }
+            100% { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        .card-glow-edge {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), var(--cyan-glow), transparent);
+            background-size: 200% 100%;
+            animation: borderFlow 3s linear infinite;
+        }
+
+        @keyframes borderFlow {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .stats-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .live-indicator {
+            width: 6px;
+            height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--success);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.6; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .stats-title { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #888; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .stats-label { display: block; font-size: 0.55rem; color: var(--accent); font-weight: 700; text-transform: uppercase; }
+        .stats-value { font-size: 1.1rem; font-weight: 800; color: #fff; }
+        .stats-value small { font-size: 0.6rem; color: #666; font-weight: 400; }
+        .stats-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 12px 0; }
+        .stats-footer-text { font-size: 0.65rem; color: var(--success); font-weight: 600; text-align: center; line-height: 1.2; }
+
         header { padding: 100px 20px 40px; text-align: center; }
         header h1 { font-size: clamp(1.8rem, 8vw, 2.5rem); letter-spacing: -1px; margin-bottom: 10px; }
         header p { color: var(--accent); font-weight: 700; letter-spacing: 2px; font-size: 0.8rem; text-transform: uppercase; }
@@ -129,6 +197,8 @@
             .cp-left { left: 3% !important; } 
             .order-table { font-size: 0.65rem; }
             .main-home-btn { top: 10px; right: 10px; padding: 8px 15px; font-size: 0.7rem; }
+            .stats-glass-card { top: 10px; left: 10px; width: 150px; padding: 10px; }
+            .stats-value { font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -138,6 +208,26 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         HOME
     </a>
+
+    <div class="stats-glass-card">
+        <div class="card-glow-edge"></div>
+        <div class="stats-header">
+            <div class="live-indicator"></div>
+            <span class="stats-title">NCR Stats</span>
+        </div>
+        <div class="stats-grid">
+            <div class="stats-item">
+                <span class="stats-label">Visited</span>
+                <span class="stats-value">17 <small>/ 38</small></span>
+            </div>
+            <div class="stats-item">
+                <span class="stats-label">PO</span>
+                <span class="stats-value">11</span>
+            </div>
+        </div>
+        <div class="stats-divider"></div>
+        <div class="stats-footer-text">Excellent Visuals Received</div>
+    </div>
 
     <header>
         <h1>Delhi NCR</h1>
@@ -254,7 +344,7 @@
                     <td>${o.name}</td>
                     <td>${o.date}</td>
                     <td class="ch-text">${o.ch}</td>
-                    <td><div class="qty-box"><span class="case-val">${o.qty} Cases</span><span class="pc-val">(${o.qty * 36} Pcs)</span></div></td>
+                    <td><div class="qty-box"><span class="case-val">${o.qty}</span><span class="pc-val">(${o.qty * 36} Pcs)</span></div></td>
                 </tr>`;
         });
 
