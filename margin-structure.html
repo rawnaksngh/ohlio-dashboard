@@ -2,220 +2,260 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Oli-Ohh - Margin Structure Analysis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oli-Ohh | Channel Summary (Dark)</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: #0b1418; color: white; padding: 40px; line-height: 1.6; overflow-x: hidden; }
-        
-        /* ANIMATED BACK BUTTON */
-        .back-btn { 
-            display: inline-flex; align-items: center; margin-bottom: 30px; color: #00ffd5; 
-            text-decoration: none; font-weight: bold; border: 2px solid #00ffd5; 
-            padding: 12px 25px; border-radius: 50px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            background: rgba(0, 255, 213, 0.05); position: relative; overflow: hidden;
-        }
-        .back-btn:hover { background: #00ffd5; color: #111; transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 255, 213, 0.3); }
-
-        /* HEADER ANIMATION */
-        .header { 
-            border-bottom: 2px solid #f39c12; padding-bottom: 25px; margin-bottom: 50px; 
-            display: flex; justify-content: space-between; align-items: flex-end;
-            animation: slideDown 0.8s ease-out;
-            position: relative;
-        }
-        
-        /* Background Glow Pulse */
-        .header::after {
-            content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(90deg, #f39c12, #00ffd5, #f39c12);
-            background-size: 200% auto;
-            animation: glossPulse 4s linear infinite;
+        /* SF Pro Style Typography */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        @keyframes glossPulse { to { background-position: 200% center; } }
-
-        h1 { font-size: 38px; color: #f39c12; font-weight: 800; letter-spacing: -1px; }
-        
-        /* Status Tag Pulse */
-        .status-tag { 
-            background: #2ecc71; color: white; padding: 6px 18px; border-radius: 50px; 
-            font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-            animation: pulse-green-subtle 2s infinite;
+        body { 
+            background: #000000; 
+            color: #ffffff;
+            padding: 30px 20px;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* DATA GRID ANIMATION */
-        .margin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 50px; }
-        
-        .data-card { 
-            background: rgba(255, 255, 255, 0.03); padding: 35px; border-radius: 24px; 
-            border: 1px solid rgba(255,255,255,0.1); border-top: 5px solid #00ffd5; 
-            text-align: center; transition: 0.4s ease; backdrop-filter: blur(10px);
-            animation: fadeInUp 1s ease-out both;
-            position: relative;
-        }
-        
-        /* Card Green Pulse Effect */
-        .data-card.pulse-active {
-            border-color: #2ecc71;
-            box-shadow: 0 0 20px rgba(46, 204, 113, 0.2);
-            animation: fadeInUp 1s ease-out both, pulse-green-border 2s infinite;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .data-card:hover { transform: translateY(-15px); background: rgba(255,255,255,0.07); }
-        
-        .label { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.6; margin-bottom: 15px; font-weight: 600; }
-        .value { font-size: 48px; font-weight: 800; color: #fff; margin-bottom: 5px; }
-        .currency { font-size: 20px; vertical-align: top; color: #00ffd5; margin-right: 4px; }
-        .percentage { color: #f39c12; font-size: 24px; }
-
-        /* STRATEGY SECTION */
-        .strategy-section { 
-            background: rgba(255,255,255,0.02); padding: 40px; border-radius: 24px; 
-            border: 1px solid rgba(255,255,255,0.05); animation: fadeInUp 1.2s ease-out both;
-        }
-        .strategy-section h2 { color: #f39c12; margin-bottom: 30px; font-size: 24px; }
-
-        .breakdown-table { width: 100%; border-collapse: collapse; }
-        .breakdown-table th { color: #888; text-align: left; padding: 20px; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .breakdown-table td { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 16px; font-weight: 600; }
-        
-        tr:last-child td { border: none; }
-        
-        /* Row Pulse Effect */
-        .highlight-row { 
-            background: rgba(46, 204, 113, 0.1); color: #2ecc71; 
-            animation: pulse-green-row 2s infinite;
+        /* NAVIGATION & HOME BUTTON */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 0 10px;
         }
 
-        /* KEYFRAMES */
-        @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes fadeInUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        
-        /* Pulse Animations */
-        @keyframes pulse-green-subtle {
-            0% { box-shadow: 0 0 15px rgba(46, 204, 113, 0.4); }
-            50% { box-shadow: 0 0 25px rgba(46, 204, 113, 0.6); }
-            100% { box-shadow: 0 0 15px rgba(46, 204, 113, 0.4); }
+        .home-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+            transition: background 0.2s;
         }
 
-        @keyframes pulse-green-border {
-            0% { border-color: #2ecc71; box-shadow: 0 0 20px rgba(46, 204, 113, 0.2); }
-            50% { border-color: #00ffd5; box-shadow: 0 0 30px rgba(0, 255, 213, 0.4); }
-            100% { border-color: #2ecc71; box-shadow: 0 0 20px rgba(46, 204, 113, 0.2); }
+        .home-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
-        @keyframes pulse-green-row {
-            0% { background: rgba(46, 204, 113, 0.1); }
-            50% { background: rgba(46, 204, 113, 0.2); }
-            100% { background: rgba(46, 204, 113, 0.1); }
+        /* HEADER */
+        .header {
+            margin-bottom: 40px;
+            padding: 0 10px;
         }
-        
-        .data-card:nth-child(1) { animation-delay: 0.2s; border-top-color: white; }
-        .data-card:nth-child(2) { animation-delay: 0.4s; }
-        .data-card:nth-child(3) { animation-delay: 0.6s; border-top-color: #f39c12; }
+
+        .header h1 {
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: #8e8e93;
+            font-size: 17px;
+            margin-top: 4px;
+        }
+
+        /* GROUPED TABLE CONTAINER */
+        .table-wrapper {
+            background: #1c1c1e; 
+            border-radius: 12px;
+            overflow-x: auto;
+            border: 0.5px solid #38383a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th {
+            background: #2c2c2e;
+            text-align: left;
+            padding: 14px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #8e8e93;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 0.5px solid #38383a;
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 0.5px solid #38383a;
+            vertical-align: top;
+            font-size: 15px;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        .channel-name {
+            font-size: 17px;
+            font-weight: 600;
+            color: #0a84ff;
+            margin-bottom: 6px;
+        }
+
+        .badge {
+            font-size: 11px;
+            background: rgba(10, 132, 255, 0.15);
+            color: #0a84ff;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        /* LANDING PRICE CARD */
+        .landing-card {
+            background: #242426;
+            border: 1px solid #30d158;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 0 4px 12px rgba(48, 209, 88, 0.1);
+        }
+
+        .landing-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #30d158;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .landing-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.4;
+        }
+
+        .scheme-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #f2f2f7;
+            white-space: pre-line;
+        }
+
+        .hold { color: #636366; text-decoration: line-through; }
+        .active { color: #32d74b; font-weight: 500; }
+
+        .markup-highlight {
+            color: #ffd60a;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .markdown-small {
+            font-size: 12px;
+            color: #8e8e93;
+            margin-top: 4px;
+        }
+
+        .approver-tag {
+            font-size: 11px;
+            color: #8e8e93;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .check-icon { color: #30d158; font-weight: bold; }
+
     </style>
 </head>
 <body>
 
-    <a href="javascript:history.back()" class="back-btn">← Back to Dashboard</a>
+<div class="container">
+    <div class="nav-bar">
+        <a href="home.html" class="home-btn">← Home</a>
+        <div style="font-size: 12px; color: #8e8e93; font-weight: 600;">TRANS_ID: AMJ2026</div>
+    </div>
 
     <div class="header">
-        <div>
-            <h1>Margin Structure Analysis</h1>
-            <p style="opacity: 0.7;">Product: <strong>Oli-Ohh Pasta</strong> | Strategic Lead: <strong>Mr. Sunil</strong></p>
-        </div>
-        <span class="status-tag">Live Structure</span>
+        <h1>Oli-Ohh Pasta</h1>
+        <p>AMJ 2026 Cycle • Scheme Summary</p>
     </div>
 
-    <div class="margin-grid">
-        <div class="data-card">
-            <p class="label">Maximum Retail Price</p>
-            <p class="value"><span class="currency">₹</span><span class="count" data-target="89">0</span></p>
-            <p style="color: #fff; font-weight: 700; opacity: 0.8;">Final Consumer Price</p>
-        </div>
-
-        <div class="data-card pulse-active">
-            <p class="label">Retail Landing Price (RLP)</p>
-            <p class="value"><span class="currency">₹</span><span class="count-decimal" data-target="77.39">0</span></p>
-            <p style="color: #2ecc71; font-weight: 700;">Base Cost to Trade</p>
-        </div>
-
-        <div class="data-card">
-            <p class="label">Retailer Margin (Markup)</p>
-            <p class="value"><span class="count" data-target="15">0</span><span class="percentage">%</span></p>
-            <p style="color: #f39c12; opacity: 0.8; font-weight: 700;">Standard Trade Markup</p>
-        </div>
-    </div>
-
-    <div class="strategy-section">
-        <h2>Financial Breakdown & Formulas</h2>
-        <table class="breakdown-table">
+    <div class="table-wrapper">
+        <table>
             <thead>
-                <tr><th>Component</th><th>Value / Rate</th><th>Strategic Calculation Note</th></tr>
+                <tr>
+                    <th>Channel Details</th>
+                    <th>Schemes (Status)</th>
+                    <th>Trade Price</th>
+                    <th style="color: #30d158;">Net Landing</th>
+                    <th>Markup</th>
+                    <th>Validity</th>
+                </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>Retail Landing Price</td>
-                    <td>₹ 77.39</td>
-                    <td>Primary billing rate for secondary distribution hubs.</td>
-                </tr>
-                <tr>
-                    <td>Retailer Markup</td>
-                    <td>15.00%</td>
-                    <td>Calculated on RLP (₹77.39 × 1.15).</td>
-                </tr>
-                <tr class="highlight-row">
-                    <td>Final MRP</td>
-                    <td>₹ 89.00</td>
-                    <td>Market competitive positioning for Oli-Ohh Pasta range.</td>
-                </tr>
-            </tbody>
+            <tbody id="ios-dark-data">
+                </tbody>
         </table>
     </div>
+</div>
 
-    <script>
-        function animateCounters() {
-            const counters = document.querySelectorAll('.count');
-            const decimals = document.querySelectorAll('.count-decimal');
-            const speed = 100;
+<script>
+    const channels = ["General Trade", "MR Standalone", "Wholesale", "MT Regional"];
+    const tableBody = document.getElementById('ios-dark-data');
 
-            counters.forEach(counter => {
-                const updateCount = () => {
-                    const target = +counter.getAttribute('data-target');
-                    const count = +counter.innerText;
-                    const inc = target / speed;
-
-                    if (count < target) {
-                        counter.innerText = Math.ceil(count + inc);
-                        setTimeout(updateCount, 20);
-                    } else {
-                        counter.innerText = target;
-                    }
-                };
-                updateCount();
-            });
-
-            decimals.forEach(counter => {
-                const updateCount = () => {
-                    const target = +counter.getAttribute('data-target');
-                    const count = parseFloat(counter.innerText);
-                    const inc = target / speed;
-
-                    if (count < target) {
-                        counter.innerText = (count + inc).toFixed(2);
-                        setTimeout(updateCount, 20);
-                    } else {
-                        counter.innerText = target.toFixed(2);
-                    }
-                };
-                updateCount();
-            });
-        }
-
-        window.onload = animateCounters;
-    </script>
+    channels.forEach(name => {
+        tableBody.innerHTML += `
+            <tr>
+                <td>
+                    <div class="channel-name">${name}</div>
+                    <span class="badge">F2 FREQUENCY</span>
+                    <div class="approver-tag">
+                        <span class="check-icon">✓</span> Verified: Deepak Sir
+                    </div>
+                </td>
+                <td class="scheme-text">
+                    <div class="hold">6 Pcs (10%) - Hold</div>
+                    <div class="hold">12 Pcs (10%) - Hold</div>
+                    <div class="active">36 Pcs (12%) - Started</div>
+                    <div class="active">72 Pcs (15%) - Started</div>
+                </td>
+                <td>
+                    <div style="font-weight: 600;">₹89.00 <span style="font-size: 11px; color:#8e8e93;">MRP</span></div>
+                    <div style="font-size: 13px; color: #8e8e93; margin-top: 4px;">RLP: ₹77.39</div>
+                </td>
+                <td>
+                    <div class="landing-card">
+                        <div class="landing-label">Net Cost</div>
+                        <div class="landing-price">
+                            ₹68.12 <small style="font-size: 11px; color: #8e8e93;">(1C)</small><br>
+                            ₹65.78 <small style="font-size: 11px; color: #8e8e93;">(2C)</small>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="markup-highlight">30.65%</div>
+                    <div class="markdown-small">MKDN: 23.46%</div>
+                    <div class="markup-highlight" style="margin-top: 8px;">35.29%</div>
+                    <div class="markdown-small">MKDN: 26.08%</div>
+                </td>
+                <td style="font-size: 12px; color: #8e8e93; line-height: 1.4;">
+                    01/04/2026<br>to<br>30/06/2026
+                </td>
+            </tr>
+        `;
+    });
+</script>
 
 </body>
 </html>
