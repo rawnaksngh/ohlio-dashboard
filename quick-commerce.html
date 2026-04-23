@@ -33,9 +33,8 @@
         h1 { font-size: 3rem; font-weight: 900; letter-spacing: -2px; text-transform: uppercase; background: linear-gradient(#fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .meta { color: var(--ios-cyan); font-size: 0.7rem; letter-spacing: 4px; margin-top: 10px; opacity: 0.8; text-transform: uppercase; }
 
-        .platform-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; width: 100%; max-width: 1200px; margin-bottom: 50px; }
+        .platform-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; width: 100%; max-width: 1200px; margin-bottom: 50px; align-items: start; }
         
-        /* --- DROPDOWN CARD LOGIC --- */
         .glass-card { 
             background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); 
             border-radius: 30px; padding: 25px; position: relative; cursor: pointer;
@@ -59,7 +58,6 @@
         .dynamic-perc { width: 50px; margin-left: 10px; font-size: 11px; font-weight: 900; color: rgba(255,255,255,0.4); text-align: right; }
         .dynamic-perc.reached { color: var(--ios-cyan); }
 
-        /* --- DROPDOWN ANIMATION --- */
         .steps-content { 
             max-height: 0; opacity: 0; overflow: hidden;
             display: flex; flex-direction: column; gap: 12px; 
@@ -71,11 +69,14 @@
         .step-item.active { color: #fff; font-weight: 600; }
         .status-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.05); }
         .step-item.active .status-dot { background: var(--ios-cyan); box-shadow: 0 0 10px var(--ios-cyan); }
+        
+        /* New Style for Quantity Badge */
+        .qty-badge { background: var(--ios-cyan); color: #000; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 900; margin-left: auto; }
 
         .overall-progress { background: var(--glass); backdrop-filter: blur(40px); padding: 40px; border-radius: 40px; border: 1px solid var(--glass-border); width: 100%; max-width: 1200px; }
         .progress-meta { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; }
         .main-bar-container { width: 100%; height: 12px; background: rgba(255,255,255,0.05); border-radius: 100px; overflow: hidden; }
-        .main-bar-fill { height: 100%; background: linear-gradient(90deg, var(--ios-purple), var(--ios-cyan)); transition: 1.5s ease; }
+        .main-bar-fill { height: 100%; background: linear-gradient(90deg, var(--ios-purple), var(--ios-cyan)); transition: 1.5s ease; width: 0%; }
 
         .blinkit { color: #f8cb46; } .zepto { color: #af52de; } .instamart { color: #ff6d2e; }
         .amazon { color: #00a8e1; } .flipkart { color: #2874f0; } .bigbasket { color: #84c225; }
@@ -109,13 +110,10 @@
     </div>
 
     <script>
-        /* MASTER CONTROL: 
-           Update these numbers based on your progress.
-        */
         const currentProgress = {
-            blink: 3, // Blinkit: TOT Signed
-            zep: 4,   // Zepto: Listed
-            insta: 4, // Instamart: Listed
+            blink: 2, 
+            zep: 5,   
+            insta: 2, 
             amz: 0,
             fk: 0,
             bb: 0     
@@ -123,7 +121,7 @@
 
         const platforms = [
             { id: 'blink', name: 'Blinkit', class: 'blinkit' },
-            { id: 'zep', name: 'Zepto', class: 'zepto' },
+            { id: 'zep', name: 'Zepto', class: 'zepto', note: "612 Qty PO Received" },
             { id: 'insta', name: 'Instamart', class: 'instamart' },
             { id: 'amz', name: 'Amazon Now', class: 'amazon' },
             { id: 'fk', name: 'FK Minutes', class: 'flipkart' },
@@ -160,6 +158,7 @@
                         <div class="step-item ${idx < completedCount ? 'active' : ''}">
                             <div class="status-dot"></div>
                             ${idx + 1}. ${step}
+                            ${(p.id === 'zep' && idx === 4) ? '<span class="qty-badge">612 Qty</span>' : ''}
                         </div>
                     `).join('')}
                 </div>
@@ -167,14 +166,17 @@
             grid.appendChild(card);
         });
 
-        // Global Calculation
         const totalPossible = platforms.length * steps.length;
         const currentTotal = Object.values(currentProgress).reduce((a, b) => a + b, 0);
         const globalPercent = Math.round((currentTotal / totalPossible) * 100);
 
         setTimeout(() => {
             document.getElementById('global-bar').style.width = globalPercent + '%';
-            document.getElementById('global-perc').innerText = globalPercent + '%';
+            let count = 0;
+            const counter = setInterval(() => {
+                if (count >= globalPercent) { clearInterval(counter); } 
+                else { count++; document.getElementById('global-perc').innerText = count + '%'; }
+            }, 30);
         }, 300);
     </script>
 </body>
