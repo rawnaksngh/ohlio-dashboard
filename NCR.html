@@ -17,7 +17,6 @@
             --border: rgba(255, 255, 255, 0.1);
             --cyan-glow: #00f2ff;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background-color: var(--bg); 
@@ -29,7 +28,6 @@
             padding-bottom: 100px; 
             overflow-x: hidden; 
         }
-
         .main-home-btn {
             position: fixed;
             top: 20px;
@@ -58,7 +56,6 @@
             box-shadow: 0 0 20px var(--accent-glow);
             transform: translateY(-2px);
         }
-
         .stats-glass-card {
             position: fixed;
             top: 20px; 
@@ -75,19 +72,16 @@
             animation: cardRevealLeft 1s cubic-bezier(0.2, 1, 0.3, 1) forwards;
             opacity: 0;
         }
-
         @keyframes cardRevealLeft {
             0% { opacity: 0; transform: translateX(-50px) scale(0.9); }
             100% { opacity: 1; transform: translateX(0) scale(1); }
         }
-
         .stats-header {
             display: flex;
             align-items: center;
             gap: 8px;
             margin-bottom: 12px;
         }
-
         .live-indicator {
             width: 6px;
             height: 6px;
@@ -96,13 +90,11 @@
             box-shadow: 0 0 8px var(--success);
             animation: pulse 1.5s infinite;
         }
-
         @keyframes pulse {
             0% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.4); opacity: 0.6; }
             100% { transform: scale(1); opacity: 1; }
         }
-
         .stats-title { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #888; }
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .stats-label { display: block; font-size: 0.55rem; color: var(--accent); font-weight: 700; text-transform: uppercase; }
@@ -131,15 +123,9 @@
         .cp-left { flex-direction: row-reverse; text-align: right; }
         
         .node { width: 50px; height: 50px; background: #000; border: 4px solid #444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; flex-shrink: 0; transition: 0.3s; color: #888; }
-        
-        /* Pending (Red) */
         .pending-red-status .node { border-color: var(--pending-red); color: var(--pending-red); box-shadow: 0 0 15px var(--red-glow); }
-
-        /* Live (Blue) */
         .live-status .node { border-color: var(--accent); color: #fff; box-shadow: 0 0 20px var(--accent-glow); animation: nodePulse 2s infinite; }
         @keyframes nodePulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-        
-        /* Completed (Green) */
         .completed .node { border-color: var(--success); box-shadow: 0 0 25px var(--success-glow); background: var(--success); color: black; }
         
         .card { position: relative; background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--border); border-radius: 20px; padding: 15px 20px; width: 100%; transition: all 0.4s; }
@@ -186,16 +172,14 @@
     </style>
 </head>
 <body>
-
     <a href="home.html" class="main-home-btn">HOME</a>
-
     <div class="stats-glass-card">
         <div class="stats-header">
             <div class="live-indicator"></div>
             <span class="stats-title">NCR Status</span>
         </div>
         <div class="stats-grid">
-            <div class="stats-item"><span class="stats-label">Visited</span><span class="stats-value">27</span></div>
+            <div class="stats-item"><span class="stats-label">Visited</span><span class="stats-value">48</span></div>
             <div class="stats-item"><span class="stats-label">PO</span><span class="stats-value">12</span></div>
         </div>
         <div class="stats-divider"></div>
@@ -215,7 +199,6 @@
 
         <div class="checkpoint cp-right completed" style="top: 20px; left: 55%;"><div class="node">✓</div><div class="card"><h3>Operations Initiated</h3><p>Delhi NCR</p><span class="status-tag tag-done">Done</span></div></div>
         <div class="checkpoint cp-right completed" style="top: 250px; left: 60%;"><div class="node">✓</div><div class="card"><h3>POSM Deployment</h3><p>Danglers, Posters, Banners.</p><span class="status-tag tag-done">Done</span></div></div>
-        
         <div class="checkpoint cp-left pending-red-status" style="top: 520px; left: 5%;">
             <div class="node">3</div>
             <div class="card">
@@ -224,12 +207,11 @@
                 <span class="status-tag tag-pending">Pending</span>
             </div>
         </div>
-        
         <div class="checkpoint cp-left completed" style="top: 770px; left: 3%;"><div class="node">✓</div><div class="card"><h3>Full Store Activation</h3><p>Merchandising complete</p><span class="status-tag tag-done">Done</span></div></div>
 
         <div class="checkpoint cp-right live-status interactive-card" style="top: 1020px; left: 52%; cursor: pointer;" onclick="togglePopup('visitPopup', true)">
             <div class="node">5</div>
-            <div class="log-badge">27 Logs: Click to check</div>
+            <div class="log-badge">48 Logs: Click to check</div>
             <div class="card"><h3>Top Store Visits</h3><p>Feedback logs, Free samples.</p><span class="status-tag tag-live">Live</span></div>
         </div>
 
@@ -242,7 +224,6 @@
         </div>
 
         <div class="checkpoint cp-left completed" style="top: 1770px; left: 5%;"><div class="node">✓</div><div class="card"><h3>PO Fulfilled</h3><p>Stock dispatched</p><span class="status-tag tag-done">Done</span></div></div>
-        
         <div class="checkpoint cp-right" style="top: 2020px; left: 55%;"><div class="node">9</div><div class="card"><h3>Expansion</h3><p>All available stores DRCP</p></div></div>
         <div class="checkpoint cp-right" style="top: 2270px; left: 58%;"><div class="node">10</div><div class="card"><h3>Seller Visits</h3><p>Seller Growth scheduled</p></div></div>
     </div>
@@ -250,7 +231,7 @@
     <div id="visitPopup" class="popup-overlay">
         <div class="popup-card">
             <span class="close-btn" onclick="togglePopup('visitPopup', false)">&times;</span>
-            <h2 style="color:var(--accent); margin-bottom: 20px;">Visit Intelligence (27 Stores)</h2>
+            <h2 style="color:var(--accent); margin-bottom: 20px;">Visit Intelligence (48 Stores)</h2>
             <div class="list-container" id="storeList"></div>
         </div>
     </div>
@@ -272,34 +253,55 @@
 
     <script>
         const stores = [
-            { name: "Shree Jee Foods", phone: "9891766363", date: "10-Apr-26", by: "Deepak Thakkar / Ajit Kumar", ch: "MT Standalone" },
-            { name: "Stop And Shop", phone: "8800977730", date: "10-Apr-26", by: "Deepak Thakkar / Ajit Kumar", ch: "MT Standalone" },
-            { name: "Kondli Bazar Pvt Ltd", phone: "9811292206", date: "10-Apr-26", by: "Deepak Thakkar / Ajit Kumar", ch: "MT Regional" },
-            { name: "M/S Freshlee Retail Pvt Ltd", phone: "8510057861", date: "11-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Regional" },
-            { name: "V.M. Traders", phone: "9999456849", date: "11-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Standalone" },
-            { name: "R.R. Management Consultants", phone: "7290014728", date: "11-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Regional" },
-            { name: "Shiv Shakti Genral Store", phone: "9811327399", date: "11-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Standalone" },
-            { name: "Goel Store", phone: "9717517944", date: "18-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Standalone" },
-            { name: "Hind Super Store", phone: "9818390800", date: "18-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Standalone" },
-            { name: "Vdh Store", phone: "8802571305", date: "18-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Regional" },
-            { name: "Balaji Provision Store", phone: "9582350189", date: "18-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Standalone" },
-            { name: "Sankush Builders Pvt Ltd", phone: "9958281530", date: "18-Apr-26", by: "Deepak Thakkar / Surendra Singh", ch: "MT Standalone" },
-            { name: "NEW NODA GROCERY BAZAR", phone: "9899983330", date: "20-Apr-26", by: "Surinder Sagwal", ch: "MT Standalone" },
-            { name: "Maa Annapoorna Store", phone: "9198629499", date: "20-Apr-26", by: "Surinder Sagwal", ch: "MT Standalone" },
-            { name: "Noida Grocery Bazar", phone: "8510008647", date: "20-Apr-26", by: "Surinder Sagwal", ch: "MT Standalone" },
-            { name: "Aggarwal Store", phone: "9717144069", date: "20-Apr-26", by: "Surinder Sagwal", ch: "MT Standalone" },
-            { name: "Maa Medical Store And Cosmetics", phone: "-", date: "20-Apr-26", by: "Surinder Sagwal", ch: "General" },
-            { name: "Jay Cee Grand", phone: "9650062780", date: "20-Apr-26", by: "Surinder Sagwal", ch: "MT Standalone" },
-            { name: "Maa Narayani Super Store", phone: "-", date: "21-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
-            { name: "0m Retail Mart", phone: "-", date: "21-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
-            { name: "Every Day Shopping Mart P.Ltd.", phone: "-", date: "21-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
-            { name: "Day Today Shopping Mart Pvt Ltd", phone: "-", date: "21-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
-            { name: "Safety Store", phone: "-", date: "22-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
-            { name: "7 Days Mart", phone: "-", date: "22-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
-            { name: "G One Super Mart", phone: "-", date: "22-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
-            { name: "GROCETERIA BY RCN", phone: "-", date: "22-Apr-26", by: "Surinder Sagwal", ch: "Pending" },
-            { name: "7 Days Mart (Duplicate Entry)", phone: "-", date: "22-Apr-26", by: "Surinder Sagwal", ch: "Pending" }
-        ];
+               { name: "Shree Jee Foods", phone: "9891766363", date: "4/10/2026", by: "DEEPAK THAKKAR / AJIT", ch: "MT Standalone" },
+        { name: "Stop And Shop", phone: "8800977730", date: "4/10/2026", by: "DEEPAK THAKKAR / AJIT", ch: "MT Standalone" },
+        { name: "Kondli Bazar Pvt Ltd", phone: "9811292206", date: "4/10/2026", by: "DEEPAK THAKKAR / AJIT", ch: "MT Regional" },
+        { name: "Buybuy Technologies Pvt Ltd", phone: "7550556554", date: "4/25/2026", by: "Surinder segwal", ch: "MT Regional" },
+        { name: "M/S Freshlee Retail Pvt Ltd", phone: "8510057861", date: "4/11/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Regional" },
+        { name: "V.M. Traders", phone: "9999456849", date: "4/11/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
+        { name: "R.R. Management Consultants", phone: "7290014728", date: "4/11/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Regional" },
+        { name: "Bsm Rajendra Nagar Pvt Ltd", phone: "7042882768", date: "4/24/2026", by: "PAWAN", ch: "MT Standalone" },
+        { name: "Shiv Shakti Genral Store", phone: "9811327399", date: "4/11/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
+        { name: "Goel Store", phone: "9717517944", date: "4/18/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
+        { name: "Maarket", phone: "9560038040", date: "4/27/2026", by: "PAWAN", ch: "MT Regional" },
+        { name: "Hind Super Store", phone: "9818390800", date: "4/18/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
+        { name: "Vdh Store", phone: "8802571305", date: "4/18/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Regional" },
+        { name: "Daily Needs", phone: "9899935408", date: "4/25/2026", by: "Surinder segwal", ch: "MT Regional" },
+        { name: "Balaji Provision Store", phone: "9582350189", date: "4/18/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
+        { name: "Sankush Builders Pvt Ltd", phone: "9958281530", date: "4/18/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
+        { name: "Maa Medical Store", phone: "9818249794", date: "4/20/2026", by: "Surinder segwal", ch: "MT Standalone" },
+        { name: "NEW NOIDA GROCERY BAZAR", phone: "9899983330", date: "4/20/2026", by: "Surinder segwal", ch: "MT Standalone" },
+        { name: "Naseem Gen Store", phone: "9999000853", date: "4/27/2026", by: "PAWAN", ch: "MT Regional" },
+        { name: "Maa Annapoorna Store", phone: "9198629499", date: "4/20/2026", by: "Surinder segwal", ch: "MT Standalone" },
+        { name: "Noida Grocery Bazar", phone: "8510008647", date: "4/20/2026", by: "Surinder segwal", ch: "MT Standalone" },
+        { name: "M/S Shri Sai Super Store", phone: "9560439660", date: "4/25/2026", by: "Surinder segwal", ch: "MT Standalone" },
+        { name: "Guru Harkishan Traders", phone: "8950838950", date: "4/25/2026", by: "Surinder segwal", ch: "MT Standalone" },
+        { name: "Maa Narayani Super Store", phone: "7042680487", date: "4/21/2026", by: "Surinder segwal", ch: "MT Standalone" },
+        { name: "Pandey General Store", phone: "9354214396", date: "4/25/2026", by: "Surinder segwal", ch: "MT Standalone" },
+        { name: "Om Retail Mart", phone: "9212334466", date: "4/21/2026", by: "Surinder segwal", ch: "MT Standalone" },
+        { name: "Aggarwal Store", phone: "9717144069", date: "4/20/2026", by: "Surinder segwal", ch: "MT Regional" },
+        { name: "Every Day Shopping Mart", phone: "9818269224", date: "4/21/2026", by: "Surinder segwal", ch: "MT Standalone" },
+        { name: "Safety Store", phone: "9650887307", date: "4/22/2026", by: "Surinder segwal", ch: "MT Regional" },
+        { name: "G One Super Mart", phone: "9990098106", date: "4/22/2026", by: "Surinder segwal", ch: "MT Regional" },
+        { name: "M/S Group99 Infra", phone: "9958040508", date: "4/27/2026", by: "PAWAN", ch: "MT Standalone" },
+        { name: "GROCETERIA BY RCN", phone: "9873235509", date: "4/22/2026", by: "Surinder segwal", ch: "MT Standalone" },
+        { name: "Jay Cee Grand", phone: "9650062780", date: "4/23/2026", by: "Surinder segwal", ch: "MT Standalone" },
+        { name: "Kiranewala", phone: "9873907314", date: "4/23/2026", by: "Surendra", ch: "MT Regional" },
+        { name: "Arora Stores", phone: "9899976292", date: "4/27/2026", by: "PAWAN", ch: "MT Standalone" },
+        { name: "Ess Vee Foods", phone: "8700594280", date: "4/23/2026", by: "PAWAN", ch: "MT Standalone" },
+        { name: "Lotus Bazaar", phone: "9599198290", date: "4/23/2026", by: "Surendra", ch: "MT Regional" },
+        { name: "M/S Avr Super Mart", phone: "9582888652", date: "4/23/2026", by: "Surendra", ch: "MT Regional" },
+        { name: "Dilli Bazar", phone: "9958947876", date: "4/25/2026", by: "Surinder segwal", ch: "MT Standalone" },
+        { name: "New Singhal Store", phone: "9818993200", date: "4/23/2026", by: "PAWAN", ch: "MT Standalone" },
+        { name: "Home Choice Store", phone: "9910104651", date: "4/23/2026", by: "PAWAN", ch: "MT Standalone" },
+        { name: "Day Today Shopping Mart", phone: "9871536544", date: "4/21/2026", by: "Surinder segwal", ch: "MT Standalone" },
+        { name: "Garg Store", phone: "9560970624", date: "4/23/2026", by: "PAWAN", ch: "MT Standalone" },
+        { name: "RUDRA MEGA MART", phone: "9870222691", date: "4/23/2026", by: "Surendra", ch: "MT Standalone" },
+        { name: "7 Days Mart", phone: "9999093582", date: "4/22/2026", by: "Surinder segwal", ch: "MT Standalone" },
+        { name: "Hitkari Store", phone: "9716802413", date: "4/24/2026", by: "PAWAN", ch: "MT Standalone" },
+        { name: "Ram S Store", phone: "9891543789", date: "4/24/2026", by: "PAWAN", ch: "MT Standalone" },
+        { name: "Baburam Bizcorp Llp", phone: "8178988917", date: "4/24/2026", by: "PAWAN", ch: "MT Regional" }
+    ];
 
         const orders = [
             { name: "Goel Store", date: "21-Apr", ch: "MT Standalone", qty: 2 },
