@@ -8,12 +8,12 @@
         :root {
             --ios-blue: #007AFF;
             --ios-red: #FF3B30;
-            --glass-bg: rgba(28, 28, 30, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --dropdown-bg: #1c1c1e;
+            --ios-green: #34C759;
+            --glass-bg: rgba(30, 30, 35, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             background: #000;
@@ -23,174 +23,78 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px; /* Reduced for mobile */
+            padding: 20px;
         }
 
-        /* --- Background --- */
         .bg-glow {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at 10% 10%, #1a1a2e 0%, #000 40%),
-                        radial-gradient(circle at 90% 90%, #0d1b2a 0%, #000 40%);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at 10% 10%, #1a1a2e 0%, #000 50%),
+                        radial-gradient(circle at 90% 90%, #0d1b2a 0%, #000 50%);
         }
 
-        /* --- Top Nav --- */
-        .top-nav {
-            width: 100%;
-            max-width: 1150px;
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            gap: 10px;
+        header {
+            width: 100%; max-width: 600px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 30px;
         }
 
-        .ios-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            padding: 12px 20px;
-            border-radius: 50px;
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            flex: 1; /* Equal width on mobile */
-            max-width: 150px;
+        .home-btn {
+            background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
+            padding: 8px 16px; border-radius: 12px; color: var(--ios-blue); text-decoration: none;
+            font-weight: 600; font-size: 14px;
         }
 
-        .ios-btn:hover { background: rgba(255, 255, 255, 0.12); border-color: var(--ios-blue); }
+        h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
 
-        /* --- Main Card --- */
-        .glass-card {
-            width: 100%;
-            max-width: 1150px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(40px) saturate(180%);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 20px; /* Reduced for mobile */
-            box-shadow: 0 30px 70px rgba(0,0,0,0.8);
+        /* --- Marquee --- */
+        .marquee-container {
+            background: rgba(0, 122, 255, 0.1); border-bottom: 1px solid rgba(0, 122, 255, 0.2);
+            overflow: hidden; white-space: nowrap; padding: 10px 0; display: flex; align-items: center;
         }
 
-        header h1 { 
-            font-size: 24px; /* Scaled for mobile */
-            font-weight: 700; 
-            margin-bottom: 20px; 
-            text-align: center;
+        .marquee-content {
+            display: inline-block; animation: marquee 12s linear infinite;
+            font-size: 13px; font-weight: 700; color: var(--ios-blue); text-transform: uppercase; letter-spacing: 1px;
         }
 
-        /* --- Filters --- */
-        .filters {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-            margin-bottom: 25px;
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* --- Folders --- */
+        .stack { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 15px; }
+
+        .glass-folder {
+            background: var(--glass-bg); backdrop-filter: blur(50px) saturate(200%);
+            border: 1px solid var(--glass-border); border-radius: 24px; overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .filter-card {
-            background: rgba(45, 45, 48, 0.6);
-            border-radius: 16px;
-            border: 1px solid var(--glass-border);
-            transition: 0.3s;
-            cursor: pointer;
-            padding-bottom: 8px;
+        .folder-trigger { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .folder-title { display: flex; align-items: center; gap: 12px; }
+        .folder-icon {
+            width: 32px; height: 32px; background: rgba(255, 255, 255, 0.05); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
         }
 
-        .filter-card:hover { border-color: var(--ios-blue); }
-
-        .filter-card label {
-            display: block;
-            padding: 12px 15px 0 15px;
-            font-size: 10px;
-            color: var(--ios-blue);
-            font-weight: 700;
-            text-transform: uppercase;
+        .folder-content {
+            max-height: 0; opacity: 0; overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.3s ease; background: rgba(0,0,0,0.2);
         }
 
-        select {
-            width: 100%;
-            padding: 5px 15px 10px 15px;
-            background: transparent;
-            border: none;
-            color: #fff;
-            font-size: 16px; /* Prevents iOS zoom on focus */
-            outline: none;
-            appearance: none;
-            -webkit-appearance: none;
-        }
+        .glass-folder.active { border-color: rgba(255,255,255,0.3); }
+        .glass-folder.active .folder-content { max-height: 2000px; opacity: 1; }
+        .glass-folder.active .chevron { transform: rotate(180deg); }
 
-        select option { background-color: var(--dropdown-bg); color: #fff; }
+        .chevron { transition: 0.4s; opacity: 0.5; }
 
-        /* --- Table / Mobile Card Layout --- */
-        .scroll-area { width: 100%; }
-
-        table { width: 100%; border-collapse: collapse; }
-        
-        thead { display: none; } /* Hide headers on mobile */
-
-        tbody tr {
-            display: block;
-            background: rgba(255, 255, 255, 0.03);
-            margin-bottom: 15px;
-            border-radius: 18px;
-            padding: 15px;
-            border: 1px solid var(--glass-border);
-            transition: opacity 0.3s ease;
-        }
-
-        tbody td {
-            display: block;
-            padding: 5px 0;
-            border: none;
-            font-size: 14px;
-        }
-
-        /* Labeling the mobile card data */
-        tbody td:nth-child(1) { color: var(--ios-blue); font-weight: 800; font-size: 12px; margin-bottom: 5px; }
-        tbody td:nth-child(2) { font-size: 16px; font-weight: 600; margin-bottom: 10px; line-height: 1.4; }
-        
-        .owner-tag { 
-            display: inline-block;
-            background: rgba(10, 132, 255, 0.15); 
-            color: var(--ios-blue); 
-            padding: 4px 10px; 
-            border-radius: 8px; 
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .deadline-tag { 
-            color: var(--ios-red); 
-            font-weight: 700; 
-            font-size: 13px;
-            margin-top: 5px;
-        }
-        .deadline-tag::before { content: "Deadline: "; opacity: 0.6; font-weight: 400; }
-
-        /* Desktop Restoration */
-        @media (min-width: 768px) {
-            body { padding: 40px 20px; }
-            header h1 { font-size: 32px; text-align: left; }
-            .glass-card { padding: 35px; }
-            
-            thead { display: table-header-group; }
-            table { display: table; }
-            tbody tr { display: table-row; background: transparent; border: none; border-radius: 0; }
-            tbody td { display: table-cell; padding: 20px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-            
-            tbody td:nth-child(1) { font-size: 15px; font-weight: 400; color: #8E8E93; }
-            tbody td:nth-child(2) { font-size: 15px; font-weight: 400; }
-            .deadline-tag::before { content: ""; }
-            
-            th { text-align: left; padding: 15px; color: #8E8E93; font-size: 13px; border-bottom: 1px solid var(--glass-border); }
-        }
+        /* --- Task Box --- */
+        .task-box { padding: 16px 24px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .task-meta { display: flex; justify-content: space-between; margin-bottom: 4px; }
+        .task-num { color: #8E8E93; font-size: 11px; font-weight: 700; }
+        .task-lead { color: var(--ios-blue); font-size: 11px; font-weight: 700; }
+        .task-desc { font-size: 14px; color: #E5E5E7; line-height: 1.4; margin-bottom: 6px; }
+        .task-deadline { font-size: 12px; font-weight: 600; color: var(--ios-red); }
+        .deadline-green { color: var(--ios-green); }
+        .none { color: #636366; font-weight: 400; }
 
     </style>
 </head>
@@ -198,109 +102,87 @@
 
     <div class="bg-glow"></div>
 
-    <div class="top-nav">
-        <a href="home.html" class="ios-btn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--ios-blue)"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            Home
-        </a>
-        <button class="ios-btn" onclick="resetFilters()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--ios-red)"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
-            Reset
-        </button>
-    </div>
+    <header>
+        <a href="home.html" class="home-btn">← Home</a>
+        <h1>Command Center</h1>
+        <div style="width: 40px;"></div>
+    </header>
 
-    <div class="glass-card">
-        <header>
-            <h1>Launch Roadmap</h1>
-        </header>
-
-        <div class="filters">
-            <div class="filter-card">
-                <label>Task Lead</label>
-                <select id="ownerFilter" onchange="applyFilters()">
-                    <option value="all">All Personnel</option>
-                    <option value="Vishal Chopra">Mr. Vishal Chopra</option>
-                    <option value="Surendra Singh">Mr. Surendra Singh</option>
-                    <option value="Deepak Sir">Deepak Sir</option>
-                    <option value="Anil">Anil</option>
-                    <option value="Rishik">Rishik</option>
-                </select>
+    <div class="stack">
+        
+        <!-- CARD 1: SAMPLING -->
+        <div class="glass-folder" onclick="this.classList.toggle('active')">
+            <div class="folder-trigger">
+                <div class="folder-title">
+                    <div class="folder-icon" style="color:#FF9500">S</div>
+                    <h2>SAMPLING</h2>
+                </div>
+                <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </div>
-
-            <div class="filter-card">
-                <label>Timeline Status</label>
-                <select id="dateFilter" onchange="applyFilters()">
-                    <option value="all">Show All</option>
-                    <option value="April">April 2026</option>
-                    <option value="May">May 2026</option>
-                    <option value="None">No Fixed Date</option>
-                </select>
+            <div class="folder-content">
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 01</span><span class="task-lead">Vishal Chopra</span></div><p class="task-desc">Design a branded glass bowl for customer promotional offers</p><span class="task-deadline none">No fixed deadline</span></div>
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 02</span><span class="task-lead">Vishal Chopra</span></div><p class="task-desc">Procure and modify one E-rickshaw with Oli Ohh branding</p><span class="task-deadline none">No fixed deadline</span></div>
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 03</span><span class="task-lead">Vishal Chopra</span></div><p class="task-desc">E-rickshaw deployed for wet sampling</p><span class="task-deadline">15th May 2026</span></div>
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 04</span><span class="task-lead">Surendra Singh</span></div><p class="task-desc">Initiate wet sampling via bike/auto until deployment</p><span class="task-deadline none">No fixed deadline</span></div>
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 08</span><span class="task-lead">Marketing</span></div><p class="task-desc">Society-level sampling to drive Q-com platform orders</p><span class="task-deadline none">No fixed deadline</span></div>
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 09</span><span class="task-lead">Surendra Singh</span></div><p class="task-desc">Begin wet sampling activities outside stores</p><span class="task-deadline none">No fixed deadline</span></div>
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 13</span><span class="task-lead">Anil</span></div><p class="task-desc">Hire 2 employees for wet sampling</p><span class="task-deadline">30th April 2026</span></div>
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 14</span><span class="task-lead">Anil</span></div><p class="task-desc">Hire another 2 employees for wet sampling</p><span class="task-deadline">15th May 2026</span></div>
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 15</span><span class="task-lead">Anil</span></div><p class="task-desc">Hire remaining 2 employees for wet sampling</p><span class="task-deadline">25th May 2026</span></div>
             </div>
         </div>
 
-        <div class="scroll-area">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 40px;">#</th>
-                        <th>Description</th>
-                        <th>Owner</th>
-                        <th>Deadline</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <tr data-owner="Vishal Chopra" data-month="None"><td>1</td><td>Design a branded glass bowl for customer promotional offers</td><td><span class="owner-tag">Mr. Vishal Chopra</span></td><td>—</td></tr>
-                    <tr data-owner="Vishal Chopra" data-month="None"><td>2</td><td>Procure and modify one E-rickshaw with Oli Ohh branding</td><td><span class="owner-tag">Mr. Vishal Chopra</span></td><td>—</td></tr>
-                    <tr data-owner="Vishal Chopra" data-month="May"><td>3</td><td>E-rickshaw deployed for wet sampling</td><td><span class="owner-tag">Mr. Vishal Chopra</span></td><td class="deadline-tag">15th May</td></tr>
-                    <tr data-owner="Surendra Singh" data-month="None"><td>4</td><td>Initiate wet sampling via bike/auto until deployment</td><td><span class="owner-tag">Mr. Surendra Singh</span></td><td>—</td></tr>
-                    <tr data-owner="Vishal Chopra" data-month="None"><td>5</td><td>Develop horizontal plastic trays for in-store display</td><td><span class="owner-tag">Mr. Vishal Chopra</span></td><td>—</td></tr>
-                    <tr data-owner="Deepak Sir" data-month="None"><td>6</td><td>Introduce incentive schemes for store staff boy</td><td><span class="owner-tag">Deepak Sir</span></td><td>—</td></tr>
-                    <tr data-owner="Surendra Singh" data-month="None"><td>7</td><td>Onboard part time ex-employee to negotiate with RWAs</td><td><span class="owner-tag">Mr. Surendra Singh</span></td><td>—</td></tr>
-                    <tr data-owner="None" data-month="None"><td>8</td><td>Society-level sampling to drive Q-com platform orders</td><td><span class="owner-tag">Marketing Team</span></td><td>—</td></tr>
-                    <tr data-owner="Surendra Singh" data-month="None"><td>9</td><td>Begin wet sampling activities outside stores</td><td><span class="owner-tag">Mr. Surendra Singh</span></td><td>—</td></tr>
-                    <tr data-owner="Surendra Singh" data-month="April"><td>10</td><td>DRCP to be finalized by 30th April</td><td><span class="owner-tag">Mr. Surendra Singh</span></td><td class="deadline-tag">30th April</td></tr>
-                    <tr data-owner="Vishal Chopra Rishik" data-month="April"><td>11</td><td>Product detailer prepared by 30th April 2026</td><td><span class="owner-tag">Mr. Vishal Chopra & Rishik</span></td><td class="deadline-tag">30th April 2026</td></tr>
-                    <tr data-owner="Deepak Sir" data-month="May"><td>12</td><td>Canvas meeting for execution planning and training</td><td><span class="owner-tag">Deepak Sir</span></td><td class="deadline-tag">1st or 2nd May</td></tr>
-                    <tr data-owner="Anil" data-month="April"><td>13</td><td>Hire 2 employees for wet sampling by 30th April</td><td><span class="owner-tag">Anil</span></td><td class="deadline-tag">30th April</td></tr>
-                    <tr data-owner="Anil" data-month="May"><td>14</td><td>Hire another 2 employees for wet sampling by 15th May</td><td><span class="owner-tag">Anil</span></td><td class="deadline-tag">15th May</td></tr>
-                    <tr data-owner="Anil" data-month="May"><td>15</td><td>Hire remaining 2 employees for wet sampling by 25th May</td><td><span class="owner-tag">Anil</span></td><td class="deadline-tag">25th May</td></tr>
-                    <tr data-owner="Anil" data-month="May"><td>16</td><td>Hire 2 moving store merchandisers by 20th May</td><td><span class="owner-tag">Anil</span></td><td class="deadline-tag">20th May</td></tr>
-                </tbody>
-            </table>
+        <!-- CARD 2: CANVAS -->
+        <div class="glass-folder" onclick="this.classList.toggle('active')">
+            <div class="folder-trigger">
+                <div class="folder-title">
+                    <div class="folder-icon" style="color:var(--ios-blue)">C</div>
+                    <h2>CANVAS</h2>
+                </div>
+                <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="folder-content">
+                <div class="marquee-container">
+                    <div class="marquee-content">⚠️ Canvas to be held on 2 May • Canvas to be held on 2 May • Canvas to be held on 2 May •</div>
+                </div>
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 05</span><span class="task-lead">Vishal Chopra</span></div><p class="task-desc">Develop horizontal plastic trays for in-store display</p><span class="task-deadline none">No fixed deadline</span></div>
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 06</span><span class="task-lead">Deepak Sir</span></div><p class="task-desc">Introduce incentive schemes for store staff boy</p><span class="task-deadline none">No fixed deadline</span></div>
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 07</span><span class="task-lead">Surendra Singh</span></div><p class="task-desc">Onboard ex-employee to negotiate with RWAs</p><span class="task-deadline none">No fixed deadline</span></div>
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 10</span><span class="task-lead">Surendra Singh</span></div><p class="task-desc">DRCP to be finalized by month end</p><span class="task-deadline">30th April 2026</span></div>
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 11</span><span class="task-lead">Vishal & Rishik</span></div><p class="task-desc">Product detailer preparation complete</p><span class="task-deadline">30th April 2026</span></div>
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 12</span><span class="task-lead">Deepak Sir</span></div><p class="task-desc">Canvas meeting for execution and training</p><span class="task-deadline">2nd May 2026</span></div>
+                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 16</span><span class="task-lead">Anil</span></div><p class="task-desc">Hire 2 moving store merchandisers</p><span class="task-deadline">20th May 2026</span></div>
+            </div>
         </div>
+
+        <!-- NEW CARD 3: ASSIGNED TASKS -->
+        <div class="glass-folder" onclick="this.classList.toggle('active')">
+            <div class="folder-trigger">
+                <div class="folder-title">
+                    <div class="folder-icon" style="color:var(--ios-green)">A</div>
+                    <h2>ASSIGNED TASKS</h2>
+                </div>
+                <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="folder-content">
+                <div class="task-box">
+                    <div class="task-meta"><span class="task-num">ASSIGNED 01</span><span class="task-lead">Vishal</span></div>
+                    <p class="task-desc">Prepare packing of oli ohh for 12 & 36 pc</p>
+                    <span class="task-deadline deadline-green">Deadline: 06th May 2026</span>
+                </div>
+                <div class="task-box">
+                    <div class="task-meta"><span class="task-num">ASSIGNED 02</span><span class="task-lead">Deepak Sir / Surender Sir</span></div>
+                    <p class="task-desc">Review and tracking with drumbeats dates</p>
+                    <span class="task-deadline none">Status: Pending Review</span>
+                </div>
+                <div class="task-box">
+                    <div class="task-meta"><span class="task-num">ASSIGNED 03</span><span class="task-lead">Akshay Sir</span></div>
+                    <p class="task-desc">Next three months outreach plan for Mr. Akshay</p>
+                    <span class="task-deadline none">Status: Planning Stage</span>
+                </div>
+            </div>
+        </div>
+
     </div>
-
-    <script>
-        function applyFilters() {
-            const ownerVal = document.getElementById('ownerFilter').value.toLowerCase();
-            const dateVal = document.getElementById('dateFilter').value;
-            const rows = document.querySelectorAll('#tableBody tr');
-
-            rows.forEach(row => {
-                const owner = row.getAttribute('data-owner').toLowerCase();
-                const month = row.getAttribute('data-month');
-                const showOwner = (ownerVal === 'all' || owner.includes(ownerVal));
-                const showDate = (dateVal === 'all' || month === dateVal);
-                
-                if (showOwner && showDate) {
-                    row.style.display = "block"; // Changed to block for mobile card layout
-                    if(window.innerWidth >= 768) row.style.display = "table-row";
-                    setTimeout(() => row.style.opacity = "1", 10);
-                } else {
-                    row.style.opacity = "0";
-                    setTimeout(() => row.style.display = "none", 300);
-                }
-            });
-        }
-
-        function resetFilters() {
-            document.getElementById('ownerFilter').value = 'all';
-            document.getElementById('dateFilter').value = 'all';
-            applyFilters();
-        }
-
-        // Handle window resizing to ensure table display resets correctly
-        window.addEventListener('resize', applyFilters);
-    </script>
 </body>
 </html>
