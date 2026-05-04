@@ -13,6 +13,7 @@
             --ios-cyan: #00ffd5;
             --ios-purple: #af52de;
             --ios-red: #ff3b30;
+            --ios-green: #28c76f;
             --text-glow: rgba(0, 255, 213, 0.4);
         }
 
@@ -64,10 +65,36 @@
         .deadline-pill { background: rgba(255, 59, 48, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 59, 48, 0.4); padding: 8px 20px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
         .deadline-pill span { font-size: 0.8rem; font-weight: 700; color: #ff6b6b; text-transform: uppercase; letter-spacing: 1px; }
         .deadline-dropdown { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; background: rgba(22, 27, 34, 0.9); backdrop-filter: blur(20px); border-radius: 20px; width: 280px; position: absolute; left: 50%; transform: translateX(-50%); margin-top: 10px; border: 1px solid var(--glass-border); }
-        .deadline-dropdown.active { max-height: 400px; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.1); overflow-y: auto; }
+        .deadline-dropdown.active { max-height: 500px; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.1); overflow-y: auto; }
+        
         .dd-item { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .dd-task { font-size: 0.85rem; font-weight: 600; display: block; color: var(--ios-cyan); line-height: 1.2; margin-bottom: 3px; }
         .dd-date { font-size: 0.75rem; opacity: 0.6; color: #ff6b6b; font-weight: 600; }
+
+        /* GREEN GLASS DONE STYLE */
+        .dd-item.done {
+            background: rgba(40, 199, 111, 0.15) !important;
+            border: 1px solid rgba(40, 199, 111, 0.4) !important;
+            border-radius: 12px;
+            margin: 5px;
+        }
+        .dd-item.done .dd-task {
+            color: var(--ios-green) !important;
+            text-decoration: line-through;
+        }
+        .dd-item.done .dd-date {
+            color: var(--ios-green) !important;
+            opacity: 0.8;
+        }
+        .status-tag {
+            float: right;
+            font-size: 0.6rem;
+            background: var(--ios-green);
+            color: black;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-weight: 900;
+        }
 
         nav { width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); }
         .nav-logo { font-weight: 800; font-size: 1.1rem; color: var(--ios-cyan); text-transform: uppercase; }
@@ -127,10 +154,25 @@
             <div id="dd-arrow" style="font-size: 10px; color: #ff6b6b; transition: 0.3s;">▼</div>
         </div>
         <div class="deadline-dropdown" id="deadlineDropdown">
-            <div class="dd-item"><span class="dd-task">DRCP Finalization</span><span class="dd-date">Due: 30th April</span></div>
-            <div class="dd-item"><span class="dd-task">Product Detailer Prep</span><span class="dd-date">Due: 30th April</span></div>
+            <!-- THESE ARE THE TASKS MARKED DONE -->
+            <div class="dd-item done">
+                <span class="status-tag">DONE</span>
+                <span class="dd-task">DRCP Finalization</span>
+                <span class="dd-date">Due: 30th April</span>
+            </div>
+            <div class="dd-item done">
+                <span class="status-tag">DONE</span>
+                <span class="dd-task">Product Detailer Prep</span>
+                <span class="dd-date">Due: 30th April</span>
+            </div>
+            <div class="dd-item done">
+                <span class="status-tag">DONE</span>
+                <span class="dd-task">Canvas Meeting Planning</span>
+                <span class="dd-date">Due: 1st/2nd May</span>
+            </div>
+
+            <!-- THESE REMAIN RED/CYAN (REST ARE SAME) -->
             <div class="dd-item"><span class="dd-task">Hire 2 Sampling Staff</span><span class="dd-date">Due: 30th April</span></div>
-            <div class="dd-item"><span class="dd-task">Canvas Meeting Planning</span><span class="dd-date">Due: 1st/2nd May</span></div>
             <div class="dd-item"><span class="dd-task">E-Rickshaw Wet Sampling</span><span class="dd-date">Due: 15th May</span></div>
             <div class="dd-item"><span class="dd-task">Hire +2 Sampling Staff</span><span class="dd-date">Due: 15th May</span></div>
             <div class="dd-item"><span class="dd-task">Hire Store Merchandisers</span><span class="dd-date">Due: 20th May</span></div>
