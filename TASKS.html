@@ -46,19 +46,6 @@
 
         h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
 
-        /* --- Marquee --- */
-        .marquee-container {
-            background: rgba(0, 122, 255, 0.1); border-bottom: 1px solid rgba(0, 122, 255, 0.2);
-            overflow: hidden; white-space: nowrap; padding: 10px 0; display: flex; align-items: center;
-        }
-
-        .marquee-content {
-            display: inline-block; animation: marquee 12s linear infinite;
-            font-size: 13px; font-weight: 700; color: var(--ios-blue); text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-
         /* --- Folders --- */
         .stack { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 15px; }
 
@@ -132,30 +119,7 @@
             </div>
         </div>
 
-        <!-- CARD 2: CANVAS -->
-        <div class="glass-folder" onclick="this.classList.toggle('active')">
-            <div class="folder-trigger">
-                <div class="folder-title">
-                    <div class="folder-icon" style="color:var(--ios-blue)">C</div>
-                    <h2>CANVAS</h2>
-                </div>
-                <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
-            <div class="folder-content">
-                <div class="marquee-container">
-                    <div class="marquee-content">⚠️ Canvas to be held on 2 May • Canvas to be held on 2 May • Canvas to be held on 2 May •</div>
-                </div>
-                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 05</span><span class="task-lead">Vishal Chopra</span></div><p class="task-desc">Develop horizontal plastic trays for in-store display</p><span class="task-deadline none">No fixed deadline</span></div>
-                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 06</span><span class="task-lead">Deepak Sir</span></div><p class="task-desc">Introduce incentive schemes for store staff boy</p><span class="task-deadline none">No fixed deadline</span></div>
-                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 07</span><span class="task-lead">Surendra Singh</span></div><p class="task-desc">Onboard ex-employee to negotiate with RWAs</p><span class="task-deadline none">No fixed deadline</span></div>
-                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 10</span><span class="task-lead">Surendra Singh</span></div><p class="task-desc">DRCP to be finalized by month end</p><span class="task-deadline">30th April 2026</span></div>
-                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 11</span><span class="task-lead">Vishal & Rishik</span></div><p class="task-desc">Product detailer preparation complete</p><span class="task-deadline">30th April 2026</span></div>
-                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 12</span><span class="task-lead">Deepak Sir</span></div><p class="task-desc">Canvas meeting for execution and training</p><span class="task-deadline">2nd May 2026</span></div>
-                <div class="task-box"><div class="task-meta"><span class="task-num">TASK 16</span><span class="task-lead">Anil</span></div><p class="task-desc">Hire 2 moving store merchandisers</p><span class="task-deadline">20th May 2026</span></div>
-            </div>
-        </div>
-
-        <!-- NEW CARD 3: ASSIGNED TASKS -->
+        <!-- NEW CARD 2: ASSIGNED TASKS -->
         <div class="glass-folder" onclick="this.classList.toggle('active')">
             <div class="folder-trigger">
                 <div class="folder-title">
