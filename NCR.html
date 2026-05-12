@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NCR Activation | Full Master Roadmap</title>
+    <title>NCR Activation | Full Data Roadmap</title>
     <style>
         :root {
             --bg: #030406;
@@ -12,7 +12,7 @@
             --success: #34C759;
             --pending: #FF3B30;
             --glass: rgba(255, 255, 255, 0.04);
-            --border: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.12);
             --gold: #FFD700;
         }
 
@@ -21,16 +21,14 @@
             background-color: var(--bg);
             color: white;
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            padding: 0 40px;
+            overflow-x: hidden;
+            padding: 20px;
         }
 
-        /* Home Button - Left Side */
         .home-btn {
             position: fixed;
             top: 25px;
@@ -38,7 +36,6 @@
             z-index: 1000;
             background: var(--glass);
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--border);
             padding: 12px 24px;
             border-radius: 14px;
@@ -47,20 +44,30 @@
             font-size: 0.7rem;
             font-weight: 800;
             letter-spacing: 1.5px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            transition: 0.3s;
         }
-        .home-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--accent);
-            box-shadow: 0 0 20px var(--accent-glow);
-            transform: translateX(5px);
+        .home-btn:hover { border-color: var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
+
+        /* Summary Table */
+        .mtd-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 40px 0 60px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
         }
+        .mtd-grid { display: grid; grid-template-columns: repeat(7, 1fr); width: 100%; }
+        .mtd-head-cell { padding: 12px 5px; font-size: 0.6rem; font-weight: 800; color: var(--accent); text-transform: uppercase; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); text-align: center; }
+        .mtd-body-cell { padding: 18px 5px; font-size: 1.1rem; font-weight: 800; border-right: 1px solid var(--border); text-align: center; }
+        .mtd-grid div:last-child { border-right: none; }
 
         .header { text-align: center; margin-bottom: 110px; }
-        .header h1 { font-size: 2.2rem; letter-spacing: -1px; margin-bottom: 10px; }
-        .header p { color: var(--accent); font-weight: 800; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 5px; opacity: 0.8; }
-
+        .header h1 { font-size: 2.2rem; letter-spacing: -1px; }
+        
+        /* Track */
         .track-container {
             position: relative;
             width: 100%;
@@ -71,63 +78,24 @@
             justify-content: space-between;
             align-items: center;
         }
+        .track-progress { position: absolute; left: 0; height: 100%; width: 85%; background: linear-gradient(90deg, var(--accent), var(--success)); }
 
-        .track-progress {
-            position: absolute;
-            left: 0; height: 100%; width: 85%;
-            background: linear-gradient(90deg, var(--accent), var(--success));
-            box-shadow: 0 0 20px rgba(52, 199, 89, 0.3);
-        }
-
-        .checkpoint {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            z-index: 5;
-        }
-
-        .node-pulse {
-            width: 28px; height: 28px;
-            background: #000; border: 2px solid #444; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.75rem; font-weight: 900;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .task-card {
-            position: absolute;
-            width: 125px;
-            padding: 10px 12px;
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            text-align: center;
-            font-size: 0.6rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #aaa;
-            transition: all 0.3s ease;
-        }
-        
+        .checkpoint { position: relative; display: flex; flex-direction: column; align-items: center; cursor: pointer; z-index: 5; }
+        .node-pulse { width: 28px; height: 28px; background: #000; border: 2px solid #444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 900; }
+        .task-card { position: absolute; width: 125px; padding: 10px 12px; background: var(--glass); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: 12px; text-align: center; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; color: #aaa; }
         .checkpoint:nth-child(odd) .task-card { bottom: 45px; }
         .checkpoint:nth-child(even) .task-card { top: 45px; }
-        .checkpoint:hover .task-card { border-color: var(--accent); color: white; }
 
         .done .node-pulse { border-color: var(--success); color: var(--success); }
         .live .node-pulse { border-color: var(--accent); color: white; animation: pulse 2s infinite; }
         .hold .node-pulse { border-color: var(--pending); color: var(--pending); }
         .final .node-pulse { border-color: var(--gold); color: var(--gold); transform: scale(1.2); }
-        .final .task-card { border-color: var(--gold); color: var(--gold); }
 
+        /* Popups */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); display: none; justify-content: center; align-items: center; z-index: 1100; }
-        .popup { background: #0a0a0a; border: 1px solid var(--border); width: 95%; max-width: 600px; padding: 30px; border-radius: 24px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-height: 85vh; overflow-y: auto; }
-        .close-btn { position: absolute; top: 20px; right: 20px; cursor: pointer; color: #666; font-size: 1rem; }
+        .popup { background: #0a0a0a; border: 1px solid var(--border); width: 95%; max-width: 650px; padding: 30px; border-radius: 24px; position: relative; max-height: 85vh; overflow-y: auto; }
+        .close-btn { position: absolute; top: 20px; right: 20px; cursor: pointer; color: #666; font-size: 1.2rem; }
         .log-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.75rem; }
-        .log-row:hover { background: rgba(255,255,255,0.02); }
 
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0.4); } 70% { box-shadow: 0 0 0 12px rgba(0, 122, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0); } }
     </style>
@@ -136,10 +104,15 @@
 
     <a href="home.html" class="home-btn">HOME</a>
 
-    <div class="header">
-        <h1>DELHI NCR</h1>
-        <p>Market Activation RoadMap</p>
+    <div class="mtd-container">
+        <div style="text-align:center; padding:10px; font-weight:800; color:var(--success); font-size:0.8rem; border-bottom:1px solid var(--border)">OLI OHH MTD SUMMARY</div>
+        <div class="mtd-grid">
+            <div class="mtd-head-cell">Call Plan</div><div class="mtd-head-cell">Visited</div><div class="mtd-head-cell">Visit %</div><div class="mtd-head-cell">Billed</div><div class="mtd-head-cell">Billed %</div><div class="mtd-head-cell">Cases</div><div class="mtd-head-cell">Value</div>
+            <div class="mtd-body-cell">493</div><div class="mtd-body-cell" style="color:var(--accent)">179</div><div class="mtd-body-cell">36%</div><div class="mtd-body-cell" style="color:var(--success)">56</div><div class="mtd-body-cell">11%</div><div class="mtd-body-cell">37.92</div><div class="mtd-body-cell">0.67</div>
+        </div>
     </div>
+
+    <div class="header"><h1>DELHI NCR</h1><p>Market Activation Lifecycle</p></div>
 
     <div class="track-container">
         <div class="track-progress"></div>
@@ -156,19 +129,11 @@
     </div>
 
     <div id="vPop" class="overlay" onclick="closePop('vPop')">
-        <div class="popup" onclick="event.stopPropagation()">
-            <span class="close-btn" onclick="closePop('vPop')">✕</span>
-            <h2 style="color:var(--accent); margin-bottom: 20px; font-size: 1.2rem;">Store Intelligence (48 Logs)</h2>
-            <div id="vTarget"></div>
-        </div>
+        <div class="popup" onclick="event.stopPropagation()"><span class="close-btn" onclick="closePop('vPop')">✕</span><h2 style="color:var(--accent);margin-bottom:20px">48 Store Visit Intelligence</h2><div id="vTarget"></div></div>
     </div>
 
     <div id="oPop" class="overlay" onclick="closePop('oPop')">
-        <div class="popup" onclick="event.stopPropagation()">
-            <span class="close-btn" onclick="closePop('oPop')">✕</span>
-            <h2 style="color:var(--success); margin-bottom: 20px; font-size: 1.2rem;">Distribution Log (19 Orders)</h2>
-            <div id="oTarget"></div>
-        </div>
+        <div class="popup" onclick="event.stopPropagation()"><span class="close-btn" onclick="closePop('oPop')">✕</span><h2 style="color:var(--success);margin-bottom:20px">19 Distribution Logs</h2><div id="oTarget"></div></div>
     </div>
 
     <script>
@@ -176,11 +141,11 @@
             { name: "Shree Jee Foods", phone: "9891766363", date: "4/10/2026", by: "DEEPAK THAKKAR / AJIT", ch: "MT Standalone" },
             { name: "Stop And Shop", phone: "8800977730", date: "4/10/2026", by: "DEEPAK THAKKAR / AJIT", ch: "MT Standalone" },
             { name: "Kondli Bazar Pvt Ltd", phone: "9811292206", date: "4/10/2026", by: "DEEPAK THAKKAR / AJIT", ch: "MT Regional" },
-            { name: "Buybuy Technologies Pvt Ltd", phone: "7550556554", date: "4/25/2026", by: "Surinder segwal", ch: "MT Regional" },
-            { name: "M/S Freshlee Retail Pvt Ltd", phone: "8510057861", date: "4/11/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Regional" },
+            { name: "Buybuy Technologies", phone: "7550556554", date: "4/25/2026", by: "Surinder segwal", ch: "MT Regional" },
+            { name: "M/S Freshlee Retail", phone: "8510057861", date: "4/11/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Regional" },
             { name: "V.M. Traders", phone: "9999456849", date: "4/11/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
-            { name: "R.R. Management Consultants", phone: "7290014728", date: "4/11/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Regional" },
-            { name: "Bsm Rajendra Nagar Pvt Ltd", phone: "7042882768", date: "4/24/2026", by: "PW", ch: "MT Standalone" },
+            { name: "R.R. Management", phone: "7290014728", date: "4/11/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Regional" },
+            { name: "Bsm Rajendra Nagar", phone: "7042882768", date: "4/24/2026", by: "PW", ch: "MT Standalone" },
             { name: "Shiv Shakti Genral Store", phone: "9811327399", date: "4/11/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
             { name: "Goel Store", phone: "9717517944", date: "4/18/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
             { name: "Maarket", phone: "9560038040", date: "4/27/2026", by: "PW", ch: "MT Regional" },
@@ -188,39 +153,39 @@
             { name: "Vdh Store", phone: "8802571305", date: "4/18/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Regional" },
             { name: "Daily Needs", phone: "9899935408", date: "4/25/2026", by: "Surinder segwal", ch: "MT Regional" },
             { name: "Balaji Provision Store", phone: "9582350189", date: "4/18/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
-            { name: "Sankush Builders Pvt Ltd", phone: "9958281530", date: "4/18/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
+            { name: "Sankush Builders", phone: "9958281530", date: "4/18/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
             { name: "Maa Medical Store", phone: "9818249794", date: "4/20/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "NEW NOIDA GROCERY BAZAR", phone: "9899983330", date: "4/20/2026", by: "Surinder segwal", ch: "MT Standalone" },
+            { name: "NEW NOIDA GROCERY", phone: "9899983330", date: "4/20/2026", by: "Surinder segwal", ch: "MT Standalone" },
             { name: "Naseem Gen Store", phone: "9999000853", date: "4/27/2026", by: "PW", ch: "MT Regional" },
             { name: "Maa Annapoorna Store", phone: "9198629499", date: "4/20/2026", by: "Surinder segwal", ch: "MT Standalone" },
             { name: "Noida Grocery Bazar", phone: "8510008647", date: "4/20/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "M/S Shri Sai Super Store", phone: "9560439660", date: "4/25/2026", by: "Surinder segwal", ch: "MT Standalone" },
+            { name: "Shri Sai Super Store", phone: "9560439660", date: "4/25/2026", by: "Surinder segwal", ch: "MT Standalone" },
             { name: "Guru Harkishan Traders", phone: "8950838950", date: "4/25/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "Maa Narayani Super Store", phone: "7042680487", date: "4/21/2026", by: "Surinder segwal", ch: "MT Standalone" },
+            { name: "Maa Narayani Store", phone: "7042680487", date: "4/21/2026", by: "Surinder segwal", ch: "MT Standalone" },
             { name: "Pandey General Store", phone: "9354214396", date: "4/25/2026", by: "Surinder segwal", ch: "MT Standalone" },
             { name: "Om Retail Mart", phone: "9212334466", date: "4/21/2026", by: "Surinder segwal", ch: "MT Standalone" },
             { name: "Aggarwal Store", phone: "9717144069", date: "4/20/2026", by: "Surinder segwal", ch: "MT Regional" },
-            { name: "Every Day Shopping Mart", phone: "9818269224", date: "4/21/2026", by: "Surinder segwal", ch: "MT Standalone" },
+            { name: "Every Day Mart", phone: "9818269224", date: "4/21/2026", by: "Surinder segwal", ch: "MT Standalone" },
             { name: "Safety Store", phone: "9650887307", date: "4/22/2026", by: "Surinder segwal", ch: "MT Regional" },
             { name: "G One Super Mart", phone: "9990098106", date: "4/22/2026", by: "Surinder segwal", ch: "MT Regional" },
-            { name: "M/S Group99 Infra", phone: "9958040508", date: "4/27/2026", by: "PW", ch: "MT Standalone" },
+            { name: "Group99 Infra", phone: "9958040508", date: "4/27/2026", by: "PW", ch: "MT Standalone" },
             { name: "GROCETERIA BY RCN", phone: "9873235509", date: "4/22/2026", by: "Surinder segwal", ch: "MT Standalone" },
             { name: "Jay Cee Grand", phone: "9650062780", date: "4/23/2026", by: "Surinder segwal", ch: "MT Standalone" },
             { name: "Kiranewala", phone: "9873907314", date: "4/23/2026", by: "Surendra", ch: "MT Regional" },
             { name: "Arora Stores", phone: "9899976292", date: "4/27/2026", by: "PW", ch: "MT Standalone" },
             { name: "Ess Vee Foods", phone: "8700594280", date: "4/23/2026", by: "PW", ch: "MT Standalone" },
             { name: "Lotus Bazaar", phone: "9599198290", date: "4/23/2026", by: "Surendra", ch: "MT Regional" },
-            { name: "M/S Avr Super Mart", phone: "9582888652", date: "4/23/2026", by: "Surendra", ch: "MT Regional" },
+            { name: "Avr Super Mart", phone: "9582888652", date: "4/23/2026", by: "Surendra", ch: "MT Regional" },
             { name: "Dilli Bazar", phone: "9958947876", date: "4/25/2026", by: "Surinder segwal", ch: "MT Standalone" },
             { name: "New Singhal Store", phone: "9818993200", date: "4/23/2026", by: "PW", ch: "MT Standalone" },
             { name: "Home Choice Store", phone: "9910104651", date: "4/23/2026", by: "PW", ch: "MT Standalone" },
-            { name: "Day Today Shopping Mart", phone: "9871536544", date: "4/21/2026", by: "Surinder segwal", ch: "MT Standalone" },
+            { name: "Day Today Mart", phone: "9871536544", date: "4/21/2026", by: "Surinder segwal", ch: "MT Standalone" },
             { name: "Garg Store", phone: "9560970624", date: "4/23/2026", by: "PW", ch: "MT Standalone" },
             { name: "RUDRA MEGA MART", phone: "9870222691", date: "4/23/2026", by: "Surendra", ch: "MT Standalone" },
             { name: "7 Days Mart", phone: "9999093582", date: "4/22/2026", by: "Surinder segwal", ch: "MT Standalone" },
             { name: "Hitkari Store", phone: "9716802413", date: "4/24/2026", by: "PW", ch: "MT Standalone" },
             { name: "Ram S Store", phone: "9891543789", date: "4/24/2026", by: "PW", ch: "MT Standalone" },
-            { name: "Baburam Bizcorp Llp", phone: "8178988917", date: "4/24/2026", by: "PW", ch: "MT Regional" }
+            { name: "Baburam Bizcorp", phone: "8178988917", date: "4/24/2026", by: "PW", ch: "MT Regional" }
         ];
 
         const orders = [
@@ -239,7 +204,7 @@
             { name: "Jay Cee Grand", date: "23-Apr", ch: "MT Standalone", qty: 2 },
             { name: "Hitkari Store", date: "24-Apr", ch: "MT Standalone", qty: 2 },
             { name: "Ram S Store", date: "24-Apr", ch: "MT Standalone", qty: 2 },
-            { name: "Baburam Bizcorp Llp", date: "24-Apr", ch: "MT Regional", qty: 2 },
+            { name: "Baburam Bizcorp", date: "24-Apr", ch: "MT Regional", qty: 2 },
             { name: "Bsm Rajendra Nagar", date: "24-Apr", ch: "MT Standalone", qty: 2 },
             { name: "Maarket", date: "27-Apr", ch: "MT Regional", qty: 2 },
             { name: "Arora Stores", date: "27-Apr", ch: "MT Standalone", qty: 2 }
@@ -250,24 +215,21 @@
                 document.getElementById('vPop').style.display = 'flex';
                 document.getElementById('vTarget').innerHTML = stores.map(l => `
                     <div class="log-row">
-                        <span style="width: 45%; font-weight: 600;">${l.name}</span>
-                        <span style="color:var(--accent);">${l.date}</span>
-                        <span style="color:#666; font-size: 0.65rem; width: 30%; text-align: right;">${l.by}</span>
+                        <span style="width:45%;font-weight:600">${l.name}</span>
+                        <span style="color:var(--accent)">${l.date}</span>
+                        <span style="color:#666;font-size:0.65rem;width:30%;text-align:right">${l.by}</span>
                     </div>`).join('');
             } else {
                 document.getElementById('oPop').style.display = 'flex';
                 document.getElementById('oTarget').innerHTML = orders.map(l => `
                     <div class="log-row">
-                        <span style="width: 60%; font-weight: 500;">${l.name}</span>
-                        <span style="color:var(--success); font-weight: 800;">${l.qty} Cases</span>
-                        <span style="color:#666;">${l.date}</span>
+                        <span style="width:60%;font-weight:500">${l.name}</span>
+                        <span style="color:var(--success);font-weight:800">${l.qty} Cases</span>
+                        <span style="color:#666">${l.date}</span>
                     </div>`).join('');
             }
         }
-
-        function closePop(id) {
-            document.getElementById(id).style.display = 'none';
-        }
+        function closePop(id) { document.getElementById(id).style.display = 'none'; }
     </script>
 </body>
 </html>
