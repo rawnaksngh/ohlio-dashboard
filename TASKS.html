@@ -9,6 +9,8 @@
             --ios-blue: #007AFF;
             --ios-red: #FF3B30;
             --ios-green: #34C759;
+            --ios-orange: #FF9500;
+            --ios-purple: #AF52DE;
             --glass-bg: rgba(30, 30, 35, 0.7);
             --glass-border: rgba(255, 255, 255, 0.1);
         }
@@ -24,6 +26,7 @@
             flex-direction: column;
             align-items: center;
             padding: 20px;
+            position: relative;
         }
 
         .bg-glow {
@@ -33,18 +36,32 @@
         }
 
         header {
-            width: 100%; max-width: 600px;
-            display: flex; justify-content: space-between; align-items: center;
+            width: 100%;
+            max-width: 600px;
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+            margin-top: 60px; /* Space out content below the fixed home button */
             margin-bottom: 30px;
         }
 
         .home-btn {
-            background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
-            padding: 8px 16px; border-radius: 12px; color: var(--ios-blue); text-decoration: none;
-            font-weight: 600; font-size: 14px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 8px 16px;
+            border-radius: 12px;
+            color: var(--ios-blue);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            z-index: 10;
         }
 
-        h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+        h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
 
         /* --- Folders --- */
         .stack { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 15px; }
@@ -89,19 +106,52 @@
 
     <div class="bg-glow"></div>
 
+    <a href="home.html" class="home-btn">&larr; Home</a>
+
     <header>
-        <a href="home.html" class="home-btn">← Home</a>
         <h1>Command Center</h1>
-        <div style="width: 40px;"></div>
     </header>
 
     <div class="stack">
         
-        <!-- CARD 1: SAMPLING -->
+        <!-- CARD 1: PRIORITY TASKS -->
         <div class="glass-folder" onclick="this.classList.toggle('active')">
             <div class="folder-trigger">
                 <div class="folder-title">
-                    <div class="folder-icon" style="color:#FF9500">S</div>
+                    <div class="folder-icon" style="color:var(--ios-red)">P</div>
+                    <h2>PRIORITY TASKS</h2>
+                </div>
+                <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="folder-content">
+                <div class="task-box">
+                    <div class="task-meta"><span class="task-num">PRIORITY 1</span><span class="task-lead">Surendra</span></div>
+                    <p class="task-desc">Build WhatsApp Community of 500 store owners</p>
+                    <span class="task-deadline">High Priority</span>
+                </div>
+                <div class="task-box">
+                    <div class="task-meta"><span class="task-num">PRIORITY 2</span><span class="task-lead">Surendra</span></div>
+                    <p class="task-desc">Cleaning of DRCP and adding self-service stores</p>
+                    <span class="task-deadline">High Priority</span>
+                </div>
+                <div class="task-box">
+                    <div class="task-meta"><span class="task-num">PRIORITY 3</span><span class="task-lead">Deepak Thakkar</span></div>
+                    <p class="task-desc">Closure of quick-com Subd Settlement</p>
+                    <span class="task-deadline deadline-green">Status: Done</span>
+                </div>
+                <div class="task-box">
+                    <div class="task-meta"><span class="task-num">PRIORITY 5</span><span class="task-lead">Ajit</span></div>
+                    <p class="task-desc">Activation of Chandigarh and Gujarat for marketing initiatives</p>
+                    <span class="task-deadline">High Priority</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CARD 2: SAMPLING -->
+        <div class="glass-folder" onclick="this.classList.toggle('active')">
+            <div class="folder-trigger">
+                <div class="folder-title">
+                    <div class="folder-icon" style="color:var(--ios-orange)">S</div>
                     <h2>SAMPLING</h2>
                 </div>
                 <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -119,7 +169,7 @@
             </div>
         </div>
 
-        <!-- NEW CARD 2: ASSIGNED TASKS -->
+        <!-- CARD 3: ASSIGNED TASKS -->
         <div class="glass-folder" onclick="this.classList.toggle('active')">
             <div class="folder-trigger">
                 <div class="folder-title">
