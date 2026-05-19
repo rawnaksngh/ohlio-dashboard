@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Strategy | Oli Ohh</title>
+    <title>Instagram Profile Status | Oli Ohh</title>
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.18);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.12);
             --ios-cyan: #00ffd5;
             --ios-purple: #af52de;
-            --text-glow: rgba(0, 255, 213, 0.4);
+            --brand-red: #d13a27;
+            --text-muted: rgba(255, 255, 255, 0.6);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; }
@@ -25,29 +26,28 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* --- SMOOTH MARQUEE --- */
+        /* --- MARQUEE TAPE --- */
         .marquee-container {
             width: 100%;
-            background: rgba(0, 255, 213, 0.1);
+            background: rgba(0, 255, 213, 0.08);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--glass-border);
-            padding: 12px 0;
+            padding: 10px 0;
             overflow: hidden;
             white-space: nowrap;
-            position: relative;
         }
 
         .marquee-content {
             display: inline-block;
-            animation: marquee 20s linear infinite;
+            animation: marquee 25s linear infinite;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
             color: var(--ios-cyan);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         @keyframes marquee {
@@ -55,14 +55,39 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* --- MAIN LAYOUT --- */
+        /* --- NAVIGATION --- */
         nav { 
-            width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; 
-            backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); 
+            width: 100%; 
+            padding: 20px 30px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            backdrop-filter: blur(20px); 
+            border-bottom: 1px solid var(--glass-border); 
         }
         
-        .nav-logo { font-weight: 800; color: var(--ios-cyan); text-transform: uppercase; text-decoration: none; }
+        .nav-logo { 
+            font-weight: 700; 
+            color: #ffffff; 
+            text-transform: uppercase; 
+            text-decoration: none; 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            border: 1px solid var(--glass-border);
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: var(--glass);
+            transition: 0.3s;
+        }
+        .nav-logo:hover {
+            border-color: var(--ios-cyan);
+            color: var(--ios-cyan);
+            box-shadow: 0 0 15px rgba(0, 255, 213, 0.2);
+        }
 
+        /* --- CONTENT MAIN LAYOUT --- */
         .content-wrapper {
             flex: 1;
             display: flex;
@@ -71,139 +96,174 @@
             align-items: center;
             width: 90%;
             max-width: 800px;
+            padding: 40px 0;
         }
 
         .glass-panel {
             background: var(--glass);
             backdrop-filter: blur(30px);
             border: 1px solid var(--glass-border);
-            border-radius: 40px;
-            padding: 50px;
-            text-align: center;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+            border-radius: 32px;
+            padding: 40px;
             width: 100%;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
         }
 
-        h1 {
-            font-size: 3rem;
-            font-weight: 900;
-            letter-spacing: -1.5px;
-            background: linear-gradient(180deg, #ffffff 40%, #af52de 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 6px 15px;
-            border-radius: 20px;
-            background: rgba(175, 82, 222, 0.2);
-            border: 1px solid var(--ios-purple);
-            color: var(--ios-purple);
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 30px;
-        }
-
-        /* --- DEADLINE COUNTER --- */
-        .deadline-box {
-            margin-top: 20px;
-        }
-
-        .timer {
+        /* --- INSTAGRAM PROFILE INFO --- */
+        .profile-header {
             display: flex;
-            gap: 20px;
+            align-items: center;
+            gap: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 2px solid var(--brand-red);
+            background: #222;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            margin-top: 15px;
+            overflow: hidden;
         }
 
-        .time-segment {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 20px;
-            min-width: 80px;
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .time-val {
-            font-size: 2rem;
-            font-weight: 800;
+        .profile-info {
+            flex: 1;
+            min-width: 250px;
+            text-align: left;
+        }
+
+        .profile-handle {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .verified-badge {
+            background: var(--ios-purple);
+            padding: 2px 8px;
+            font-size: 0.65rem;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .bio-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .bio-link {
             color: var(--ios-cyan);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* --- STATS COUNTER GRID --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
             display: block;
         }
 
-        .time-label {
-            font-size: 0.6rem;
+        .stat-label {
+            font-size: 0.75rem;
             text-transform: uppercase;
-            opacity: 0.5;
+            color: var(--text-muted);
             letter-spacing: 1px;
+            margin-top: 4px;
         }
 
-        .back-btn {
-            margin-top: 40px;
-            text-decoration: none;
-            color: white;
-            font-size: 0.9rem;
-            opacity: 0.6;
-            transition: 0.3s;
+        @media (max-width: 600px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .profile-header { justify-content: center; text-align: center; }
+            .profile-info { text-align: center; }
+            .profile-handle { justify-content: center; }
         }
-        .back-btn:hover { opacity: 1; color: var(--ios-cyan); }
-
     </style>
 </head>
 <body>
 
     <div class="marquee-container">
         <div class="marquee-content">
-            🚀 INSTAGRAM CAMPAIGN IN PROGRESS • SYSTEM SYNCING ASSETS • INFLUENCER WHITELISTING ACTIVE • CONTENT BATCHING FOR OLI OHH PASTA •
+            🔥 LIVE SOCIAL HUB SYNC • INSTAGRAM MODULE ACTIVE • @OLIOHH.INDIA ASSETS VERIFIED • PAN-INDIA DISPATCH ONLINE •
         </div>
     </div>
 
     <nav>
-        <a href="home.html" class="nav-logo">← Back to Ops</a>
-        <div style="font-size: 0.8rem; opacity: 0.5;">INSTAGRAM_MODULE_V1.0</div>
+        <a href="home.html" class="nav-logo">🏠 Home</a>
+        <div style="font-size: 0.75rem; opacity: 0.5; letter-spacing: 1px;">MEDIA_MANAGEMENT_V1.2</div>
     </nav>
 
     <div class="content-wrapper">
         <div class="glass-panel">
-            <div class="status-badge">Phase: Execution</div>
-            <h1>Instagram Launch</h1>
-            <p style="color: rgba(255,255,255,0.5); margin-bottom: 40px;">Finalizing creative assets and grid layout.</p>
-
-            <div class="deadline-box">
-                <p style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.8;">Countdown to Deadline: 15 April</p>
-                <div class="timer" id="countdown">
-                    <div class="time-segment"><span class="time-val" id="days">00</span><span class="time-label">Days</span></div>
-                    <div class="time-segment"><span class="time-val" id="hours">00</span><span class="time-label">Hours</span></div>
-                    <div class="time-segment"><span class="time-val" id="mins">00</span><span class="time-label">Mins</span></div>
+            
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <div style="color: var(--brand-red); font-weight: 900; font-size: 2rem;">O!</div>
+                </div>
+                <div class="profile-info">
+                    <div class="profile-handle">
+                        oliohh.india
+                        <span class="verified-badge">LIVE</span>
+                    </div>
+                    <div class="bio-text">
+                        <strong>Oliohh.India</strong><br>
+                        🍝 Restaurant style pasta in JUST 7 minutes ⏰<br>
+                        🍅 With actual thick sauce inside 🤌<br>
+                        👍 Chef Oli approved<br>
+                        🚚 Available Pan-India<br>
+                        🔗 <a href="http://www.oliohh.in" target="_blank" class="bio-link">www.oliohh.in</a>
+                    </div>
                 </div>
             </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-val">13</span>
+                    <span class="stat-label">Posts</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-val" style="color: var(--ios-cyan);">1,471</span>
+                    <span class="stat-label">Followers</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-val">0</span>
+                    <span class="stat-label">Following</span>
+                </div>
+            </div>
+
         </div>
-        <a href="home.html" class="back-btn">Return to Command Center</a>
     </div>
 
-    <script>
-        // Set the deadline to April 15, 2026
-        const deadline = new Date("April 15, 2026 00:00:00").getTime();
-
-        const x = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = deadline - now;
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
-            document.getElementById("days").innerHTML = days;
-            document.getElementById("hours").innerHTML = hours;
-            document.getElementById("mins").innerHTML = minutes;
-
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("countdown").innerHTML = "CAMPAIGN LIVE";
-            }
-        }, 1000);
-    </script>
 </body>
 </html>
