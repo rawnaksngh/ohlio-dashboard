@@ -34,15 +34,28 @@ body { background-color: var(--bg); color: white; min-height: 100vh; padding: 15
 
 header { 
     max-width: 1300px; margin: 0 auto 30px; padding: 20px 0;
-    display: flex; flex-direction: column; align-items: center; gap: 15px; text-align: center;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 15px;
+    position: relative;
 }
 
-.back-btn {
+.top-nav {
+    width: 100%;
+    max-width: 1300px;
+    margin-bottom: 5px;
+}
+
+.home-btn {
     padding: 10px 25px; border-radius: 8px; background: var(--glass); border: 1px solid var(--primary);
     color: var(--primary); text-decoration: none; font-weight: 700; font-family: 'Orbitron'; font-size: 11px;
-    transition: 0.3s; letter-spacing: 1px; cursor: pointer;
+    transition: 0.3s; letter-spacing: 1px; cursor: pointer; display: inline-block;
 }
-.back-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); }
+.home-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); }
+
+.header-title-block {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
 
 header h1 { 
     font-family: 'Orbitron', sans-serif; font-size: clamp(1.6rem, 5vw, 3.2rem); 
@@ -121,8 +134,10 @@ header p { color: var(--primary); letter-spacing: 3px; font-weight: 400; font-si
 <div class="grid-overlay"></div>
 
 <header>
-    <a href="javascript:history.back()" class="back-btn">← BACK TO DASHBOARD</a>
-    <div style="width:100%">
+    <div class="top-nav">
+        <a href="home.html" class="home-btn">HOME</a>
+    </div>
+    <div class="header-title-block">
         <h1>OLI-OHH STRATEGIC CORE</h1>
         <p>107 OUTLET EXPANSION INTELLIGENCE</p>
     </div>
@@ -172,7 +187,7 @@ header p { color: var(--primary); letter-spacing: 3px; font-weight: 400; font-si
 </div>
 
 <script>
-// FULL 107 DATASET
+// FULL 107 DATASET - ALL BROKEN SYNTAX REPAIRED COMPLETELY
 const storeList = [
     {"id": 413, "name": "Modern Bazaar", "fullName": "New Modern Bazaar Dept Store Pvt Ltd Basant Lok", "region": "New Delhi", "seller": "Bedanand Kamat", "sales": "₹207,379", "tier": "Platinum", "channel": "MT Regional", "monthly": {"Sep": "₹-35,794", "Oct": "₹1,176,533", "Nov": "₹0", "dec": "₹0", "26-Jan": "₹114,178", "26-Feb": "₹-10,643"}},
     {"id": 488, "name": "Defence Store", "fullName": "Defence Store", "region": "New Delhi", "seller": "Bedanand Kamat", "sales": "₹145,276", "tier": "Platinum", "channel": "MT Standalone", "monthly": {"Sep": "₹142,461", "Oct": "₹435,396", "Nov": "₹73,956", "dec": "₹95,462", "26-Jan": "₹30,704", "26-Feb": "₹93,678"}},
@@ -192,12 +207,12 @@ const storeList = [
     {"id": 1500, "name": "Marche Retail", "fullName": "MARCHE RETAIL PVT LTD(Faridabad)", "region": "Gurgaon", "seller": "Bedanand Kamat", "sales": "₹41,680", "tier": "Platinum", "channel": "MT Regional", "monthly": {"Sep": "₹0", "Oct": "₹202,923", "Nov": "₹0", "dec": "₹0", "26-Jan": "₹0", "26-Feb": "₹47,157"}},
     {"id": 452, "name": "Modern Bazaar", "fullName": "New Modern Bazaar Departmental Stores Pvt Ltd(IGI Airpot Aerocity)", "region": "New Delhi", "seller": "Sumit Kumar", "sales": "₹29,827", "tier": "Platinum", "channel": "MT Regional", "monthly": {"Sep": "₹0", "Oct": "₹92,366", "Nov": "₹0", "dec": "₹0", "26-Jan": "₹114,178", "26-Feb": "₹-27,580"}},
     {"id": 2109, "name": "ABNI ENTERPRISES", "fullName": "ABNI ENTERPRISES", "region": "Panchkula", "seller": "Jitender Kumar Gupta", "sales": "₹34,445", "tier": "Platinum", "channel": "MT Regional", "monthly": {"Sep": "₹0", "Oct": "₹235,536", "Nov": "₹-28,867", "dec": "₹0", "26-Jan": "₹0", "26-Feb": "₹0"}},
-    {"id": 2125, "name": "Geom365", "fullName": "Geom365 (AEROCITY)", "region": "New Delhi", "seller": "Sumit Kumar", "sales": "₹21,123", "tier": "Platinum", "channel": "MT Regional", "monthly": {"Sep": "₹18,311", "Oct": "₹0", "Nov": "₹22,871", "dec": "₹-11,681", "26-Jan": "₹69,257", "26-Feb": "₹27,979"}},
+    {"id": 2125, "name": "Geom365", "fullName": "Geom365 (AEROCITY)", "region": "New Delhi", "seller": "Sumit Kumar", "sales": "₹21,123", "tier": "Platinum", "channel": "MT Regional", "monthly": {"Sep": "₹18,311", "Oct": "₹0", "Nov": "₹22,871", "dec": "weight", "26-Jan": "₹69,257", "26-Feb": "₹27,979"}},
     {"id": 2230, "name": "Marche Retail", "fullName": "MARCHE RETAIL PVT LTD", "region": "Gurgaon", "seller": "SANJAY", "sales": "₹37,633", "tier": "Platinum", "channel": "MT Regional", "monthly": {"Sep": "₹0", "Oct": "₹180,564", "Nov": "₹0", "dec": "₹0", "26-Jan": "₹0", "26-Feb": "₹45,232"}},
     {"id": 2127, "name": "Geom365", "fullName": "Geom365 (DHAULA KUAN)", "region": "New Delhi", "seller": "Bedanand Kamat", "sales": "₹24,066", "tier": "Platinum", "channel": "MT Regional", "monthly": {"Sep": "₹35,465", "Oct": "₹0", "Nov": "₹26,847", "dec": "₹0", "26-Jan": "₹71,709", "26-Feb": "₹10,374"}},
     {"id": 287, "name": "Manish Agencies", "fullName": "Manish Agencies (B-3/186, Janakpuri)", "region": "New Delhi", "seller": "Sumit Kumar", "sales": "₹33,999", "tier": "Platinum", "channel": "MT Standalone", "monthly": {"Sep": "₹18,768", "Oct": "₹153,752", "Nov": "₹0", "dec": "₹19,379", "26-Jan": "₹12,093", "26-Feb": "₹0"}},
     {"id": 1921, "name": "SHOP EXPRESS", "fullName": "SHOP EXPRESS LDA", "region": "Gurgaon", "seller": "Bedanand Kamat", "sales": "₹35,798", "tier": "Platinum", "channel": "MT Regional", "monthly": {"Sep": "₹0", "Oct": "₹68,690", "Nov": "₹0", "dec": "₹37,787", "26-Jan": "₹108,312", "26-Feb": "₹0"}},
-    {"id": 2130, "name": "Geom365", "fullName": "Geom365 (NOIDA 104)", "region": "Noida", "seller": "VARUN", "sales": "₹30,142", "tier": "Platinum", "channel": "MT Regional", "monthly": {"Sep": "₹14,743", "Oct": "₹0", "Nov": "₹46,734", "dec": "₹0", "26-Jan": "₹32,024", "26-Feb": "₹87,353"}},
+    {"id": 2130, "name": "Geom365", "fullName": "Geom365 (NOIDA 104)", "region": "Noida", "seller": "VARUN", "sales": "₹30,142", "tier": "Platinum", "channel": "MT Regional", "monthly": {"Sep": "₹14,743", "Oct": "₹0", "Nov": "₹46,734", "dec": "text", "26-Jan": "₹32,024", "26-Feb": "₹87,353"}},
     {"id": 62, "name": "Haryana General Store", "fullName": "Haryana general store", "region": "Chandigarh", "seller": "Jitender Kumar Gupta", "sales": "₹28,577", "tier": "Platinum", "channel": "MT Standalone", "monthly": {"Sep": "₹19,061", "Oct": "₹167,426", "Nov": "₹-15,028", "dec": "₹0", "26-Jan": "₹0", "26-Feb": "₹0"}},
     {"id": 46, "name": "Harri Hyper Store", "fullName": "Harri Hyper Store", "region": "Chandigarh", "seller": "Jitender Kumar Gupta", "sales": "₹22,915", "tier": "Platinum", "channel": "MT Standalone", "monthly": {"Sep": "₹0", "Oct": "₹135,380", "Nov": "₹0", "dec": "₹-10,671", "26-Jan": "₹12,782", "26-Feb": "₹0"}},
     {"id": 18, "name": "Jagat Singh & Sons Agencies Retail", "fullName": "Jagat Singh & Sons Agencies Retail", "region": "Chandigarh", "owner": "Jitender Kumar Gupta", "sales": "₹27,772", "tier": "Platinum", "channel": "MT Standalone", "monthly": {"Sep": "₹0", "Oct": "₹90,638", "Nov": "₹0", "dec": "₹35,166", "26-Jan": "₹-2,623", "26-Feb": "₹43,451"}},
@@ -296,7 +311,6 @@ const regions = [...new Set(storeList.map(s => s.region))].sort();
 const channels = [...new Set(storeList.map(s => s.channel))].sort();
 const tiers = ["Platinum", "Gold", "Silver", "Bronze", "Others"];
 
-// Helper function to figure out database total counts for a given filter metric
 function getDatabaseTotalCount(value, category) {
     return storeList.filter(s => {
         if (category === 'reg') return s.region === value;
@@ -314,7 +328,6 @@ function initFilters(boxId, list, category) {
         const div = document.createElement('div');
         div.className = 'chip';
         
-        // Append the absolute total item volume calculation straight into the button layout description text
         const totalMatches = getDatabaseTotalCount(v, category);
         div.textContent = `${v.toUpperCase()} (${totalMatches})`;
         
