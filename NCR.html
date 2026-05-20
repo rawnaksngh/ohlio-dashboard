@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NCR Activation | Full Data Roadmap</title>
+    <title>Activation Dashboard</title>
     <style>
         :root {
             --bg: #030406;
             --accent: #007AFF;
             --accent-glow: rgba(0, 122, 255, 0.4);
             --success: #34C759;
+            --warning: #FF9500;
             --pending: #FF3B30;
             --glass: rgba(255, 255, 255, 0.04);
             --border: rgba(255, 255, 255, 0.12);
-            --gold: #FFD700;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -51,8 +51,8 @@
         /* Summary Table */
         .mtd-container {
             width: 100%;
-            max-width: 1000px;
-            margin: 40px 0 60px;
+            max-width: 1100px;
+            margin: 40px 0 50px;
             background: var(--glass);
             backdrop-filter: blur(10px);
             border: 1px solid var(--border);
@@ -64,40 +64,167 @@
         .mtd-body-cell { padding: 18px 5px; font-size: 1.1rem; font-weight: 800; border-right: 1px solid var(--border); text-align: center; }
         .mtd-grid div:last-child { border-right: none; }
 
-        .header { text-align: center; margin-bottom: 110px; }
-        .header h1 { font-size: 2.2rem; letter-spacing: -1px; }
-        
-        /* Track */
-        .track-container {
-            position: relative;
+        /* Full Page Section Container */
+        .sections-container {
             width: 100%;
-            max-width: 1300px;
-            height: 2px;
-            background: rgba(255,255,255,0.08);
+            max-width: 1100px;
+            display: flex;
+            flex-direction: column;
+            gap: 45px;
+        }
+
+        /* Single Line Divided Row */
+        .dashboard-row {
+            width: 100%;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Roadmap Section layout spacing */
+        .roadmap-row {
+            padding-top: 24px;
+            padding-bottom: 80px; 
+        }
+
+        .row-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 60px;
         }
-        .track-progress { position: absolute; left: 0; height: 100%; width: 85%; background: linear-gradient(90deg, var(--accent), var(--success)); }
 
-        .checkpoint { position: relative; display: flex; flex-direction: column; align-items: center; cursor: pointer; z-index: 5; }
-        .node-pulse { width: 28px; height: 28px; background: #000; border: 2px solid #444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 900; }
-        .task-card { position: absolute; width: 125px; padding: 10px 12px; background: var(--glass); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: 12px; text-align: center; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; color: #aaa; }
-        .checkpoint:nth-child(odd) .task-card { bottom: 45px; }
-        .checkpoint:nth-child(even) .task-card { top: 45px; }
+        .row-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding-left: 12px;
+            position: relative;
+        }
+        .row-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            bottom: 2px;
+            width: 4px;
+            border-radius: 2px;
+        }
+        .title-activation::before { background-color: var(--accent); }
+        .title-ops::before { background-color: var(--success); }
+        .title-offtake::before { background-color: var(--warning); }
 
-        .done .node-pulse { border-color: var(--success); color: var(--success); }
-        .live .node-pulse { border-color: var(--accent); color: white; animation: pulse 2s infinite; }
-        .hold .node-pulse { border-color: var(--pending); color: var(--pending); }
-        .final .node-pulse { border-color: var(--gold); color: var(--gold); transform: scale(1.2); }
+        .row-status {
+            font-size: 0.95rem;
+            font-weight: 800;
+        }
 
-        /* Popups */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); display: none; justify-content: center; align-items: center; z-index: 1100; }
-        .popup { background: #0a0a0a; border: 1px solid var(--border); width: 95%; max-width: 650px; padding: 30px; border-radius: 24px; position: relative; max-height: 85vh; overflow-y: auto; }
-        .close-btn { position: absolute; top: 20px; right: 20px; cursor: pointer; color: #666; font-size: 1.2rem; }
-        .log-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.75rem; }
+        /* Horizontal Milestone Roadmap Track */
+        .track-container {
+            position: relative;
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 3px;
+            padding: 0 10px;
+        }
+        .track-progress { 
+            position: absolute; 
+            left: 0; 
+            height: 100%; 
+            width: 100%; 
+            background: linear-gradient(90deg, var(--accent), var(--success)); 
+            border-radius: 3px; 
+        }
 
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0.4); } 70% { box-shadow: 0 0 0 12px rgba(0, 122, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0); } }
+        /* Custom smaller tracking filled markers for lower progress bars */
+        .track-progress-partial {
+            width: 15% !important;
+            background: linear-gradient(90deg, var(--accent), var(--warning)) !important;
+        }
+
+        .checkpoint { position: relative; display: flex; flex-direction: column; align-items: center; z-index: 5; }
+        
+        .node-pulse { 
+            width: 28px; 
+            height: 28px; 
+            background: #030406; 
+            border: 2px solid #444; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 0.75rem; 
+            font-weight: 900; 
+            color: #666; 
+        }
+        
+        .task-card { 
+            position: absolute; 
+            width: 105px; 
+            padding: 8px 10px; 
+            background: var(--glass); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid var(--border); 
+            border-radius: 10px; 
+            text-align: center; 
+            font-size: 0.55rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            color: #aaa; 
+            line-height: 1.2; 
+        }
+        
+        .checkpoint:nth-child(odd) .task-card { bottom: 42px; }
+        .checkpoint:nth-child(even) .task-card { top: 42px; }
+
+        /* Completed State Styles */
+        .status-done .node-pulse {
+            border-color: var(--success);
+            color: var(--success);
+            box-shadow: 0 0 10px rgba(52, 199, 89, 0.2);
+            font-size: 0.85rem;
+        }
+        .status-done .task-card {
+            border-color: rgba(52, 199, 89, 0.3);
+            color: #fff;
+        }
+
+        /* Pending State Styles */
+        .status-pending .node-pulse {
+            border-color: var(--pending);
+            color: var(--pending);
+            box-shadow: 0 0 12px rgba(255, 59, 48, 0.3);
+            animation: pulse-border 2s infinite;
+        }
+        .status-pending .task-card {
+            border-color: var(--pending);
+            color: #fff;
+            background: rgba(255, 59, 48, 0.05);
+        }
+
+        @keyframes pulse-border { 0% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.4); } 70% { box-shadow: 0 0 0 8px rgba(255, 59, 48, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); } }
+
+        /* Responsive UI Layout adjustments */
+        @media (max-width: 1000px) {
+            .track-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; height: auto; background: none; }
+            .track-progress { display: none; }
+            .checkpoint:nth-child(n) .task-card { position: relative; top: 0 !important; bottom: 0 !important; width: 100%; margin-top: 8px; }
+            .roadmap-row { padding-bottom: 24px; }
+        }
+        @media (max-width: 650px) {
+            .track-container { grid-template-columns: repeat(2, 1fr); }
+            .mtd-grid { grid-template-columns: repeat(4, 1fr); }
+            .mtd-grid div:nth-child(n+5) { border-top: 1px solid var(--border); }
+        }
     </style>
 </head>
 <body>
@@ -112,124 +239,60 @@
         </div>
     </div>
 
-    <div class="header"><h1>DELHI NCR</h1><p>Market Activation RoadMap</p></div>
+    <div class="sections-container">
+        
+        <div class="dashboard-row roadmap-row">
+            <div class="row-header">
+                <div class="row-title title-activation">1. Activation Roadmap</div>
+                <div class="row-status" style="color: var(--warning);">80%</div>
+            </div>
+            
+            <div class="track-container">
+                <div class="track-progress"></div>
+                <div class="checkpoint status-done"><div class="task-card">Initiate</div><div class="node-pulse">✓</div></div>
+                <div class="checkpoint status-done"><div class="task-card">Soft Launch First 50 Stores</div><div class="node-pulse">✓</div></div>
+                <div class="checkpoint status-done"><div class="task-card">Store Identification</div><div class="node-pulse">✓</div></div>
+                <div class="checkpoint status-done"><div class="task-card">DRCP Finalization (CCR, Right Store)</div><div class="node-pulse">✓</div></div>
+                <div class="checkpoint status-done"><div class="task-card">MR / Regional Listing</div><div class="node-pulse">✓</div></div>
+                <div class="checkpoint status-done"><div class="task-card">MR / Regional Selling</div><div class="node-pulse">✓</div></div>
+                <div class="checkpoint status-pending"><div class="task-card">MR / National Listing</div><div class="node-pulse">!</div></div>
+                <div class="checkpoint status-pending"><div class="task-card">MR / National Selling</div><div class="node-pulse">!</div></div>
+                <div class="checkpoint status-done"><div class="task-card">Q-Com Listing</div><div class="node-pulse">✓</div></div>
+                <div class="checkpoint status-done"><div class="task-card">Q-Com Selling</div><div class="node-pulse">✓</div></div>
+            </div>
+        </div>
 
-    <div class="track-container">
-        <div class="track-progress"></div>
-        <div class="checkpoint done"><div class="task-card">Initiated</div><div class="node-pulse">1</div></div>
-        <div class="checkpoint done"><div class="task-card">POSM Deployment</div><div class="node-pulse">2</div></div>
-        <div class="checkpoint hold"><div class="task-card">Wet Sampling (Hold)</div><div class="node-pulse">3</div></div>
-        <div class="checkpoint done"><div class="task-card">Full Activation</div><div class="node-pulse">4</div></div>
-        <div class="checkpoint live" onclick="openPop('v')"><div class="task-card" style="color:var(--accent)">179 Store Visits</div><div class="node-pulse">5</div></div>
-        <div class="checkpoint live"><div class="task-card">Taste & Specs</div><div class="node-pulse">6</div></div>
-        <div class="checkpoint live" onclick="openPop('o')"><div class="task-card" style="color:var(--accent)">56 PO Received</div><div class="node-pulse">7</div></div>
-        <div class="checkpoint done"><div class="task-card">PO Fulfilled</div><div class="node-pulse">8</div></div>
-        <div class="checkpoint live"><div class="task-card">Regional Scaling</div><div class="node-pulse">9</div></div>
-        <div class="checkpoint final"><div class="task-card">Market Expansion</div><div class="node-pulse">10</div></div>
+        <div class="dashboard-row roadmap-row">
+            <div class="row-header">
+                <div class="row-title title-ops">2. OPS Metrics</div>
+                <div class="row-status" style="color: var(--success);">100%</div>
+            </div>
+
+            <div class="track-container">
+                <div class="track-progress"></div>
+                <div class="checkpoint status-done"><div class="task-card">Manpower</div><div class="node-pulse">✓</div></div>
+                <div class="checkpoint status-done"><div class="task-card">Warehouse</div><div class="node-pulse">✓</div></div>
+                <div class="checkpoint status-done"><div class="task-card">Logistics</div><div class="node-pulse">✓</div></div>
+            </div>
+        </div>
+
+        <div class="dashboard-row roadmap-row">
+            <div class="row-header">
+                <div class="row-title title-offtake">3. Offtake Overview</div>
+                <div class="row-status" style="color: var(--warning);">20%</div>
+            </div>
+
+            <div class="track-container">
+                <div class="track-progress track-progress-partial"></div>
+                <div class="checkpoint status-done"><div class="task-card">Social Media</div><div class="node-pulse">✓</div></div>
+                <div class="checkpoint status-pending"><div class="task-card">Merchandising</div><div class="node-pulse">!</div></div>
+                <div class="checkpoint status-pending"><div class="task-card">Wet Sampling</div><div class="node-pulse">!</div></div>
+                <div class="checkpoint status-pending"><div class="task-card">POSM | Deployment</div><div class="node-pulse">!</div></div>
+                <div class="checkpoint status-pending"><div class="task-card">Standee Out</div><div class="node-pulse">!</div></div>
+            </div>
+        </div>
+
     </div>
 
-    <div id="vPop" class="overlay" onclick="closePop('vPop')">
-        <div class="popup" onclick="event.stopPropagation()"><span class="close-btn" onclick="closePop('vPop')">✕</span><h2 style="color:var(--accent);margin-bottom:20px">48 Store Visit Intelligence</h2><div id="vTarget"></div></div>
-    </div>
-
-    <div id="oPop" class="overlay" onclick="closePop('oPop')">
-        <div class="popup" onclick="event.stopPropagation()"><span class="close-btn" onclick="closePop('oPop')">✕</span><h2 style="color:var(--success);margin-bottom:20px">19 Distribution Logs</h2><div id="oTarget"></div></div>
-    </div>
-
-    <script>
-        const stores = [
-            { name: "Shree Jee Foods", phone: "9891766363", date: "4/10/2026", by: "DEEPAK THAKKAR / AJIT", ch: "MT Standalone" },
-            { name: "Stop And Shop", phone: "8800977730", date: "4/10/2026", by: "DEEPAK THAKKAR / AJIT", ch: "MT Standalone" },
-            { name: "Kondli Bazar Pvt Ltd", phone: "9811292206", date: "4/10/2026", by: "DEEPAK THAKKAR / AJIT", ch: "MT Regional" },
-            { name: "Buybuy Technologies", phone: "7550556554", date: "4/25/2026", by: "Surinder segwal", ch: "MT Regional" },
-            { name: "M/S Freshlee Retail", phone: "8510057861", date: "4/11/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Regional" },
-            { name: "V.M. Traders", phone: "9999456849", date: "4/11/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
-            { name: "R.R. Management", phone: "7290014728", date: "4/11/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Regional" },
-            { name: "Bsm Rajendra Nagar", phone: "7042882768", date: "4/24/2026", by: "PW", ch: "MT Standalone" },
-            { name: "Shiv Shakti Genral Store", phone: "9811327399", date: "4/11/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
-            { name: "Goel Store", phone: "9717517944", date: "4/18/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
-            { name: "Maarket", phone: "9560038040", date: "4/27/2026", by: "PW", ch: "MT Regional" },
-            { name: "Hind Super Store", phone: "9818390800", date: "4/18/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
-            { name: "Vdh Store", phone: "8802571305", date: "4/18/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Regional" },
-            { name: "Daily Needs", phone: "9899935408", date: "4/25/2026", by: "Surinder segwal", ch: "MT Regional" },
-            { name: "Balaji Provision Store", phone: "9582350189", date: "4/18/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
-            { name: "Sankush Builders", phone: "9958281530", date: "4/18/2026", by: "DEEPAK THAKKAR/ Surendra", ch: "MT Standalone" },
-            { name: "Maa Medical Store", phone: "9818249794", date: "4/20/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "NEW NOIDA GROCERY", phone: "9899983330", date: "4/20/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "Naseem Gen Store", phone: "9999000853", date: "4/27/2026", by: "PW", ch: "MT Regional" },
-            { name: "Maa Annapoorna Store", phone: "9198629499", date: "4/20/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "Noida Grocery Bazar", phone: "8510008647", date: "4/20/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "Shri Sai Super Store", phone: "9560439660", date: "4/25/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "Guru Harkishan Traders", phone: "8950838950", date: "4/25/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "Maa Narayani Store", phone: "7042680487", date: "4/21/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "Pandey General Store", phone: "9354214396", date: "4/25/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "Om Retail Mart", phone: "9212334466", date: "4/21/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "Aggarwal Store", phone: "9717144069", date: "4/20/2026", by: "Surinder segwal", ch: "MT Regional" },
-            { name: "Every Day Mart", phone: "9818269224", date: "4/21/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "Safety Store", phone: "9650887307", date: "4/22/2026", by: "Surinder segwal", ch: "MT Regional" },
-            { name: "G One Super Mart", phone: "9990098106", date: "4/22/2026", by: "Surinder segwal", ch: "MT Regional" },
-            { name: "Group99 Infra", phone: "9958040508", date: "4/27/2026", by: "PW", ch: "MT Standalone" },
-            { name: "GROCETERIA BY RCN", phone: "9873235509", date: "4/22/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "Jay Cee Grand", phone: "9650062780", date: "4/23/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "Kiranewala", phone: "9873907314", date: "4/23/2026", by: "Surendra", ch: "MT Regional" },
-            { name: "Arora Stores", phone: "9899976292", date: "4/27/2026", by: "PW", ch: "MT Standalone" },
-            { name: "Ess Vee Foods", phone: "8700594280", date: "4/23/2026", by: "PW", ch: "MT Standalone" },
-            { name: "Lotus Bazaar", phone: "9599198290", date: "4/23/2026", by: "Surendra", ch: "MT Regional" },
-            { name: "Avr Super Mart", phone: "9582888652", date: "4/23/2026", by: "Surendra", ch: "MT Regional" },
-            { name: "Dilli Bazar", phone: "9958947876", date: "4/25/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "New Singhal Store", phone: "9818993200", date: "4/23/2026", by: "PW", ch: "MT Standalone" },
-            { name: "Home Choice Store", phone: "9910104651", date: "4/23/2026", by: "PW", ch: "MT Standalone" },
-            { name: "Day Today Mart", phone: "9871536544", date: "4/21/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "Garg Store", phone: "9560970624", date: "4/23/2026", by: "PW", ch: "MT Standalone" },
-            { name: "RUDRA MEGA MART", phone: "9870222691", date: "4/23/2026", by: "Surendra", ch: "MT Standalone" },
-            { name: "7 Days Mart", phone: "9999093582", date: "4/22/2026", by: "Surinder segwal", ch: "MT Standalone" },
-            { name: "Hitkari Store", phone: "9716802413", date: "4/24/2026", by: "PW", ch: "MT Standalone" },
-            { name: "Ram S Store", phone: "9891543789", date: "4/24/2026", by: "PW", ch: "MT Standalone" },
-            { name: "Baburam Bizcorp", phone: "8178988917", date: "4/24/2026", by: "PW", ch: "MT Regional" }
-        ];
-
-        const orders = [
-            { name: "Shree Jee Foods", date: "10-Apr", ch: "MT Standalone", qty: 2 },
-            { name: "Stop And Shop", date: "10-Apr", ch: "MT Standalone", qty: 2 },
-            { name: "Kondli Bazar Pvt Ltd", date: "10-Apr", ch: "MT Regional", qty: 10 },
-            { name: "Freshlee Retail", date: "11-Apr", ch: "MT Regional", qty: 10 },
-            { name: "V.M. Traders", date: "11-Apr", ch: "MT Standalone", qty: 2 },
-            { name: "R.R. Management", date: "11-Apr", ch: "MT Regional", qty: 2 },
-            { name: "Shiv Shakti General", date: "11-Apr", ch: "MT Standalone", qty: 2 },
-            { name: "Goel Store", date: "18-Apr", ch: "MT Standalone", qty: 2 },
-            { name: "Hind Super Store", date: "18-Apr", ch: "MT Standalone", qty: 2 },
-            { name: "Vdh Store", date: "18-Apr", ch: "MT Regional", qty: 2 },
-            { name: "Balaji Provision", date: "18-Apr", ch: "MT Standalone", qty: 2 },
-            { name: "Sankush Builders", date: "18-Apr", ch: "MT Standalone", qty: 2 },
-            { name: "Jay Cee Grand", date: "23-Apr", ch: "MT Standalone", qty: 2 },
-            { name: "Hitkari Store", date: "24-Apr", ch: "MT Standalone", qty: 2 },
-            { name: "Ram S Store", date: "24-Apr", ch: "MT Standalone", qty: 2 },
-            { name: "Baburam Bizcorp", date: "24-Apr", ch: "MT Regional", qty: 2 },
-            { name: "Bsm Rajendra Nagar", date: "24-Apr", ch: "MT Standalone", qty: 2 },
-            { name: "Maarket", date: "27-Apr", ch: "MT Regional", qty: 2 },
-            { name: "Arora Stores", date: "27-Apr", ch: "MT Standalone", qty: 2 }
-        ];
-
-        function openPop(mode) {
-            if(mode === 'v') {
-                document.getElementById('vPop').style.display = 'flex';
-                document.getElementById('vTarget').innerHTML = stores.map(l => `
-                    <div class="log-row">
-                        <span style="width:45%;font-weight:600">${l.name}</span>
-                        <span style="color:var(--accent)">${l.date}</span>
-                        <span style="color:#666;font-size:0.65rem;width:30%;text-align:right">${l.by}</span>
-                    </div>`).join('');
-            } else {
-                document.getElementById('oPop').style.display = 'flex';
-                document.getElementById('oTarget').innerHTML = orders.map(l => `
-                    <div class="log-row">
-                        <span style="width:60%;font-weight:500">${l.name}</span>
-                        <span style="color:var(--success);font-weight:800">${l.qty} Cases</span>
-                        <span style="color:#666">${l.date}</span>
-                    </div>`).join('');
-            }
-        }
-        function closePop(id) { document.getElementById(id).style.display = 'none'; }
-    </script>
 </body>
 </html>
