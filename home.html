@@ -8,9 +8,12 @@
         :root {
             --neon-cyan: #00ffd5;
             --neon-purple: #af52de;
+            --neon-orange: #ff9500;
             --neon-red: #ff3b30;
             --glass: rgba(255, 255, 255, 0.04);
             --glass-border: rgba(255, 255, 255, 0.1);
+            --panel-solid: #0a1218;
+            --border-crisp: rgba(255, 255, 255, 0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, "SF Pro Display", sans-serif; }
@@ -38,8 +41,37 @@
 
         .logout { margin-top: auto; color: var(--neon-red) !important; border-top: 1px solid var(--glass-border); padding-top: 20px; }
 
-        /* --- MAIN INTERFACE --- */
-        main { flex-grow: 1; padding: 35px 45px; display: flex; flex-direction: column; overflow-y: auto; position: relative; }
+        /* --- MAIN LAYOUT STRUCTURE --- */
+        .workspace {
+            flex-grow: 1;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        main { 
+            flex-grow: 1; 
+            width: 62%;
+            padding: 35px 45px; 
+            display: flex; 
+            flex-direction: column; 
+            overflow-y: auto; 
+            position: relative; 
+        }
+
+        /* --- RIGHT SIDEBAR PANEL --- */
+        .right-panel {
+            width: 38%;
+            min-width: 360px;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 1px solid var(--glass-border);
+            padding: 35px 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+        }
 
         header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 35px; }
         .h-text h1 { font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px; }
@@ -76,7 +108,7 @@
         .pop-item { font-size: 0.75rem; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ffbaba; }
 
         /* --- ICON-DRIVEN ACCORDION --- */
-        .accordion-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px; }
+        .accordion-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
         .acc-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; overflow: hidden; }
         .acc-header { padding: 18px 25px; display: flex; align-items: center; cursor: pointer; }
         .acc-header h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); margin-left: 15px; flex-grow: 1; }
@@ -96,32 +128,101 @@
         .link-item b { font-size: 0.8rem; display: block; }
         .link-item i { font-size: 0.65rem; color: rgba(255,255,255,0.3); font-style: normal; }
 
+        /* --- MINI COMPACT HIGH-CONTRAST CHARTS --- */
+        .metrics-heading { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 4px; color: var(--neon-cyan); font-weight: 800; }
+        .charts-container { display: flex; flex-direction: column; gap: 12px; }
+        
+        .mini-chart-card {
+            background: var(--panel-solid);
+            border: 1px solid var(--border-crisp);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chart-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chart-title-lbl {
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .chart-pct-badge {
+            font-size: 1.05rem;
+            font-weight: 900;
+            letter-spacing: -0.3px;
+        }
+
+        /* High Visibility Linear Track Bar */
+        .compact-track {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .compact-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .chart-bottom-data {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.68rem;
+            color: rgba(255, 255, 255, 0.4);
+            padding-top: 2px;
+        }
+        .chart-bottom-data span.hl-val {
+            font-weight: 700;
+            color: #ffffff;
+        }
+
         /* --- ACTIVATION ROAD MAP --- */
-        .roadmap-heading { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 4px; color: var(--neon-purple); margin-bottom: 20px; display: block; font-weight: 800; }
-        .activation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .roadmap-heading { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 4px; color: var(--neon-purple); display: block; font-weight: 800; }
+        .activation-stack { display: flex; flex-direction: column; gap: 12px; }
         
         .road-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+            background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
             border: 1px solid var(--glass-border);
-            padding: 35px 25px; border-radius: 30px; text-decoration: none;
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            transition: 0.4s; position: relative; overflow: hidden;
+            padding: 16px 20px; border-radius: 16px; text-decoration: none;
+            display: flex; align-items: center; text-align: left;
+            transition: 0.3s; position: relative; overflow: hidden;
+            gap: 16px;
         }
-        .road-card:hover { transform: translateY(-10px); border-color: var(--neon-purple); background: rgba(175, 82, 222, 0.05); }
-        .road-icon { font-size: 2.2rem; margin-bottom: 12px; }
-        .road-name { font-size: 1rem; font-weight: 900; letter-spacing: 1px; color: white; }
-        .road-status { font-size: 0.6rem; color: var(--neon-purple); text-transform: uppercase; margin-top: 6px; font-weight: 800; }
+        .road-card:hover { transform: translateX(5px); border-color: var(--neon-purple); background: rgba(175, 82, 222, 0.05); }
+        .road-icon { font-size: 1.6rem; }
+        .road-details { display: flex; flex-direction: column; }
+        .road-name { font-size: 0.85rem; font-weight: 900; letter-spacing: 1px; color: white; }
+        .road-status { font-size: 0.6rem; color: var(--neon-purple); text-transform: uppercase; margin-top: 2px; font-weight: 800; }
+
+        /* --- RESPONSIVE LAYOUT CONFIG --- */
+        @media (max-width: 1024px) {
+            .workspace { flex-direction: column; overflow-y: auto; }
+            main { width: 100%; height: auto; overflow-y: visible; padding: 35px 25px 15px 25px; }
+            .right-panel { width: 100%; height: auto; overflow-y: visible; border-left: none; border-top: 1px solid var(--glass-border); padding: 30px 25px; gap: 35px; }
+            #deadlinePop { width: 90%; left: 5%; right: 5%; top: 120px; }
+        }
 
         @media (max-width: 900px) {
             body { flex-direction: column; }
+            .workspace { height: calc(100vh - 65px); order: 1; }
             nav { width: 100%; height: 65px; flex-direction: row; justify-content: space-around; border-right: none; border-top: 1px solid var(--glass-border); order: 2; padding: 0 10px; }
             nav:hover { width: 100%; }
             .nav-item { margin-bottom: 0; flex-direction: column; justify-content: center; height: 100%; }
             .nav-text { display: none; }
             .logout { border-top: none; padding-top: 0; margin-top: 0; }
-            main { height: calc(100vh - 65px); order: 1; padding: 25px; }
-            .activation-grid, .acc-content { grid-template-columns: 1fr; }
-            #deadlinePop { width: 90%; left: 5%; right: 5%; top: 20%; }
+            .acc-content { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -146,97 +247,160 @@
         </a>
     </nav>
 
-    <main>
-        <div id="deadlinePop">
-            <span class="pop-close" onclick="toggleDeadlines()">&times;</span>
-            <h3 style="font-size: 0.7rem; color: var(--neon-red); text-transform: uppercase; margin-bottom: 10px;">⚠️ PENDING MISSION TASKS</h3>
-            <div class="pop-item">Hire Sampling Staff - 30 Apr</div>
-            <div class="pop-item">E-Rickshaw Sampling - 15 May</div>
-            <div class="pop-item">Staff Recruitment (+2) - 15 May</div>
-            <div class="pop-item">Store Merchandisers - 20 May</div>
-            <div class="pop-item">Hire Remaining Staff - 25 May</div>
-        </div>
-
-        <header>
-            <div class="h-text">
-                <p>System Active / v2.6</p>
-                <h1>Command Center</h1>
-            </div>
-            <div class="top-right-group">
-                <div class="deadline-trigger" onclick="toggleDeadlines()">Deadlines</div>
-                <a href="TASKS.html" class="master-btn">Milestone To 100 cr →</a>
-            </div>
-        </header>
-
-        <div class="accordion-group">
-            <div class="acc-card active" onclick="this.classList.toggle('active')">
-                <div class="acc-header">
-                    <span style="font-size: 1.5rem;">🚀</span>
-                    <h2> Pre-Launch</h2>
-                    <span>▾</span>
-                </div>
-                <div class="acc-content">
-                    <a href="CHANNEL CLASSIFICATION.html" class="link-item"><div><b>Channel Description</b><i>All Deatils about Channels</i></div></a>
-                    <a href="margin-structure.html" class="link-item"><div><b>Margins</b><i>Profit distribution</i></div></a>
-                    <a href="quick-commerce.html" class="link-item"><div><b>Quick Commerce</b><i>Q-Com Listing </i></div></a>
-                    <a href="ecommerce.html" class="link-item"><div><b>E-Commerce</b><i>Online Distribution</i></div></a>
-                </div>
+    <div class="workspace">
+        <main>
+            <div id="deadlinePop">
+                <span class="pop-close" onclick="toggleDeadlines()">&times;</span>
+                <h3 style="font-size: 0.7rem; color: var(--neon-red); text-transform: uppercase; margin-bottom: 10px;">⚠️ PENDING MISSION TASKS</h3>
+                <div class="pop-item">Hire Sampling Staff - 30 Apr</div>
+                <div class="pop-item">E-Rickshaw Sampling - 15 May</div>
+                <div class="pop-item">Staff Recruitment (+2) - 15 May</div>
+                <div class="pop-item">Store Merchandisers - 20 May</div>
+                <div class="pop-item">Hire Remaining Staff - 25 May</div>
             </div>
 
-            <div class="acc-card" onclick="this.classList.toggle('active')">
-                <div class="acc-header">
-                    <span style="font-size: 1.5rem;">🌍</span>
-                    <h2> GTM Strategy</h2>
-                    <span>▾</span>
+            <header>
+                <div class="h-text">
+                    <p>System Active / v2.6</p>
+                    <h1>Command Center</h1>
                 </div>
-                <div class="acc-content">
-                    <a href="shop.html" class="link-item"><div><b>100 Retailer Roadmap</b><i>D2R North India</i></div></a>
-                    <a href="subdnorm.html" class="link-item"><div><b>Sub-D Norms</b><i>Distribution guidelines</i></div></a>
-                    <div class="link-item" onclick="window.open('https://docs.google.com/forms/d/1ESLZNsWBnxQVW6ApgSmyUokE3ENvX1Vj75ELEMSbqes/viewanalytics')" style="cursor:pointer;">
-                        <div><b>Market Survey</b><i>Live Data Feed</i></div>
+                <div class="top-right-group">
+                    <div class="deadline-trigger" onclick="toggleDeadlines()">Deadlines</div>
+                    <a href="TASKS.html" class="master-btn">Milestone To 100 cr →</a>
+                </div>
+            </header>
+
+            <div class="accordion-group">
+                <div class="acc-card active" onclick="this.classList.toggle('active')">
+                    <div class="acc-header">
+                        <span style="font-size: 1.5rem;">🚀</span>
+                        <h2> Pre-Launch</h2>
+                        <span>▾</span>
+                    </div>
+                    <div class="acc-content">
+                        <a href="CHANNEL CLASSIFICATION.html" class="link-item"><div><b>Channel Description</b><i>All Deatils about Channels</i></div></a>
+                        <a href="margin-structure.html" class="link-item"><div><b>Margins</b><i>Profit distribution</i></div></a>
+                        <a href="quick-commerce.html" class="link-item"><div><b>Quick Commerce</b><i>Q-Com Listing </i></div></a>
+                        <a href="ecommerce.html" class="link-item"><div><b>E-Commerce</b><i>Online Distribution</i></div></a>
+                    </div>
+                </div>
+
+                <div class="acc-card" onclick="this.classList.toggle('active')">
+                    <div class="acc-header">
+                        <span style="font-size: 1.5rem;">🌍</span>
+                        <h2> GTM Strategy</h2>
+                        <span>▾</span>
+                    </div>
+                    <div class="acc-content">
+                        <a href="shop.html" class="link-item"><div><b>100 Retailer Roadmap</b><i>D2R North India</i></div></a>
+                        <a href="subdnorm.html" class="link-item"><div><b>Sub-D Norms</b><i>Distribution guidelines</i></div></a>
+                        <div class="link-item" onclick="window.open('https://docs.google.com/forms/d/1ESLZNsWBnxQVW6ApgSmyUokE3ENvX1Vj75ELEMSbqes/viewanalytics')" style="cursor:pointer;">
+                            <div><b>Market Survey</b><i>Live Data Feed</i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="acc-card" onclick="this.classList.toggle('active')">
+                    <div class="acc-header">
+                        <span style="font-size: 1.5rem;">📣</span>
+                        <h2> Marketing Hub</h2>
+                        <span>▾</span>
+                    </div>
+                    <div class="acc-content">
+                        <a href="instagram.html" class="link-item"><div><b>Instagram</b><i>Presence & Ads</i></div></a>
+                        <a href="shopify.html" class="link-item"><div><b>Shopify</b><i>Sales Tracking</i></div></a>
+                        <a href="oliohh inhouse.html" class="link-item"><div><b>Inhouse Mkt.</b><i>Staff Sampling</i></div></a>
+                        <a href="school-sampling.html" class="link-item"><div><b>School Sampling</b><i>Youth Outreach Programs</i></div></a>
+                        <a href="colleges-fest.html" class="link-item"><div><b>Colleges Fest</b><i>Campus Brand Activations</i></div></a>
                     </div>
                 </div>
             </div>
 
-            <div class="acc-card" onclick="this.classList.toggle('active')">
-                <div class="acc-header">
-                    <span style="font-size: 1.5rem;">📣</span>
-                    <h2> Marketing Hub</h2>
-                    <span>▾</span>
-                </div>
-                <div class="acc-content">
-                    <a href="instagram.html" class="link-item"><div><b>Instagram</b><i>Presence & Ads</i></div></a>
-                    <a href="shopify.html" class="link-item"><div><b>Shopify</b><i>Sales Tracking</i></div></a>
-                    <a href="oliohh inhouse.html" class="link-item"><div><b>Inhouse Mkt.</b><i>Staff Sampling</i></div></a>
-                    <a href="school-sampling.html" class="link-item"><div><b>School Sampling</b><i>Youth Outreach Programs</i></div></a>
-                    <a href="colleges-fest.html" class="link-item"><div><b>Colleges Fest</b><i>Campus Brand Activations</i></div></a>
+            <footer style="margin-top:auto; padding-top:40px; font-size:0.6rem; opacity:0.2; text-align:center;">
+                ROUNAK SINGH | VTC TRADEWINGS &copy; 2026
+            </footer>
+        </main>
+
+        <aside class="right-panel">
+            
+            <div class="chart-section" style="display: flex; flex-direction: column; gap: 16px;">
+                <span class="metrics-heading">MTD Execution Status</span>
+                <div class="charts-container">
+                    
+                    <div class="mini-chart-card">
+                        <div class="chart-top-bar">
+                            <span class="chart-title-lbl">Value MTD</span>
+                            <span class="chart-pct-badge" style="color: var(--neon-cyan);">13%</span>
+                        </div>
+                        <div class="compact-track">
+                            <div class="compact-fill" style="width: 13%; background: var(--neon-cyan);"></div>
+                        </div>
+                        <div class="chart-bottom-data">
+                            <div>Achieved: <span class="hl-val">1.32 Lakhs</span></div>
+                            <div>Target: <span>10.00 Lakhs</span></div>
+                        </div>
+                    </div>
+
+                    <div class="mini-chart-card">
+                        <div class="chart-top-bar">
+                            <span class="chart-title-lbl">Coverage MTD</span>
+                            <span class="chart-pct-badge" style="color: var(--neon-orange);">78%</span>
+                        </div>
+                        <div class="compact-track">
+                            <div class="compact-fill" style="width: 78%; background: var(--neon-orange);"></div>
+                        </div>
+                        <div class="chart-bottom-data">
+                            <div>Achieved: <span class="hl-val">78 Stores</span></div>
+                            <div>Target: <span>100 Stores</span></div>
+                        </div>
+                    </div>
+
+                    <div class="mini-chart-card">
+                        <div class="chart-top-bar">
+                            <span class="chart-title-lbl">Volume MTD</span>
+                            <span class="chart-pct-badge" style="color: var(--neon-purple);">12.7%</span>
+                        </div>
+                        <div class="compact-track">
+                            <div class="compact-fill" style="width: 12.7%; background: var(--neon-purple);"></div>
+                        </div>
+                        <div class="chart-bottom-data">
+                            <div>Achieved: <span class="hl-val">1,912 Pcs</span></div>
+                            <div>Target: <span>15,000 Pcs</span></div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </div>
 
-        <span class="roadmap-heading">Activation Road Map</span>
-        <div class="activation-grid">
-            <a href="NCR.html" class="road-card">
-                <span class="road-icon">🏛️</span>
-                <span class="road-name">DELHI NCR</span>
-                <span class="road-status">Active Sector</span>
-            </a>
-            <a href="#" class="road-card">
-                <span class="road-icon">🏙️</span>
-                <span class="road-name">CHANDIGARH</span>
-                <span class="road-status">Upcoming Deployment</span>
-            </a>
-            <a href="#" class="road-card">
-                <span class="road-icon">🏯</span>
-                <span class="road-name">GUJARAT</span>
-                <span class="road-status">Strategy Phase</span>
-            </a>
-        </div>
+            <div class="roadmap-section" style="display: flex; flex-direction: column; gap: 16px;">
+                <span class="roadmap-heading">Activation Road Map</span>
+                <div class="activation-stack">
+                    <a href="NCR.html" class="road-card">
+                        <span class="road-icon">🏛️</span>
+                        <div class="road-details">
+                            <span class="road-name">DELHI NCR</span>
+                            <span class="road-status">Active Sector</span>
+                        </div>
+                    </a>
+                    <a href="#" class="road-card">
+                        <span class="road-icon">🏙️</span>
+                        <div class="road-details">
+                            <span class="road-name">CHANDIGARH</span>
+                            <span class="road-status">Upcoming Deployment</span>
+                        </div>
+                    </a>
+                    <a href="#" class="road-card">
+                        <span class="road-icon">🏯</span>
+                        <div class="road-details">
+                            <span class="road-name">GUJARAT</span>
+                            <span class="road-status">Strategy Phase</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
 
-        <footer style="margin-top:40px; font-size:0.6rem; opacity:0.2; text-align:center;">
-            ROUNAK SINGH | VTC TRADEWINGS &copy; 2026
-        </footer>
-    </main>
+        </aside>
+    </div>
 
     <script>
         function toggleDeadlines() {
