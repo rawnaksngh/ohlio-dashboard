@@ -151,25 +151,116 @@
         .chart-bottom-data { display: flex; justify-content: space-between; font-size: 0.68rem; color: rgba(255, 255, 255, 0.4); white-space: nowrap; }
         .chart-bottom-data span.hl-val { font-weight: 700; color: #ffffff; }
 
-        /* --- ACTIVATION ROAD MAP --- */
-        .roadmap-section { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
-        .roadmap-heading { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 4px; color: var(--neon-purple); display: block; font-weight: 800; }
-        .activation-stack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        /* --- ACTIVATION ROAD MAP (COMPACT TV RE-DESIGN) --- */
+        .roadmap-section { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            margin-bottom: 10px; 
+        }
+        .roadmap-heading { 
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            letter-spacing: 4px; 
+            color: var(--neon-purple); 
+            display: block; 
+            font-weight: 800; 
+        }
+        .activation-stack { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 14px; 
+            width: 100%;
+        }
         
         .road-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
-            border: 1px solid var(--glass-border);
-            padding: 14px 18px; border-radius: 14px; text-decoration: none;
-            display: flex; align-items: center; text-align: left;
-            transition: 0.3s; position: relative; overflow: hidden; gap: 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px; 
+            border-radius: 16px; 
+            text-decoration: none;
+            display: flex; 
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 14px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
         }
-        .road-card:hover { transform: translateY(-3px); border-color: var(--neon-purple); background: rgba(175, 82, 222, 0.05); }
-        .road-icon { font-size: 1.4rem; flex-shrink: 0; }
-        .road-details { display: flex; flex-direction: column; min-width: 0; }
-        .road-name { font-size: 0.8rem; font-weight: 900; letter-spacing: 1px; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .road-status { font-size: 0.6rem; color: var(--neon-purple); text-transform: uppercase; margin-top: 2px; font-weight: 800; white-space: nowrap; }
+        .road-card:hover { 
+            transform: translateY(-4px); 
+            border-color: var(--neon-purple); 
+            background: rgba(175, 82, 222, 0.06); 
+            box-shadow: 0 12px 24px rgba(175, 82, 222, 0.15);
+        }
+        
+        .road-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .road-icon { 
+            font-size: 1.5rem; 
+            background: rgba(255, 255, 255, 0.04);
+            padding: 6px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .status-badge {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+        .active-sector { 
+            background: rgba(0, 255, 213, 0.1); 
+            color: var(--neon-cyan); 
+            border: 1px solid rgba(0, 255, 213, 0.25); 
+        }
+        .upcoming-deployment { 
+            background: rgba(255, 149, 0, 0.1); 
+            color: var(--neon-orange); 
+            border: 1px solid rgba(255, 149, 0, 0.25); 
+        }
+        .strategy-phase { 
+            background: rgba(175, 82, 222, 0.1); 
+            color: var(--neon-purple); 
+            border: 1px solid rgba(175, 82, 222, 0.25); 
+        }
 
-        /* Media Queries completely blocked for pristine desktop layout preservation */
+        .road-details { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 2px;
+            min-width: 0; 
+        }
+        .road-name { 
+            font-size: 0.95rem; 
+            font-weight: 900; 
+            letter-spacing: 0.5px; 
+            color: white; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+        .road-zone { 
+            font-size: 0.68rem; 
+            color: rgba(255, 255, 255, 0.4); 
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Responsive configuration queries deactivated to maintain desktop aspect ratios */
     </style>
 </head>
 <body>
@@ -271,27 +362,40 @@
             <div class="roadmap-section">
                 <span class="roadmap-heading">Activation Road Map</span>
                 <div class="activation-stack">
+                    
                     <a href="NCR.html" class="road-card">
-                        <span class="road-icon">🏛️</span>
+                        <div class="road-card-header">
+                            <span class="road-icon">🏛️</span>
+                            <span class="status-badge active-sector">Active</span>
+                        </div>
                         <div class="road-details">
                             <span class="road-name">DELHI NCR</span>
-                            <span class="road-status">Active Sector</span>
+                            <span class="road-zone">Core Northern Hub</span>
                         </div>
                     </a>
+
                     <a href="#" class="road-card">
-                        <span class="road-icon">🏙️</span>
+                        <div class="road-card-header">
+                            <span class="road-icon">🏙️</span>
+                            <span class="status-badge upcoming-deployment">Upcoming</span>
+                        </div>
                         <div class="road-details">
                             <span class="road-name">CHANDIGARH</span>
-                            <span class="road-status">Upcoming Deployment</span>
+                            <span class="road-zone">Next Phase Pipeline</span>
                         </div>
                     </a>
+
                     <a href="#" class="road-card">
-                        <span class="road-icon">🏯</span>
+                        <div class="road-card-header">
+                            <span class="road-icon">🏯</span>
+                            <span class="status-badge strategy-phase">Strategy</span>
+                        </div>
                         <div class="road-details">
                             <span class="road-name">GUJARAT</span>
-                            <span class="road-status">Strategy Phase</span>
+                            <span class="road-zone">Market Assessment</span>
                         </div>
                     </a>
+
                 </div>
             </div>
 
