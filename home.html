@@ -29,8 +29,11 @@
             border-right: 1px solid var(--glass-border); display: flex;
             flex-direction: column; align-items: flex-start; padding: 30px 16px; 
             transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000;
-            overflow: hidden;
+            overflow-y: auto;
+            scrollbar-width: none; /* Hide scrollbars for Firefox */
         }
+        nav::-webkit-scrollbar { display: none; } /* Hide scrollbars for Chrome/Safari */
+        
         nav:hover { width: 220px; }
         
         .nav-item { display: flex; align-items: center; width: 100%; text-decoration: none; color: rgba(255,255,255,0.5); margin-bottom: 10px; border-radius: 14px; transition: 0.3s; }
@@ -38,6 +41,8 @@
         .nav-icon { width: 48px; min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
         .nav-text { opacity: 0; margin-left: 15px; font-size: 0.85rem; font-weight: 700; white-space: nowrap; transition: 0.3s; }
         nav:hover .nav-text { opacity: 1; }
+
+        .nav-separator { width: 100%; height: 1px; background: var(--glass-border); margin: 15px 0; }
 
         .logout { margin-top: auto; color: var(--neon-red) !important; border-top: 1px solid var(--glass-border); padding-top: 20px; }
 
@@ -217,10 +222,15 @@
         @media (max-width: 900px) {
             body { flex-direction: column; }
             .workspace { height: calc(100vh - 65px); order: 1; }
-            nav { width: 100%; height: 65px; flex-direction: row; justify-content: space-around; border-right: none; border-top: 1px solid var(--glass-border); order: 2; padding: 0 10px; }
+            nav { 
+                width: 100%; height: 65px; flex-direction: row; justify-content: flex-start; 
+                border-right: none; border-top: 1px solid var(--glass-border); order: 2; 
+                padding: 0 10px; overflow-x: auto; overflow-y: hidden; white-space: nowrap; gap: 15px;
+            }
             nav:hover { width: 100%; }
-            .nav-item { margin-bottom: 0; flex-direction: column; justify-content: center; height: 100%; }
+            .nav-item { margin-bottom: 0; flex-direction: column; justify-content: center; height: 100%; width: auto; min-width: 75px; }
             .nav-text { display: none; }
+            .nav-separator { display: none; } /* Hide horizontal divider on mobile layout */
             .logout { border-top: none; padding-top: 0; margin-top: 0; }
             .acc-content { grid-template-columns: 1fr; }
         }
@@ -241,6 +251,27 @@
             <span class="nav-icon">💡</span>
             <span class="nav-text">Suggestions</span>
         </a>
+
+        <!-- Pre-Launch Task Items (Migrated to Sidebar) -->
+        <div class="nav-separator"></div>
+
+        <a href="CHANNEL CLASSIFICATION.html" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span class="nav-text">Channel Desc</span>
+        </a>
+        <a href="margin-structure.html" class="nav-item">
+            <span class="nav-icon">💵</span>
+            <span class="nav-text">Margins</span>
+        </a>
+        <a href="quick-commerce.html" class="nav-item">
+            <span class="nav-icon">⚡</span>
+            <span class="nav-text">Quick Commerce</span>
+        </a>
+        <a href="ecommerce.html" class="nav-item">
+            <span class="nav-icon">🌐</span>
+            <span class="nav-text">E-Commerce</span>
+        </a>
+        
         <a href="index.html" class="nav-item logout">
             <span class="nav-icon">🚪</span>
             <span class="nav-text">Logout System</span>
@@ -271,21 +302,8 @@
             </header>
 
             <div class="accordion-group">
+                <!-- GTM Strategy accordion (Defaulting to active status now) -->
                 <div class="acc-card active" onclick="this.classList.toggle('active')">
-                    <div class="acc-header">
-                        <span style="font-size: 1.5rem;">🚀</span>
-                        <h2> Pre-Launch</h2>
-                        <span>▾</span>
-                    </div>
-                    <div class="acc-content">
-                        <a href="CHANNEL CLASSIFICATION.html" class="link-item"><div><b>Channel Description</b><i>All Deatils about Channels</i></div></a>
-                        <a href="margin-structure.html" class="link-item"><div><b>Margins</b><i>Profit distribution</i></div></a>
-                        <a href="quick-commerce.html" class="link-item"><div><b>Quick Commerce</b><i>Q-Com Listing </i></div></a>
-                        <a href="ecommerce.html" class="link-item"><div><b>E-Commerce</b><i>Online Distribution</i></div></a>
-                    </div>
-                </div>
-
-                <div class="acc-card" onclick="this.classList.toggle('active')">
                     <div class="acc-header">
                         <span style="font-size: 1.5rem;">🌍</span>
                         <h2> GTM Strategy</h2>
@@ -327,44 +345,47 @@
                 <span class="metrics-heading">MTD Execution Status</span>
                 <div class="charts-container">
                     
+                    <!-- Value MTD Chart: Updated Progress 36.5% -->
                     <div class="mini-chart-card">
                         <div class="chart-top-bar">
                             <span class="chart-title-lbl">Value MTD</span>
-                            <span class="chart-pct-badge" style="color: var(--neon-cyan);">20.4%</span>
+                            <span class="chart-pct-badge" style="color: var(--neon-cyan);">36.5%</span>
                         </div>
                         <div class="compact-track">
-                            <div class="compact-fill" style="width: 20.4%; background: var(--neon-cyan);"></div>
+                            <div class="compact-fill" style="width: 36.5%; background: var(--neon-cyan);"></div>
                         </div>
                         <div class="chart-bottom-data">
-                            <div>Achieved: <span class="hl-val">2.04 Lakhs</span></div>
+                            <div>Achieved: <span class="hl-val">3.65 Lakhs</span></div>
                             <div>Target: <span>10.00 Lakhs</span></div>
                         </div>
                     </div>
 
+                    <!-- Coverage MTD Chart: Updated Progress 77% (capped track at 100% width visually) -->
                     <div class="mini-chart-card">
                         <div class="chart-top-bar">
                             <span class="chart-title-lbl">Coverage MTD</span>
-                            <span class="chart-pct-badge" style="color: var(--neon-orange);">91%</span>
+                            <span class="chart-pct-badge" style="color: var(--neon-orange);">77%</span>
                         </div>
                         <div class="compact-track">
-                            <div class="compact-fill" style="width: 91%; background: var(--neon-orange);"></div>
+                            <div class="compact-fill" style="width: 77%; background: var(--neon-orange);"></div>
                         </div>
                         <div class="chart-bottom-data">
-                            <div>Achieved: <span class="hl-val">91 Stores</span></div>
+                            <div>Achieved: <span class="hl-val">77 Stores</span></div>
                             <div>Target: <span>100 Stores</span></div>
                         </div>
                     </div>
 
+                    <!-- Volume MTD Chart: Updated Progress 36% (5400 / 15000) -->
                     <div class="mini-chart-card">
                         <div class="chart-top-bar">
                             <span class="chart-title-lbl">Volume MTD</span>
-                            <span class="chart-pct-badge" style="color: var(--neon-purple);">20.06%</span>
+                            <span class="chart-pct-badge" style="color: var(--neon-purple);">36%</span>
                         </div>
                         <div class="compact-track">
-                            <div class="compact-fill" style="width: 20.06%; background: var(--neon-purple);"></div>
+                            <div class="compact-fill" style="width: 36%; background: var(--neon-purple);"></div>
                         </div>
                         <div class="chart-bottom-data">
-                            <div>Achieved: <span class="hl-val">3,009 Pcs</span></div>
+                            <div>Achieved: <span class="hl-val">5,400 Pcs</span></div>
                             <div>Target: <span>15,000 Pcs</span></div>
                         </div>
                     </div>
