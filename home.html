@@ -20,28 +20,19 @@
         
         body {
             background: radial-gradient(circle at 0% 0%, #0d1a21, #05070a);
-            color: white; 
-            height: 100vh; 
-            display: flex; 
-            overflow: hidden;
+            color: white; height: 100vh; display: flex; overflow: hidden;
         }
 
         /* --- SMOOTH EXPANDING SIDEBAR --- */
         nav {
-            width: 80px; 
-            background: rgba(0,0,0,0.6); 
-            backdrop-filter: blur(30px);
-            border-right: 1px solid var(--glass-border); 
-            display: flex;
-            flex-direction: column; 
-            align-items: flex-start; 
-            padding: 30px 16px; 
-            transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            z-index: 1000;
+            width: 80px; background: rgba(0,0,0,0.6); backdrop-filter: blur(30px);
+            border-right: 1px solid var(--glass-border); display: flex;
+            flex-direction: column; align-items: flex-start; padding: 30px 16px; 
+            transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000;
             overflow-y: auto;
-            scrollbar-width: none; 
+            scrollbar-width: none; /* Hide scrollbars for Firefox */
         }
-        nav::-webkit-scrollbar { display: none; } 
+        nav::-webkit-scrollbar { display: none; } /* Hide scrollbars for Chrome/Safari */
         
         nav:hover { width: 220px; }
         
@@ -52,19 +43,20 @@
         nav:hover .nav-text { opacity: 1; }
 
         .nav-separator { width: 100%; height: 1px; background: var(--glass-border); margin: 15px 0; }
+
         .logout { margin-top: auto; color: var(--neon-red) !important; border-top: 1px solid var(--glass-border); padding-top: 20px; }
 
-        /* --- LOCKED LANDSCAPE GRID WORKSPACE --- */
+        /* --- MAIN LAYOUT STRUCTURE --- */
         .workspace {
             flex-grow: 1;
-            display: grid;
-            /* Uses robust grid styling instead of rigid percentages to handle varying screen widths */
-            grid-template-columns: 1.6fr 1fr; 
+            display: flex;
             height: 100vh;
             overflow: hidden;
         }
 
         main { 
+            flex-grow: 1; 
+            width: 62%;
             padding: 35px 45px; 
             display: flex; 
             flex-direction: column; 
@@ -74,6 +66,8 @@
 
         /* --- RIGHT SIDEBAR PANEL --- */
         .right-panel {
+            width: 38%;
+            min-width: 360px;
             background: rgba(0, 0, 0, 0.3);
             border-left: 1px solid var(--glass-border);
             padding: 35px 25px;
@@ -118,12 +112,11 @@
         .pop-close { cursor: pointer; float: right; color: var(--neon-red); font-size: 1.2rem; line-height: 1; }
         .pop-item { font-size: 0.75rem; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ffbaba; }
 
-        /* --- ACCORDION LIST --- */
+        /* --- ICON-DRIVEN ACCORDION --- */
         .accordion-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 35px; }
         .acc-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; overflow: hidden; }
         .acc-header { padding: 18px 25px; display: flex; align-items: center; cursor: pointer; }
         .acc-header h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); margin-left: 15px; flex-grow: 1; }
-        
         .acc-content { 
             max-height: 0; padding: 0 25px; overflow: hidden; transition: 0.4s;
             display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
@@ -140,7 +133,7 @@
         .link-item b { font-size: 0.8rem; display: block; }
         .link-item i { font-size: 0.65rem; color: rgba(255,255,255,0.3); font-style: normal; }
 
-        /* --- METRICS CHARTS --- */
+        /* --- MINI COMPACT HIGH-CONTRAST CHARTS --- */
         .metrics-heading { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 4px; color: var(--neon-cyan); font-weight: 800; }
         .charts-container { display: flex; flex-direction: column; gap: 12px; }
         
@@ -153,25 +146,57 @@
             flex-direction: column;
             gap: 10px;
         }
-        .chart-top-bar { display: flex; justify-content: space-between; align-items: center; }
-        .chart-title-lbl { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: rgba(255, 255, 255, 0.6); }
-        .chart-pct-badge { font-size: 1.05rem; font-weight: 900; letter-spacing: -0.3px; }
 
-        .compact-track { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.08); border-radius: 4px; overflow: hidden; }
-        .compact-fill { height: 100%; border-radius: 4px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
-        .chart-bottom-data { display: flex; justify-content: space-between; font-size: 0.68rem; color: rgba(255, 255, 255, 0.4); padding-top: 2px; }
-        .chart-bottom-data span.hl-val { font-weight: 700; color: #ffffff; }
+        .chart-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-        /* --- ROAD MAP SECTION --- */
+        .chart-title-lbl {
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .chart-pct-badge {
+            font-size: 1.05rem;
+            font-weight: 900;
+            letter-spacing: -0.3px;
+        }
+
+        /* High Visibility Linear Track Bar */
+        .compact-track {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .compact-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .chart-bottom-data {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.68rem;
+            color: rgba(255, 255, 255, 0.4);
+            padding-top: 2px;
+        }
+        .chart-bottom-data span.hl-val {
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* --- ACTIVATION ROAD MAP (MAIN SECTION DESIGN) --- */
         .roadmap-section { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
         .roadmap-heading { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 4px; color: var(--neon-purple); display: block; font-weight: 800; }
-        
-        /* Forces 3 cards side-by-side on wide screens, drops nicely to 2 if cramped, but never collapses completely */
-        .activation-stack { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
-            gap: 16px; 
-        }
+        .activation-stack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
         
         .road-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
@@ -187,16 +212,39 @@
         .road-name { font-size: 0.85rem; font-weight: 900; letter-spacing: 1px; color: white; }
         .road-status { font-size: 0.6rem; color: var(--neon-purple); text-transform: uppercase; margin-top: 2px; font-weight: 800; }
 
-        /* --- PREVENT TV OVERRIDES --- 
-           We stripped out the low-resolution media queries that turned the screen into a single long column. 
-           This query only triggers on true vertical mobile dimensions (like smartphones).
-        */
-        @media (max-width: 500px) {
-            body { flex-direction: column; }
-            .workspace { grid-template-columns: 1fr; height: auto; }
-            nav { width: 100%; height: 65px; flex-direction: row; }
-            .acc-content { grid-template-columns: 1fr; }
+
+        /* ==========================================================================
+           METHOD 1 FIX: MOBILE MEDIA QUERIES DISBALED/COMMENTED OUT BELOW
+           ========================================================================== */
+        /* @media (max-width: 1200px) {
+            .activation-stack { grid-template-columns: repeat(2, 1fr); }
         }
+
+        @media (max-width: 1024px) {
+            .workspace { flex-direction: column; overflow-y: auto; }
+            main { width: 100%; height: auto; overflow-y: visible; padding: 35px 25px 15px 25px; }
+            .right-panel { width: 100%; height: auto; overflow-y: visible; border-left: none; border-top: 1px solid var(--glass-border); padding: 30px 25px; gap: 35px; }
+            #deadlinePop { width: 90%; left: 5%; right: 5%; top: 120px; }
+            .activation-stack { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            .workspace { height: calc(100vh - 65px); order: 1; }
+            nav { 
+                width: 100%; height: 65px; flex-direction: row; justify-content: flex-start; 
+                border-right: none; border-top: 1px solid var(--glass-border); order: 2; 
+                padding: 0 10px; overflow-x: auto; overflow-y: hidden; white-space: nowrap; gap: 15px;
+            }
+            nav:hover { width: 100%; }
+            .nav-item { margin-bottom: 0; flex-direction: column; justify-content: center; height: 100%; width: auto; min-width: 75px; }
+            .nav-text { display: none; }
+            .nav-separator { display: none; } 
+            .logout { border-top: none; padding-top: 0; margin-top: 0; }
+            .acc-content { grid-template-columns: 1fr; }
+            .activation-stack { grid-template-columns: 1fr; }
+        }
+        */
     </style>
 </head>
 <body>
@@ -328,6 +376,7 @@
         </main>
 
         <aside class="right-panel">
+            
             <div class="chart-section" style="display: flex; flex-direction: column; gap: 16px;">
                 <span class="metrics-heading">MTD Execution Status</span>
                 <div class="charts-container">
@@ -376,6 +425,7 @@
 
                 </div>
             </div>
+
         </aside>
     </div>
 
