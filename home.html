@@ -113,7 +113,7 @@
         .pop-item { font-size: 0.75rem; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ffbaba; }
 
         /* --- ICON-DRIVEN ACCORDION --- */
-        .accordion-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .accordion-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 35px; }
         .acc-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; overflow: hidden; }
         .acc-header { padding: 18px 25px; display: flex; align-items: center; cursor: pointer; }
         .acc-header h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); margin-left: 15px; flex-grow: 1; }
@@ -193,30 +193,36 @@
             color: #ffffff;
         }
 
-        /* --- ACTIVATION ROAD MAP --- */
+        /* --- ACTIVATION ROAD MAP (MAIN SECTION DESIGN) --- */
+        .roadmap-section { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
         .roadmap-heading { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 4px; color: var(--neon-purple); display: block; font-weight: 800; }
-        .activation-stack { display: flex; flex-direction: column; gap: 12px; }
+        .activation-stack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
         
         .road-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
             border: 1px solid var(--glass-border);
-            padding: 16px 20px; border-radius: 16px; text-decoration: none;
+            padding: 18px 22px; border-radius: 16px; text-decoration: none;
             display: flex; align-items: center; text-align: left;
             transition: 0.3s; position: relative; overflow: hidden;
             gap: 16px;
         }
-        .road-card:hover { transform: translateX(5px); border-color: var(--neon-purple); background: rgba(175, 82, 222, 0.05); }
+        .road-card:hover { transform: translateY(-3px); border-color: var(--neon-purple); background: rgba(175, 82, 222, 0.05); box-shadow: 0 10px 20px rgba(175, 82, 222, 0.1); }
         .road-icon { font-size: 1.6rem; }
         .road-details { display: flex; flex-direction: column; }
         .road-name { font-size: 0.85rem; font-weight: 900; letter-spacing: 1px; color: white; }
         .road-status { font-size: 0.6rem; color: var(--neon-purple); text-transform: uppercase; margin-top: 2px; font-weight: 800; }
 
         /* --- RESPONSIVE LAYOUT CONFIG --- */
+        @media (max-width: 1200px) {
+            .activation-stack { grid-template-columns: repeat(2, 1fr); }
+        }
+
         @media (max-width: 1024px) {
             .workspace { flex-direction: column; overflow-y: auto; }
             main { width: 100%; height: auto; overflow-y: visible; padding: 35px 25px 15px 25px; }
             .right-panel { width: 100%; height: auto; overflow-y: visible; border-left: none; border-top: 1px solid var(--glass-border); padding: 30px 25px; gap: 35px; }
             #deadlinePop { width: 90%; left: 5%; right: 5%; top: 120px; }
+            .activation-stack { grid-template-columns: repeat(3, 1fr); }
         }
 
         @media (max-width: 900px) {
@@ -233,6 +239,7 @@
             .nav-separator { display: none; } /* Hide horizontal divider on mobile layout */
             .logout { border-top: none; padding-top: 0; margin-top: 0; }
             .acc-content { grid-template-columns: 1fr; }
+            .activation-stack { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -334,6 +341,34 @@
                 </div>
             </div>
 
+            <!-- --- INTEGRATED ACTIVATION ROAD MAP SECTION --- -->
+            <div class="roadmap-section">
+                <span class="roadmap-heading">Activation Road Map</span>
+                <div class="activation-stack">
+                    <a href="NCR.html" class="road-card">
+                        <span class="road-icon">🏛️</span>
+                        <div class="road-details">
+                            <span class="road-name">DELHI NCR</span>
+                            <span class="road-status">Active Sector</span>
+                        </div>
+                    </a>
+                    <a href="#" class="road-card">
+                        <span class="road-icon">🏙️</span>
+                        <div class="road-details">
+                            <span class="road-name">CHANDIGARH</span>
+                            <span class="road-status">Upcoming Deployment</span>
+                        </div>
+                    </a>
+                    <a href="#" class="road-card">
+                        <span class="road-icon">🏯</span>
+                        <div class="road-details">
+                            <span class="road-name">GUJARAT</span>
+                            <span class="road-status">Strategy Phase</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
             <footer style="margin-top:auto; padding-top:40px; font-size:0.6rem; opacity:0.2; text-align:center;">
                 ROUNAK SINGH | VTC TRADEWINGS &copy; 2026
             </footer>
@@ -390,33 +425,6 @@
                         </div>
                     </div>
 
-                </div>
-            </div>
-
-            <div class="roadmap-section" style="display: flex; flex-direction: column; gap: 16px;">
-                <span class="roadmap-heading">Activation Road Map</span>
-                <div class="activation-stack">
-                    <a href="NCR.html" class="road-card">
-                        <span class="road-icon">🏛️</span>
-                        <div class="road-details">
-                            <span class="road-name">DELHI NCR</span>
-                            <span class="road-status">Active Sector</span>
-                        </div>
-                    </a>
-                    <a href="#" class="road-card">
-                        <span class="road-icon">🏙️</span>
-                        <div class="road-details">
-                            <span class="road-name">CHANDIGARH</span>
-                            <span class="road-status">Upcoming Deployment</span>
-                        </div>
-                    </a>
-                    <a href="#" class="road-card">
-                        <span class="road-icon">🏯</span>
-                        <div class="road-details">
-                            <span class="road-name">GUJARAT</span>
-                            <span class="road-status">Strategy Phase</span>
-                        </div>
-                    </a>
                 </div>
             </div>
 
