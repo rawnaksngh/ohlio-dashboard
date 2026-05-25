@@ -9,70 +9,68 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Custom scrollbar styling for a cleaner spreadsheet look */
+        /* Precision ultra-thin scrollbar for high-density TV grids */
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+            background: #090d16;
         }
         ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
+            background: #1e293b;
+            border-radius: 3px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+            background: #334155;
         }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans antialiased h-screen flex flex-col overflow-hidden">
+<body class="bg-slate-950 text-slate-200 font-sans antialiased h-screen flex flex-col overflow-hidden text-[11px] uppercase tracking-wide">
 
-    <!-- Compact Top Navbar -->
-    <header class="bg-slate-950 border-b border-slate-800 px-6 py-3 flex flex-row justify-between items-center shrink-0">
-        <div class="flex items-center gap-3">
-            <!-- New Home Button Link -->
-            <a href="home.html" class="bg-slate-800 hover:bg-indigo-600 text-slate-200 hover:text-white p-2 rounded-lg shadow-md transition duration-200" title="Go to Home">
-                <i class="fa-solid fa-house text-sm"></i>
+    <!-- High-Density Main Header -->
+    <header class="bg-slate-900 border-b border-slate-800 px-4 py-2 flex flex-row justify-between items-center shrink-0 shadow-lg">
+        <div class="flex items-center gap-2.5">
+            <a href="home.html" class="bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white p-1.5 rounded transition duration-150" title="Go to Home">
+                <i class="fa-solid fa-house text-xs"></i>
             </a>
-            <div class="bg-indigo-600 p-2 rounded-lg text-white shadow-md shadow-indigo-900/40">
-                <i class="fa-solid fa-chart-line text-sm"></i>
+            <div class="bg-indigo-600 p-1.5 rounded text-white shadow-sm">
+                <i class="fa-solid fa-chart-line text-xs"></i>
             </div>
             <div>
-                <h1 class="text-base font-bold tracking-tight text-white">Oli Ohh &bull; Regional Distribution Hub</h1>
-                <p class="text-[11px] text-slate-400">Interactive Split-Screen Grid Controller</p>
+                <h1 class="text-xs font-black tracking-wider text-white">Oli Ohh &bull; Grid System</h1>
+                <p class="text-[9px] text-indigo-400 font-mono tracking-normal lowercase">v2.1 // regional distribution interface</p>
             </div>
         </div>
         
-        <div class="flex items-center gap-4 text-xs">
-            <div class="hidden sm:flex items-center gap-1.5 bg-slate-900 px-3 py-1.5 rounded-md border border-slate-800 text-slate-300">
+        <div class="flex items-center gap-4 text-[10px]">
+            <div class="flex items-center gap-1.5 bg-slate-950 px-2.5 py-1 rounded border border-slate-800 text-slate-400 font-mono">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span class="font-medium text-slate-400">Total Operational Routes:</span>
-                <span class="text-white font-bold">53 Mapping Points</span>
+                <span>Routes:</span>
+                <span class="text-emerald-400 font-bold">53 Points</span>
             </div>
-            <button onclick="resetAllFilters()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-md border border-slate-700 transition flex items-center gap-1.5 font-medium text-[11px]">
-                <i class="fa-solid fa-rotate-left text-slate-400"></i> Reset Dashboard
+            <button onclick="resetAllFilters()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1 rounded border border-slate-700 transition flex items-center gap-1.5 font-bold text-[10px] cursor-pointer">
+                <i class="fa-solid fa-rotate-left text-slate-400"></i> Reset Grid
             </button>
         </div>
     </header>
 
-    <!-- Main Workspace Container: 2 Column Split View -->
-    <main class="flex-1 flex flex-row overflow-hidden w-full">
+    <!-- Operational Hub Workspace -->
+    <main class="flex-1 flex flex-row overflow-hidden w-full bg-slate-950">
 
-        <!-- LEFT SIDEBAR: Matrix and Region Level Filtering -->
-        <section class="w-[360px] md:w-[420px] shrink-0 bg-slate-950 border-r border-slate-800 flex flex-col overflow-hidden">
-            <div class="p-3 bg-slate-900/50 border-b border-slate-800 flex justify-between items-center shrink-0">
-                <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
-                    <i class="fa-solid fa-table-cells text-indigo-400 text-[11px]"></i> Summary Matrix
+        <!-- LEFT CONTROL PANEL: Matrix Cards & Filter Dropdown -->
+        <section class="w-[340px] shrink-0 bg-slate-900/40 border-r border-slate-900 flex flex-col overflow-hidden">
+            <div class="p-2 bg-slate-900 border-b border-slate-800 flex justify-between items-center shrink-0">
+                <span class="text-[10px] font-black text-slate-400 flex items-center gap-1.5 tracking-widest">
+                    <i class="fa-solid fa-table-cells text-indigo-500 text-[10px]"></i> Summary Matrix
                 </span>
-                <span class="text-[10px] bg-indigo-950 text-indigo-300 border border-indigo-800 px-2 py-0.5 rounded font-mono font-bold">LEFT NAV</span>
+                <span class="text-[9px] bg-slate-950 text-slate-400 border border-slate-800 px-1.5 py-0.5 rounded font-mono font-bold">SYS/NAV</span>
             </div>
 
-            <!-- New Dynamic Region Filter Element -->
-            <div class="p-2.5 bg-slate-900/30 border-b border-slate-800 shrink-0">
-                <label for="regionFilter" class="block text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Filter Matrix by Region</label>
-                <select id="regionFilter" onchange="handleRegionChange()" class="w-full text-[11px] bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-200 focus:outline-none focus:ring-1 focus:ring-indigo-500">
-                    <option value="">All Regions</option>
+            <!-- Compact Region Selection Block -->
+            <div class="p-2 bg-slate-900/60 border-b border-slate-800 shrink-0">
+                <select id="regionFilter" onchange="handleRegionChange()" class="w-full text-[10px] font-mono bg-slate-950 border border-slate-800 rounded px-2 py-1 text-slate-300 focus:outline-none focus:border-indigo-600 cursor-pointer">
+                    <option value="">[ All Operational Regions ]</option>
                     <option value="Central">Central</option>
                     <option value="East">East</option>
                     <option value="North">North</option>
@@ -81,75 +79,58 @@
                 </select>
             </div>
 
-            <!-- Scrollable Matrix Grid -->
-            <div class="flex-1 overflow-auto p-2">
-                <table class="w-full border-collapse text-[11px]">
-                    <thead class="sticky top-0 bg-slate-950 text-slate-400 font-semibold border-b border-slate-800 z-10">
-                        <tr>
-                            <th class="py-2 px-2 text-left">Region</th>
-                            <th class="py-2 px-2 text-left">VTC Mapping</th>
-                            <th class="py-2 px-1 text-center bg-emerald-950/20 text-emerald-400">DSD</th>
-                            <th class="py-2 px-1 text-center bg-sky-950/20 text-sky-400">DC</th>
-                            <th class="py-2 px-1 text-center bg-purple-950/20 text-purple-400">SKU</th>
-                            <th class="py-2 px-2 text-right text-slate-200 font-bold">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="summaryBody" class="divide-y divide-slate-900">
-                        <!-- Built via JS -->
-                    </tbody>
-                </table>
+            <!-- Highly Compressed Metric List Panel -->
+            <div class="flex-1 overflow-auto p-1.5 space-y-1" id="matrixCardContainer">
+                <!-- Built dynamically via Javascript as high-density micro-cards -->
             </div>
             
-            <div class="p-2 border-t border-slate-800 bg-slate-900/30 text-[10px] text-slate-500 italic">
-                * Click on any underlined row to map data to the right pane.
+            <div class="p-2 border-t border-slate-900 bg-slate-900/20 text-[9px] text-slate-500 font-mono tracking-normal normal-case">
+                * Select any underlining locator code to map data streams.
             </div>
         </section>
 
 
-        <!-- RIGHT SECTION: Full Filtered Action Worksheet View -->
-        <section class="flex-1 bg-slate-900 flex flex-col overflow-hidden">
+        <!-- RIGHT CONTROL PANEL: High-Density Account Data Matrix -->
+        <section class="flex-1 bg-slate-950 flex flex-col overflow-hidden">
             
-            <!-- Controls, Search and Live Status Line -->
-            <div class="p-3 bg-slate-950/40 border-b border-slate-800 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-3 shrink-0">
-                
-                <!-- Active Indicator Text -->
+            <!-- Context Control Strip -->
+            <div class="p-2 bg-slate-900/20 border-b border-slate-900 flex flex-row justify-between items-center gap-2 shrink-0">
                 <div class="flex items-center gap-2">
-                    <div id="statusIndicatorBlob" class="w-2 h-2 rounded-full bg-indigo-500"></div>
-                    <div class="text-xs">
-                        <span class="text-slate-400 font-medium">Viewing Pipeline: </span>
-                        <span id="activeFilterLabel" class="text-white font-bold bg-slate-800 border border-slate-700 px-2 py-0.5 rounded">All Accounts</span>
+                    <div id="statusIndicatorBlob" class="w-1.5 h-1.5 rounded-full bg-indigo-500"></div>
+                    <div class="text-[10px] font-mono">
+                        <span class="text-slate-500">Pipeline:</span>
+                        <span id="activeFilterLabel" class="text-slate-300 font-bold ml-1">All Accounts Matrix</span>
                     </div>
-                    <span id="activeCountBadge" class="text-[10px] font-mono bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700 font-bold ml-1">0 rows</span>
+                    <span id="activeCountBadge" class="text-[9px] font-mono bg-slate-900 text-indigo-400 px-1.5 py-0.5 rounded border border-slate-800 font-bold ml-1">0 lines</span>
                 </div>
 
-                <!-- Instant Filter Input -->
-                <div class="relative max-w-xs w-full">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-slate-500">
-                        <i class="fa-solid fa-magnifying-glass text-[10px]"></i>
+                <!-- Concentrated Instant Filter -->
+                <div class="relative w-56">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-slate-600">
+                        <i class="fa-solid fa-magnifying-glass text-[9px]"></i>
                     </span>
-                    <input type="text" id="rightPaneSearch" oninput="applyFilteringAndRender()" placeholder="Quick filter accounts or cities..." class="w-full text-[11px] pl-7 pr-3 py-1.5 bg-slate-900 border border-slate-700 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-slate-100 placeholder-slate-500">
+                    <input type="text" id="rightPaneSearch" oninput="applyFilteringAndRender()" placeholder="Search metrics or hubs..." class="w-full text-[10px] font-mono normal-case pl-6 pr-2 py-1 bg-slate-900 border border-slate-800 rounded focus:outline-none focus:border-indigo-600 text-slate-200 placeholder-slate-600">
                 </div>
             </div>
 
-            <!-- The Big Account Table Canvas -->
+            <!-- Core Sheet Canvas -->
             <div class="flex-1 overflow-auto">
-                <table class="w-full border-collapse text-left text-xs">
-                    <thead class="sticky top-0 bg-slate-950/95 border-b border-slate-800 text-slate-400 font-semibold z-10 shadow-sm">
+                <table class="w-full border-collapse text-left text-[10px] font-mono">
+                    <thead class="sticky top-0 bg-slate-900 border-b border-slate-800 text-slate-400 font-bold z-10">
                         <tr>
-                            <th class="py-2.5 px-4">Region</th>
-                            <th class="py-2.5 px-4">Currently Serviced By</th>
-                            <th class="py-2.5 px-4">VTC Mapping</th>
-                            <th class="py-2.5 px-4">City</th>
-                            <th class="py-2.5 px-4">Account Name</th>
-                            <th class="py-2.5 px-4">Supply Chain Status</th>
-                            <th class="py-2.5 px-4 text-center">Store Count</th>
-                            <!-- Added New Requested Columns -->
-                            <th class="py-2.5 px-4 bg-slate-950/40 text-amber-400">Current Status</th>
-                            <th class="py-2.5 px-4 bg-slate-950/40 text-emerald-400">PO Value</th>
-                            <th class="py-2.5 px-4 bg-slate-950/40 text-slate-300">Remarks</th>
+                            <th class="py-1.5 px-3 border-r border-slate-950">Region</th>
+                            <th class="py-1.5 px-3 border-r border-slate-950">Serviced By</th>
+                            <th class="py-1.5 px-3 border-r border-slate-950">Mapping</th>
+                            <th class="py-1.5 px-3 border-r border-slate-950">City</th>
+                            <th class="py-1.5 px-3 border-r border-slate-950 text-slate-200 font-black">Account Name</th>
+                            <th class="py-1.5 px-3 border-r border-slate-950">Chain Status</th>
+                            <th class="py-1.5 px-3 border-r border-slate-950 text-center">Stores</th>
+                            <th class="py-1.5 px-3 border-r border-slate-950 text-amber-500">Status</th>
+                            <th class="py-1.5 px-3 border-r border-slate-950 text-emerald-500">PO Value</th>
+                            <th class="py-1.5 px-3 text-slate-500">Remarks</th>
                         </tr>
                     </thead>
-                    <tbody id="accountBody" class="divide-y divide-slate-800/60">
+                    <tbody id="accountBody" class="divide-y divide-slate-900">
                         <!-- Populated dynamic -->
                     </tbody>
                 </table>
@@ -165,71 +146,71 @@
         const accountRows = [{"Region": "Central", "Currently serviced by": "QC", "VTC Mapping": "Mp", "City": "Indore", "Account": "Wellness", "Supply Status": "DC/DSD based on SKU", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "East", "Currently serviced by": "QC", "VTC Mapping": "WB", "City": "Kolkata", "Account": "FRANK ROSE", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Faridabad", "Account": "Modern Bazaar", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Faridabad", "Account": "SHOP EXPRESS", "Supply Status": "DSD", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "ASIANA FOOD & BEVERAGE LLP", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Daily Needs", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Dastak", "Supply Status": "DSD", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "FOODSTORIES PRIVATE LIMITED", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Geom365", "Supply Status": "DSD", "Distinct Count of Store Name": 3, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Honey Money Top", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Marche Retail", "Supply Status": "DSD", "Distinct Count of Store Name": 6, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Modern Bazaar", "Supply Status": "DSD", "Distinct Count of Store Name": 5, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "NEEDS RETAIL", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "SHOP EXPRESS", "Supply Status": "DSD", "Distinct Count of Store Name": 4, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Ssm Retail Pvt Ltd", "Supply Status": "DSD", "Distinct Count of Store Name": 9, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "FOODSTORIES PRIVATE LIMITED", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Geom365", "Supply Status": "DSD", "Distinct Count of Store Name": 15, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Honey Money Top", "Supply Status": "DSD", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "LOTS", "Supply Status": "DSD", "Distinct Count of Store Name": 3, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Marche Retail", "Supply Status": "DSD", "Distinct Count of Store Name": 3, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Modern Bazaar", "Supply Status": "DSD", "Distinct Count of Store Name": 12, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "NUTS N MORE", "Supply Status": "DSD", "Distinct Count of Store Name": 3, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Worldwide delight Pvt Ltd", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "BuyBuy Technologies Private Limited", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Daily Needs", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Fresh Lee", "Supply Status": "DSD", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Geom365", "Supply Status": "DSD", "Distinct Count of Store Name": 4, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "LOTS", "Supply Status": "DSD", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "M/S DEBON", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Marche Retail", "Supply Status": "DSD", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Modern Bazaar", "Supply Status": "DSD", "Distinct Count of Store Name": 3, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "SHOP EXPRESS", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Shreejee Foods", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Worldwide delight Pvt Ltd", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "Rajasthan", "City": "Jaipur", "Account": "JOIN COMMERCE PRIVATE LIMITED", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "Tricity", "City": "Chandigarh", "Account": "ABHYUDAY ESSENTIALS", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "Tricity", "City": "Chandigarh", "Account": "Modern Bazaar", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "Tricity", "City": "Chandigarh", "Account": "NU Farm Market LLP", "Supply Status": "DSD", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "Tricity", "City": "Chandigarh", "Account": "Punjab Stores", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "Tricity", "City": "Mohali", "Account": "Modern Bazaar", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "Tricity", "City": "Mohali", "Account": "Punjab Stores", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "Tricity", "City": "Panchkula", "Account": "ABNI ENTERPRISES", "Supply Status": "DSD", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "Tricity", "City": "Panchkula", "Account": "M/S ABHYUDAY FOOD ENTERPRISES", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "UP", "City": "Lucknow", "Account": "NUTS WORLD", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "Uttarakhand", "City": "DEHRADUN", "Account": "Fresh N Easy", "Supply Status": "DSD", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "Uttarakhand", "City": "DEHRADUN", "Account": "NUTS N MORE", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "North", "Currently serviced by": "VTC", "VTC Mapping": "Uttarakhand", "City": "DEHRADUN", "Account": "Suvidha", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "AP", "City": "Guntur", "Account": "Ratnadeep", "Supply Status": "DC/DSD based on SKU", "Distinct Count of Store Name": 3, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "AP", "City": "Vijayawada", "Account": "Ratnadeep", "Supply Status": "DC/DSD based on SKU", "Distinct Count of Store Name": 10, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "Karnataka", "City": "Bangalore", "Account": "Ajfan", "Supply Status": "DC", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "Karnataka", "City": "Bangalore", "Account": "INDWELL RETAIL PRIVATE LIMITED", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "Karnataka", "City": "Bangalore", "Account": "Namdhari Agro Fresh Pvt. Ltd.", "Supply Status": "DSD", "Distinct Count of Store Name": 12, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "Karnataka", "City": "Bangalore", "Account": "Ratnadeep", "Supply Status": "DC/DSD based on SKU", "Distinct Count of Store Name": 5, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "Karnataka", "City": "Bangalore", "Account": "Wellness", "Supply Status": "DC/DSD based on SKU", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "Kerala", "City": "Calicut", "Account": "Ajfan", "Supply Status": "DC", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "Kerala", "City": "Cochin", "Account": "Pothys", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "Kerala", "City": "Trivandrum", "Account": "Pothys", "Supply Status": "DSD", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "Telangana", "City": "Hyderabad", "Account": "Ajfan", "Supply Status": "DC", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "Telangana", "City": "Hyderabad", "Account": "Ratnadeep", "Supply Status": "DC/DSD based on SKU", "Distinct Count of Store Name": 119, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "Telangana", "City": "Hyderabad", "Account": "USHODAYA SUPER MARKETS PRIVATE LIMITED", "Supply Status": "DSD", "Distinct Count of Store Name": 13, "Remarks": ""}, {"Region": "South", "Currently serviced by": "VTC", "VTC Mapping": "Telangana", "City": "TELANGANA", "Account": "FOODSTORIES PRIVATE LIMITED", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "TN", "City": "Chennai", "Account": "Ajfan", "Supply Status": "DC", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "TN", "City": "Chennai", "Account": "CROSSWORD BOOKSTORES PVT LTD", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "TN", "City": "Chennai", "Account": "Pothys", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "South", "Currently serviced by": "QC", "VTC Mapping": "TN", "City": "Thanjavur", "Account": "Ajfan", "Supply Status": "DC", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "West", "Currently serviced by": "QC", "VTC Mapping": "Goa", "City": "Goa", "Account": "Magson", "Supply Status": "DC", "Distinct Count of Store Name": 16, "Remarks": ""}, {"Region": "West", "Currently serviced by": "QC", "VTC Mapping": "Goa", "City": "Goa", "Account": "Wellness", "Supply Status": "DC/DSD based on SKU", "Distinct Count of Store Name": 6, "Remarks": ""}, {"Region": "West", "Currently serviced by": "VTC", "VTC Mapping": "GUJARAT", "City": "Ahmedabad", "Account": "DANGEE DUMS LIMITED", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "West", "Currently serviced by": "VTC", "VTC Mapping": "GUJARAT", "City": "Ahmedabad", "Account": "MAGSON RETAIL AND DISTRIBUTION LIMITED", "Supply Status": "DC", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "West", "Currently serviced by": "VTC", "VTC Mapping": "GUJARAT", "City": "Ahmedabad", "Account": "NAMH MEDITECH PRIVATE LIMITED", "Supply Status": "DSD", "Distinct Count of Store Name": 4, "Remarks": ""}, {"Region": "West", "Currently serviced by": "VTC", "VTC Mapping": "GUJARAT", "City": "Ahmedabad", "Account": "SHREEJI KAJUWALA AND DRY FRUITS", "Supply Status": "DSD", "Distinct Count of Store Name": 4, "Remarks": ""}, {"Region": "West", "Currently serviced by": "VTC", "VTC Mapping": "GUJARAT", "City": "Ahmedabad", "Account": "SUPERCENTRE RETAILHUB PRIVATE LIMITED", "Supply Status": "DSD", "Distinct Count of Store Name": 5, "Remarks": ""}, {"Region": "West", "Currently serviced by": "VTC", "VTC Mapping": "GUJARAT", "City": "Ahmedabad", "Account": "SUPREME TRADERS", "Supply Status": "DSD", "Distinct Count of Store Name": 6, "Remarks": ""}, {"Region": "West", "Currently serviced by": "VTC", "VTC Mapping": "GUJARAT", "City": "Rajkot", "Account": "NAMH MEDITECH PRIVATE LIMITED", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "West", "Currently serviced by": "VTC", "VTC Mapping": "GUJARAT", "City": "Rajkot", "Account": "TIGMON FOODS LLP", "Supply Status": "DC", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "West", "Currently serviced by": "VTC", "VTC Mapping": "GUJARAT", "City": "SURAT", "Account": "TIGMON FOODS LLP", "Supply Status": "DC", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "West", "Currently serviced by": "VTC", "VTC Mapping": "GUJARAT", "City": "VADODARA", "Account": "CHANDAN SUPER MART", "Supply Status": "DSD", "Distinct Count of Store Name": 3, "Remarks": ""}, {"Region": "West", "Currently serviced by": "VTC", "VTC Mapping": "GUJARAT", "City": "VADODARA", "Account": "JAGDISH FARSHAN PVT LTD", "Supply Status": "DSD", "Distinct Count of Store Name": 13, "Remarks": ""}, {"Region": "West", "Currently serviced by": "VTC", "VTC Mapping": "GUJARAT", "City": "VADODARA", "Account": "JAGDISH FOODS PVTLTD", "Supply Status": "DSD", "Distinct Count of Store Name": 4, "Remarks": ""}, {"Region": "West", "Currently serviced by": "VTC", "VTC Mapping": "GUJARAT", "City": "VADODARA", "Account": "Suvidha", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "West", "Currently serviced by": "QC", "VTC Mapping": "Maharashtra", "City": "Mumbai", "Account": "Ajfan", "Supply Status": "DC", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "West", "Currently serviced by": "QC", "VTC Mapping": "Maharashtra", "City": "Mumbai", "Account": "AVARYA RETAIL PRIVATE LIMITED", "Supply Status": "DSD", "Distinct Count of Store Name": 4, "Remarks": ""}, {"Region": "West", "Currently serviced by": "QC", "VTC Mapping": "Maharashtra", "City": "Mumbai", "Account": "CROSSWORD BOOKSTORES PVT LTD", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "West", "Currently serviced by": "QC", "VTC Mapping": "Maharashtra", "City": "Mumbai", "Account": "Eden Super market", "Supply Status": "DSD", "Distinct Count of Store Name": 5, "Remarks": ""}, {"Region": "West", "Currently serviced by": "QC", "VTC Mapping": "Maharashtra", "City": "Mumbai", "Account": "MERICAN FOODS", "Supply Status": "DSD", "Distinct Count of Store Name": 1, "Remarks": ""}, {"Region": "West", "Currently serviced by": "QC", "VTC Mapping": "Maharashtra", "City": "Mumbai", "Account": "SOCIETY STORES RETAIL PVT LTD", "Supply Status": "DSD", "Distinct Count of Store Name": 7, "Remarks": ""}, {"Region": "West", "Currently serviced by": "QC", "VTC Mapping": "Maharashtra", "City": "Mumbai", "Account": "Wellness", "Supply Status": "DC/DSD based on SKU", "Distinct Count of Store Name": 30, "Remarks": ""}, {"Region": "West", "Currently serviced by": "QC", "VTC Mapping": "Maharashtra", "City": "Nagpur", "Account": "Wellness", "Supply Status": "DC/DSD based on SKU", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "West", "Currently serviced by": "QC", "VTC Mapping": "Maharashtra", "City": "Nashik", "Account": "Wellness", "Supply Status": "DC/DSD based on SKU", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "West", "Currently serviced by": "QC", "VTC Mapping": "Maharashtra", "City": "Pune", "Account": "Dorabjee", "Supply Status": "DSD", "Distinct Count of Store Name": 11, "Remarks": ""}, {"Region": "West", "Currently serviced by": "QC", "VTC Mapping": "Maharashtra", "City": "Pune", "Account": "FOOD JUNCTION", "Supply Status": "DSD", "Distinct Count of Store Name": 12, "Remarks": ""}, {"Region": "West", "Currently serviced by": "QC", "VTC Mapping": "Maharashtra", "City": "Pune", "Account": "Wellness", "Supply Status": "DC/DSD based on SKU", "Distinct Count of Store Name": 2, "Remarks": ""}, {"Region": "Grand Total", "Currently serviced by": "", "VTC Mapping": "", "City": "", "Account": "", "Supply Status": "", "Distinct Count of Store Name": 428, "Remarks": ""}];
 
         let selectedVtcFilter = null;
-        let selectedRegionFilter = ""; // Tracks left pane dropdown filter state
+        let selectedRegionFilter = "";
 
         document.addEventListener('DOMContentLoaded', () => {
             generateSummaryPane();
             applyFilteringAndRender();
         });
 
+        // Transformed tabular structure to localized compact flex cards for TV spatial clarity
         function generateSummaryPane() {
-            const body = document.getElementById('summaryBody');
-            body.innerHTML = '';
+            const container = document.getElementById('matrixCardContainer');
+            container.innerHTML = '';
 
             summaryRows.forEach(row => {
                 const isTotal = row['Region'] === 'Grand Total' || row['VTC Mapping'] === 'Grand Total';
-                
-                // Dropdown structural alignment filter check
-                if (!isTotal && selectedRegionFilter && row['Region'] !== selectedRegionFilter) {
-                    return; 
-                }
+                if (!isTotal && selectedRegionFilter && row['Region'] !== selectedRegionFilter) return;
 
-                const tr = document.createElement('tr');
+                const card = document.createElement('div');
                 
                 if (isTotal) {
-                    tr.className = 'bg-slate-900/90 font-bold border-t border-slate-700 text-slate-200';
+                    card.className = 'bg-slate-900 border border-slate-700 p-2 rounded flex flex-row justify-between items-center text-slate-100 font-extrabold mt-2';
+                    card.innerHTML = `
+                        <span class="text-[10px] text-slate-400 font-black">GRAND TOTAL BLOCK</span>
+                        <div class="flex gap-3 text-[10px]">
+                            <span class="text-emerald-400">DSD:${row['DSD']}</span>
+                            <span class="text-sky-400">DC:${row['DC']}</span>
+                            <span class="text-purple-400">SKU:${row['DC/DSD based on SKU']}</span>
+                            <span class="text-white border-l border-slate-700 pl-2 font-mono bg-slate-950 px-1.5 rounded">Σ ${row['Grand Total']}</span>
+                        </div>
+                    `;
                 } else {
                     const isActive = selectedVtcFilter === row['VTC Mapping'];
-                    tr.className = `transition-all ${isActive ? 'bg-indigo-950/70 font-medium text-white border-l-2 border-l-indigo-500' : 'hover:bg-slate-900/40 text-slate-300'}`;
+                    card.className = `border p-1.5 rounded transition-all ${isActive ? 'bg-indigo-950/70 border-indigo-500 shadow' : 'bg-slate-900/40 border-slate-900 hover:border-slate-800'}`;
+                    
+                    const dsd = row['DSD'] !== '' ? `DSD:${row['DSD']}` : '';
+                    const dc = row['DC'] !== '' ? `DC:${row['DC']}` : '';
+                    const sku = row['DC/DSD based on SKU'] !== '' ? `SKU:${row['DC/DSD based on SKU']}` : '';
+
+                    card.innerHTML = `
+                        <div class="flex flex-row justify-between items-center gap-1">
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-slate-500 font-bold text-[9px] w-12 truncate">${row['Region']}</span>
+                                <span class="underline decoration-slate-700 hover:decoration-indigo-400 text-indigo-400 cursor-pointer font-black font-mono text-xs" onclick="toggleVtcFilter('${row['VTC Mapping']}')">${row['VTC Mapping']}</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-[9px] font-mono text-slate-400">
+                                <span class="${dsd ? 'text-emerald-500/90 font-bold bg-emerald-950/20 px-1 rounded' : ''}">${dsd}</span>
+                                <span class="${dc ? 'text-sky-400/90 font-bold bg-sky-950/20 px-1 rounded' : ''}">${dc}</span>
+                                <span class="${sku ? 'text-purple-400/90 font-bold bg-purple-950/20 px-1 rounded' : ''}">${sku}</span>
+                                <span class="text-white font-black bg-slate-900 border border-slate-800 px-1 rounded text-[10px] min-w-[18px] text-center">${row['Grand Total']}</span>
+                            </div>
+                        </div>
+                    `;
                 }
-
-                const dsd = row['DSD'] !== '' ? row['DSD'] : '-';
-                const dc = row['DC'] !== '' ? row['DC'] : '-';
-                const sku = row['DC/DSD based on SKU'] !== '' ? row['DC/DSD based on SKU'] : '-';
-
-                let vtcMarkup = '';
-                if (isTotal) {
-                    vtcMarkup = `<span class="font-bold text-slate-400">Grand Total</span>`;
-                } else {
-                    vtcMarkup = `<span class="underline decoration-slate-600 hover:decoration-indigo-400 text-indigo-400 cursor-pointer font-medium font-mono" onclick="toggleVtcFilter('${row['VTC Mapping']}')">${row['VTC Mapping']}</span>`;
-                }
-
-                tr.innerHTML = `
-                    <td class="py-2 px-2 text-slate-400">${isTotal ? '' : row['Region']}</td>
-                    <td class="py-2 px-2">${vtcMarkup}</td>
-                    <td class="py-2 px-1 text-center text-emerald-400/90">${dsd}</td>
-                    <td class="py-2 px-1 text-center text-sky-400/90">${dc}</td>
-                    <td class="py-2 px-1 text-center text-purple-400/90">${sku}</td>
-                    <td class="py-2 px-2 text-right font-bold bg-slate-900/20">${row['Grand Total']}</td>
-                `;
-                body.appendChild(tr);
+                container.appendChild(card);
             });
         }
 
         function handleRegionChange() {
             selectedRegionFilter = document.getElementById('regionFilter').value;
-            // Clear selected VTC if it does not belong to the selected region view
             selectedVtcFilter = null; 
             generateSummaryPane();
             applyFilteringAndRender();
         }
 
         function toggleVtcFilter(vtcValue) {
-            if (selectedVtcFilter === vtcValue) {
-                selectedVtcFilter = null; 
-            } else {
-                selectedVtcFilter = vtcValue;
-            }
+            selectedVtcFilter = (selectedVtcFilter === vtcValue) ? null : vtcValue;
             generateSummaryPane();
             applyFilteringAndRender();
         }
@@ -240,9 +221,7 @@
             tbody.innerHTML = '';
 
             const filtered = accountRows.filter(row => {
-                // Drop down master row level tracking match
                 const matchesRegion = selectedRegionFilter ? String(row['Region']).toLowerCase() === selectedRegionFilter.toLowerCase() : true;
-                // VTC Mapping label sync selection match
                 const matchesVtc = selectedVtcFilter ? String(row['VTC Mapping']).toLowerCase() === selectedVtcFilter.toLowerCase() : true;
                 
                 let matchesSearch = true;
@@ -256,65 +235,61 @@
                 return matchesRegion && matchesVtc && matchesSearch;
             });
 
-            // Render right hand entries
             if (filtered.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="10" class="text-center py-16 text-slate-500 font-medium">
-                            <i class="fa-solid fa-folder-open text-xl mb-2 block text-slate-600"></i>
-                            No data records aligned with this filter sequence.
+                        <td colspan="10" class="text-center py-12 text-slate-600 font-mono text-[10px]">
+                            <i class="fa-solid fa-folder-open text-base mb-1 block text-slate-700"></i>
+                            NO MOUNTED METRICS IN DATA STREAM
                         </td>
                     </tr>
                 `;
             } else {
                 filtered.forEach(row => {
                     const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-slate-800/40 text-slate-300 transition-colors';
+                    tr.className = 'hover:bg-slate-900 text-slate-300 transition-colors border-b border-slate-900';
 
-                    let badgeColor = 'bg-slate-800 text-slate-400 border-slate-700';
-                    if (row['Supply Status'] === 'DSD') badgeColor = 'bg-emerald-950/50 text-emerald-400 border-emerald-800/60';
-                    else if (row['Supply Status'] === 'DC') badgeColor = 'bg-sky-950/50 text-sky-400 border-sky-800/60';
-                    else if (row['Supply Status'] && row['Supply Status'].includes('SKU')) badgeColor = 'bg-purple-950/50 text-purple-400 border-purple-800/60';
+                    let badgeColor = 'bg-slate-900 text-slate-500 border-slate-800';
+                    if (row['Supply Status'] === 'DSD') badgeColor = 'bg-emerald-950/30 text-emerald-400 border-emerald-900/60';
+                    else if (row['Supply Status'] === 'DC') badgeColor = 'bg-sky-950/30 text-sky-400 border-sky-900/60';
+                    else if (row['Supply Status'] && row['Supply Status'].includes('SKU')) badgeColor = 'bg-purple-950/30 text-purple-400 border-purple-900/60';
 
-                    // Read future values dynamically if present in object payload, otherwise set empty string placeholders
                     const currentStatus = row['Current Status'] !== undefined ? row['Current Status'] : '-';
                     const poValue = row['PO Value'] !== undefined ? row['PO Value'] : '-';
                     const customRemarks = row['Remarks'] !== undefined ? row['Remarks'] : '';
 
                     tr.innerHTML = `
-                        <td class="py-2.5 px-4 text-slate-400 font-medium">${row['Region'] || ''}</td>
-                        <td class="py-2.5 px-4 font-mono text-[11px] text-slate-400">${row['Currently serviced by'] || ''}</td>
-                        <td class="py-2.5 px-4"><span class="bg-slate-950 text-slate-300 font-mono font-bold px-1.5 py-0.5 rounded border border-slate-800 text-[11px]">${row['VTC Mapping'] || ''}</span></td>
-                        <td class="py-2.5 px-4 text-slate-300">${row['City'] || ''}</td>
-                        <td class="py-2.5 px-4 text-white font-semibold">${row['Account'] || ''}</td>
-                        <td class="py-2.5 px-4"><span class="px-2 py-0.5 rounded text-[11px] border ${badgeColor}">${row['Supply Status'] || ''}</span></td>
-                        <td class="py-2.5 px-4 text-center font-bold text-slate-200 font-mono">${row['Distinct Count of Store Name'] !== undefined ? row['Distinct Count of Store Name'] : ''}</td>
+                        <td class="py-1 px-3 border-r border-slate-900 text-slate-500">${row['Region'] || ''}</td>
+                        <td class="py-1 px-3 border-r border-slate-900 text-[9px] text-slate-500 font-bold">${row['Currently serviced by'] || ''}</td>
+                        <td class="py-1 px-3 border-r border-slate-900"><span class="text-slate-300 font-bold">${row['VTC Mapping'] || ''}</span></td>
+                        <td class="py-1 px-3 border-r border-slate-900 text-slate-400">${row['City'] || ''}</td>
+                        <td class="py-1 px-3 border-r border-slate-900 text-slate-100 font-bold tracking-normal normal-case">${row['Account'] || ''}</td>
+                        <td class="py-1 px-3 border-r border-slate-900"><span class="px-1.5 py-0.5 rounded text-[9px] border font-bold ${badgeColor}">${row['Supply Status'] || ''}</span></td>
+                        <td class="py-1 px-3 border-r border-slate-900 text-center font-bold text-slate-300">${row['Distinct Count of Store Name'] !== undefined ? row['Distinct Count of Store Name'] : ''}</td>
                         
-                        <!-- Dynamic Columns Integration Context -->
-                        <td class="py-2.5 px-4 font-medium text-amber-400/90">${currentStatus}</td>
-                        <td class="py-2.5 px-4 font-mono font-bold text-emerald-400">${poValue}</td>
-                        <td class="py-2.5 px-4 text-slate-400 max-w-[180px] truncate" title="${customRemarks}">${customRemarks || '-'}</td>
+                        <td class="py-1 px-3 border-r border-slate-900 text-amber-500/90 font-bold">${currentStatus}</td>
+                        <td class="py-1 px-3 border-r border-slate-900 text-emerald-500 font-bold">${poValue}</td>
+                        <td class="py-1 px-3 text-slate-500 max-w-[140px] truncate normal-case" title="${customRemarks}">${customRemarks || '-'}</td>
                     `;
                     tbody.appendChild(tr);
                 });
             }
 
-            // Update Header labels & controls status
             const statusBlob = document.getElementById('statusIndicatorBlob');
             const label = document.getElementById('activeFilterLabel');
             
             if (selectedRegionFilter || selectedVtcFilter) {
-                statusBlob.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse';
+                statusBlob.className = 'w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse';
                 let filterTxt = '';
-                if (selectedRegionFilter) filterTxt += `Region: ${selectedRegionFilter}`;
+                if (selectedRegionFilter) filterTxt += `R: ${selectedRegionFilter}`;
                 if (selectedVtcFilter) filterTxt += `${selectedRegionFilter ? ' | ' : ''}VTC: ${selectedVtcFilter}`;
-                label.innerHTML = `<span class="text-amber-400 uppercase font-mono">${filterTxt}</span>`;
+                label.innerHTML = `<span class="text-amber-400 font-bold">${filterTxt}</span>`;
             } else {
-                statusBlob.className = 'w-2 h-2 rounded-full bg-indigo-500';
+                statusBlob.className = 'w-1.5 h-1.5 rounded-full bg-indigo-500';
                 label.innerText = 'All Accounts Matrix';
             }
 
-            document.getElementById('activeCountBadge').innerText = `${filtered.length} entries`;
+            document.getElementById('activeCountBadge').innerText = `${filtered.length} lines`;
         }
 
         function resetAllFilters() {
