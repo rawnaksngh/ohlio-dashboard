@@ -108,7 +108,7 @@
 
         /* --- ICON-DRIVEN ACCORDION --- */
         .accordion-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
-        .acc-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; overflow: hidden; }
+        .acc-card background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; overflow: hidden; }
         .acc-header { padding: 14px 22px; display: flex; align-items: center; cursor: pointer; }
         .acc-header h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); margin-left: 15px; flex-grow: 1; }
         .acc-content { 
@@ -150,6 +150,33 @@
 
         .chart-bottom-data { display: flex; justify-content: space-between; font-size: 0.68rem; color: rgba(255, 255, 255, 0.4); white-space: nowrap; }
         .chart-bottom-data span.hl-val { font-weight: 700; color: #ffffff; }
+
+        /* --- NOTIFICATIONS GLASS CARD --- */
+        .notification-section { display: flex; flex-direction: column; gap: 14px; }
+        .notification-heading { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 4px; color: var(--neon-orange); font-weight: 800; }
+        .glass-card-link {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        .glass-card-link:hover {
+            border-color: var(--neon-orange);
+            background: rgba(255, 149, 0, 0.08);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 149, 0, 0.1);
+        }
+        .glass-card-text h4 { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.5px; }
+        .glass-card-text p { font-size: 0.68rem; color: rgba(255, 255, 255, 0.4); margin-top: 2px; }
+        .glass-card-arrow { font-size: 0.85rem; color: var(--neon-orange); transition: 0.2s; }
+        .glass-card-link:hover .glass-card-arrow { transform: translateX(3px); }
 
         /* --- ACTIVATION ROAD MAP (COMPACT TV RE-DESIGN) --- */
         .roadmap-section { 
@@ -452,6 +479,18 @@
                     </div>
 
                 </div>
+            </div>
+
+            <!-- --- NEW NOTIFICATIONS SECTION WITH GLASS CARD LINK --- -->
+            <div class="notification-section">
+                <span class="notification-heading">Notifications</span>
+                <a href="3monthsdata.html" class="glass-card-link">
+                    <div class="glass-card-text">
+                        <h4>Upcoming Quarterly Plans</h4>
+                        <p>View pipeline strategy & targets for next 3 months</p>
+                    </div>
+                    <span class="glass-card-arrow">→</span>
+                </a>
             </div>
         </aside>
     </div>
