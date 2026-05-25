@@ -108,7 +108,7 @@
 
         /* --- ICON-DRIVEN ACCORDION --- */
         .accordion-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
-        .acc-card background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; overflow: hidden; }
+        .acc-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; overflow: hidden; }
         .acc-header { padding: 14px 22px; display: flex; align-items: center; cursor: pointer; }
         .acc-header h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); margin-left: 15px; flex-grow: 1; }
         .acc-content { 
@@ -286,8 +286,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
-        /* Responsive configuration queries deactivated to maintain desktop aspect ratios */
     </style>
 </head>
 <body>
@@ -362,7 +360,8 @@
                         <span>▾</span>
                     </div>
                     <div class="acc-content">
-                        <a href="shop.html" class="link-item"><div><b>100 Retailer Roadmap</b><i>D2R North India</i></div></a>
+                        <!-- Replaced 100 Retailer Roadmap with MT Regional -->
+                        <a href="MTregional.html" class="link-item"><div><b>MT Regional</b><i>D2R North India</i></div></a>
                         <a href="subdnorm.html" class="link-item"><div><b>Sub-D Norms</b><i>Distribution guidelines</i></div></a>
                         <div class="link-item" onclick="window.open('https://docs.google.com/forms/d/1ESLZNsWBnxQVW6ApgSmyUokE3ENvX1Vj75ELEMSbqes/viewanalytics')" style="cursor:pointer;">
                             <div><b>Market Survey</b><i>Live Data Feed</i></div>
@@ -481,7 +480,6 @@
                 </div>
             </div>
 
-            <!-- --- NEW NOTIFICATIONS SECTION WITH GLASS CARD LINK --- -->
             <div class="notification-section">
                 <span class="notification-heading">Notifications</span>
                 <a href="3monthsdata.html" class="glass-card-link">
