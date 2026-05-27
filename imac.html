@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VTC iMc Dashboard</title>
+    <style>
+        /* Base Reset & TV Optimization */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0d1117; /* Deep dark background */
+            color: #f0f6fc; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;
+            overflow: hidden; 
+            position: relative;
+        }
+
+        /* Top Bar Layout (Home Button & Centered Title) */
+        .top-bar {
+            position: absolute;
+            top: 4vh;
+            left: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 4vw;
+            z-index: 10;
+        }
+
+        /* Home Button - Top Left */
+        .home-btn {
+            background-color: #1a2333;
+            border: 1.5px solid #25354c;
+            border-radius: 5px;
+            color: #e2e8f0;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .home-btn:hover, .home-btn:focus {
+            background-color: #1e3a5f;
+            border-color: #38bdf8;
+            outline: none;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+        }
+
+        /* Header Setup - Centered */
+        header {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        /* Connecting SVG Lines Network */
+        .network-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allows clicks to pass through to buttons */
+            z-index: 1;
+        }
+
+        .network-lines line {
+            stroke: #25354c; /* Matches the subtle card border color */
+            stroke-width: 2;
+            transition: stroke 0.2s ease;
+        }
+
+        /* Active highlight line style when a card is selected/focused */
+        .network-lines line.active {
+            stroke: #38bdf8;
+            stroke-width: 2.5;
+        }
+
+        /* Single-line Row Container shifted down slightly to accommodate lines */
+        .dashboard-container {
+            display: flex;
+            flex-direction: row; 
+            justify-content: center;
+            gap: 1.5rem; 
+            width: 100%;
+            max-width: 1000px; 
+            margin-top: 15vh;
+            z-index: 2;
+        }
+
+        /* Ultra-Small Card Styles */
+        .card {
+            background-color: #1a2333; 
+            border: 1.5px solid #25354c;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex: 1; 
+            max-width: 190px; 
+            
+            /* Minimal Padding and Height */
+            padding: 0.75rem 0.5rem; 
+            min-height: 55px; 
+            
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Mini Typography */
+        .card span {
+            color: #e2e8f0;
+            font-size: 0.95rem; 
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            white-space: nowrap; 
+        }
+
+        /* Hover & Focus States (TV Remote Friendly) */
+        .card:hover, .card:focus {
+            background-color: #1e3a5f; 
+            border-color: #38bdf8; 
+            transform: translateY(3px); /* Pushes down gently away from line origin */
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <a href="home.html" class="home-btn">Home</a>
+        <header id="main-title">
+            <h1>VTC iMc</h1>
+        </header>
+    </div>
+
+    <svg class="network-lines" id="svg-canvas">
+        <line id="line1" x1="0" y1="0" x2="0" y2="0" />
+        <line id="line2" x1="0" y1="0" x2="0" y2="0" />
+        <line id="line3" x1="0" y1="0" x2="0" y2="0" />
+        <line id="line4" x1="0" y1="0" x2="0" y2="0" />
+    </svg>
+
+    <main class="dashboard-container">
+        <a href="#" class="card" id="card1">
+            <span>Operation Process</span>
+        </a>
+        <a href="#" class="card" id="card2">
+            <span>Training of Process</span>
+        </a>
+        <a href="#" class="card" id="card3">
+            <span>Follow Process</span>
+        </a>
+        <a href="#" class="card" id="card4">
+            <span>Profile</span>
+        </a>
+    </main>
+
+    <script>
+        // Calculates and draws clean connection paths from title coordinates to individual cards
+        function drawNetworkLines() {
+            const title = document.getElementById('main-title').getBoundingClientRect();
+            const canvas = document.getElementById('svg-canvas').getBoundingClientRect();
+            
+            // Central line anchor point directly below the title header text
+            const startX = title.left + (title.width / 2) - canvas.left;
+            const startY = title.bottom - canvas.top + 5; 
+
+            for (let i = 1; i <= 4; i++) {
+                const card = document.getElementById(`card${i}`).getBoundingClientRect();
+                const line = document.getElementById(`line${i}`);
+                
+                // Targets the perfect horizontal center point of each card's upper frame border
+                const endX = card.left + (card.width / 2) - canvas.left;
+                const endY = card.top - canvas.top;
+
+                line.setAttribute('x1', startX);
+                line.setAttribute('y1', startY);
+                line.setAttribute('x2', endX);
+                line.setAttribute('y2', endY);
+            }
+        }
+
+        // Monitors interactions to dynamically illuminate web connections on screen focus
+        function setupLineInteractions() {
+            for (let i = 1; i <= 4; i++) {
+                const card = document.getElementById(`card${i}`);
+                const line = document.getElementById(`line${i}`);
+
+                const activate = () => line.classList.add('active');
+                const deactivate = () => line.classList.remove('active');
+
+                card.addEventListener('mouseenter', activate);
+                card.addEventListener('mouseleave', deactivate);
+                card.addEventListener('focus', activate);
+                card.addEventListener('blur', deactivate);
+            }
+        }
+
+        // Initialize connection layers and attach listener parameters across screen scaling events
+        window.addEventListener('DOMContentLoaded', () => {
+            drawNetworkLines();
+            setupLineInteractions();
+        });
+        window.addEventListener('resize', drawNetworkLines);
+    </script>
+</body>
+</html>
