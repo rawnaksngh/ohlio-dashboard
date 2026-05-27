@@ -77,8 +77,43 @@
         }
 
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .header-title-container { display: flex; align-items: center; gap: 15px; }
         .h-text h1 { font-size: 2rem; font-weight: 900; letter-spacing: -0.5px; }
         .h-text p { font-size: 0.75rem; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; }
+
+        /* --- COMPACT IMAC LINK STYLING --- */
+        .imac-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 255, 213, 0.06);
+            border: 1px solid rgba(0, 255, 213, 0.3);
+            padding: 6px 14px;
+            border-radius: 30px;
+            color: var(--neon-cyan);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 213, 0.05);
+            align-self: flex-end;
+            margin-bottom: 4px;
+        }
+        .imac-link:hover {
+            background: rgba(0, 255, 213, 0.15);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 255, 213, 0.25);
+            transform: translateY(-1px);
+        }
+        .imac-link span.arrow {
+            font-size: 0.65rem;
+            transition: transform 0.2s ease;
+        }
+        .imac-link:hover span.arrow {
+            transform: translateX(2px);
+        }
 
         #deadlinePop {
             display: none; position: fixed; top: 95px; right: 45px; width: 280px;
@@ -135,7 +170,7 @@
         .chart-bottom-data { display: flex; justify-content: space-between; font-size: 0.72rem; color: rgba(255, 255, 255, 0.4); white-space: nowrap; }
         .chart-bottom-data span.hl-val { font-weight: 700; color: #ffffff; }
 
-        /* --- NOTIFICATIONS SECTION (OPTIMIZED FOR 55" TV MATRIX Layout) --- */
+        /* --- NOTIFICATIONS SECTION --- */
         .notification-section { display: flex; flex-direction: column; gap: 12px; }
         .notification-heading { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 4px; color: var(--neon-orange); font-weight: 800; }
         
@@ -159,7 +194,7 @@
             transition: all 0.2s ease;
             backdrop-filter: blur(5px);
             cursor: pointer;
-            min-height: 52px; /* Ultra-compact vertical footprint for TV displays */
+            min-height: 52px;
         }
         .glass-card-link:hover {
             border-color: rgba(255, 255, 255, 0.4);
@@ -167,15 +202,12 @@
             transform: translateY(-1px);
         }
         
-        .full-width-card {
-            grid-column: span 2;
-        }
+        .full-width-card { grid-column: span 2; }
         
-        /* High Visual Focus Accent for Top Strategic Plan Card */
         .glass-card-link.plan-primary-highlight {
             border-color: var(--neon-orange);
             background: rgba(255, 149, 0, 0.09);
-            box-shadow: 0 0 15px rgba(255, 149, 0, 0.15);
+            box-shadow: 0 0 12px rgba(255, 149, 0, 0.12);
             animation: subtleGlow 4s infinite ease-in-out;
         }
         .glass-card-link.plan-primary-highlight:hover {
@@ -210,11 +242,11 @@
             50% { box-shadow: 0 0 18px rgba(255, 149, 0, 0.22); background: rgba(255, 149, 0, 0.12); }
         }
 
-        /* --- ACTIVATION ROAD MAP (COMPACT TV DESIGN) --- */
+        /* --- ACTIVATION ROAD MAP (NEW SMALL & COMPACT DESIGN) --- */
         .roadmap-section { 
             display: flex; 
             flex-direction: column; 
-            gap: 12px; 
+            gap: 10px; 
             margin-bottom: 10px; 
         }
         .roadmap-heading { 
@@ -228,30 +260,27 @@
         .activation-stack { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
-            gap: 14px; 
+            gap: 8px; 
             width: 100%;
         }
         
         .road-card {
             background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 16px; 
-            border-radius: 16px; 
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 10px 12px; 
+            border-radius: 12px; 
             text-decoration: none;
             display: flex; 
             flex-direction: column;
-            justify-content: space-between;
-            gap: 14px;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+            gap: 6px;
+            transition: all 0.2s ease;
             backdrop-filter: blur(5px);
         }
         .road-card:hover { 
-            transform: translateY(-4px); 
+            transform: translateY(-2px); 
             border-color: var(--neon-purple); 
-            background: rgba(175, 82, 222, 0.06); 
-            box-shadow: 0 12px 24px rgba(175, 82, 222, 0.15);
+            background: rgba(175, 82, 222, 0.05); 
+            box-shadow: 0 6px 15px rgba(175, 82, 222, 0.12);
         }
         
         .road-card-header {
@@ -261,46 +290,45 @@
             width: 100%;
         }
         .road-icon { 
-            font-size: 1.5rem; 
-            background: rgba(255, 255, 255, 0.04);
-            padding: 6px;
-            border-radius: 10px;
+            font-size: 1.1rem; 
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px;
+            border-radius: 6px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
         }
         
         .status-badge {
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             text-transform: uppercase;
             font-weight: 900;
-            letter-spacing: 1px;
-            padding: 4px 10px;
-            border-radius: 20px;
+            letter-spacing: 0.5px;
+            padding: 2px 7px;
+            border-radius: 10px;
             white-space: nowrap;
         }
-        .active-sector { background: rgba(0, 255, 213, 0.1); color: var(--neon-cyan); border: 1px solid rgba(0, 255, 213, 0.25); }
-        .upcoming-deployment { background: rgba(255, 149, 0, 0.1); color: var(--neon-orange); border: 1px solid rgba(255, 149, 0, 0.25); }
-        .strategy-phase { background: rgba(175, 82, 222, 0.1); color: var(--neon-purple); border: 1px solid rgba(175, 82, 222, 0.25); }
+        .active-sector { background: rgba(0, 255, 213, 0.08); color: var(--neon-cyan); border: 1px solid rgba(0, 255, 213, 0.2); }
+        .upcoming-deployment { background: rgba(255, 149, 0, 0.08); color: var(--neon-orange); border: 1px solid rgba(255, 149, 0, 0.2); }
+        .strategy-phase { background: rgba(175, 82, 222, 0.08); color: var(--neon-purple); border: 1px solid rgba(175, 82, 222, 0.2); }
 
         .road-details { 
             display: flex; 
             flex-direction: column; 
-            gap: 2px;
             min-width: 0; 
         }
         .road-name { 
-            font-size: 0.95rem; 
-            font-weight: 900; 
-            letter-spacing: 0.5px; 
+            font-size: 0.8rem; 
+            font-weight: 800; 
+            letter-spacing: 0.3px; 
             color: white; 
             white-space: nowrap; 
             overflow: hidden; 
             text-overflow: ellipsis; 
         }
         .road-zone { 
-            font-size: 0.68rem; 
-            color: rgba(255, 255, 255, 0.4); 
+            font-size: 0.6rem; 
+            color: rgba(255, 255, 255, 0.35); 
             font-weight: 500;
             white-space: nowrap;
             overflow: hidden;
@@ -362,9 +390,12 @@
             </div>
 
             <header>
-                <div class="h-text">
-                    <p>System Active / v2.6</p>
-                    <h1>Command Center</h1>
+                <div class="header-title-container">
+                    <div class="h-text">
+                        <p>System Active / v2.6</p>
+                        <h1>Command Center</h1>
+                    </div>
+                    <a href="imac.html" class="imac-link">iMAC <span class="arrow">→</span></a>
                 </div>
             </header>
 
@@ -400,6 +431,7 @@
                 </div>
             </div>
 
+            <!-- ROADMAP SECTIONS MODIFIED TO ULTRA COMPACT AND SMALL -->
             <div class="roadmap-section">
                 <span class="roadmap-heading">Activation Road Map</span>
                 <div class="activation-stack">
@@ -411,7 +443,7 @@
                         </div>
                         <div class="road-details">
                             <span class="road-name">DELHI NCR</span>
-                            <span class="road-zone">Core Northern Hub</span>
+                            <span class="road-zone">Core Hub</span>
                         </div>
                     </a>
 
@@ -422,7 +454,7 @@
                         </div>
                         <div class="road-details">
                             <span class="road-name">CHANDIGARH</span>
-                            <span class="road-zone">Next Phase Pipeline</span>
+                            <span class="road-zone">Pipeline</span>
                         </div>
                     </a>
 
@@ -433,7 +465,7 @@
                         </div>
                         <div class="road-details">
                             <span class="road-name">GUJARAT</span>
-                            <span class="road-zone">Market Assessment</span>
+                            <span class="road-zone">Assessment</span>
                         </div>
                     </a>
 
@@ -500,7 +532,6 @@
                 
                 <div class="notification-grid">
                     
-                    <!-- MOVED TO TOP: Upcoming Quarterly Plans with Primary Neon Orange Highlight Border & Animation Glow -->
                     <a href="3monthsdata.html" class="glass-card-link full-width-card plan-primary-highlight">
                         <div class="glass-card-text">
                             <h4>Upcoming Quarterly Plans</h4>
@@ -509,7 +540,6 @@
                         <span class="glass-card-arrow">→</span>
                     </a>
                     
-                    <!-- Milestone Card (Left Column, Small & Compact Layout) -->
                     <a href="TASKS.html" class="glass-card-link milestone-accent">
                         <div class="glass-card-text">
                             <h4>Milestone 100cr</h4>
@@ -518,7 +548,6 @@
                         <span class="glass-card-arrow">→</span>
                     </a>
 
-                    <!-- Deadlines Controller Card (Right Column, Small & Compact Layout) -->
                     <div class="glass-card-link deadline-accent" onclick="toggleDeadlines()">
                         <div class="glass-card-text">
                             <h4>Deadlines Panel</h4>
