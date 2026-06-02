@@ -76,43 +76,44 @@
             backdrop-filter: blur(10px);
         }
 
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .header-title-container { display: flex; align-items: center; gap: 15px; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; width: 100%; }
+        .header-title-container { display: flex; align-items: center; width: 100%; }
         .h-text h1 { font-size: 2rem; font-weight: 900; letter-spacing: -0.5px; }
         .h-text p { font-size: 0.75rem; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; }
 
-        /* --- COMPACT IMAC LINK STYLING --- */
+        /* --- LARGER SLEEK IMAC LINK STYLING --- */
         .imac-link {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background: rgba(0, 255, 213, 0.06);
-            border: 1px solid rgba(0, 255, 213, 0.3);
-            padding: 6px 14px;
-            border-radius: 30px;
+            gap: 8px;
+            background: rgba(0, 255, 213, 0.04);
+            border: 1px solid rgba(0, 255, 213, 0.25);
+            padding: 8px 20px;
+            border-radius: 12px;
             color: var(--neon-cyan);
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             font-weight: 800;
             text-decoration: none;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.2s ease;
-            box-shadow: 0 0 10px rgba(0, 255, 213, 0.05);
-            align-self: flex-end;
-            margin-bottom: 4px;
+            letter-spacing: 1.5px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 255, 213, 0.03);
+            backdrop-filter: blur(10px);
+            margin-left: auto; /* Pushes the icon further away from heading text */
+            align-self: center;
         }
         .imac-link:hover {
-            background: rgba(0, 255, 213, 0.15);
+            background: rgba(0, 255, 213, 0.12);
             border-color: var(--neon-cyan);
-            box-shadow: 0 0 15px rgba(0, 255, 213, 0.25);
+            box-shadow: 0 0 20px rgba(0, 255, 213, 0.2);
             transform: translateY(-1px);
         }
         .imac-link span.arrow {
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             transition: transform 0.2s ease;
         }
         .imac-link:hover span.arrow {
-            transform: translateX(2px);
+            transform: translateX(4px);
         }
 
         #deadlinePop {
@@ -485,13 +486,13 @@
                     <div class="mini-chart-card">
                         <div class="chart-top-bar">
                             <span class="chart-title-lbl">Value MTD</span>
-                            <span class="chart-pct-badge" style="color: var(--neon-cyan);">36.5%</span>
+                            <span class="chart-pct-badge" style="color: var(--neon-cyan);">68%</span>
                         </div>
                         <div class="compact-track">
-                            <div class="compact-fill" style="width: 36.5%; background: var(--neon-cyan);"></div>
+                            <div class="compact-fill" style="width: 68%; background: var(--neon-cyan);"></div>
                         </div>
                         <div class="chart-bottom-data">
-                            <div>Achieved: <span class="hl-val">3.65 Lakhs</span></div>
+                            <div>Achieved: <span class="hl-val">6.80 Lakhs</span></div>
                             <div>Target: <span>10.00 Lakhs</span></div>
                         </div>
                     </div>
@@ -499,13 +500,13 @@
                     <div class="mini-chart-card">
                         <div class="chart-top-bar">
                             <span class="chart-title-lbl">Coverage MTD</span>
-                            <span class="chart-pct-badge" style="color: var(--neon-orange);">77%</span>
+                            <span class="chart-pct-badge" style="color: var(--neon-orange);">158%</span>
                         </div>
                         <div class="compact-track">
-                            <div class="compact-fill" style="width: 77%; background: var(--neon-orange);"></div>
+                            <div class="compact-fill" style="width: 100%; background: var(--neon-orange);"></div>
                         </div>
                         <div class="chart-bottom-data">
-                            <div>Achieved: <span class="hl-val">77 Stores</span></div>
+                            <div>Achieved: <span class="hl-val">158 Stores</span></div>
                             <div>Target: <span>100 Stores</span></div>
                         </div>
                     </div>
@@ -513,13 +514,13 @@
                     <div class="mini-chart-card">
                         <div class="chart-top-bar">
                             <span class="chart-title-lbl">Volume MTD</span>
-                            <span class="chart-pct-badge" style="color: var(--neon-purple);">36%</span>
+                            <span class="chart-pct-badge" style="color: var(--neon-purple);">60.5%</span>
                         </div>
                         <div class="compact-track">
-                            <div class="compact-fill" style="width: 36%; background: var(--neon-purple);"></div>
+                            <div class="compact-fill" style="width: 60.5%; background: var(--neon-purple);"></div>
                         </div>
                         <div class="chart-bottom-data">
-                            <div>Achieved: <span class="hl-val">5,400 Pcs</span></div>
+                            <div>Achieved: <span class="hl-val">9,072 Pcs</span></div>
                             <div>Target: <span>15,000 Pcs</span></div>
                         </div>
                     </div>
