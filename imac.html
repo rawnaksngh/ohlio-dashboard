@@ -13,7 +13,7 @@
         }
 
         body {
-            background-color: #0d1117; /* Deep dark background */
+            background-color: #0d1117;
             color: #f0f6fc; 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             height: 100vh;
@@ -26,7 +26,7 @@
             position: relative;
         }
 
-        /* Top Bar Layout (Home Button & Centered Title) */
+        /* Top Bar Layout */
         .top-bar {
             position: absolute;
             top: 4vh;
@@ -38,7 +38,6 @@
             z-index: 10;
         }
 
-        /* Home Button - Top Left */
         .home-btn {
             background-color: #1a2333;
             border: 1.5px solid #25354c;
@@ -59,7 +58,6 @@
             box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
         }
 
-        /* Header Setup - Centered */
         header {
             position: absolute;
             left: 50%;
@@ -74,30 +72,27 @@
             letter-spacing: 0.5px;
         }
 
-        /* Connecting SVG Lines Network */
         .network-lines {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* Allows clicks to pass through to buttons */
+            pointer-events: none;
             z-index: 1;
         }
 
         .network-lines line {
-            stroke: #25354c; /* Matches the subtle card border color */
+            stroke: #25354c;
             stroke-width: 2;
             transition: stroke 0.2s ease;
         }
 
-        /* Active highlight line style when a card is selected/focused */
         .network-lines line.active {
             stroke: #38bdf8;
             stroke-width: 2.5;
         }
 
-        /* Single-line Row Container shifted down slightly to accommodate lines */
         .dashboard-container {
             display: flex;
             flex-direction: row; 
@@ -109,7 +104,6 @@
             z-index: 2;
         }
 
-        /* Ultra-Small Card Styles */
         .card {
             background-color: #1a2333; 
             border: 1.5px solid #25354c;
@@ -120,18 +114,14 @@
             text-align: center;
             flex: 1; 
             max-width: 190px; 
-            
-            /* Minimal Padding and Height */
             padding: 0.75rem 0.5rem; 
             min-height: 55px; 
-            
             text-decoration: none;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
         }
 
-        /* Mini Typography */
         .card span {
             color: #e2e8f0;
             font-size: 0.95rem; 
@@ -140,13 +130,162 @@
             white-space: nowrap; 
         }
 
-        /* Hover & Focus States (TV Remote Friendly) */
         .card:hover, .card:focus {
             background-color: #1e3a5f; 
             border-color: #38bdf8; 
-            transform: translateY(3px); /* Pushes down gently away from line origin */
+            transform: translateY(3px);
             box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
             outline: none;
+        }
+
+        /* --- ULTRA-COMPACT 55" TV MODAL --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(10, 14, 20, 0.98);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-container {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            width: 98vw;
+            height: 94vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-header {
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1f242c;
+        }
+
+        .modal-header h2 {
+            font-size: 1.1rem;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background-color: #da3637;
+            color: #ffffff;
+            border: none;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            background-color: #b62b2c;
+        }
+
+        /* --- MAX-DENSITY PILLARS GRID --- */
+        .modal-body {
+            flex: 1;
+            overflow: hidden;
+            padding: 0.4rem;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.4rem;
+        }
+
+        .pillar {
+            background-color: #0d1117;
+            border: 1px solid #21262d;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .pillar-header {
+            padding: 4px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-align: center;
+            text-transform: uppercase;
+            color: #ffffff;
+        }
+
+        .pillar-resale { background-color: #1f6feb; }
+        .pillar-system { background-color: #238636; }
+        .pillar-logistics { background-color: #d29922; }
+        .pillar-finance { background-color: #8957e5; }
+        .pillar-hr { background-color: #db6174; }
+        .pillar-operation { background-color: #6e7681; }
+
+        .pillar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .pillar-content::-webkit-scrollbar {
+            width: 3px;
+        }
+        .pillar-content::-webkit-scrollbar-thumb {
+            background-color: #30363d;
+        }
+
+        /* Micro Inline Layout Rows */
+        .process-item-card {
+            background-color: #161b22;
+            border: 1px solid #21262d;
+            border-radius: 3px;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .process-title {
+            font-weight: 700;
+            color: #58a6ff;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            line-height: 1.1;
+        }
+
+        .process-sno {
+            font-size: 0.65rem;
+            background-color: #21262d;
+            color: #8b949e;
+            padding: 0px 3px;
+            border-radius: 2px;
+        }
+
+        .process-desc {
+            color: #8b949e;
+            font-size: 0.68rem;
+            line-height: 1.2;
         }
     </style>
 </head>
@@ -167,7 +306,7 @@
     </svg>
 
     <main class="dashboard-container">
-        <a href="#" class="card" id="card1">
+        <a href="javascript:void(0)" class="card" id="card1">
             <span>Operation Process</span>
         </a>
         <a href="#" class="card" id="card2">
@@ -181,13 +320,166 @@
         </a>
     </main>
 
+    <!-- POPUP MODAL -->
+    <div class="modal-overlay" id="processModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Operation Processes Categorized by Department [image_8f1f7a.jpg]</h2>
+                <button class="close-btn" id="closeModalBtn">Close</button>
+            </div>
+            <div class="modal-body">
+                
+                <!-- PILLAR 1 -->
+                <div class="pillar">
+                    <div class="pillar-header pillar-resale">Resale</div>
+                    <div class="pillar-content">
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">1</span> Store Identification</div>
+                            <div class="process-desc">Identify new market opportunities. Update category details in records.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">2</span> Store Visit (CCR)</div>
+                            <div class="process-desc">Visit stores per route. Check stock/display and punch PDA details.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">3</span> Order Booking (BCP)</div>
+                            <div class="process-desc">Take retailer orders per demand. Follow designated BCP steps.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">4</span> Order Transfer</div>
+                            <div class="process-desc">Transfer booked orders via mobile Bizom; verify transfer accuracy.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">5</span> Daily Review</div>
+                            <div class="process-desc">Review sales per PFD/FJP. Discuss actions and pending issues.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">6</span> Monthly Review</div>
+                            <div class="process-desc">Analyze monthly targets. Identify gaps and fix monthly dates.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PILLAR 2 -->
+                <div class="pillar">
+                    <div class="pillar-header pillar-system">System</div>
+                    <div class="pillar-content">
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">7</span> Daily Reporting</div>
+                            <div class="process-desc">Prepare and share daily sales/activity updates to management.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">8</span> Order Collection</div>
+                            <div class="process-desc">Collect sales orders. Verify completeness prior to processing.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">9</span> Order Invoicing</div>
+                            <div class="process-desc">Generate customer invoices; verify schemes/prices apply properly.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">17</span> System DCR Report</div>
+                            <div class="process-desc">Generate Daily Critical Reports to monitor dashboard updates.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">18</span> DRCP Process</div>
+                            <div class="process-desc">GPS-tracked Route Coverage Planning to map active sales beats.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">19</span> Software Mgmt</div>
+                            <div class="process-desc">Manage software errors, user access, and routine infrastructure patches.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PILLAR 3 -->
+                <div class="pillar">
+                    <div class="pillar-header pillar-logistics">Logistics</div>
+                    <div class="pillar-content">
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">10</span> Stock Outward</div>
+                            <div class="process-desc">Dispatch stock per invoices. Maintain precise tracking logs.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">11</span> Delivery</div>
+                            <div class="process-desc">Deliver items on time. Confirm cargo matches physical conditions.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">12</span> MDC Management</div>
+                            <div class="process-desc">Monitor market delivery expenses against operational budgets.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">13</span> SRN (Return)</div>
+                            <div class="process-desc">Process Sales Return Notes in alignment with return rules.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">14</span> Damage (Expiry)</div>
+                            <div class="process-desc">Accept items expiring within 3 months per corporate policy.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">15</span> Delivery Proof</div>
+                            <div class="process-desc">Collect client confirmations; archive physical POD signatures.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">25</span> Purchase Shipment</div>
+                            <div class="process-desc">Order from plant per resale needs to avoid stock shortages.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PILLAR 4 -->
+                <div class="pillar">
+                    <div class="pillar-header pillar-finance">Finance</div>
+                    <div class="pillar-content">
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">16</span> Customer Credit</div>
+                            <div class="process-desc">Monitor customer limits and balances per AR Norms Policies.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PILLAR 5 -->
+                <div class="pillar">
+                    <div class="pillar-header pillar-hr">HR</div>
+                    <div class="pillar-content">
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">20</span> Attendance</div>
+                            <div class="process-desc">Track field attendance logs and active market hours.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">21</span> Hiring</div>
+                            <div class="process-desc">Manage recruitment and execute candidate onboarding structures.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">22</span> OC Training</div>
+                            <div class="process-desc">Deploy OC program schedules to align functional skill sets.</div>
+                        </div>
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">23</span> Monthly Training</div>
+                            <div class="process-desc">Execute continuous education to scale up team capabilities.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PILLAR 6 -->
+                <div class="pillar">
+                    <div class="pillar-header pillar-operation">Operation</div>
+                    <div class="pillar-content">
+                        <div class="process-item-card">
+                            <div class="process-title"><span class="process-sno">24</span> Sub D Process</div>
+                            <div class="process-desc">Appoint regional sub-distributors to expand footprint coverage.</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Calculates and draws clean connection paths from title coordinates to individual cards
         function drawNetworkLines() {
             const title = document.getElementById('main-title').getBoundingClientRect();
             const canvas = document.getElementById('svg-canvas').getBoundingClientRect();
             
-            // Central line anchor point directly below the title header text
             const startX = title.left + (title.width / 2) - canvas.left;
             const startY = title.bottom - canvas.top + 5; 
 
@@ -195,7 +487,6 @@
                 const card = document.getElementById(`card${i}`).getBoundingClientRect();
                 const line = document.getElementById(`line${i}`);
                 
-                // Targets the perfect horizontal center point of each card's upper frame border
                 const endX = card.left + (card.width / 2) - canvas.left;
                 const endY = card.top - canvas.top;
 
@@ -206,7 +497,6 @@
             }
         }
 
-        // Monitors interactions to dynamically illuminate web connections on screen focus
         function setupLineInteractions() {
             for (let i = 1; i <= 4; i++) {
                 const card = document.getElementById(`card${i}`);
@@ -222,7 +512,24 @@
             }
         }
 
-        // Initialize connection layers and attach listener parameters across screen scaling events
+        const modalOverlay = document.getElementById('processModal');
+        const operationCard = document.getElementById('card1');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        operationCard.addEventListener('click', () => {
+            modalOverlay.classList.add('active');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            modalOverlay.classList.remove('active');
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                modalOverlay.classList.remove('active');
+            }
+        });
+
         window.addEventListener('DOMContentLoaded', () => {
             drawNetworkLines();
             setupLineInteractions();
