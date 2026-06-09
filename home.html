@@ -5,83 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OPS | Mission Command v2.6</title>
     <style>
-.milestone-pin{
-    position:absolute;
-    top:-16px;
-    font-size:10px;
-    font-weight:800;
-    z-index:5;
-    white-space:nowrap;
-}
-
-.pin-cyan{
-    color:var(--neon-cyan);
-    text-shadow:0 0 12px var(--neon-cyan);
-}
-
-.pin-orange{
-    color:var(--neon-orange);
-    text-shadow:0 0 12px var(--neon-orange);
-}
-
-.pin-purple{
-    color:var(--neon-purple);
-    text-shadow:0 0 12px var(--neon-purple);
-}
-
-.future-pin{
-    opacity:.25;
-}
         :root {
             --neon-cyan: #00ffd5;
             --neon-purple: #af52de;
             --neon-orange: #ff9500;
             --neon-red: #ff3b30;
-            --glass: rgba(255, 255, 255, 0.04);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --panel-solid: #0a1218;
-            --border-crisp: rgba(255, 255, 255, 0.15);
+            --panel-solid: #0c1114;
+            --card-solid: #13191d;
+            --border-crisp: rgba(255, 255, 255, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, "SF Pro Display", sans-serif; }
+        /* Global Performance Overrides */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: system-ui, -apple-system, sans-serif;
+            text-rendering: optimizeSpeed;
+            -webkit-font-smoothing: none;
+        }
         
         body {
-            background: radial-gradient(circle at 0% 0%, #0d1a21, #05070a);
-            color: white; height: 100vh; display: flex; overflow: hidden;
+            background: #05080a; 
+            color: #ffffff; 
+            height: 100vh; 
+            display: flex; 
+            overflow: hidden;
         }
 
-        /* --- SMOOTH EXPANDING SIDEBAR --- */
+        /* --- HARDWARE-ACCELERATED LAYER NAVIGATION --- */
         nav {
-            width: 80px; background: rgba(0,0,0,0.6); backdrop-filter: blur(30px);
-            border-right: 1px solid var(--glass-border); display: flex;
-            flex-direction: column; align-items: flex-start; padding: 30px 16px; 
-            transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000;
-            overflow-y: auto;
-            scrollbar-width: none;
+            width: 80px; 
+            background: #000000; 
+            border-right: 1px solid var(--border-crisp); 
+            display: flex;
+            flex-direction: column; 
+            padding: 30px 16px; 
+            z-index: 1000;
+            /* Will-change hints the TV GPU to paint this panel onto its own layer */
+            will-change: width;
+            transition: width 0.15s ease-out;
         }
-        nav::-webkit-scrollbar { display: none; }
         nav:hover { width: 220px; }
         
-        .nav-item { display: flex; align-items: center; width: 100%; text-decoration: none; color: rgba(255,255,255,0.5); margin-bottom: 10px; border-radius: 14px; transition: 0.3s; }
-        .nav-item:hover { background: var(--glass); color: var(--neon-cyan); }
+        .nav-item { 
+            display: flex; 
+            align-items: center; 
+            width: 100%; 
+            text-decoration: none; 
+            color: #888888; 
+            margin-bottom: 12px; 
+            border-radius: 8px; 
+        }
+        .nav-item:hover { color: var(--neon-cyan); background: rgba(255,255,255,0.04); }
         .nav-icon { width: 48px; min-width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-        .nav-text { opacity: 0; margin-left: 15px; font-size: 0.85rem; font-weight: 700; white-space: nowrap; transition: 0.3s; }
-        nav:hover .nav-text { opacity: 1; }
+        .nav-text { display: none; margin-left: 10px; font-size: 0.85rem; font-weight: 700; white-space: nowrap; }
+        nav:hover .nav-text { display: block; }
 
-        .nav-separator { width: 100%; height: 1px; background: var(--glass-border); margin: 15px 0; }
-        .logout { margin-top: auto; color: var(--neon-red) !important; border-top: 1px solid var(--glass-border); padding-top: 20px; }
+        .nav-separator { width: 100%; height: 1px; background: var(--border-crisp); margin: 15px 0; }
+        .logout { margin-top: auto; color: var(--neon-red) !important; border-top: 1px solid var(--border-crisp); padding-top: 20px; }
 
-        /* --- MAIN LAYOUT STRUCTURE --- */
+        /* --- NO-LAYOUT-REFLOW STRUCTURE --- */
         .workspace {
-            flex-grow: 1;
+            flex: 1;
             display: flex;
             height: 100vh;
             overflow: hidden;
         }
 
         main { 
-            flex-grow: 1; 
-            width: 62%;
+            flex: 62; /* Absolute ratio calculation bypasses flexible layout shifts */
             padding: 35px 40px; 
             display: flex; 
             flex-direction: column; 
@@ -89,129 +82,115 @@
             position: relative; 
         }
 
-        /* --- RIGHT SIDEBAR PANEL --- */
         .right-panel {
-            width: 38%;
-            min-width: 420px;
-            background: rgba(0, 0, 0, 0.3);
-            border-left: 1px solid var(--glass-border);
+            flex: 38;
+            background: var(--panel-solid);
+            border-left: 1px solid var(--border-crisp);
             padding: 35px 25px;
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 25px;
             overflow-y: auto;
-            backdrop-filter: blur(10px);
         }
 
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; width: 100%; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .header-title-container { display: flex; align-items: center; width: 100%; }
-        .h-text h1 { font-size: 2rem; font-weight: 900; letter-spacing: -0.5px; }
-        .h-text p { font-size: 0.75rem; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; }
+        .h-text h1 { font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px; }
+        .h-text p { font-size: 0.75rem; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 1px; }
 
-        /* --- LARGER SLEEK IMAC LINK STYLING --- */
         .imac-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0, 255, 213, 0.04);
-            border: 1px solid rgba(0, 255, 213, 0.25);
-            padding: 8px 20px;
-            border-radius: 12px;
+            background: rgba(0, 255, 213, 0.08);
+            border: 1px solid var(--neon-cyan);
+            padding: 6px 16px;
+            border-radius: 8px;
             color: var(--neon-cyan);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 800;
             text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(0, 255, 213, 0.03);
-            backdrop-filter: blur(10px);
-            margin-left: auto; /* Pushes the icon further away from heading text */
-            align-self: center;
-        }
-        .imac-link:hover {
-            background: rgba(0, 255, 213, 0.12);
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 20px rgba(0, 255, 213, 0.2);
-            transform: translateY(-1px);
-        }
-        .imac-link span.arrow {
-            font-size: 0.75rem;
-            transition: transform 0.2s ease;
-        }
-        .imac-link:hover span.arrow {
-            transform: translateX(4px);
+            margin-left: auto;
         }
 
+        /* --- ZERO-RENDER DEADLINE POPUP --- */
         #deadlinePop {
-            display: none; position: fixed; top: 95px; right: 45px; width: 280px;
-            background: rgba(15, 15, 15, 0.98); backdrop-filter: blur(25px);
-            border: 1px solid var(--neon-red); border-radius: 20px; padding: 20px;
-            z-index: 2000; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            display: none; 
+            position: absolute; 
+            top: 95px; 
+            right: 45px; 
+            width: 280px;
+            background: #151b20; 
+            border: 1px solid var(--neon-red); 
+            border-radius: 12px; 
+            padding: 20px;
+            z-index: 2000; 
         }
-        
-        .pop-close { cursor: pointer; float: right; color: var(--neon-red); font-size: 1.2rem; line-height: 1; }
-        .pop-item { font-size: 0.75rem; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ffbaba; }
+        .pop-close { cursor: pointer; float: right; color: var(--neon-red); font-size: 1.2rem; }
+        .pop-item { font-size: 0.75rem; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ffbaba; }
 
-        /* --- ICON-DRIVEN ACCORDION --- */
+        /* --- ZERO-JS ACCORDIONS (PURE CSS CLICK Toggle) --- */
         .accordion-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
-        .acc-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; overflow: hidden; }
+        .acc-card { background: var(--card-solid); border: 1px solid var(--border-crisp); border-radius: 12px; }
+        
+        /* Using hidden checkboxes allows instant toggle without calling UI layout repaint scripts */
+        .acc-trigger { display: none; }
         .acc-header { padding: 14px 22px; display: flex; align-items: center; cursor: pointer; }
-        .acc-header h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); margin-left: 15px; flex-grow: 1; }
+        .acc-header h2 { font-size: 0.85rem; text-transform: uppercase; color: #aaaaaa; margin-left: 15px; flex-grow: 1; }
+        
         .acc-content { 
-            max-height: 0; padding: 0 22px; overflow: hidden; transition: 0.4s;
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+            display: none;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 10px;
+            padding: 0 22px 16px 22px;
         }
-        .acc-card.active .acc-content { max-height: 500px; padding-bottom: 16px; }
-        .acc-card.active .acc-header h2 { color: var(--neon-cyan); }
+        .acc-trigger:checked ~ .acc-content { display: grid; }
+        .acc-trigger:checked ~ .acc-header h2 { color: var(--neon-cyan); }
 
         .link-item { 
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255,255,255,0.02); padding: 10px 16px; border-radius: 12px;
-            text-decoration: none; color: white; border: 1px solid transparent; transition: 0.2s;
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            display: flex; 
+            background: rgba(255,255,255,0.02); 
+            padding: 10px 16px; 
+            border-radius: 8px;
+            text-decoration: none; 
+            color: white; 
+            border: 1px solid var(--border-crisp);
         }
-        .link-item:hover { border-color: var(--neon-cyan); background: rgba(255,255,255,0.06); }
-        .link-item b { font-size: 0.8rem; display: block; white-space: nowrap; }
-        .link-item i { font-size: 0.65rem; color: rgba(255,255,255,0.3); font-style: normal; display: block; white-space: nowrap; }
+        .link-item:hover { border-color: var(--neon-cyan); }
+        .link-item b { font-size: 0.8rem; display: block; }
+        .link-item i { font-size: 0.65rem; color: #666666; font-style: normal; display: block; }
 
-        /* --- MINI COMPACT CHARTS --- */
-        .metrics-heading { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 4px; color: var(--neon-cyan); font-weight: 800; }
+        /* --- STATIC METRICS (NO RE-RASTERIZING SHADOWS) --- */
+        .metrics-heading { font-size: 0.8rem; text-transform: uppercase; color: var(--neon-cyan); font-weight: 800; }
         .charts-container { display: flex; flex-direction: column; gap: 10px; }
         
         .mini-chart-card {
-            background: var(--panel-solid);
+            background: var(--card-solid);
             border: 1px solid var(--border-crisp);
             border-radius: 12px;
             padding: 14px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
         }
-        .chart-top-bar { display: flex; justify-content: space-between; align-items: center; }
-        .chart-title-lbl { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: rgba(255, 255, 255, 0.6); }
-        .chart-pct-badge { font-size: 1.15rem; font-weight: 900; letter-spacing: -0.3px; white-space: nowrap; }
+        .chart-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;}
+        .chart-title-lbl { font-size: 0.7rem; font-weight: 800; color: #888888; text-transform: uppercase; }
+        .chart-pct-badge { font-size: 1.15rem; font-weight: 900; }
 
-        .compact-track { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.08); border-radius: 4px; overflow: hidden; }
-        .compact-fill { height: 100%; border-radius: 4px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .compact-track { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 4px; position: relative; margin-bottom: 6px; }
+        .compact-fill { height: 100%; border-radius: 4px; }
 
-        .chart-bottom-data { display: flex; justify-content: space-between; font-size: 0.72rem; color: rgba(255, 255, 255, 0.4); white-space: nowrap; }
+        .milestone-pin { position: absolute; top: -14px; font-size: 9px; font-weight: 800; }
+        .pin-cyan { color: var(--neon-cyan); }
+        .pin-orange { color: var(--neon-orange); }
+        .pin-purple { color: var(--neon-purple); }
+        .future-pin { display: none; } /* Drop hidden pins entirely from execution tree */
+
+        .chart-bottom-data { display: flex; justify-content: space-between; font-size: 0.72rem; color: #666666; }
         .chart-bottom-data span.hl-val { font-weight: 700; color: #ffffff; }
 
-        /* --- NOTIFICATIONS SECTION --- */
+        /* --- NOTIFICATIONS --- */
         .notification-section { display: flex; flex-direction: column; gap: 12px; }
-        .notification-heading { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 4px; color: var(--neon-orange); font-weight: 800; }
-        
-        .notification-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            width: 100%;
-        }
+        .notification-heading { font-size: 0.8rem; text-transform: uppercase; color: var(--neon-orange); font-weight: 800; }
+        .notification-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; }
         
         .glass-card-link {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
+            background: var(--card-solid);
+            border: 1px solid var(--border-crisp);
             border-radius: 10px;
             padding: 8px 12px;
             display: flex;
@@ -219,198 +198,68 @@
             justify-content: space-between;
             text-decoration: none;
             color: white;
-            transition: all 0.2s ease;
-            backdrop-filter: blur(5px);
-            cursor: pointer;
             min-height: 52px;
         }
-        .glass-card-link:hover {
-            border-color: rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.06);
-            transform: translateY(-1px);
-        }
-        
         .full-width-card { grid-column: span 2; }
         
-        .glass-card-link.plan-primary-highlight {
-            border-color: var(--neon-orange);
-            background: rgba(255, 149, 0, 0.09);
-            box-shadow: 0 0 12px rgba(255, 149, 0, 0.12);
-            animation: subtleGlow 4s infinite ease-in-out;
-        }
-        .glass-card-link.plan-primary-highlight:hover {
-            background: rgba(255, 149, 0, 0.14);
-            box-shadow: 0 0 20px rgba(255, 149, 0, 0.25);
-        }
-        .glass-card-link.plan-primary-highlight .glass-card-arrow { color: var(--neon-orange); }
+        .glass-card-link.plan-primary-highlight { border-color: var(--neon-orange); background: rgba(255, 149, 0, 0.05); }
         .glass-card-link.plan-primary-highlight h4 { color: #fff; font-weight: 900; }
-        
-        .glass-card-link.milestone-accent:hover {
-            border-color: var(--neon-cyan);
-            background: rgba(0, 255, 213, 0.06);
-            box-shadow: 0 4px 12px rgba(0, 255, 213, 0.1);
-        }
-        .glass-card-link.milestone-accent .glass-card-arrow { color: var(--neon-cyan); }
-        
-        .glass-card-link.deadline-accent:hover {
-            border-color: var(--neon-red);
-            background: rgba(255, 59, 48, 0.06);
-            box-shadow: 0 4px 12px rgba(255, 59, 48, 0.1);
-        }
-        .glass-card-link.deadline-accent .glass-card-arrow { color: var(--neon-red); }
+        .glass-card-link.milestone-accent:hover { border-color: var(--neon-cyan); }
+        .glass-card-link.deadline-accent:hover { border-color: var(--neon-red); }
 
-        .glass-card-text { min-width: 0; flex-grow: 1; padding-right: 8px; }
-        .glass-card-text h4 { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .glass-card-text p { font-size: 0.63rem; color: rgba(255, 255, 255, 0.4); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .glass-card-arrow { font-size: 0.75rem; color: rgba(255,255,255,0.3); transition: 0.2s; flex-shrink: 0; }
-        .glass-card-link:hover .glass-card-arrow { transform: translateX(2px); }
+        .glass-card-text { min-width: 0; flex-grow: 1; }
+        .glass-card-text h4 { font-size: 0.78rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .glass-card-text p { font-size: 0.63rem; color: #666666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .glass-card-arrow { font-size: 0.75rem; color: #444444; }
 
-        @keyframes subtleGlow {
-            0%, 100% { box-shadow: 0 0 12px rgba(255, 149, 0, 0.12); background: rgba(255, 149, 0, 0.07); }
-            50% { box-shadow: 0 0 18px rgba(255, 149, 0, 0.22); background: rgba(255, 149, 0, 0.12); }
-        }
-
-        /* --- ACTIVATION ROAD MAP (NEW SMALL & COMPACT DESIGN) --- */
-        .roadmap-section { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            margin-bottom: 10px; 
-        }
-        .roadmap-heading { 
-            font-size: 0.8rem; 
-            text-transform: uppercase; 
-            letter-spacing: 4px; 
-            color: var(--neon-purple); 
-            display: block; 
-            font-weight: 800; 
-        }
-        .activation-stack { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 8px; 
-            width: 100%;
-        }
+        /* --- ROADMAP --- */
+        .roadmap-section { display: flex; flex-direction: column; gap: 10px; }
+        .roadmap-heading { font-size: 0.8rem; text-transform: uppercase; color: var(--neon-purple); font-weight: 800; }
+        .activation-stack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; }
         
         .road-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: var(--card-solid);
+            border: 1px solid var(--border-crisp);
             padding: 10px 12px; 
             border-radius: 12px; 
             text-decoration: none;
             display: flex; 
             flex-direction: column;
             gap: 6px;
-            transition: all 0.2s ease;
-            backdrop-filter: blur(5px);
         }
-        .road-card:hover { 
-            transform: translateY(-2px); 
-            border-color: var(--neon-purple); 
-            background: rgba(175, 82, 222, 0.05); 
-            box-shadow: 0 6px 15px rgba(175, 82, 222, 0.12);
-        }
+        .road-card:hover { border-color: var(--neon-purple); }
+        .road-card-header { display: flex; justify-content: space-between; align-items: center; }
+        .road-icon { font-size: 1.1rem; }
         
-        .road-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-        .road-icon { 
-            font-size: 1.1rem; 
-            background: rgba(255, 255, 255, 0.03);
-            padding: 4px;
-            border-radius: 6px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .status-badge {
-            font-size: 0.55rem;
-            text-transform: uppercase;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-            padding: 2px 7px;
-            border-radius: 10px;
-            white-space: nowrap;
-        }
-        .active-sector { background: rgba(0, 255, 213, 0.08); color: var(--neon-cyan); border: 1px solid rgba(0, 255, 213, 0.2); }
-        .upcoming-deployment { background: rgba(255, 149, 0, 0.08); color: var(--neon-orange); border: 1px solid rgba(255, 149, 0, 0.2); }
-        .strategy-phase { background: rgba(175, 82, 222, 0.08); color: var(--neon-purple); border: 1px solid rgba(175, 82, 222, 0.2); }
+        .status-badge { font-size: 0.55rem; text-transform: uppercase; font-weight: 900; padding: 2px 7px; border-radius: 4px; }
+        .active-sector { background: rgba(0, 255, 213, 0.1); color: var(--neon-cyan); }
+        .upcoming-deployment { background: rgba(255, 149, 0, 0.1); color: var(--neon-orange); }
+        .strategy-phase { background: rgba(175, 82, 222, 0.1); color: var(--neon-purple); }
 
-        .road-details { 
-            display: flex; 
-            flex-direction: column; 
-            min-width: 0; 
-        }
-        .road-name { 
-            font-size: 0.8rem; 
-            font-weight: 800; 
-            letter-spacing: 0.3px; 
-            color: white; 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-        }
-        .road-zone { 
-            font-size: 0.6rem; 
-            color: rgba(255, 255, 255, 0.35); 
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        .road-details { display: flex; flex-direction: column; min-width: 0; }
+        .road-name { font-size: 0.8rem; font-weight: 800; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .road-zone { font-size: 0.6rem; color: #555555; }
     </style>
 </head>
 <body>
 
-
     <nav>
-        <a href="about oli-ohh.html" class="nav-item">
-            <span class="nav-icon">📦</span>
-            <span class="nav-text">Product Info</span>
-        </a>
-        <a href="meeting-highlights.html" class="nav-item">
-            <span class="nav-icon">📝</span>
-            <span class="nav-text">Meetings</span>
-        </a>
-        <a href="suggestion.html" class="nav-item">
-            <span class="nav-icon">💡</span>
-            <span class="nav-text">Suggestions</span>
-        </a>
-
+        <a href="about oli-ohh.html" class="nav-item"><span class="nav-icon">📦</span><span class="nav-text">Product Info</span></a>
+        <a href="meeting-highlights.html" class="nav-item"><span class="nav-icon">📝</span><span class="nav-text">Meetings</span></a>
+        <a href="suggestion.html" class="nav-item"><span class="nav-icon">💡</span><span class="nav-text">Suggestions</span></a>
         <div class="nav-separator"></div>
-
-        <a href="CHANNEL CLASSIFICATION.html" class="nav-item">
-            <span class="nav-icon">📊</span>
-            <span class="nav-text">Channel Desc</span>
-        </a>
-        <a href="margin-structure.html" class="nav-item">
-            <span class="nav-icon">💵</span>
-            <span class="nav-text">Margins</span>
-        </a>
-        <a href="quick-commerce.html" class="nav-item">
-            <span class="nav-icon">⚡</span>
-            <span class="nav-text">Quick Commerce</span>
-        </a>
-        <a href="ecommerce.html" class="nav-item">
-            <span class="nav-icon">🌐</span>
-            <span class="nav-text">E-Commerce</span>
-        </a>
-        
-        <a href="index.html" class="nav-item logout">
-            <span class="nav-icon">🚪</span>
-            <span class="nav-text">Logout System</span>
-        </a>
+        <a href="CHANNEL CLASSIFICATION.html" class="nav-item"><span class="nav-icon">📊</span><span class="nav-text">Channel Desc</span></a>
+        <a href="margin-structure.html" class="nav-item"><span class="nav-icon">💵</span><span class="nav-text">Margins</span></a>
+        <a href="quick-commerce.html" class="nav-item"><span class="nav-icon">⚡</span><span class="nav-text">Quick Commerce</span></a>
+        <a href="ecommerce.html" class="nav-item"><span class="nav-icon">🌐</span><span class="nav-text">E-Commerce</span></a>
+        <a href="index.html" class="nav-item logout"><span class="nav-icon">🚪</span><span class="nav-text">Logout System</span></a>
     </nav>
 
     <div class="workspace">
         <main>
             <div id="deadlinePop">
                 <span class="pop-close" onclick="toggleDeadlines()">&times;</span>
-                <h3 style="font-size: 0.7rem; color: var(--neon-red); text-transform: uppercase; margin-bottom: 10px;">⚠️ PENDING MISSION TASKS</h3>
+                <h3 style="font-size: 0.7rem; color: var(--neon-red); margin-bottom: 10px;">⚠️ PENDING MISSION TASKS</h3>
                 <div class="pop-item">Hire Sampling Staff - 30 Apr</div>
                 <div class="pop-item">E-Rickshaw Sampling - 15 May</div>
                 <div class="pop-item">Staff Recruitment (+2) - 15 May</div>
@@ -424,29 +273,31 @@
                         <p>System Active / v2.6</p>
                         <h1>Command Center</h1>
                     </div>
-                    <a href="imac.html" class="imac-link">iMC <span class="arrow">→</span></a>
+                    <a href="imac.html" class="imac-link">iMC →</a>
                 </div>
             </header>
 
             <div class="accordion-group">
-                <div class="acc-card active" onclick="this.classList.toggle('active')">
-                    <div class="acc-header">
+                <div class="acc-card">
+                    <input type="checkbox" id="acc1" class="acc-trigger" checked />
+                    <label for="acc1" class="acc-header">
                         <span style="font-size: 1.5rem;">🌍</span>
-                        <h2> GTM Strategy</h2>
+                        <h2>GTM Strategy</h2>
                         <span>▾</span>
-                    </div>
+                    </label>
                     <div class="acc-content">
                         <a href="MTregional.html" class="link-item"><div><b>MT Regional</b><i>D2R North India</i></div></a>
                         <a href="subdnorm.html" class="link-item"><div><b>Sub-D Norms</b><i>Distribution guidelines</i></div></a>
-                                           </div>
+                    </div>
                 </div>
 
-                <div class="acc-card" onclick="this.classList.toggle('active')">
-                    <div class="acc-header">
+                <div class="acc-card">
+                    <input type="checkbox" id="acc2" class="acc-trigger" />
+                    <label for="acc2" class="acc-header">
                         <span style="font-size: 1.5rem;">📣</span>
-                        <h2> Marketing Hub</h2>
+                        <h2>Marketing Hub</h2>
                         <span>▾</span>
-                    </div>
+                    </label>
                     <div class="acc-content">
                         <a href="instagram.html" class="link-item"><div><b>Instagram</b><i>Presence & Ads</i></div></a>
                         <a href="shopify.html" class="link-item"><div><b>Shopify</b><i>Sales Tracking</i></div></a>
@@ -457,149 +308,90 @@
                 </div>
             </div>
 
-            <!-- ROADMAP SECTIONS MODIFIED TO ULTRA COMPACT AND SMALL -->
             <div class="roadmap-section">
                 <span class="roadmap-heading">Activation Road Map</span>
                 <div class="activation-stack">
-                    
                     <a href="NCR.html" class="road-card">
-                        <div class="road-card-header">
-                            <span class="road-icon">🏛️</span>
-                            <span class="status-badge active-sector">Active</span>
-                        </div>
-                        <div class="road-details">
-                            <span class="road-name">DELHI NCR</span>
-                            <span class="road-zone">Core Hub</span>
-                        </div>
+                        <div class="road-card-header"><span class="road-icon">🏛️</span><span class="status-badge active-sector">Active</span></div>
+                        <div class="road-details"><span class="road-name">DELHI NCR</span><span class="road-zone">Core Hub</span></div>
                     </a>
-
                     <a href="CHD.html" class="road-card">
-                        <div class="road-card-header">
-                            <span class="road-icon">🏙️</span>
-                            <span class="status-badge upcoming-deployment">Upcoming</span>
-                        </div>
-                        <div class="road-details">
-                            <span class="road-name">CHANDIGARH</span>
-                            <span class="road-zone">Pipeline</span>
-                        </div>
+                        <div class="road-card-header"><span class="road-icon">🏙️</span><span class="status-badge upcoming-deployment">Upcoming</span></div>
+                        <div class="road-details"><span class="road-name">CHANDIGARH</span><span class="road-zone">Pipeline</span></div>
                     </a>
-
                     <a href="GUJURAT.html" class="road-card">
-    <div class="road-card-header">
-        <span class="road-icon">🏯</span>
-        <span class="status-badge strategy-phase">Strategy</span>
-    </div>
-    <div class="road-details">
-        <span class="road-name">GUJARAT</span>
-        <span class="road-zone">Assessment</span>
-    </div>
-</a>
-
+                        <div class="road-card-header"><span class="road-icon">🏯</span><span class="status-badge strategy-phase">Strategy</span></div>
+                        <div class="road-details"><span class="road-name">GUJARAT</span><span class="road-zone">Assessment</span></div>
+                    </a>
                 </div>
             </div>
 
-            <footer style="margin-top:auto; padding-top:20px; font-size:0.6rem; opacity:0.2; text-align:center;">
+            <footer style="margin-top:auto; padding-top:20px; font-size:0.6rem; opacity:0.3; text-align:center;">
                 ROUNAK SINGH | VTC TRADEWINGS &copy; 2026
             </footer>
         </main>
 
         <aside class="right-panel">
             <div class="chart-section" style="display:flex;flex-direction:column;gap:14px;">
-    <span class="metrics-heading">MTD Execution Status</span>
+                <span class="metrics-heading">MTD Execution Status</span>
+                <div class="charts-container">
+                    <div class="mini-chart-card">
+                        <div class="chart-top-bar">
+                            <span class="chart-title-lbl">Value MTD</span>
+                            <span class="chart-pct-badge" style="color:var(--neon-cyan);">61%</span>
+                        </div>
+                        <div class="compact-track">
+                            <div class="compact-fill" style="width:61%; background:var(--neon-cyan);"></div>
+                            <div class="milestone-pin pin-cyan" style="left:49%;">📍10L</div>
+                        </div>
+                        <div class="chart-bottom-data">
+                            <div>Achieved: <span class="hl-val">12.20 Lakhs</span></div>
+                            <div>Target: <span>20.00 Lakhs</span></div>
+                        </div>
+                    </div>
 
-    <div class="charts-container">
+                    <div class="mini-chart-card">
+                        <div class="chart-top-bar">
+                            <span class="chart-title-lbl">Coverage MTD</span>
+                            <span class="chart-pct-badge" style="color:var(--neon-orange);">43.4%</span>
+                        </div>
+                        <div class="compact-track">
+                            <div class="compact-fill" style="width:43.4%; background:var(--neon-orange);"></div>
+                            <div class="milestone-pin pin-orange" style="left:38%;">📍200</div>
+                        </div>
+                        <div class="chart-bottom-data">
+                            <div>Achieved: <span class="hl-val">217 Stores</span></div>
+                            <div>Target: <span>500 Stores</span></div>
+                        </div>
+                    </div>
 
-        <!-- VALUE -->
-        <div class="mini-chart-card">
-            <div class="chart-top-bar">
-                <span class="chart-title-lbl">Value MTD</span>
-                <span class="chart-pct-badge" style="color:var(--neon-cyan);">
-                    61%
-                </span>
+                    <div class="mini-chart-card">
+                        <div class="chart-top-bar">
+                            <span class="chart-title-lbl">Volume MTD</span>
+                            <span class="chart-pct-badge" style="color:var(--neon-purple);">90.2%</span>
+                        </div>
+                        <div class="compact-track">
+                            <div class="compact-fill" style="width:90.2%; background:var(--neon-purple);"></div>
+                            <div class="milestone-pin pin-purple" style="left:74%;">📍15K</div>
+                        </div>
+                        <div class="chart-bottom-data">
+                            <div>Achieved: <span class="hl-val">18,036 Pcs</span></div>
+                            <div>Target: <span>20,000 Pcs</span></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="compact-track" style="position:relative;overflow:visible;">
-                <div class="compact-fill"
-                     style="width:61%;background:var(--neon-cyan);"></div>
-
-                <div class="milestone-pin pin-cyan" style="left:24%;"></div>
-                <div class="milestone-pin pin-cyan" style="left:49%;">📍10L</div>
-                <div class="milestone-pin future-pin" style="left:74%;"></div>
-                <div class="milestone-pin future-pin" style="left:95%;"></div>
-            </div>
-
-            <div class="chart-bottom-data">
-                <div>Achieved: <span class="hl-val">12.20 Lakhs</span></div>
-                <div>Target: <span>20.00 Lakhs</span></div>
-            </div>
-        </div>
-
-        <!-- COVERAGE -->
-        <div class="mini-chart-card">
-            <div class="chart-top-bar">
-                <span class="chart-title-lbl">Coverage MTD</span>
-                <span class="chart-pct-badge" style="color:var(--neon-orange);">
-                    43.4%
-                </span>
-            </div>
-
-            <div class="compact-track" style="position:relative;overflow:visible;">
-                <div class="compact-fill"
-                     style="width:43.4%;background:var(--neon-orange);"></div>
-
-                <div class="milestone-pin pin-orange" style="left:18%;"></div>
-                <div class="milestone-pin pin-orange" style="left:38%;">📍200</div>
-                <div class="milestone-pin future-pin" style="left:58%;"></div>
-                <div class="milestone-pin future-pin" style="left:78%;"></div>
-                <div class="milestone-pin future-pin" style="left:95%;"></div>
-            </div>
-
-            <div class="chart-bottom-data">
-                <div>Achieved: <span class="hl-val">217 Stores</span></div>
-                <div>Target: <span>500 Stores</span></div>
-            </div>
-        </div>
-
-        <!-- VOLUME -->
-        <div class="mini-chart-card">
-            <div class="chart-top-bar">
-                <span class="chart-title-lbl">Volume MTD</span>
-                <span class="chart-pct-badge" style="color:var(--neon-purple);">
-                    90.2%
-                </span>
-            </div>
-
-            <div class="compact-track" style="position:relative;overflow:visible;">
-                <div class="compact-fill"
-                     style="width:90.2%;background:var(--neon-purple);"></div>
-
-                <div class="milestone-pin pin-purple" style="left:24%;"></div>
-                <div class="milestone-pin pin-purple" style="left:49%;"></div>
-                <div class="milestone-pin pin-purple" style="left:74%;">📍15K</div>
-                <div class="milestone-pin future-pin" style="left:95%;"></div>
-            </div>
-
-            <div class="chart-bottom-data">
-                <div>Achieved: <span class="hl-val">18,036 Pcs</span></div>
-                <div>Target: <span>20,000 Pcs</span></div>
-            </div>
-        </div>
-
-    </div>
-</div>
             <div class="notification-section">
                 <span class="notification-heading">Notifications & Controls</span>
-                
                 <div class="notification-grid">
-                    
                     <a href="3monthsdata.html" class="glass-card-link full-width-card plan-primary-highlight">
                         <div class="glass-card-text">
                             <h4>Upcoming Quarterly Plans</h4>
-                            <p>View strategy & pipeline targets for the next 3 months</p>
+                            <p>View strategy targets for next 3 months</p>
                         </div>
                         <span class="glass-card-arrow">→</span>
                     </a>
-                    
                     <a href="TASKS.html" class="glass-card-link milestone-accent">
                         <div class="glass-card-text">
                             <h4>Milestone 100cr</h4>
@@ -607,7 +399,6 @@
                         </div>
                         <span class="glass-card-arrow">→</span>
                     </a>
-
                     <div class="glass-card-link deadline-accent" onclick="toggleDeadlines()">
                         <div class="glass-card-text">
                             <h4>Deadlines Panel</h4>
@@ -615,7 +406,6 @@
                         </div>
                         <span class="glass-card-arrow">⚡</span>
                     </div>
-                    
                 </div>
             </div>
         </aside>
@@ -623,7 +413,7 @@
 
     <script>
         function toggleDeadlines() {
-            const pop = document.getElementById('deadlinePop');
+            var pop = document.getElementById('deadlinePop');
             pop.style.display = (pop.style.display === 'block') ? 'none' : 'block';
         }
     </script>
