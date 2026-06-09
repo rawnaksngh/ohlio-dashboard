@@ -5,6 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OPS | Mission Command v2.6</title>
     <style>
+.milestone-pin{
+    position:absolute;
+    top:-16px;
+    font-size:10px;
+    font-weight:800;
+    z-index:5;
+    white-space:nowrap;
+}
+
+.pin-cyan{
+    color:var(--neon-cyan);
+    text-shadow:0 0 12px var(--neon-cyan);
+}
+
+.pin-orange{
+    color:var(--neon-orange);
+    text-shadow:0 0 12px var(--neon-orange);
+}
+
+.pin-purple{
+    color:var(--neon-purple);
+    text-shadow:0 0 12px var(--neon-purple);
+}
+
+.future-pin{
+    opacity:.25;
+}
         :root {
             --neon-cyan: #00ffd5;
             --neon-purple: #af52de;
@@ -339,6 +366,7 @@
 </head>
 <body>
 
+
     <nav>
         <a href="about oli-ohh.html" class="nav-item">
             <span class="nav-icon">📦</span>
@@ -479,55 +507,89 @@
         </main>
 
         <aside class="right-panel">
-            <div class="chart-section" style="display: flex; flex-direction: column; gap: 14px;">
-                <span class="metrics-heading">MTD Execution Status</span>
-                <div class="charts-container">
-                    
-                    <div class="mini-chart-card">
-                        <div class="chart-top-bar">
-                            <span class="chart-title-lbl">Value MTD</span>
-                            <span class="chart-pct-badge" style="color: var(--neon-cyan);">68%</span>
-                        </div>
-                        <div class="compact-track">
-                            <div class="compact-fill" style="width: 68%; background: var(--neon-cyan);"></div>
-                        </div>
-                        <div class="chart-bottom-data">
-                            <div>Achieved: <span class="hl-val">6.08 Lakhs</span></div>
-                            <div>Target: <span>10.00 Lakhs</span></div>
-                        </div>
-                    </div>
+            <div class="chart-section" style="display:flex;flex-direction:column;gap:14px;">
+    <span class="metrics-heading">MTD Execution Status</span>
 
-                    <div class="mini-chart-card">
-                        <div class="chart-top-bar">
-                            <span class="chart-title-lbl">Coverage MTD</span>
-                            <span class="chart-pct-badge" style="color: var(--neon-orange);">158%</span>
-                        </div>
-                        <div class="compact-track">
-                            <div class="compact-fill" style="width: 100%; background: var(--neon-orange);"></div>
-                        </div>
-                        <div class="chart-bottom-data">
-                            <div>Achieved: <span class="hl-val">158 Stores</span></div>
-                            <div>Target: <span>100 Stores</span></div>
-                        </div>
-                    </div>
+    <div class="charts-container">
 
-                    <div class="mini-chart-card">
-                        <div class="chart-top-bar">
-                            <span class="chart-title-lbl">Volume MTD</span>
-                            <span class="chart-pct-badge" style="color: var(--neon-purple);">60.5%</span>
-                        </div>
-                        <div class="compact-track">
-                            <div class="compact-fill" style="width: 60.5%; background: var(--neon-purple);"></div>
-                        </div>
-                        <div class="chart-bottom-data">
-                            <div>Achieved: <span class="hl-val">9,072 Pcs</span></div>
-                            <div>Target: <span>15,000 Pcs</span></div>
-                        </div>
-                    </div>
-
-                </div>
+        <!-- VALUE -->
+        <div class="mini-chart-card">
+            <div class="chart-top-bar">
+                <span class="chart-title-lbl">Value MTD</span>
+                <span class="chart-pct-badge" style="color:var(--neon-cyan);">
+                    61%
+                </span>
             </div>
 
+            <div class="compact-track" style="position:relative;overflow:visible;">
+                <div class="compact-fill"
+                     style="width:61%;background:var(--neon-cyan);"></div>
+
+                <div class="milestone-pin pin-cyan" style="left:24%;"></div>
+                <div class="milestone-pin pin-cyan" style="left:49%;">📍10L</div>
+                <div class="milestone-pin future-pin" style="left:74%;"></div>
+                <div class="milestone-pin future-pin" style="left:95%;"></div>
+            </div>
+
+            <div class="chart-bottom-data">
+                <div>Achieved: <span class="hl-val">12.20 Lakhs</span></div>
+                <div>Target: <span>20.00 Lakhs</span></div>
+            </div>
+        </div>
+
+        <!-- COVERAGE -->
+        <div class="mini-chart-card">
+            <div class="chart-top-bar">
+                <span class="chart-title-lbl">Coverage MTD</span>
+                <span class="chart-pct-badge" style="color:var(--neon-orange);">
+                    43.4%
+                </span>
+            </div>
+
+            <div class="compact-track" style="position:relative;overflow:visible;">
+                <div class="compact-fill"
+                     style="width:43.4%;background:var(--neon-orange);"></div>
+
+                <div class="milestone-pin pin-orange" style="left:18%;"></div>
+                <div class="milestone-pin pin-orange" style="left:38%;">📍200</div>
+                <div class="milestone-pin future-pin" style="left:58%;"></div>
+                <div class="milestone-pin future-pin" style="left:78%;"></div>
+                <div class="milestone-pin future-pin" style="left:95%;"></div>
+            </div>
+
+            <div class="chart-bottom-data">
+                <div>Achieved: <span class="hl-val">217 Stores</span></div>
+                <div>Target: <span>500 Stores</span></div>
+            </div>
+        </div>
+
+        <!-- VOLUME -->
+        <div class="mini-chart-card">
+            <div class="chart-top-bar">
+                <span class="chart-title-lbl">Volume MTD</span>
+                <span class="chart-pct-badge" style="color:var(--neon-purple);">
+                    90.2%
+                </span>
+            </div>
+
+            <div class="compact-track" style="position:relative;overflow:visible;">
+                <div class="compact-fill"
+                     style="width:90.2%;background:var(--neon-purple);"></div>
+
+                <div class="milestone-pin pin-purple" style="left:24%;"></div>
+                <div class="milestone-pin pin-purple" style="left:49%;"></div>
+                <div class="milestone-pin pin-purple" style="left:74%;">📍15K</div>
+                <div class="milestone-pin future-pin" style="left:95%;"></div>
+            </div>
+
+            <div class="chart-bottom-data">
+                <div>Achieved: <span class="hl-val">18,036 Pcs</span></div>
+                <div>Target: <span>20,000 Pcs</span></div>
+            </div>
+        </div>
+
+    </div>
+</div>
             <div class="notification-section">
                 <span class="notification-heading">Notifications & Controls</span>
                 
