@@ -385,7 +385,7 @@
             text-transform: uppercase;
         }
 
-        /* --- DETAILED DATA DATA LAYOUT (Hidden Initially) --- */
+        /* --- DETAILED DATA LAYOUT --- */
         .training-detail-view {
             width: 100%;
             max-width: 1200px;
@@ -488,7 +488,6 @@
         </a>
     </main>
 
-    <!-- POPUP MODAL 1: OPERATION PROCESS -->
     <div class="modal-overlay" id="processModal">
         <div class="modal-container">
             <div class="modal-header">
@@ -497,7 +496,6 @@
             </div>
             <div class="modal-body">
                 
-                <!-- PILLAR 1 -->
                 <div class="pillar">
                     <div class="pillar-header pillar-resale">Resale</div>
                     <div class="pillar-content">
@@ -528,7 +526,6 @@
                     </div>
                 </div>
 
-                <!-- PILLAR 2 -->
                 <div class="pillar">
                     <div class="pillar-header pillar-system">System</div>
                     <div class="pillar-content">
@@ -559,7 +556,6 @@
                     </div>
                 </div>
 
-                <!-- PILLAR 3 -->
                 <div class="pillar">
                     <div class="pillar-header pillar-logistics">Logistics</div>
                     <div class="pillar-content">
@@ -594,7 +590,6 @@
                     </div>
                 </div>
 
-                <!-- PILLAR 4 -->
                 <div class="pillar">
                     <div class="pillar-header pillar-finance">Finance</div>
                     <div class="pillar-content">
@@ -605,7 +600,6 @@
                     </div>
                 </div>
 
-                <!-- PILLAR 5 -->
                 <div class="pillar">
                     <div class="pillar-header pillar-hr">HR</div>
                     <div class="pillar-content">
@@ -628,7 +622,6 @@
                     </div>
                 </div>
 
-                <!-- PILLAR 6 -->
                 <div class="pillar">
                     <div class="pillar-header pillar-operation">Operation</div>
                     <div class="pillar-content">
@@ -643,7 +636,6 @@
         </div>
     </div>
 
-    <!-- POPUP MODAL 2: TRAINING OF PROCESS -->
     <div class="modal-overlay" id="trainingModal">
         <div class="modal-container">
             <div class="modal-header">
@@ -656,7 +648,6 @@
             
             <div class="training-body">
                 
-                <!-- LEVEL 1 & 2: HIERARCHICAL BRANCHES GRID (Visible at Start) -->
                 <div id="hierarchyStructure" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
                     <div class="hierarchy-root">Training Process</div>
                     
@@ -679,11 +670,7 @@
                     </div>
                 </div>
 
-                <!-- LEVEL 3: DETAILED PLATES VIEW (Initially Hidden) -->
-                
-                <!-- Resale Content Container -->
                 <div class="training-detail-view" id="detail-resale">
-                    <!-- Part 1 -->
                     <div class="branch-node">
                         <div class="branch-header pillar-resale">1-Store identification & Store visit (CCR)</div>
                         <div class="branch-content">
@@ -707,7 +694,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Part 2 -->
                     <div class="branch-node">
                         <div class="branch-header pillar-system">2-Order Booking (BCP) & Order transfer to Billing</div>
                         <div class="branch-content">
@@ -730,7 +716,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Part 3 -->
                     <div class="branch-node">
                         <div class="branch-header pillar-logistics">3-Daily review & Monthly Review</div>
                         <div class="branch-content">
@@ -756,7 +741,6 @@
                     </div>
                 </div>
 
-                <!-- HR Content Container -->
                 <div class="training-detail-view" id="detail-hr">
                     <div class="branch-node" style="grid-column: span 3;">
                         <div class="branch-header pillar-hr">HR Training Management</div>
@@ -766,9 +750,7 @@
                     </div>
                 </div>
 
-                <!-- System Content Container -->
                 <div class="training-detail-view" id="detail-system">
-                    <!-- Column 1: DRCP Process & Order Collection -->
                     <div class="branch-node">
                         <div class="branch-header pillar-system">DRCP Process & Order Collection</div>
                         <div class="branch-content">
@@ -793,7 +775,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Column 2: DCR / Reporting / Software Management -->
                     <div class="branch-node" style="grid-column: span 2;">
                         <div class="branch-header pillar-system">DCR / Reporting / Software</div>
                         <div class="branch-content">
@@ -820,19 +801,66 @@
                     </div>
                 </div>
 
-                <!-- Finance Content Container -->
                 <div class="training-detail-view" id="detail-finance">
-                    <div class="branch-node" style="grid-column: span 3;">
-                        <div class="branch-header pillar-finance">Finance & AR Norms Metrics</div>
+                    <div class="branch-node">
+                        <div class="branch-header pillar-finance">1-Customer Credit Management</div>
                         <div class="branch-content">
-                            <div class="no-data">Credit limit configurations and ledger review rules processing.</div>
+                            <div>
+                                <div class="slide-heading-red">Customer Credit Management Guidelines:</div>
+                                <ul class="slide-bullet-list">
+                                    <li class="slide-bullet-item">Credit will be given as per Channel wise AR Norm policy.</li>
+                                    <li class="slide-bullet-item">Monitor customer credit limits and track outstanding payments regularly.</li>
+                                    <li class="slide-bullet-item">Coordinate with the sales team for overdue cases and ensure healthy cash flow.</li>
+                                    <li class="slide-bullet-item">Escalate customers exceeding credit limits / overdue payment for reduced financial risk.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch-node">
+                        <div class="branch-header pillar-finance">2-Expense Management</div>
+                        <div class="branch-content">
+                            <div>
+                                <div class="slide-heading-red">Expense Management Guidelines:</div>
+                                <ul class="slide-bullet-list">
+                                    <li class="slide-bullet-item">Review branch expenses regularly.</li>
+                                    <li class="slide-bullet-item">Verify expenses against approved budgets.</li>
+                                    <li class="slide-bullet-item">Ensure proper approvals before payments.</li>
+                                    <li class="slide-bullet-item">Identify unnecessary expenses.</li>
+                                    <li class="slide-bullet-item">Share monthly expense analysis.</li>
+                                    <li class="slide-bullet-item">Helps control company costs.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="branch-node">
+                        <div class="branch-header pillar-finance">3-GST, Accounting & Ledgers</div>
+                        <div class="branch-content">
+                            <div>
+                                <div class="slide-heading-red">GST & Accounting:</div>
+                                <ul class="slide-bullet-list">
+                                    <li class="slide-bullet-item">Ensures compliance with government regulations.</li>
+                                    <li class="slide-bullet-item">Verify accounting entries and ensure proper GST compliance.</li>
+                                    <li class="slide-bullet-item">Reconcile sales, purchases, and tax records.</li>
+                                    <li class="slide-bullet-item">Maintain accounting documents and support GST filing and audit requirements.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="slide-heading-red">Ledger Management (Key Customers):</div>
+                                <ul class="slide-bullet-list">
+                                    <li class="slide-bullet-item">Maintain customer ledgers regularly.</li>
+                                    <li class="slide-bullet-item">Reconcile balances with customers.</li>
+                                    <li class="slide-bullet-item">Monitor debit and credit transactions.</li>
+                                    <li class="slide-bullet-item">Resolve ledger mismatches promptly.</li>
+                                    <li class="slide-bullet-item">Support collection and outstanding tracking to map balances accurately.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Logistics Content Container -->
                 <div class="training-detail-view" id="detail-logistics">
-                    <!-- Column 1: Stock Inward & Delivery -->
                     <div class="branch-node">
                         <div class="branch-header pillar-logistics">Stock Inward & Delivery</div>
                         <div class="branch-content">
@@ -859,7 +887,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Column 2: MDC & SRN (Return) -->
                     <div class="branch-node">
                         <div class="branch-header pillar-logistics">MDC & SRN (Return)</div>
                         <div class="branch-content">
@@ -885,7 +912,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Column 3: Damage, Delivery Proof & Purchase Shipment -->
                     <div class="branch-node">
                         <div class="branch-header pillar-logistics">Damage, Proof & Purchase</div>
                         <div class="branch-content">
