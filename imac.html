@@ -455,78 +455,6 @@
             text-align: center;
             padding: 1rem;
         }
-
-        /* --- ACCORDION SYSTEM FOR BCP DROPDOWN --- */
-        .bcp-toggle-container {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            user-select: none;
-            margin-bottom: 4px;
-        }
-        
-        .bcp-toggle-arrow {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #ff4444;
-            margin-left: 6px;
-            transition: transform 0.2s ease;
-            display: inline-block;
-        }
-        
-        .bcp-toggle-container.active .bcp-toggle-arrow {
-            transform: rotate(90deg);
-        }
-
-        .bcp-dropdown-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background-color: #161b22;
-            border-radius: 4px;
-        }
-
-        .bcp-dropdown-content.open {
-            max-height: 800px; /* High value to allow smooth accordion expansion */
-            overflow-y: auto;
-            border: 1px solid #30363d;
-            margin-top: 5px;
-            margin-bottom: 10px;
-        }
-
-        /* Table UI Optimization inside Accordion Container */
-        .bcp-matrix-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.68rem;
-            text-align: left;
-            color: #e2e8f0;
-        }
-
-        .bcp-matrix-table th, .bcp-matrix-table td {
-            padding: 5px 6px;
-            border: 1px solid #30363d;
-            vertical-align: top;
-            line-height: 1.2;
-        }
-
-        .bcp-matrix-table th {
-            background-color: #1f242c;
-            color: #58a6ff;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.65rem;
-        }
-
-        .bcp-matrix-table tr:nth-child(even) {
-            background-color: #1a1f29;
-        }
-        
-        .bcp-center-text {
-            text-align: center;
-            font-weight: 700;
-            color: #8b949e;
-        }
     </style>
 </head>
 <body>
@@ -770,91 +698,7 @@
                         <div class="branch-header pillar-system">2-Order Booking (BCP) & Order transfer to Billing</div>
                         <div class="branch-content">
                             <div>
-                                <!-- ACCORDION INTERACTION HEADLINE FOR BCP DROPDOWN -->
-                                <div class="bcp-toggle-container" onclick="toggleBcpDropdown(this)">
-                                    <div class="slide-heading-red" style="margin-bottom:0;">Order Booking (BCP-Basic Call Procedure):</div>
-                                    <span class="bcp-toggle-arrow">▼</span>
-                                </div>
-                                
-                                <!-- DROPDOWN CONTENT CONTAINING BCP STRUCTURE FROM THE MATRIX IMAGE -->
-                                <div class="bcp-dropdown-content" id="bcpAccordionDropdown">
-                                    <table class="bcp-matrix-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 8%;">S.No</th>
-                                                <th style="width: 25%;">Steps</th>
-                                                <th style="width: 42%;">Sub-Steps</th>
-                                                <th style="width: 25%;">Objective/Advantage</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="bcp-center-text">1</td>
-                                                <td style="font-weight:700;">Review Plan</td>
-                                                <td>Open the PFD before entering in a store to review the VDMI objective</td>
-                                                <td>Store wise objectives gets on top of the mind</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="bcp-center-text">2</td>
-                                                <td style="font-weight:700;">Enter Call</td>
-                                                <td>Greet the retailer; Identify yourself with Strong brands and Hand over pending bills</td>
-                                                <td>Builds a rapport with the Retailer</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="bcp-center-text">3</td>
-                                                <td style="font-weight:700;">Store Check &amp; Plan Order</td>
-                                                <td>Locate the brands LRTB and refrigerators for Chocolates and check Stock, Fill Suggested</td>
-                                                <td>Helps in deciding the offtake pattern</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="bcp-center-text">4</td>
-                                                <td style="font-weight:700;">Presentation</td>
-                                                <td>Use Detailer. Explain schemes, new launch etc</td>
-                                                <td>Detailer helps in line selling as well as proper explanation of TPRs</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="bcp-center-text">5</td>
-                                                <td style="font-weight:700;">Close &amp; Confirm</td>
-                                                <td>Confirm the ordered SKUs and final bill amount to the retailer</td>
-                                                <td>Increases retailer's trust; Reduces SRN possibility</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="bcp-center-text" rowspan="2">6</td>
-                                                <td style="font-weight:700;" rowspan="2">Collection</td>
-                                                <td>Collect, Count &amp; Secure the money</td>
-                                                <td rowspan="2">Money is secured</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Ensure the right stamp / sign</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="bcp-center-text">7</td>
-                                                <td style="font-weight:700;">Merchandising</td>
-                                                <td>Note down visibility gaps in the store</td>
-                                                <td>Increases our products' visibility which helps in offtake</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="bcp-center-text" rowspan="2">8</td>
-                                                <td style="font-weight:700;">Leave Call</td>
-                                                <td>Thank retailer, inform of delivery date</td>
-                                                <td rowspan="2">Be sure the outlet is open at the time of delivery</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Inform of next visit date</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="bcp-center-text" rowspan="2">9</td>
-                                                <td style="font-weight:700;">Call Analysis</td>
-                                                <td>Analyze VDMI as per objectives</td>
-                                                <td rowspan="2">Apply the learnings from this call to the next call</td>
-                                            </tr>
-                                            <tr>
-                                                <td>What worked / what didn't work</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
+                                <div class="slide-heading-red">Order Booking (BCP-Basic Call Procedure):</div>
                                 <ul class="slide-bullet-list">
                                     <li class="slide-bullet-item">Follow the BCP Step for order taking.</li>
                                     <li class="slide-bullet-item">Verify stock availability.</li>
@@ -897,10 +741,12 @@
                     </div>
                 </div>
 
-                <div class="training-detail-view" id="detail-hr">
-                    <div class="branch-node" style="grid-column: span 3;">
-                        <div class="branch-header pillar-hr">HR - Attendance & Hiring</div>
-                        <div class="branch-content" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <!-- HR TRAINING PORTAL SPLIT BOX GRID LAYOUT -->
+                <div class="training-detail-view" id="detail-hr" style="grid-template-columns: repeat(2, 1fr);">
+                    <!-- BOX 1: ATTENDANCE & HIRING MATRIX -->
+                    <div class="branch-node">
+                        <div class="branch-header pillar-hr">1 - HR-Attendance & Hiring</div>
+                        <div class="branch-content">
                             <div>
                                 <div class="slide-heading-red">Hiring:-</div>
                                 <ul class="slide-bullet-list">
@@ -920,6 +766,31 @@
                                     <li class="slide-bullet-item">Follow up on missing attendance.</li>
                                     <li class="slide-bullet-item">Update attendance records accurately.</li>
                                     <li class="slide-bullet-item">Resolve attendance discrepancies.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BOX 2: OC TRAINING & MONTHLY CAPABILITY MATRIX -->
+                    <div class="branch-node">
+                        <div class="branch-header pillar-hr" style="background-color: #9e3f50;">2 - HR-OC Training & Monthly Capability Training</div>
+                        <div class="branch-content">
+                            <div>
+                                <div class="slide-heading-red">OC Training:-</div>
+                                <ul class="slide-bullet-list">
+                                    <li class="slide-bullet-item">OC Training is an initial training program provided to all new employees at the time of joining. The training duration is a minimum of 3 days. During this session, all new joiners are introduced to the company's Rules & Regulations (R&R), policies, processes, organizational structure, code of conduct, and work culture.</li>
+                                    <li class="slide-bullet-item">Plan OC training schedules..</li>
+                                    <li class="slide-bullet-item">Conduct department-wise process training..</li>
+                                    <li class="slide-bullet-item">Track training completion.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="slide-heading-red">Monthly Capability Training:-</div>
+                                <ul class="slide-bullet-list">
+                                    <li class="slide-bullet-item">Identify training needs..</li>
+                                    <li class="slide-bullet-item">Conduct monthly capability sessions..</li>
+                                    <li class="slide-bullet-item">Evaluate employee participation.</li>
+                                    <li class="slide-bullet-item">Monitor improvement actions.</li>
                                 </ul>
                             </div>
                         </div>
@@ -1162,13 +1033,6 @@
             }
         }
 
-        /* --- BCP Dropdown Accordion Logic --- */
-        function toggleBcpDropdown(headerElement) {
-            headerElement.classList.toggle('active');
-            const dropdown = document.getElementById('bcpAccordionDropdown');
-            dropdown.classList.toggle('open');
-        }
-
         /* --- Modals UI Core Logic --- */
         const processModal = document.getElementById('processModal');
         const trainingModal = document.getElementById('trainingModal');
@@ -1224,12 +1088,6 @@
             hierarchyStructure.style.display = 'flex';
             document.getElementById('trainingModalTitle').innerText = "Training of Process Matrix";
             backToHierarchyBtn.style.display = 'none';
-            
-            // Close BCP Dropdown if switching contexts
-            const bcpHeader = document.querySelector('.bcp-toggle-container');
-            if (bcpHeader) bcpHeader.classList.remove('active');
-            const bcpDropdown = document.getElementById('bcpAccordionDropdown');
-            if (bcpDropdown) bcpDropdown.classList.remove('open');
         }
 
         // Escape Key Rule
