@@ -86,7 +86,7 @@
                         </tr>
                     </thead>
                     <tbody id="summaryBody" class="divide-y divide-slate-900/60 bg-slate-950/20">
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
             
@@ -122,11 +122,8 @@
                         <thead class="sticky top-0 bg-slate-900 border-b border-slate-800 text-slate-400 font-bold z-10">
                             <tr>
                                 <th class="py-1 px-1.5 border-r border-slate-950 w-12">Region</th>
-                                <th class="py-1 px-1.5 border-r border-slate-950 w-14">Serviced</th>
-                                <th class="py-1 px-1.5 border-r border-slate-950 w-14">Mapping</th>
                                 <th class="py-1 px-1.5 border-r border-slate-950 w-24">City</th>
                                 <th class="py-1 px-2 border-r border-slate-950 text-slate-200 font-black">Account Name</th>
-                                <th class="py-1 px-1.5 border-r border-slate-950 w-28">Chain Status</th>
                                 <th class="py-1 px-1.5 border-r border-slate-950 text-center w-12">Stores</th>
                                 <th class="py-1 px-1.5 border-r border-slate-950 text-amber-500 w-12">Status</th>
                                 <th class="py-1 px-1.5 border-r border-slate-950 text-emerald-500 w-14">PO Value</th>
@@ -134,10 +131,10 @@
                             </tr>
                         </thead>
                         <tbody id="accountBody" class="divide-y divide-slate-900">
-                            </tbody>
+                        </tbody>
                         <tfoot class="sticky bottom-0 bg-slate-900 border-t border-slate-700 text-slate-100 font-bold z-10 shadow-[0_-2px_6px_rgba(0,0,0,0.6)]">
                             <tr id="accountFooterRow">
-                                </tr>
+                            </tr>
                         </tfoot>
                     </table>
                 </div>
@@ -247,7 +244,7 @@
             if (filtered.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="10" class="text-center py-8 text-slate-600 font-mono text-[9px]">
+                        <td colspan="7" class="text-center py-8 text-slate-600 font-mono text-[9px]">
                             NO MOUNTED METRICS IN DATA STREAM
                         </td>
                     </tr>
@@ -270,20 +267,21 @@
                         headerTr.className = 'bg-slate-900/50 hover:bg-slate-900 cursor-pointer border-b border-slate-900 text-slate-300 select-none h-5 font-bold';
                         headerTr.onclick = () => toggleAccountDropdown(accountName);
 
+                        // Unified compact multiple-node layout displaying full details
                         headerTr.innerHTML = `
-                            <td class="py-0.5 px-1.5 border-r border-slate-900 text-indigo-400 font-bold"><i class="fa-solid ${isExpanded ? 'fa-square-minus' : 'fa-square-plus'} mr-1"></i>[MULTI]</td>
-                            <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-500 font-medium">-</td>
-                            <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-500 font-medium">-</td>
-                            <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-400 italic">(${rows.length} nodes)</td>
+                            <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-500 font-medium">${rows[0]['Region'] || ''}</td>
+                            <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-400 italic">(${rows.length} cities)</td>
                             <td class="py-0.5 px-2 border-r border-slate-950 text-slate-100 tracking-normal normal-case font-black flex items-center justify-between">
-                                <span>${accountName}</span>
-                                <span class="text-[8px] font-mono text-indigo-400 lowercase bg-indigo-950/40 border border-indigo-900/50 px-1 rounded-sm">${rows.length} streams</span>
+                                <span class="flex items-center gap-1.5 text-indigo-400">
+                                    <i class="fa-solid ${isExpanded ? 'fa-chevron-down' : 'fa-chevron-right'} text-[7px] w-2"></i>
+                                    ${accountName}
+                                </span>
+                                <span class="text-[7.5px] font-mono text-indigo-400/80 bg-indigo-950/40 border border-indigo-900/30 px-1 rounded-sm lowercase">${rows.length} streams</span>
                             </td>
-                            <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-500">-</td>
                             <td class="py-0.5 px-1.5 border-r border-slate-900 text-center font-black text-indigo-400 bg-slate-900/30">${totalStores}</td>
                             <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-500">-</td>
                             <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-500">-</td>
-                            <td class="py-0.5 px-1.5 text-slate-600 text-[8px] lowercase italic truncate max-w-[130px]">* click to toggle</td>
+                            <td class="py-0.5 px-1.5 text-slate-600 text-[8px] lowercase italic truncate max-w-[130px]">* dynamic dropdown</td>
                         `;
                         tbody.appendChild(headerTr);
 
@@ -303,10 +301,7 @@
             footerRow.innerHTML = `
                 <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-400 font-black">TOTAL</td>
                 <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-600">-</td>
-                <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-600">-</td>
-                <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-600">-</td>
                 <td class="py-0.5 px-2 border-r border-slate-950 text-slate-400 font-bold tracking-tight lowercase normal-case">${filtered.length} routes active</td>
-                <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-600">-</td>
                 <td class="py-0.5 px-1.5 border-r border-slate-950 text-center font-black text-emerald-400 bg-emerald-950/20 text-[10px]">${grandTotalStores}</td>
                 <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-600">-</td>
                 <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-600">-</td>
@@ -339,26 +334,18 @@
                 ? ' bg-slate-950/40 hover:bg-slate-900/40 text-slate-400 border-b border-slate-900/40'
                 : ' hover:bg-slate-900 text-slate-300 border-b border-slate-900';
 
-            let badgeColor = 'bg-slate-900 text-slate-500 border-slate-800';
-            if (row['Supply Status'] === 'DSD') badgeColor = 'bg-emerald-950/20 text-emerald-400 border-emerald-900/40';
-            else if (row['Supply Status'] === 'DC') badgeColor = 'bg-sky-950/20 text-sky-400 border-sky-900/40';
-            else if (row['Supply Status'] && row['Supply Status'].includes('SKU')) badgeColor = 'bg-purple-950/20 text-purple-400 border-purple-900/40';
-
             const currentStatus = row['Current Status'] !== undefined ? row['Current Status'] : '-';
             const poValue = row['PO Value'] !== undefined ? row['PO Value'] : '-';
             const customRemarks = row['Remarks'] !== undefined ? row['Remarks'] : '';
             
-            const indentStyle = isSubNode ? 'pl-4 text-slate-400/60 border-l border-indigo-900/50 italic text-[8.5px]' : '';
+            const indentStyle = isSubNode ? 'pl-5 text-slate-400/60 border-l border-indigo-900/40 italic text-[8.5px]' : '';
 
             tr.innerHTML = `
                 <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-500 truncate max-w-[50px]">${row['Region'] || ''}</td>
-                <td class="py-0.5 px-1.5 border-r border-slate-900 text-[8px] text-slate-500 font-bold truncate max-w-[55px]">${row['Currently serviced by'] || ''}</td>
-                <td class="py-0.5 px-1.5 border-r border-slate-900 truncate max-w-[55px]"><span class="text-slate-400 font-semibold">${row['VTC Mapping'] || ''}</span></td>
                 <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-400 truncate max-w-[85px]">${row['City'] || ''}</td>
                 <td class="py-0.5 px-2 border-r border-slate-950 text-slate-100 font-bold tracking-normal normal-case truncate max-w-[150px] ${indentStyle}">
-                    ${isSubNode ? '<span class="text-indigo-600/80 mr-1">&bull;</span>' : ''}${row['Account'] || ''}
+                    ${isSubNode ? '<span class="text-indigo-600/50 mr-1">&bull;</span>' : ''}${row['Account'] || ''}
                 </td>
-                <td class="py-0.5 px-1.5 border-r border-slate-900"><span class="px-1 py-0.2 rounded-sm text-[8px] border font-medium tracking-tight ${badgeColor}">${row['Supply Status'] || ''}</span></td>
                 <td class="py-0.5 px-1.5 border-r border-slate-900 text-center font-bold text-slate-300">${row['Distinct Count of Store Name'] !== undefined ? row['Distinct Count of Store Name'] : ''}</td>
                 <td class="py-0.5 px-1.5 border-r border-slate-900 text-amber-500/90 font-bold">${currentStatus}</td>
                 <td class="py-0.5 px-1.5 border-r border-slate-900 text-emerald-500 font-bold">${poValue}</td>
