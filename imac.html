@@ -216,6 +216,22 @@
             gap: 0.4rem;
         }
 
+        /* Follow Process Custom Layout Container */
+        .follow-modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .follow-grid-container {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.5rem;
+        }
+
         .pillar {
             background-color: #0d1117;
             border: 1px solid #21262d;
@@ -227,7 +243,7 @@
         }
 
         .pillar-header {
-            padding: 4px;
+            padding: 5px;
             font-weight: 700;
             font-size: 0.75rem;
             text-align: center;
@@ -264,6 +280,25 @@
             gap: 2px;
         }
 
+        /* Highlighted Block Layout for Follow Process Text Content */
+        .follow-block-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            padding: 0.6rem;
+            height: 100%;
+            display: flex;
+            align-items: flex-start;
+            line-height: 1.35;
+        }
+
+        .follow-text {
+            color: #e2e8f0;
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-align: left;
+        }
+
         .process-title {
             font-weight: 700;
             color: #58a6ff;
@@ -286,6 +321,55 @@
             color: #8b949e;
             font-size: 0.68rem;
             line-height: 1.2;
+        }
+
+        /* --- COMMON GUIDELINES COMPONENT (IMAGE 2) --- */
+        .guidelines-panel {
+            background-color: #1a2333;
+            border: 1px solid #25354c;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-top: 0.1rem;
+        }
+
+        .guidelines-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #ff9e22;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid #25354c;
+            padding-bottom: 4px;
+        }
+
+        .guidelines-list {
+            list-style-type: none;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .guidelines-item {
+            font-size: 0.8rem;
+            color: #e2e8f0;
+            line-height: 1.3;
+            display: flex;
+            gap: 6px;
+        }
+
+        .guidelines-item strong {
+            color: #38bdf8;
+        }
+
+        .guidelines-quote {
+            font-size: 0.82rem;
+            color: #8b949e;
+            font-style: italic;
+            text-align: center;
+            border-top: 1px dashed #25354c;
+            padding-top: 8px;
+            line-height: 1.4;
         }
 
         /* --- TRAINING MODAL HIERARCHY STYLES --- */
@@ -480,7 +564,7 @@
         <a href="javascript:void(0)" class="card" id="card2">
             <span>Training of Process</span>
         </a>
-        <a href="#" class="card" id="card3">
+        <a href="javascript:void(0)" class="card" id="card3">
             <span>Follow Process</span>
         </a>
         <a href="#" class="card" id="card4">
@@ -488,6 +572,7 @@
         </a>
     </main>
 
+    <!-- Modal 1: Operation Process -->
     <div class="modal-overlay" id="processModal">
         <div class="modal-container">
             <div class="modal-header">
@@ -636,6 +721,7 @@
         </div>
     </div>
 
+    <!-- Modal 2: Training of Process Matrix -->
     <div class="modal-overlay" id="trainingModal">
         <div class="modal-container">
             <div class="modal-header">
@@ -741,9 +827,7 @@
                     </div>
                 </div>
 
-                <!-- HR TRAINING PORTAL SPLIT BOX GRID LAYOUT -->
                 <div class="training-detail-view" id="detail-hr" style="grid-template-columns: repeat(2, 1fr);">
-                    <!-- BOX 1: ATTENDANCE & HIRING MATRIX -->
                     <div class="branch-node">
                         <div class="branch-header pillar-hr">1 - HR-Attendance & Hiring</div>
                         <div class="branch-content">
@@ -771,7 +855,6 @@
                         </div>
                     </div>
 
-                    <!-- BOX 2: OC TRAINING & MONTHLY CAPABILITY MATRIX -->
                     <div class="branch-node">
                         <div class="branch-header pillar-hr" style="background-color: #9e3f50;">2 - HR-OC Training & Monthly Capability Training</div>
                         <div class="branch-content">
@@ -995,6 +1078,95 @@
         </div>
     </div>
 
+    <!-- Modal 3: Follow Process Portal (Image 1 & Image 2 Data Mixed) -->
+    <div class="modal-overlay" id="followModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>VTC Food Division - Follow the Process Matrix</h2>
+                <button class="close-btn" id="closeFollowModalBtn">Close</button>
+            </div>
+            <div class="follow-modal-body">
+                
+                <!-- TOP SECTION: Departmental Guidelines (Image 1 Data Structured as Clean Block Cards) -->
+                <div class="follow-grid-container">
+                    
+                    <div class="pillar">
+                        <div class="pillar-header pillar-resale">Resale</div>
+                        <div class="pillar-content">
+                            <div class="follow-block-card">
+                                <div class="follow-text">Identify new stores as per guidelines, Visit assigned stores as per route plan, follow BCP steps for order booking, transfer orders on time, and participate in daily and monthly reviews. Ensure all market activities are updated in the system.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pillar">
+                        <div class="pillar-header pillar-system">System</div>
+                        <div class="pillar-content">
+                            <div class="follow-block-card">
+                                <div class="follow-text">DRCP preparation, accurate invoicing, Ensure timely reporting, software management, and issue resolution. Support all departments and close system requirements within defined timelines.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pillar">
+                        <div class="pillar-header pillar-logistics">Logistics</div>
+                        <div class="pillar-content">
+                            <div class="follow-block-card">
+                                <div class="follow-text">Follow Inventory management, ensure timely delivery, maintain POD records, manage returns and damages as per policy, and control delivery costs effectively.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pillar">
+                        <div class="pillar-header pillar-finance">Finance</div>
+                        <div class="pillar-content">
+                            <div class="follow-block-card">
+                                <div class="follow-text">Monitor collections, outstanding payments, customer credit limits, expenses, and operational activities. Ensure timely reconciliation and adherence to financial controls.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pillar">
+                        <div class="pillar-header pillar-hr">HR</div>
+                        <div class="pillar-content">
+                            <div class="follow-block-card">
+                                <div class="follow-text">Follow hiring, onboarding, attendance, and training processes. Ensure employees are trained, qualified, and compliant with company policies and procedures.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pillar">
+                        <div class="pillar-header pillar-operation">Operations</div>
+                        <div class="pillar-content">
+                            <div class="follow-block-card">
+                                <div class="follow-text">Follow approved business expansion and Sub-Distributor (Sub-D) processes. Ensure implementation as per company norms and monitor operational effectiveness.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- BOTTOM SECTION: Common Process Guidelines (Image 2 Data Layout) -->
+                <div class="guidelines-panel">
+                    <div class="guidelines-title">Common Process Guidelines (For All Departments)</div>
+                    <ul class="guidelines-list">
+                        <li class="guidelines-item"><strong>1.</strong> Understand the SOP and department responsibilities.</li>
+                        <li class="guidelines-item"><strong>2.</strong> Follow the approved process without deviation.</li>
+                        <li class="guidelines-item"><strong>3.</strong> Update all activities in the system on time.</li>
+                        <li class="guidelines-item"><strong>4.</strong> Escalate issues through the proper channel.</li>
+                        <li class="guidelines-item"><strong>5.</strong> Maintain required records and documentation.</li>
+                        <li class="guidelines-item"><strong>6.</strong> Participate in daily, weekly, and monthly reviews.</li>
+                        <li class="guidelines-item" style="grid-column: span 2;"><strong>7.</strong> Focus on accuracy, compliance, and continuous improvement.</li>
+                    </ul>
+                    <div class="guidelines-quote">
+                        "Understand the process, follow the SOP, update activities on time, maintain proper records, and escalate issues through the defined channel. Consistent process adherence ensures operational efficiency, compliance, and business growth."
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <script>
         /* --- Line Drawing Engine --- */
         function drawNetworkLines() {
@@ -1036,12 +1208,15 @@
         /* --- Modals UI Core Logic --- */
         const processModal = document.getElementById('processModal');
         const trainingModal = document.getElementById('trainingModal');
+        const followModal = document.getElementById('followModal');
         
         const operationCard = document.getElementById('card1');
         const trainingCard = document.getElementById('card2');
+        const followCard = document.getElementById('card3');
         
         const closeModalBtn = document.getElementById('closeModalBtn');
         const closeTrainingModalBtn = document.getElementById('closeTrainingModalBtn');
+        const closeFollowModalBtn = document.getElementById('closeFollowModalBtn');
         const backToHierarchyBtn = document.getElementById('backToHierarchyBtn');
         
         const hierarchyStructure = document.getElementById('hierarchyStructure');
@@ -1056,11 +1231,11 @@
             resetTrainingModalContext();
             trainingModal.classList.add('active');
         });
+        closeTrainingModalBtn.addEventListener('click', () => trainingModal.classList.remove('active'));
 
-        // Close Training Portal Completely
-        closeTrainingModalBtn.addEventListener('click', () => {
-            trainingModal.classList.remove('active');
-        });
+        // Follow Process Open/Close
+        followCard.addEventListener('click', () => followModal.classList.add('active'));
+        closeFollowModalBtn.addEventListener('click', () => followModal.classList.remove('active'));
 
         // Click Back Button inside Training Modal
         backToHierarchyBtn.addEventListener('click', resetTrainingModalContext);
@@ -1068,8 +1243,6 @@
         // Handles Drill-down inside Matrix Branches
         function showTrainingDetail(departmentId) {
             hierarchyStructure.style.display = 'none';
-            
-            // Hide all lists before bringing up target
             detailViews.forEach(view => view.style.display = 'none');
             
             const targetedView = document.getElementById(`detail-${departmentId}`);
@@ -1077,7 +1250,6 @@
                 targetedView.style.display = 'grid';
             }
             
-            // UI Modifications
             document.getElementById('trainingModalTitle').innerText = `Training Process Matrix: ${departmentId.toUpperCase()}`;
             backToHierarchyBtn.style.display = 'inline-block';
         }
@@ -1095,6 +1267,7 @@
             if (e.key === 'Escape') {
                 processModal.classList.remove('active');
                 trainingModal.classList.remove('active');
+                followModal.classList.remove('active');
             }
         });
 
