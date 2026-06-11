@@ -119,12 +119,12 @@
                         <thead class="sticky top-0 bg-slate-900 border-b border-slate-800 text-slate-400 font-bold z-10">
                             <tr>
                                 <th class="py-1 px-1.5 border-r border-slate-950 w-12">Region</th>
-                                <th class="py-1 px-1.5 border-r border-slate-950 w-24">City</th>
+                                <th class="py-1 px-1.5 border-r border-slate-950 w-20">City</th>
                                 <th class="py-1 px-2 border-r border-slate-950 text-slate-200 font-black">Account Name</th>
                                 <th class="py-1 px-1.5 border-r border-slate-950 text-center w-12">Stores</th>
                                 <th class="py-1 px-1.5 border-r border-slate-950 text-amber-500 w-24">Status</th>
                                 <th class="py-1 px-1.5 border-r border-slate-950 text-emerald-500 w-14">PO Value</th>
-                                <th class="py-1 px-1.5 text-slate-500 w-32">Remarks</th>
+                                <th class="py-1 px-1.5 text-slate-500 w-44">Remarks</th>
                             </tr>
                         </thead>
                         <tbody id="accountBody" class="divide-y divide-slate-900">
@@ -161,53 +161,54 @@
             {"Region": "Grand Total", "VTC Mapping": "Grand Total", "DC/DSD based on SKU": 11, "Grand Total": 101}
         ];
 
+        // Extracted remarks strings are now cleanly completed to prevent mid-word cutoff
         const accountRows = [
             {"Region": "Central", "VTC Mapping": "Mp", "City": "Indore", "Account": "Wellness", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "East", "VTC Mapping": "WB", "City": "Kolkata", "Account": "FRANK ROSE", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Faridabad", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Faridabad", "Account": "SHOP EXPRESS", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sa"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Faridabad", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for Response"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Faridabad", "Account": "SHOP EXPRESS", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
             {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "ASIANA FOOD & BEVERAGE LLP", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Daily Needs", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Dastak", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "FOODSTORIES PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sa"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Geom365", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sa"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Honey Money Top", "Status": "Pending", "PO Value": "-", "Remarks": "Meeting pla"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Marche Retail", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sa"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "FOODSTORIES PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Geom365", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Honey Money Top", "Status": "Pending", "PO Value": "-", "Remarks": "Meeting planned"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Marche Retail", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for Response"},
             {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "NEEDS RETAIL", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "SHOP EXPRESS", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sa"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Ssm Retail Pvt Ltd", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sa"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "FOODSTORIES PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sa"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Geom365", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sa"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Honey Money Top", "Status": "Pending", "PO Value": "-", "Remarks": "Meeting pla"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "SHOP EXPRESS", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Ssm Retail Pvt Ltd", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "FOODSTORIES PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Geom365", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Honey Money Top", "Status": "Pending", "PO Value": "-", "Remarks": "Meeting planned"},
             {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "LOTS", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Marche Retail", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sa"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "NUTS N MORE", "Status": "Pending", "PO Value": "-", "Remarks": "Dry Fruit fo"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Worldwide delight Pvt Ltd", "Status": "Pending", "PO Value": "-", "Remarks": "Dry Fruit fo"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Marche Retail", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for Response"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "NUTS N MORE", "Status": "Pending", "PO Value": "-", "Remarks": "Dry Fruit follow-up"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Worldwide delight Pvt Ltd", "Status": "Pending", "PO Value": "-", "Remarks": "Dry Fruit follow-up"},
             {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "BuyBuy Technologies Private Limited", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Daily Needs", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Fresh Lee", "Status": "Order received", "PO Value": 3, "Remarks": "Order plac"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Geom365", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sa"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Fresh Lee", "Status": "Order received", "PO Value": 3, "Remarks": "Order placed"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Geom365", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
             {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "LOTS", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "M/S DEBON", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Marche Retail", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sa"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "SHOP EXPRESS", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sa"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Shreejee Foods", "Status": "Order received", "PO Value": 1, "Remarks": "Order Plac"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Worldwide delight Pvt Ltd", "Status": "Pending", "PO Value": "-", "Remarks": "Dry Fruit fo"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Marche Retail", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for Response"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "SHOP EXPRESS", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Shreejee Foods", "Status": "Order received", "PO Value": 1, "Remarks": "Order Placed"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Worldwide delight Pvt Ltd", "Status": "Pending", "PO Value": "-", "Remarks": "Dry Fruit follow-up"},
             {"Region": "North", "VTC Mapping": "Rajasthan", "City": "Jaipur", "Account": "JOIN COMMERCE PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "Tricity", "City": "Chandigarh", "Account": "ABHYUDAY ESSENTIALS", "Status": "Order received", "PO Value": 1, "Remarks": "Order plac"},
-            {"Region": "North", "VTC Mapping": "Tricity", "City": "Chandigarh", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for"},
+            {"Region": "North", "VTC Mapping": "Tricity", "City": "Chandigarh", "Account": "ABHYUDAY ESSENTIALS", "Status": "Order received", "PO Value": 1, "Remarks": "Order placed"},
+            {"Region": "North", "VTC Mapping": "Tricity", "City": "Chandigarh", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for Response"},
             {"Region": "North", "VTC Mapping": "Tricity", "City": "Chandigarh", "Account": "NU Farm Market LLP", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "Tricity", "City": "Chandigarh", "Account": "Punjab Stores", "Status": "Order received", "PO Value": 2, "Remarks": "Order plac"},
-            {"Region": "North", "VTC Mapping": "Tricity", "City": "Mohali", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for"},
-            {"Region": "North", "VTC Mapping": "Tricity", "City": "Mohali", "Account": "Punjab Stores", "Status": "Order received", "PO Value": 2, "Remarks": "Order plac"},
+            {"Region": "North", "VTC Mapping": "Tricity", "City": "Chandigarh", "Account": "Punjab Stores", "Status": "Order received", "PO Value": 2, "Remarks": "Order placed"},
+            {"Region": "North", "VTC Mapping": "Tricity", "City": "Mohali", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for Response"},
+            {"Region": "North", "VTC Mapping": "Tricity", "City": "Mohali", "Account": "Punjab Stores", "Status": "Order received", "PO Value": 2, "Remarks": "Order placed"},
             {"Region": "North", "VTC Mapping": "Tricity", "City": "Panchkula", "Account": "ABNI ENTERPRISES", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "North", "VTC Mapping": "Tricity", "City": "Panchkula", "Account": "M/S ABHYUDAY FOOD ENTERPRISES", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "North", "VTC Mapping": "UP", "City": "Lucknow", "Account": "NUTS WORLD", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "North", "VTC Mapping": "Uttarakhand", "City": "DEHRADUN", "Account": "Fresh N Easy", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "Uttarakhand", "City": "DEHRADUN", "Account": "NUTS N MORE", "Status": "Pending", "PO Value": "-", "Remarks": "Dry Fruit fo"},
+            {"Region": "North", "VTC Mapping": "Uttarakhand", "City": "DEHRADUN", "Account": "NUTS N MORE", "Status": "Pending", "PO Value": "-", "Remarks": "Dry Fruit follow-up"},
             {"Region": "North", "VTC Mapping": "Uttarakhand", "City": "DEHRADUN", "Account": "Suvidha", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "South", "VTC Mapping": "AP", "City": "Guntur", "Account": "Ratnadeep", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "South", "VTC Mapping": "AP", "City": "Vijayawada", "Account": "Ratnadeep", "Status": "Pending", "PO Value": "-", "Remarks": ""},
@@ -222,7 +223,7 @@
             {"Region": "South", "VTC Mapping": "Telangana", "City": "Hyderabad", "Account": "Ajfan", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "South", "VTC Mapping": "Telangana", "City": "Hyderabad", "Account": "Ratnadeep", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "South", "VTC Mapping": "Telangana", "City": "Hyderabad", "Account": "USHODAYA SUPER MARKETS PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "Telangana", "City": "TELANGANA", "Account": "FOODSTORIES PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sa"},
+            {"Region": "South", "VTC Mapping": "Telangana", "City": "TELANGANA", "Account": "FOODSTORIES PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
             {"Region": "South", "VTC Mapping": "TN", "City": "Chennai", "Account": "Ajfan", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "South", "VTC Mapping": "TN", "City": "Chennai", "Account": "CROSSWORD BOOKSTORES PVT LTD", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "South", "VTC Mapping": "TN", "City": "Chennai", "Account": "Pothys", "Status": "Pending", "PO Value": "-", "Remarks": ""},
@@ -254,13 +255,12 @@
             {"Region": "West", "VTC Mapping": "Maharashtra", "City": "Pune", "Account": "Dorabjee", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "West", "VTC Mapping": "Maharashtra", "City": "Pune", "Account": "FOOD JUNCTION", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "West", "VTC Mapping": "Maharashtra", "City": "Pune", "Account": "Wellness", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "VDH", "Status": "Order received", "PO Value": 1, "Remarks": "Order plac"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Baniya Ki dukan", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sa"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "VDH", "Status": "Order received", "PO Value": 1, "Remarks": "Order placed"},
+            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Baniya Ki dukan", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
             {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Raj Mandir", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Kondli Bazaar", "Status": "Order received", "PO Value": 1, "Remarks": "Order plac"}
+            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Kondli Bazaar", "Status": "Order received", "PO Value": 1, "Remarks": "Order placed"}
         ];
 
-        // Fixed syntax bug (changed comma to colon for "Fresh Lee": 7)
         const accountStoreCounts = {
             "Wellness": 44, "FRANK ROSE": 1, "Modern Bazaar": 23, "SHOP EXPRESS": 7, "ASIANA FOOD & BEVERAGE LLP": 1,
             "Daily Needs": 2, "Dastak": 2, "FOODSTORIES PRIVATE LIMITED": 3, "Geom365": 22, "Honey Money Top": 5,
@@ -345,7 +345,6 @@
             applyFilteringAndRender(true);
         }
 
-        // Search logic safely links against the updated 'Status' descriptor array map properties
         function applyFilteringAndRender(isCollapsingOnly = false) {
             const tbody = document.getElementById('accountBody');
             const searchVal = document.getElementById('rightPaneSearch').value.toLowerCase().trim();
@@ -413,7 +412,7 @@
                             <td class="py-0.5 px-1.5 border-r border-slate-900 text-center font-black text-indigo-400 bg-slate-900/30">${totalStores}</td>
                             <td class="py-0.5 px-1.5 border-r border-slate-900 text-amber-500/90 font-bold">${commonStatus}</td>
                             <td class="py-0.5 px-1.5 border-r border-slate-900 text-emerald-500 font-bold">${commonPO}</td>
-                            <td class="py-0.5 px-1.5 text-slate-500 text-[8px] truncate max-w-[110px]" title="${commonRemark}">${commonRemark || '-'}</td>
+                            <td class="py-0.5 px-1.5 text-slate-400 normal-case font-sans text-[8.5px] truncate max-w-[176px]" title="${commonRemark}">${commonRemark || '-'}</td>
                         `;
                         tbody.appendChild(headerTr);
 
@@ -459,6 +458,7 @@
             }
         }
 
+        // Expanded max-w layouts here so custom text metrics display without being clipped short
         function renderRowElement(tbody, row, isSubNode, singleStoreCount = 1) {
             const tr = document.createElement('tr');
             tr.className = 'h-5 transition-colors font-mono';
@@ -480,7 +480,7 @@
                 <td class="py-0.5 px-1.5 border-r border-slate-900 text-center font-bold text-slate-300">${isSubNode ? '-' : singleStoreCount}</td>
                 <td class="py-0.5 px-1.5 border-r border-slate-900 text-amber-500/90 font-bold">${row['Status'] || '-'}</td>
                 <td class="py-0.5 px-1.5 border-r border-slate-900 text-emerald-500 font-bold">${poValue}</td>
-                <td class="py-0.5 px-1.5 text-slate-500 max-w-[110px] truncate normal-case font-sans text-[8.5px]" title="${customRemarks}">${customRemarks || '-'}</td>
+                <td class="py-0.5 px-1.5 text-slate-400 max-w-[176px] truncate normal-case font-sans text-[8.5px]" title="${customRemarks}">${customRemarks || '-'}</td>
             `;
             tbody.appendChild(tr);
         }
