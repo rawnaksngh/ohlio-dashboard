@@ -138,7 +138,7 @@
             outline: none;
         }
 
-        /* --- ULTRA-COMPACT 55" TV MODAL --- */
+        /* --- ULTRA-COMPACT MODAL STRUCTURE --- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -186,8 +186,12 @@
             font-weight: 600;
         }
 
-        .close-btn {
-            background-color: #da3637;
+        .header-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .close-btn, .back-btn {
             color: #ffffff;
             border: none;
             padding: 0.3rem 1rem;
@@ -197,11 +201,12 @@
             cursor: pointer;
         }
 
-        .close-btn:hover {
-            background-color: #b62b2c;
-        }
+        .close-btn { background-color: #da3637; }
+        .close-btn:hover { background-color: #b62b2c; }
+        .back-btn { background-color: #21262d; border: 1px solid #30363d; }
+        .back-btn:hover { background-color: #30363d; }
 
-        /* --- MAX-DENSITY PILLARS GRID --- */
+        /* --- OPERATION MODAL SYSTEM --- */
         .modal-body {
             flex: 1;
             overflow: hidden;
@@ -246,14 +251,9 @@
             gap: 4px;
         }
 
-        .pillar-content::-webkit-scrollbar {
-            width: 3px;
-        }
-        .pillar-content::-webkit-scrollbar-thumb {
-            background-color: #30363d;
-        }
+        .pillar-content::-webkit-scrollbar { width: 3px; }
+        .pillar-content::-webkit-scrollbar-thumb { background-color: #30363d; }
 
-        /* Micro Inline Layout Rows */
         .process-item-card {
             background-color: #161b22;
             border: 1px solid #21262d;
@@ -299,7 +299,7 @@
         }
 
         .hierarchy-root {
-            background-color: #1f6feb;
+            background-color: #238636;
             color: #ffffff;
             font-weight: 700;
             padding: 0.6rem 2rem;
@@ -307,17 +307,17 @@
             font-size: 1rem;
             text-transform: uppercase;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2.5rem;
             position: relative;
         }
 
         .hierarchy-root::after {
             content: '';
             position: absolute;
-            bottom: -1.5rem;
+            bottom: -2.5rem;
             left: 50%;
             width: 2px;
-            height: 1.5rem;
+            height: 2.5rem;
             background-color: #30363d;
         }
 
@@ -325,89 +325,135 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            gap: 1rem;
+            gap: 1.2rem;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1100px;
             position: relative;
         }
 
+        /* Horizontal Connect Line */
         .hierarchy-branches::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 16%;
-            width: 68%;
+            left: 10%;
+            width: 80%;
             height: 2px;
             background-color: #30363d;
         }
 
-        .branch-node {
+        .branch-card-node {
             flex: 1;
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 5px;
+            background-color: #1a2333;
+            border: 1.5px solid #25354c;
+            border-radius: 6px;
+            padding: 1.5rem 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            transition: all 0.2s ease;
+            position: relative;
             display: flex;
             flex-direction: column;
-            position: relative;
-            overflow: hidden;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
         }
 
-        .branch-node::before {
+        .branch-card-node::before {
             content: '';
             position: absolute;
             top: 0;
             left: 50%;
             width: 2px;
-            height: 1.5rem;
+            height: 1.2rem;
             background-color: #30363d;
             transform: translateY(-100%);
         }
 
-        .branch-header {
-            padding: 6px 4px;
+        .branch-card-node:hover {
+            background-color: #1e3a5f;
+            border-color: #38bdf8;
+            transform: translateY(3px);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        .branch-card-node h3 {
+            font-size: 0.95rem;
             font-weight: 700;
-            font-size: 0.75rem;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+
+        /* --- DETAILED DATA DATA LAYOUT (Hidden Initially) --- */
+        .training-detail-view {
+            width: 100%;
+            max-width: 1200px;
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .branch-node {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .branch-header {
+            padding: 8px 6px;
+            font-weight: 700;
+            font-size: 0.8rem;
             text-align: center;
             text-transform: uppercase;
             color: #ffffff;
         }
 
         .branch-content {
-            padding: 10px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            max-height: 68vh;
+            max-height: 65vh;
             overflow-y: auto;
         }
 
-        .branch-content::-webkit-scrollbar {
-            width: 3px;
-        }
-        .branch-content::-webkit-scrollbar-thumb {
-            background-color: #30363d;
-        }
+        .branch-content::-webkit-scrollbar { width: 3px; }
+        .branch-content::-webkit-scrollbar-thumb { background-color: #30363d; }
 
-        /* Slide Content Styling */
         .slide-heading-red {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: #ff4444;
-            line-height: 1.2;
+            line-height: 1.3;
+            margin-bottom: 4px;
         }
 
         .slide-bullet-list {
             list-style-type: disc;
-            padding-left: 1rem;
+            padding-left: 1.2rem;
             display: flex;
             flex-direction: column;
             gap: 6px;
+            margin-bottom: 10px;
         }
 
         .slide-bullet-item {
-            font-size: 0.72rem;
+            font-size: 0.74rem;
             color: #f0f6fc;
-            line-height: 1.3;
+            line-height: 1.4;
+        }
+
+        .no-data {
+            color: #8b949e;
+            font-size: 0.85rem;
+            font-style: italic;
+            text-align: center;
+            padding: 1rem;
         }
     </style>
 </head>
@@ -601,15 +647,42 @@
     <div class="modal-overlay" id="trainingModal">
         <div class="modal-container">
             <div class="modal-header">
-                <h2>Training of Process Matrix</h2>
-                <button class="close-btn" id="closeTrainingModalBtn">Close</button>
+                <h2 id="trainingModalTitle">Training of Process Matrix</h2>
+                <div class="header-buttons">
+                    <button class="back-btn" id="backToHierarchyBtn" style="display: none;">← Back to Departments</button>
+                    <button class="close-btn" id="closeTrainingModalBtn">Close</button>
+                </div>
             </div>
+            
             <div class="training-body">
                 
-                <div class="hierarchy-root">Resale</div>
-                
-                <div class="hierarchy-branches">
+                <!-- LEVEL 1 & 2: HIERARCHICAL BRANCHES GRID (Visible at Start) -->
+                <div id="hierarchyStructure" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                    <div class="hierarchy-root">Training Process</div>
                     
+                    <div class="hierarchy-branches">
+                        <div class="branch-card-node" onclick="showTrainingDetail('resale')">
+                            <h3 style="color: #58a6ff;">Resale</h3>
+                        </div>
+                        <div class="branch-card-node" onclick="showTrainingDetail('hr')">
+                            <h3 style="color: #db6174;">HR</h3>
+                        </div>
+                        <div class="branch-card-node" onclick="showTrainingDetail('system')">
+                            <h3 style="color: #57ab5a;">System</h3>
+                        </div>
+                        <div class="branch-card-node" onclick="showTrainingDetail('finance')">
+                            <h3 style="color: #8957e5;">Finance</h3>
+                        </div>
+                        <div class="branch-card-node" onclick="showTrainingDetail('logistics')">
+                            <h3 style="color: #d29922;">Logistics</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEVEL 3: DETAILED PLATES VIEW (Initially Hidden) -->
+                
+                <!-- Resale Content Container -->
+                <div class="training-detail-view" id="detail-resale">
                     <!-- Part 1 -->
                     <div class="branch-node">
                         <div class="branch-header pillar-resale">1-Store identification & Store visit (CCR)</div>
@@ -619,23 +692,21 @@
                                 <ul class="slide-bullet-list">
                                     <li class="slide-bullet-item">Search for new potential stores in the assigned area.</li>
                                     <li class="slide-bullet-item">Verify store details and business potential.</li>
-                                    <li class="slide-bullet-item">Collect complete store's information as per policy. Like – Geo Tag Location, GST no, Mobile, Complete address.</li>
-                                    <li class="slide-bullet-item">Share details to system team to add in software</li>
+                                    <li class="slide-bullet-item">Collect complete store's information as per policy (Geo Tag Location, GST no, Mobile, Address).</li>
+                                    <li class="slide-bullet-item">Share details to system team to add in software.</li>
                                 </ul>
                             </div>
-                            
                             <div>
-                                <div class="slide-heading-red">Store Visit (CCR- Call Compliance Report) :-</div>
+                                <div class="slide-heading-red">Store Visit (CCR- Call Compliance Report):</div>
                                 <ul class="slide-bullet-list">
                                     <li class="slide-bullet-item">Visit stores as per assigned route plan.</li>
                                     <li class="slide-bullet-item">Check stock availability and discuss product requirements.</li>
-                                    <li class="slide-bullet-item">Resolve customer concerns and handle objection</li>
+                                    <li class="slide-bullet-item">Resolve customer concerns and handle objections.</li>
                                     <li class="slide-bullet-item">Update visit status in the system as per CCR norms.</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-
                     <!-- Part 2 -->
                     <div class="branch-node">
                         <div class="branch-header pillar-system">2-Order Booking (BCP) & Order transfer to Billing</div>
@@ -643,52 +714,86 @@
                             <div>
                                 <div class="slide-heading-red">Order Booking (BCP-Basic Call Procedure):</div>
                                 <ul class="slide-bullet-list">
-                                    <li class="slide-bullet-item">Follow the BCP Step (File attached ) for order taking</li>
-                                    <li class="slide-bullet-item">Verify stock availability</li>
+                                    <li class="slide-bullet-item">Follow the BCP Step for order taking.</li>
+                                    <li class="slide-bullet-item">Verify stock availability.</li>
                                     <li class="slide-bullet-item">Enter orders correctly in the Bizom application only.</li>
-                                    <li class="slide-bullet-item">Confirm order details before submission and also confirm delivery date as per supply plan</li>
+                                    <li class="slide-bullet-item">Confirm order details and delivery date before submission.</li>
                                 </ul>
                             </div>
-                            
                             <div>
-                                <div class="slide-heading-red">Order Transfer to Billing :-</div>
+                                <div class="slide-heading-red">Order Transfer to Billing:</div>
                                 <ul class="slide-bullet-list">
                                     <li class="slide-bullet-item">Verify booked orders.</li>
                                     <li class="slide-bullet-item">Transfer orders to billing on time to branch server via application.</li>
-                                    <li class="slide-bullet-item">Coordinate with billing and logistics teams if any changes required.</li>
+                                    <li class="slide-bullet-item">Coordinate with billing and logistics teams if changes required.</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-
                     <!-- Part 3 -->
                     <div class="branch-node">
-                        <div class="branch-header pillar-logistics">3-Daily review & Monthly Rewiew</div>
+                        <div class="branch-header pillar-logistics">3-Daily review & Monthly Review</div>
                         <div class="branch-content">
                             <div>
                                 <div class="slide-heading-red">Daily Review:</div>
                                 <ul class="slide-bullet-list">
                                     <li class="slide-bullet-item">Review daily sales and visit target performance.</li>
                                     <li class="slide-bullet-item">Check all the stores CCR and pending activities.</li>
-                                    <li class="slide-bullet-item">Discuss challenges , Identifies issues and action plans.</li>
-                                    <li class="slide-bullet-item">Next Day PFD target plan</li>
-                                    <li class="slide-bullet-item">Fill the review book /Tracker summary as per company policy</li>
+                                    <li class="slide-bullet-item">Discuss challenges, identify issues and action plans.</li>
+                                    <li class="slide-bullet-item">Next Day PFD target plan.</li>
+                                    <li class="slide-bullet-item">Fill the review book/Tracker summary as per company policy.</li>
                                 </ul>
                             </div>
-                            
                             <div>
-                                <div class="slide-heading-red">Monthly Review :-</div>
+                                <div class="slide-heading-red">Monthly Review:</div>
                                 <ul class="slide-bullet-list">
-                                    <li class="slide-bullet-item">Mothly review is monthly activity and will be done every month.</li>
-                                    <li class="slide-bullet-item">Monthly review score card format will set as per tracking mechanism.</li>
-                                    <li class="slide-bullet-item">Measures overall focus area and Analyse monthly sales performance.</li>
-                                    <li class="slide-bullet-item">Review target achievement.</li>
-                                    <li class="slide-bullet-item">Discuss market opportunities and challenges.</li>
+                                    <li class="slide-bullet-item">Monthly review scorecard format will set as per tracking mechanism.</li>
+                                    <li class="slide-bullet-item">Measure overall focus area and analyze monthly sales performance.</li>
+                                    <li class="slide-bullet-item">Review target achievement and market opportunities.</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <!-- HR Content Container -->
+                <div class="training-detail-view" id="detail-hr">
+                    <div class="branch-node" style="grid-column: span 3;">
+                        <div class="branch-header pillar-hr">HR Training Management</div>
+                        <div class="branch-content">
+                            <div class="no-data">HR training logs and deployment structure matrices are currently being archived.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Content Container -->
+                <div class="training-detail-view" id="detail-system">
+                    <div class="branch-node" style="grid-column: span 3;">
+                        <div class="branch-header pillar-system">System & Architecture Training</div>
+                        <div class="branch-content">
+                            <div class="no-data">System synchronization error logs and route coverage guidelines processing.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finance Content Container -->
+                <div class="training-detail-view" id="detail-finance">
+                    <div class="branch-node" style="grid-column: span 3;">
+                        <div class="branch-header pillar-finance">Finance & AR Norms Metrics</div>
+                        <div class="branch-content">
+                            <div class="no-data">Credit limit configurations and ledger review rules processing.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logistics Content Container -->
+                <div class="training-detail-view" id="detail-logistics">
+                    <div class="branch-node" style="grid-column: span 3;">
+                        <div class="branch-header pillar-logistics">Logistics & Supply Chain Routes</div>
+                        <div class="branch-content">
+                            <div class="no-data">Inbound plant dispatch mapping templates and cargo verification methods setup.</div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -696,6 +801,7 @@
     </div>
 
     <script>
+        /* --- Line Drawing Engine --- */
         function drawNetworkLines() {
             const title = document.getElementById('main-title').getBoundingClientRect();
             const canvas = document.getElementById('svg-canvas').getBoundingClientRect();
@@ -732,6 +838,7 @@
             }
         }
 
+        /* --- Modals UI Core Logic --- */
         const processModal = document.getElementById('processModal');
         const trainingModal = document.getElementById('trainingModal');
         
@@ -740,21 +847,55 @@
         
         const closeModalBtn = document.getElementById('closeModalBtn');
         const closeTrainingModalBtn = document.getElementById('closeTrainingModalBtn');
+        const backToHierarchyBtn = document.getElementById('backToHierarchyBtn');
+        
+        const hierarchyStructure = document.getElementById('hierarchyStructure');
+        const detailViews = document.querySelectorAll('.training-detail-view');
 
-        operationCard.addEventListener('click', () => {
-            processModal.classList.add('active');
-        });
-        closeModalBtn.addEventListener('click', () => {
-            processModal.classList.remove('active');
-        });
+        // Operations Open/Close
+        operationCard.addEventListener('click', () => processModal.classList.add('active'));
+        closeModalBtn.addEventListener('click', () => processModal.classList.remove('active'));
 
+        // Training Process Open
         trainingCard.addEventListener('click', () => {
+            resetTrainingModalContext();
             trainingModal.classList.add('active');
         });
+
+        // Close Training Portal Completely
         closeTrainingModalBtn.addEventListener('click', () => {
             trainingModal.classList.remove('active');
         });
 
+        // Click Back Button inside Training Modal
+        backToHierarchyBtn.addEventListener('click', resetTrainingModalContext);
+
+        // Handles Drill-down inside Matrix Branches
+        function showTrainingDetail(departmentId) {
+            hierarchyStructure.style.display = 'none';
+            
+            // Hide all lists before bringing up target
+            detailViews.forEach(view => view.style.display = 'none');
+            
+            const targetedView = document.getElementById(`detail-${departmentId}`);
+            if(targetedView) {
+                targetedView.style.display = 'grid';
+            }
+            
+            // UI Modifications
+            document.getElementById('trainingModalTitle').innerText = `Training Process Matrix: ${departmentId.toUpperCase()}`;
+            backToHierarchyBtn.style.display = 'inline-block';
+        }
+
+        // Return Training View back to root level departments list
+        function resetTrainingModalContext() {
+            detailViews.forEach(view => view.style.display = 'none');
+            hierarchyStructure.style.display = 'flex';
+            document.getElementById('trainingModalTitle').innerText = "Training of Process Matrix";
+            backToHierarchyBtn.style.display = 'none';
+        }
+
+        // Escape Key Rule
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 processModal.classList.remove('active');
