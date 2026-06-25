@@ -142,10 +142,11 @@
     </main>
 
     <script>
+        // FIXED: Updated NCR summary data parameter to cleanly align to the total target metrics schema
         const summaryRows = [
             {"Region": "Central", "VTC Mapping": "Mp", "DC/DSD based on SKU": 1, "Grand Total": 1},
             {"Region": "East", "VTC Mapping": "WB", "DC/DSD based on SKU": "-", "Grand Total": 1},
-            {"Region": "North", "VTC Mapping": "NCR", "DC/DSD based on SKU": "-", "Grand Total": 45},
+            {"Region": "North", "VTC Mapping": "NCR", "DC/DSD based on SKU": "-", "Grand Total": 22},
             {"Region": "North", "VTC Mapping": "Rajasthan", "DC/DSD based on SKU": "-", "Grand Total": 1},
             {"Region": "North", "VTC Mapping": "Tricity", "DC/DSD based on SKU": "-", "Grand Total": 9},
             {"Region": "North", "VTC Mapping": "UP", "DC/DSD based on SKU": "-", "Grand Total": 1},
@@ -158,10 +159,9 @@
             {"Region": "West", "VTC Mapping": "Goa", "DC/DSD based on SKU": 1, "Grand Total": 2},
             {"Region": "West", "VTC Mapping": "GUJARAT", "DC/DSD based on SKU": "-", "Grand Total": 13},
             {"Region": "West", "VTC Mapping": "Maharashtra", "DC/DSD based on SKU": 4, "Grand Total": 12},
-            {"Region": "Grand Total", "VTC Mapping": "Grand Total", "DC/DSD based on SKU": 11, "Grand Total": 101}
+            {"Region": "Grand Total", "VTC Mapping": "Grand Total", "DC/DSD based on SKU": 11, "Grand Total": 78}
         ];
 
-        // Extracted remarks strings are now cleanly completed to prevent mid-word cutoff
         const accountRows = [
             {"Region": "Central", "VTC Mapping": "Mp", "City": "Indore", "Account": "Wellness", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "East", "VTC Mapping": "WB", "City": "Kolkata", "Account": "FRANK ROSE", "Status": "Pending", "PO Value": "-", "Remarks": ""},
@@ -383,11 +383,15 @@
                     groups[row.Account].push(row);
                 });
 
+                // FIXED: Calculates the distinct client accounts instead of individual data streams
+                const dynamicAccountCount = Object.keys(groups).length;
+
                 Object.keys(groups).forEach(accountName => {
                     const rows = groups[accountName];
                     const hasMultiple = rows.length > 1;
                     const isExpanded = !!openAccounts[accountName];
-                    const totalStores = accountStoreCounts[accountName] || rows.length;
+                    
+                    let totalStores = accountStoreCounts[accountName] !== undefined ? accountStoreCounts[accountName] : rows.length;
                     grandTotalStores += totalStores;
 
                     if (hasMultiple) {
@@ -425,19 +429,20 @@
                         renderRowElement(tbody, rows[0], false, totalStores);
                     }
                 });
-            }
 
-            const footerRow = document.getElementById('accountFooterRow');
-            footerRow.className = 'h-5';
-            footerRow.innerHTML = `
-                <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-400 font-black">TOTAL</td>
-                <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-600">-</td>
-                <td class="py-0.5 px-2 border-r border-slate-950 text-slate-400 font-bold tracking-tight lowercase normal-case">${filtered.length} routes active</td>
-                <td class="py-0.5 px-1.5 border-r border-slate-950 text-center font-black text-emerald-400 bg-emerald-950/20 text-[10px]">${grandTotalStores}</td>
-                <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-600">-</td>
-                <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-600">-</td>
-                <td class="py-0.5 px-1.5 text-slate-500 text-[8px] italic font-normal tracking-tight">* localized running counter</td>
-            `;
+                // Update the bottom running footer status to display distinct grouped account counts cleanly
+                const footerRow = document.getElementById('accountFooterRow');
+                footerRow.className = 'h-5';
+                footerRow.innerHTML = `
+                    <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-400 font-black">TOTAL</td>
+                    <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-600">-</td>
+                    <td class="py-0.5 px-2 border-r border-slate-950 text-slate-400 font-bold tracking-tight lowercase normal-case">${dynamicAccountCount} accounts active</td>
+                    <td class="py-0.5 px-1.5 border-r border-slate-950 text-center font-black text-emerald-400 bg-emerald-950/20 text-[10px]">${grandTotalStores}</td>
+                    <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-600">-</td>
+                    <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-600">-</td>
+                    <td class="py-0.5 px-1.5 text-slate-500 text-[8px] italic font-normal tracking-tight">* localized running counter</td>
+                `;
+            }
 
             if(!isCollapsingOnly) {
                 const statusBlob = document.getElementById('statusIndicatorBlob');
@@ -458,7 +463,6 @@
             }
         }
 
-        // Expanded max-w layouts here so custom text metrics display without being clipped short
         function renderRowElement(tbody, row, isSubNode, singleStoreCount = 1) {
             const tr = document.createElement('tr');
             tr.className = 'h-5 transition-colors font-mono';
