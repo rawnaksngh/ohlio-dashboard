@@ -42,7 +42,6 @@
             flex-direction: column; 
             padding: 30px 16px; 
             z-index: 1000;
-            /* Will-change hints the TV GPU to paint this panel onto its own layer */
             will-change: width;
             transition: width 0.15s ease-out;
         }
@@ -74,7 +73,7 @@
         }
 
         main { 
-            flex: 62; /* Absolute ratio calculation bypasses flexible layout shifts */
+            flex: 62; 
             padding: 35px 40px; 
             display: flex; 
             flex-direction: column; 
@@ -126,11 +125,88 @@
         .pop-close { cursor: pointer; float: right; color: var(--neon-red); font-size: 1.2rem; }
         .pop-item { font-size: 0.75rem; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ffbaba; }
 
+        /* --- EXPANDED HIGH-CAPACITY MODAL POPUP FOR MOM DATA --- */
+        #notesPop {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 45%;
+            transform: translate(-50%, -50%);
+            width: 88%;
+            max-width: 820px;
+            height: 82vh;
+            background: #0b0f12;
+            border: 1px solid var(--neon-purple);
+            border-radius: 16px;
+            padding: 30px;
+            z-index: 3000;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+            display: none;
+            flex-direction: column;
+        }
+        .notes-pop-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+        }
+        .notes-pop-close { 
+            cursor: pointer; 
+            color: #ffffff; 
+            background: rgba(175, 82, 222, 0.15);
+            border: 1px solid var(--neon-purple);
+            font-size: 0.8rem; 
+            font-weight: 900; 
+            padding: 5px 14px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+        .notes-pop-close:hover {
+            background: var(--neon-purple);
+            color: #000;
+        }
+        .notes-header-meta { font-size: 0.75rem; color: var(--neon-purple); text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; margin-top: 4px; }
+        
+        .notes-scroll-container {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        .notes-grid-layout {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .notes-full-row {
+            grid-column: span 2;
+        }
+        .notes-card-block {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 16px;
+        }
+        .notes-section-title { 
+            font-size: 0.85rem; 
+            color: var(--neon-purple); 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            font-weight: 800; 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .notes-body p { font-size: 0.82rem; color: #cccccc; line-height: 1.45; margin-bottom: 8px; }
+        .notes-body ul { margin-left: 18px; margin-top: 4px; margin-bottom: 4px; }
+        .notes-body li { font-size: 0.8rem; color: #a5b0b8; margin-bottom: 4px; line-height: 1.4; }
+
         /* --- ZERO-JS ACCORDIONS (PURE CSS CLICK Toggle) --- */
         .accordion-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
         .acc-card { background: var(--card-solid); border: 1px solid var(--border-crisp); border-radius: 12px; }
         
-        /* Using hidden checkboxes allows instant toggle without calling UI layout repaint scripts */
         .acc-trigger { display: none; }
         .acc-header { padding: 14px 22px; display: flex; align-items: center; cursor: pointer; }
         .acc-header h2 { font-size: 0.85rem; text-transform: uppercase; color: #aaaaaa; margin-left: 15px; flex-grow: 1; }
@@ -157,7 +233,7 @@
         .link-item b { font-size: 0.8rem; display: block; }
         .link-item i { font-size: 0.65rem; color: #666666; font-style: normal; display: block; }
 
-        /* --- STATIC METRICS (NO RE-RASTERIZING SHADOWS) --- */
+        /* --- STATIC METRICS --- */
         .metrics-heading { font-size: 0.8rem; text-transform: uppercase; color: var(--neon-cyan); font-weight: 800; }
         .charts-container { display: flex; flex-direction: column; gap: 10px; }
         
@@ -178,7 +254,7 @@
         .pin-cyan { color: var(--neon-cyan); }
         .pin-orange { color: var(--neon-orange); }
         .pin-purple { color: var(--neon-purple); }
-        .future-pin { display: none; } /* Drop hidden pins entirely from execution tree */
+        .future-pin { display: none; }
 
         .chart-bottom-data { display: flex; justify-content: space-between; font-size: 0.72rem; color: #666666; }
         .chart-bottom-data span.hl-val { font-weight: 700; color: #ffffff; }
@@ -199,13 +275,17 @@
             text-decoration: none;
             color: white;
             min-height: 52px;
+            cursor: pointer;
         }
         .full-width-card { grid-column: span 2; }
         
         .glass-card-link.plan-primary-highlight { border-color: var(--neon-orange); background: rgba(255, 149, 0, 0.05); }
         .glass-card-link.plan-primary-highlight h4 { color: #fff; font-weight: 900; }
+        .glass-card-link.notes-purple-highlight { border-color: var(--neon-purple); background: rgba(175, 82, 222, 0.04); }
+        .glass-card-link.notes-purple-highlight h4 { color: var(--neon-purple); font-weight: 800; }
         .glass-card-link.milestone-accent:hover { border-color: var(--neon-cyan); }
         .glass-card-link.deadline-accent:hover { border-color: var(--neon-red); }
+        .glass-card-link.notes-purple-highlight:hover { background: rgba(175, 82, 222, 0.08); }
 
         .glass-card-text { min-width: 0; flex-grow: 1; }
         .glass-card-text h4 { font-size: 0.78rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -265,6 +345,83 @@
                 <div class="pop-item">Staff Recruitment (+2) - 15 May</div>
                 <div class="pop-item">Store Merchandisers - 20 May</div>
                 <div class="pop-item">Hire Remaining Staff - 25 May</div>
+            </div>
+
+            <!-- BIG HIGH-CAPACITY MODAL POPUP FOR ALL MoM DATA -->
+            <div id="notesPop">
+                <div class="notes-pop-top-bar">
+                    <div>
+                        <h2 style="font-size: 1.3rem; color: #fff; font-weight: 900;">Meeting Minutes (MoM)</h2>
+                        <div class="notes-header-meta">Date: 12 June 2026 &nbsp;|&nbsp; Duration: ~75 Minutes &nbsp;|&nbsp; Topic: Distribution, Store Expansion, Packaging, Sampling & Sales</div>
+                    </div>
+                    <span class="notes-pop-close" onclick="toggleNotes()">Close Terminal ×</span>
+                </div>
+                
+                <div class="notes-scroll-container notes-body">
+                    <div class="notes-grid-layout">
+                        
+                        <!-- Section 1 -->
+                        <div class="notes-card-block">
+                            <div class="notes-section-title">1. Store Listing & Expansion</div>
+                            <p>Discussion around current store presence and future expansion profiles. Special operational emphasis on execution loops within Delhi NCR listings.</p>
+                            <p>Team comprehensively reviewed total market potential stores versus currently active listings:</p>
+                            <ul>
+                               <li>Total target stores: approximately 22</li>
+                               <li>Currently active/listed: 4 stores</li>
+                            </ul>
+                            <p style="color:var(--neon-orange); font-weight:700;">Action: Footprint must be increased significantly.</p>
+                        </div>
+
+                        <!-- Section 2 -->
+                        <div class="notes-card-block">
+                            <div class="notes-section-title">2. Sales Targets & Account Coverage</div>
+                            <p>Deep dive into rigorous numerical pipelines and strategic store outreach plans:</p>
+                            <ul>
+                               <li>Targeting profile maps out 45 core stores/accounts.</li>
+                               <li>Progress velocity is tracked by specific numerical outputs and live store indexing counts.</li>
+                            </ul>
+                            <p>Management explicitly emphasized that performance discussions should remain strictly data-driven.</p>
+                        </div>
+
+                        <!-- Section 4 -->
+                        <div class="notes-card-block">
+                            <div class="notes-section-title">4. Sampling Program Execution</div>
+                            <p>Sampling strategies were evaluated exhaustively. Feedback received states that current baseline field performance is not fully satisfactory.</p>
+                            <p>Mandated critical tactical upgrades:</p>
+                            <ul>
+                               <li>Improve visual presentation parameters of sample assets.</li>
+                               <li>Enforce correct product assembly rules and deployment displays.</li>
+                               <li>Utilize sampling explicitly to trigger consumer trial and trial-to-purchase metrics.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Section 5 -->
+                        <div class="notes-card-block">
+                            <div class="notes-section-title">5. Supply Chain & Product Availability</div>
+                            <p>Granular evaluation regarding product supply chains and distribution safety networks.</p>
+                            <p>Operational concerns were flagged: localized supply blockades or constraint points could negatively impact immediate-term execution numbers. Requirement tracking must immediately realign with actual consumer demand projections.</p>
+                        </div>
+
+                        <!-- Section 6 -->
+                        <div class="notes-card-block">
+                            <div class="notes-section-title">6. Quick Commerce Opportunity Window</div>
+                            <p>Quick Commerce integration paths reviewed as an alpha-priority growth pipeline. Operational requirements:</p>
+                            <ul>
+                               <li>Evaluate listing mechanics and timeline feasibilities.</li>
+                               <li>Confirm unit economics data margins and target profitability sheets.</li>
+                               <li>Optimize specialized channel packaging formats and exclusive delivery promotions.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Section 7 -->
+                        <div class="notes-card-block">
+                            <div class="notes-section-title">7. Brand Visibility & Promotion</div>
+                            <p>Strategic overview of public facing displays and brand presence configurations.</p>
+                            <p>Strict structural rule established: Promotional events must feel native and luxury aligned. Avoid making campaigns look like overt, traditional advertising. Focus instead on dominant, organic in-store visibility enhancements.</p>
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
             <header>
@@ -338,14 +495,14 @@
                     <div class="mini-chart-card">
                         <div class="chart-top-bar">
                             <span class="chart-title-lbl">Value MTD</span>
-                            <span class="chart-pct-badge" style="color:var(--neon-cyan);">61.5%</span>
+                            <span class="chart-pct-badge" style="color:var(--neon-cyan);">65.5%</span>
                         </div>
                         <div class="compact-track">
-                            <div class="compact-fill" style="width:61.5%; background:var(--neon-cyan);"></div>
+                            <div class="compact-fill" style="width:65.5%; background:var(--neon-cyan);"></div>
                             <div class="milestone-pin pin-cyan" style="left:49%;">📍10L</div>
                         </div>
                         <div class="chart-bottom-data">
-                            <div>Achieved: <span class="hl-val">12.30 Lakhs</span></div>
+                            <div>Achieved: <span class="hl-val">13.10 Lakhs</span></div>
                             <div>Target: <span>20.00 Lakhs</span></div>
                         </div>
                     </div>
@@ -353,14 +510,14 @@
                     <div class="mini-chart-card">
                         <div class="chart-top-bar">
                             <span class="chart-title-lbl">Coverage MTD</span>
-                            <span class="chart-pct-badge" style="color:var(--neon-orange);">45.4%</span>
+                            <span class="chart-pct-badge" style="color:var(--neon-orange);">51.0%</span>
                         </div>
                         <div class="compact-track">
-                            <div class="compact-fill" style="width:45.4%; background:var(--neon-orange);"></div>
+                            <div class="compact-fill" style="width:51.0%; background:var(--neon-orange);"></div>
                             <div class="milestone-pin pin-orange" style="left:38%;">📍200</div>
                         </div>
                         <div class="chart-bottom-data">
-                            <div>Achieved: <span class="hl-val">227 Stores</span></div>
+                            <div>Achieved: <span class="hl-val">255 Stores</span></div>
                             <div>Target: <span>500 Stores</span></div>
                         </div>
                     </div>
@@ -368,14 +525,14 @@
                     <div class="mini-chart-card">
                         <div class="chart-top-bar">
                             <span class="chart-title-lbl">Volume MTD</span>
-                            <span class="chart-pct-badge" style="color:var(--neon-purple);">90.9%</span>
+                            <span class="chart-pct-badge" style="color:var(--neon-purple);">96.7%</span>
                         </div>
                         <div class="compact-track">
-                            <div class="compact-fill" style="width:90.9%; background:var(--neon-purple);"></div>
+                            <div class="compact-fill" style="width:96.7%; background:var(--neon-purple);"></div>
                             <div class="milestone-pin pin-purple" style="left:74%;">📍15K</div>
                         </div>
                         <div class="chart-bottom-data">
-                            <div>Achieved: <span class="hl-val">18,180 Pcs</span></div>
+                            <div>Achieved: <span class="hl-val">19,332 Pcs</span></div>
                             <div>Target: <span>20,000 Pcs</span></div>
                         </div>
                     </div>
@@ -392,6 +549,16 @@
                         </div>
                         <span class="glass-card-arrow">→</span>
                     </a>
+                    
+                    <!-- MEETING NOTES INTERACTIVE TRIGGER -->
+                    <div class="glass-card-link full-width-card notes-purple-highlight" onclick="toggleNotes()">
+                        <div class="glass-card-text">
+                            <h4>Last Meeting Notes</h4>
+                            <p>MoM 12 June: Store footprints, Q-Commerce & expansion</p>
+                        </div>
+                        <span class="glass-card-arrow">📝</span>
+                    </div>
+
                     <a href="TASKS.html" class="glass-card-link milestone-accent">
                         <div class="glass-card-text">
                             <h4>Milestone 100cr</h4>
@@ -415,6 +582,11 @@
         function toggleDeadlines() {
             var pop = document.getElementById('deadlinePop');
             pop.style.display = (pop.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function toggleNotes() {
+            var notesPop = document.getElementById('notesPop');
+            notesPop.style.display = (notesPop.style.display === 'flex') ? 'none' : 'flex';
         }
     </script>
 </body>
