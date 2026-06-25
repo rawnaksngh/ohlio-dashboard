@@ -140,7 +140,7 @@
             position: absolute; 
             left: 0; 
             height: 100%; 
-            width: 0%; /* Zero progress for pending tracks */
+            width: 0%; 
             background: linear-gradient(90deg, var(--accent), var(--success)); 
             border-radius: 3px; 
         }
@@ -226,8 +226,7 @@
     <a href="home.html" class="home-btn">HOME</a>
 
     <div class="mtd-container">
-        <div style="text-align:center; padding:10px; font-weight:800; color:var(--pending); font-size:0.8rem; border-bottom:1px solid var(--border)">GUJARAT
- MTD SUMMARY</div>
+        <div style="text-align:center; padding:10px; font-weight:800; color:var(--pending); font-size:0.8rem; border-bottom:1px solid var(--border)">GUJARAT MTD SUMMARY</div>
         <div class="mtd-grid">
             <div class="mtd-head-cell">Call Plan</div><div class="mtd-head-cell">Visited</div><div class="mtd-head-cell">Visit %</div><div class="mtd-head-cell">Billed</div><div class="mtd-head-cell">Billed %</div><div class="mtd-head-cell">Cases</div><div class="mtd-head-cell">Value</div>
             <div class="mtd-body-cell">0</div><div class="mtd-body-cell" style="color:var(--accent)">0</div><div class="mtd-body-cell">0%</div><div class="mtd-body-cell" style="color:var(--success)">0</div><div class="mtd-body-cell">0%</div><div class="mtd-body-cell">0.00</div><div class="mtd-body-cell">0.00</div>
@@ -236,19 +235,18 @@
 
     <div class="sections-container">
         
-        <!-- 1. Activation Roadmap -->
         <div class="dashboard-row roadmap-row">
             <div class="row-header">
                 <div class="row-title title-activation">1. GUJARAT Activation Roadmap</div>
-                <div class="row-status" style="color: var(--pending);">0%</div>
+                <div class="row-status" style="color: var(--warning);">40%</div>
             </div>
             
             <div class="track-container">
-                <div class="track-progress"></div>
-                <div class="checkpoint status-pending"><div class="task-card">Initiate</div><div class="node-pulse">!</div></div>
-                <div class="checkpoint status-pending"><div class="task-card">Soft Launch First 50 Stores</div><div class="node-pulse">!</div></div>
-                <div class="checkpoint status-pending"><div class="task-card">Store Identification</div><div class="node-pulse">!</div></div>
-                <div class="checkpoint status-pending"><div class="task-card">DRCP Finalization (CCR, Right Store)</div><div class="node-pulse">!</div></div>
+                <div class="track-progress" style="width: 40%;"></div>
+                <div class="checkpoint status-done"><div class="task-card">Initiate</div><div class="node-pulse">✓</div></div>
+                <div class="checkpoint status-done"><div class="task-card">Soft Launch First 50 Stores</div><div class="node-pulse">✓</div></div>
+                <div class="checkpoint status-done"><div class="task-card">Store Identification</div><div class="node-pulse">✓</div></div>
+                <div class="checkpoint status-done"><div class="task-card">DRCP Finalization (CCR, Right Store)</div><div class="node-pulse">✓</div></div>
                 <div class="checkpoint status-pending"><div class="task-card">MR / Regional Listing</div><div class="node-pulse">!</div></div>
                 <div class="checkpoint status-pending"><div class="task-card">MR / Regional Selling</div><div class="node-pulse">!</div></div>
                 <div class="checkpoint status-pending"><div class="task-card">MR / National Listing</div><div class="node-pulse">!</div></div>
@@ -258,22 +256,20 @@
             </div>
         </div>
 
-        <!-- 2. OPS Metrics -->
         <div class="dashboard-row roadmap-row">
             <div class="row-header">
                 <div class="row-title title-ops">2. OPS Metrics</div>
-                <div class="row-status" style="color: var(--pending);">0%</div>
+                <div class="row-status" style="color: var(--success);">100%</div>
             </div>
 
             <div class="track-container">
-                <div class="track-progress"></div>
-                <div class="checkpoint status-pending"><div class="task-card">Manpower</div><div class="node-pulse">!</div></div>
-                <div class="checkpoint status-pending"><div class="task-card">Warehouse</div><div class="node-pulse">!</div></div>
-                <div class="checkpoint status-pending"><div class="task-card">Logistics</div><div class="node-pulse">!</div></div>
+                <div class="track-progress" style="width: 100%;"></div>
+                <div class="checkpoint status-done"><div class="task-card">Manpower</div><div class="node-pulse">✓</div></div>
+                <div class="checkpoint status-done"><div class="task-card">Warehouse</div><div class="node-pulse">✓</div></div>
+                <div class="checkpoint status-done"><div class="task-card">Logistics</div><div class="node-pulse">✓</div></div>
             </div>
         </div>
 
-        <!-- 3. Offtake Overview -->
         <div class="dashboard-row roadmap-row">
             <div class="row-header">
                 <div class="row-title title-offtake">3. Offtake Overview</div>
@@ -289,7 +285,6 @@
                 <div class="checkpoint status-pending"><div class="task-card">Standee Out</div><div class="node-pulse">!</div></div>
             </div>
         </div>
-
 
     </div>
 
