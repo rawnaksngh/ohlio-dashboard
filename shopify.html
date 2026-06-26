@@ -3,395 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopify Pipeline | Oli Ohh</title>
+    <title>Oli Ohh - Shopify Performance Dashboard</title>
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.04);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --ios-cyan: #00ffd5;
-            --ios-purple: #af52de;
-            --shopify-green: #96bf48;
-            --text-muted: rgba(255, 255, 255, 0.5);
-            --glow: rgba(0, 255, 213, 0.25);
+            --bg-color: #0f1115;
+            --card-bg: #1a1d24;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-green: #10b981;
+            --blue-traffic: #00aeef;
+            --purple-traffic: #6f42c1;
+            --organic-traffic: #4285f4;
+            --border-color: #2e3440;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; }
-
-        body {            
-            background: 
-                radial-gradient(at 0% 100%, rgba(15, 32, 39, 1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, rgba(44, 83, 100, 0.8) 0, transparent 50%), 
-                #0b0e11; 
-            color: white; 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            overflow-x: hidden;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* --- MARQUEE TAPE --- */
-        .marquee-container {
-            width: 100%;
-            background: rgba(150, 191, 72, 0.08);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 10px 0;
-            overflow: hidden;
-            white-space: nowrap;
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 2rem;
+            min-height: 100vh;
         }
 
-        .marquee-content {
-            display: inline-block;
-            animation: marquee 25s linear infinite;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--shopify-green);
-            font-size: 0.8rem;
-        }
-
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        /* --- NAVIGATION --- */
-        nav { 
-            width: 100%; 
-            padding: 20px 30px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            backdrop-filter: blur(20px); 
-            border-bottom: 1px solid var(--glass-border); 
-        }
-        
-        .nav-logo { 
-            font-weight: 700; 
-            color: #ffffff; 
-            text-transform: uppercase; 
-            text-decoration: none; 
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            border: 1px solid var(--glass-border);
-            padding: 8px 16px;
-            border-radius: 20px;
-            background: var(--glass);
-            transition: 0.3s;
-        }
-        .nav-logo:hover {
-            border-color: var(--shopify-green);
-            color: var(--shopify-green);
-            box-shadow: 0 0 15px rgba(150, 191, 72, 0.2);
-        }
-
-        .live-status-pill {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0, 255, 213, 0.1);
-            border: 1px solid rgba(0, 255, 213, 0.3);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: var(--ios-cyan);
-            text-transform: uppercase;
-        }
-
-        .live-dot {
-            width: 6px;
-            height: 6px;
-            background-color: var(--ios-cyan);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--ios-cyan);
-            animation: pulse 1.5s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.9); opacity: 0.6; }
-            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 12px var(--ios-cyan); }
-            100% { transform: scale(0.9); opacity: 0.6; }
-        }
-
-        /* --- CONTENT MAIN LAYOUT --- */
-        .content-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 90%;
-            max-width: 650px;
-            padding: 40px 0;
-        }
-
-        .glass-panel {
-            background: var(--glass);
-            backdrop-filter: blur(30px);
-            border: 1px solid var(--glass-border);
-            border-radius: 32px;
-            padding: 40px;
-            width: 100%;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(180deg, #ffffff 30%, var(--shopify-green) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 30px;
-        }
-
-        /* --- PIPELINE FLOW ARCHITECTURE --- */
-        .pipeline-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-        }
-
-        .pipeline-node {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
-            padding: 18px 24px;
+        /* Top Navigation / Home Button */
+        .nav-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
         }
 
-        .node-content {
-            display: flex;
+        .home-btn {
+            display: inline-flex;
             align-items: center;
-            gap: 16px;
-            text-align: left;
+            gap: 0.5rem;
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-weight: 500;
+            transition: all 0.2s ease;
         }
 
-        .node-number {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            background: rgba(255, 255, 255, 0.05);
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .home-btn:hover {
+            background-color: #242933;
+            border-color: var(--text-muted);
         }
 
-        .node-text {
-            font-size: 1rem;
+        .dashboard-title {
+            font-size: 1.5rem;
             font-weight: 600;
-            letter-spacing: 0.3px;
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--text-main);
         }
 
-        .node-system-badge {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 1px;
-            padding: 4px 10px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-muted);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        /* Main Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
-        /* Highlight Variants */
-        .pipeline-node.highlight-shopify {
-            border-color: rgba(150, 191, 72, 0.3);
-            background: rgba(150, 191, 72, 0.03);
-        }
-        .pipeline-node.highlight-shopify .node-system-badge {
-            color: var(--shopify-green);
-            background: rgba(150, 191, 72, 0.12);
-            border-color: rgba(150, 191, 72, 0.2);
+        .sub-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
         }
 
-        .pipeline-node.highlight-cyan {
-            border-color: rgba(0, 255, 213, 0.3);
-            background: rgba(0, 255, 213, 0.03);
-        }
-        .pipeline-node.highlight-cyan .node-system-badge {
-            color: var(--ios-cyan);
-            background: rgba(0, 255, 213, 0.12);
-            border-color: rgba(0, 255, 213, 0.2);
-        }
-
-        /* Hover States */
-        .pipeline-node:hover {
-            transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        /* --- FLOW ARROWS --- */
-        .pipeline-arrow {
-            height: 32px;
-            width: 2px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.02) 100%);
+        /* Card Styling */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
             position: relative;
-            margin: 2px 0;
         }
 
-        .pipeline-arrow::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            border-left: 4px solid transparent;
-            border-right: 4px solid transparent;
-            border-top: 5px solid rgba(255, 255, 255, 0.15);
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
         }
 
-        @media (max-width: 500px) {
-            .glass-panel { padding: 24px; }
-            .node-text { font-size: 0.9rem; }
-            .node-system-badge { font-size: 0.6rem; padding: 3px 6px; }
+        .card-title {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .metric-large {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-sub {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .metric-sub strong {
+            color: var(--text-main);
+        }
+
+        /* Custom Visuals from image_c77c45.png */
+        .trend-badge {
+            color: var(--accent-green);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        /* Traffic Breakdown Visualization Bar */
+        .traffic-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .traffic-stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .stat-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .stat-val {
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding-left: 1rem;
+        }
+
+        .traffic-bar {
+            display: flex;
+            height: 45px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .bar-segment {
+            height: 100%;
+        }
+
+        /* Channel specific icon styling replacements */
+        .channel-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .sub-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sub-grid {
+                grid-template-columns: 1fr;
+            }
+            body {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="marquee-container">
-        <div class="marquee-content">
-            📦 AUTOMATED FULFILLMENT SYSTEMS • SHOPIFY HUB ACTIVE • REAL-TIME NIMBUSPOST SYNC • INSTANT SETTLEMENT PIPELINE •
-        </div>
+    <!-- Left Top-Most Navigation Link -->
+    <div class="nav-container">
+        <a href="home.html" class="home-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Home
+        </a>
+        <div class="dashboard-title">Oli Ohh Analytics</div>
+        <div style="color: var(--text-muted); font-size: 0.9rem;">Last 30 days</div>
     </div>
 
-    <nav>
-        <a href="home.html" class="nav-logo">🏠 Home</a>
-        <div class="live-status-pill">
-            <div class="live-dot"></div>
-            System Live
-        </div>
-    </nav>
-
-    <div class="content-wrapper">
-        <div class="glass-panel">
+    <!-- Main Section (Top Two Row Cards) -->
+    <div class="dashboard-grid">
+        
+        <!-- Sales Attributed to Marketing (FIXED VALUE) -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title" style="border-bottom: 1px dashed var(--text-muted);">Sales attributed to marketing</span>
+                <span class="trend-badge">↗ 2K%</span>
+            </div>
+            <div class="metric-large">₹6,983.20</div>
+            <div class="metric-sub">of <strong>₹7,575.50</strong> total store sales</div>
             
-            <h1>Shopify Order Engine</h1>
+            <!-- Simulated Mini Area Chart Line -->
+            <div style="margin-top: 2rem; height: 40px; border-bottom: 2px dotted #2e3440; position: relative; overflow: hidden;">
+                <svg width="100%" height="100%" viewBox="0 0 100 20" preserveAspectRatio="none" style="position: absolute; bottom: 0;">
+                    <path d="M0,19 Q40,19 75,18 T85,2 T95,10 T100,6" fill="none" stroke="#00aeef" stroke-width="1.5"></path>
+                </svg>
+            </div>
+        </div>
 
-            <div class="pipeline-container">
-                
-                <div class="pipeline-node">
-                    <div class="node-content">
-                        <span class="node-number">01</span>
-                        <span class="node-text">Customer Visits Website</span>
-                    </div>
-                    <span class="node-system-badge">Storefront</span>
+        <!-- Sessions by Traffic Type -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title" style="border-bottom: 1px dashed var(--text-muted);">Sessions by traffic type</span>
+            </div>
+            
+            <div class="traffic-stats">
+                <div class="traffic-stat-item">
+                    <span class="stat-label"><span class="dot" style="background-color: var(--blue-traffic);"></span>Unknown</span>
+                    <span class="stat-val">1,492</span>
                 </div>
-
-                <div class="pipeline-arrow"></div>
-
-                <div class="pipeline-node">
-                    <div class="node-content">
-                        <span class="node-number">02</span>
-                        <span class="node-text">Places Order</span>
-                    </div>
-                    <span class="node-system-badge">Checkout</span>
+                <div class="traffic-stat-item">
+                    <span class="stat-label"><span class="dot" style="background-color: var(--purple-traffic);"></span>Direct</span>
+                    <span class="stat-val">399</span>
                 </div>
-
-                <div class="pipeline-arrow"></div>
-
-                <div class="pipeline-node highlight-cyan">
-                    <div class="node-content">
-                        <span class="node-number">03</span>
-                        <span class="node-text">Payment via Razorpay / COD</span>
-                    </div>
-                    <span class="node-system-badge">Gateway</span>
+                <div class="traffic-stat-item">
+                    <span class="stat-label"><span class="dot" style="background-color: var(--organic-traffic);"></span>Organic</span>
+                    <span class="stat-val">331</span>
                 </div>
-
-                <div class="pipeline-arrow"></div>
-
-                <div class="pipeline-node highlight-shopify">
-                    <div class="node-content">
-                        <span class="node-number">04</span>
-                        <span class="node-text">Order Created in Shopify</span>
-                    </div>
-                    <span class="node-system-badge">ERP Core</span>
-                </div>
-
-                <div class="pipeline-arrow"></div>
-
-                <div class="pipeline-node highlight-cyan">
-                    <div class="node-content">
-                        <span class="node-number">05</span>
-                        <span class="node-text">Order Syncs to NimbusPost</span>
-                    </div>
-                    <span class="node-system-badge">Logistics API</span>
-                </div>
-
-                <div class="pipeline-arrow"></div>
-
-                <div class="pipeline-node">
-                    <div class="node-content">
-                        <span class="node-number">06</span>
-                        <span class="node-text">Shipping Label Generated</span>
-                    </div>
-                    <span class="node-system-badge">Automation</span>
-                </div>
-
-                <div class="pipeline-arrow"></div>
-
-                <div class="pipeline-node">
-                    <div class="node-content">
-                        <span class="node-number">07</span>
-                        <span class="node-text">Courier Pickup</span>
-                    </div>
-                    <span class="node-system-badge">Transit Init</span>
-                </div>
-
-                <div class="pipeline-arrow"></div>
-
-                <div class="pipeline-node highlight-cyan">
-                    <div class="node-content">
-                        <span class="node-number">08</span>
-                        <span class="node-text">Tracking Updates Sent</span>
-                    </div>
-                    <span class="node-system-badge">SMS / Email</span>
-                </div>
-
-                <div class="pipeline-arrow"></div>
-
-                <div class="pipeline-node highlight-shopify">
-                    <div class="node-content">
-                        <span class="node-number">09</span>
-                        <span class="node-text">Delivered to Customer</span>
-                    </div>
-                    <span class="node-system-badge">Success</span>
-                </div>
-
-                <div class="pipeline-arrow"></div>
-
-                <div class="pipeline-node" style="border-color: rgba(175, 82, 222, 0.3); background: rgba(175, 82, 222, 0.03);">
-                    <div class="node-content">
-                        <span class="node-number" style="color: var(--ios-purple);">10</span>
-                        <span class="node-text">Payment Settlement Received</span>
-                    </div>
-                    <span class="node-system-badge" style="color: var(--ios-purple); background: rgba(175, 82, 222, 0.12); border-color: rgba(175, 82, 222, 0.2);">Finance</span>
-                </div>
-
             </div>
 
+            <!-- Visualization Bar Segment percentages calibrated to data -->
+            <div class="traffic-bar">
+                <div class="bar-segment" style="width: 67.1%; background-color: var(--blue-traffic); margin-right: 2px;"></div>
+                <div class="bar-segment" style="width: 17.9%; background-color: var(--purple-traffic); margin-right: 2px;"></div>
+                <div class="bar-segment" style="width: 15%; background-color: var(--organic-traffic);"></div>
+            </div>
         </div>
+
+    </div>
+
+    <!-- Sub-Section (Four Channel Breakdown Grid) -->
+    <div class="sub-grid">
+        
+        <!-- Instagram Card -->
+        <div class="card">
+            <div class="card-header">
+                <div class="channel-header">
+                    <span style="color: #e1306c; font-weight: bold; font-size: 1.1rem;">📸</span>
+                    <span class="card-title" style="border-bottom: 1px dashed var(--text-muted);">Instagram</span>
+                </div>
+                <span class="metric-sub">1,506 sessions</span>
+            </div>
+            <div class="metric-large" style="margin-top: 1.5rem; font-size: 1.6rem;">₹5,791.30</div>
+            <div class="metric-sub">Order value for <strong>25 orders</strong> at <strong>1.66%</strong> conversion rate.</div>
+        </div>
+
+        <!-- Google Search Card -->
+        <div class="card">
+            <div class="card-header">
+                <div class="channel-header">
+                    <span style="color: #4285f4; font-weight: bold; font-size: 1.1rem;">G</span>
+                    <span class="card-title" style="border-bottom: 1px dashed var(--text-muted);">Google Search</span>
+                </div>
+                <span class="metric-sub">317 sessions</span>
+            </div>
+            <div class="metric-large" style="margin-top: 1.5rem; font-size: 1.6rem;">₹1,191.90</div>
+            <div class="metric-sub">Order value for <strong>6 orders</strong> at <strong>1.89%</strong> conversion rate.</div>
+        </div>
+
+        <!-- Direct Card -->
+        <div class="card">
+            <div class="card-header">
+                <div class="channel-header">
+                    <span style="color: var(--purple-traffic); font-weight: bold; font-size: 1.1rem;">🏠</span>
+                    <span class="card-title" style="border-bottom: 1px dashed var(--text-muted);">Direct</span>
+                </div>
+                <span class="metric-sub">401 sessions</span>
+            </div>
+            <div class="metric-large" style="margin-top: 1.5rem; font-size: 1.6rem;">₹395.20</div>
+            <div class="metric-sub">Order value for <strong>2 orders</strong> at <strong>0.49%</strong> conversion rate.</div>
+        </div>
+
+        <!-- Bing Card -->
+        <div class="card">
+            <div class="card-header">
+                <div class="channel-header">
+                    <span style="color: #008080; font-weight: bold; font-size: 1.1rem;">b</span>
+                    <span class="card-title" style="border-bottom: 1px dashed var(--text-muted);">Bing</span>
+                </div>
+                <span class="metric-sub">12 sessions</span>
+            </div>
+            <div class="metric-large" style="margin-top: 3.5rem; font-size: 1.6rem;">₹0.00</div>
+        </div>
+
     </div>
 
 </body>
