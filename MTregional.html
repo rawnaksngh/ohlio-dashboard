@@ -132,7 +132,7 @@
                         <tfoot class="sticky bottom-0 bg-slate-900 border-t border-slate-700 text-slate-100 font-bold z-10 shadow-[0_-2px_6px_rgba(0,0,0,0.6)]">
                             <tr id="accountFooterRow">
                             </tr>
-                        </tfoot>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -142,24 +142,23 @@
     </main>
 
     <script>
-        // FIXED: Updated NCR summary data parameter to cleanly align to the total target metrics schema
         const summaryRows = [
-            {"Region": "Central", "VTC Mapping": "Mp", "DC/DSD based on SKU": 1, "Grand Total": 1},
-            {"Region": "East", "VTC Mapping": "WB", "DC/DSD based on SKU": "-", "Grand Total": 1},
-            {"Region": "North", "VTC Mapping": "NCR", "DC/DSD based on SKU": "-", "Grand Total": 22},
-            {"Region": "North", "VTC Mapping": "Rajasthan", "DC/DSD based on SKU": "-", "Grand Total": 1},
-            {"Region": "North", "VTC Mapping": "Tricity", "DC/DSD based on SKU": "-", "Grand Total": 9},
-            {"Region": "North", "VTC Mapping": "UP", "DC/DSD based on SKU": "-", "Grand Total": 1},
-            {"Region": "North", "VTC Mapping": "Uttarakhand", "DC/DSD based on SKU": "-", "Grand Total": 3},
-            {"Region": "South", "VTC Mapping": "AP", "DC/DSD based on SKU": 2, "Grand Total": 2},
-            {"Region": "South", "VTC Mapping": "Karnataka", "DC/DSD based on SKU": 2, "Grand Total": 5},
-            {"Region": "South", "VTC Mapping": "Kerala", "DC/DSD based on SKU": "-", "Grand Total": 3},
-            {"Region": "South", "VTC Mapping": "Telangana", "DC/DSD based on SKU": 1, "Grand Total": 4},
-            {"Region": "South", "VTC Mapping": "TN", "DC/DSD based on SKU": "-", "Grand Total": 4},
-            {"Region": "West", "VTC Mapping": "Goa", "DC/DSD based on SKU": 1, "Grand Total": 2},
-            {"Region": "West", "VTC Mapping": "GUJARAT", "DC/DSD based on SKU": "-", "Grand Total": 13},
-            {"Region": "West", "VTC Mapping": "Maharashtra", "DC/DSD based on SKU": 4, "Grand Total": 12},
-            {"Region": "Grand Total", "VTC Mapping": "Grand Total", "DC/DSD based on SKU": 11, "Grand Total": 78}
+            {"Region": "Central", "VTC Mapping": "Mp", "DC/DSD based on SKU": 1, "Grand Total": 0},
+            {"Region": "East", "VTC Mapping": "WB", "DC/DSD based on SKU": "-", "Grand Total": 0},
+            {"Region": "North", "VTC Mapping": "NCR", "DC/DSD based on SKU": "-", "Grand Total": 0},
+            {"Region": "North", "VTC Mapping": "Rajasthan", "DC/DSD based on SKU": "-", "Grand Total": 0},
+            {"Region": "North", "VTC Mapping": "Tricity", "DC/DSD based on SKU": "-", "Grand Total": 0},
+            {"Region": "North", "VTC Mapping": "UP", "DC/DSD based on SKU": "-", "Grand Total": 0},
+            {"Region": "North", "VTC Mapping": "Uttarakhand", "DC/DSD based on SKU": "-", "Grand Total": 0},
+            {"Region": "South", "VTC Mapping": "AP", "DC/DSD based on SKU": 2, "Grand Total": 0},
+            {"Region": "South", "VTC Mapping": "Karnataka", "DC/DSD based on SKU": 2, "Grand Total": 0},
+            {"Region": "South", "VTC Mapping": "Kerala", "DC/DSD based on SKU": "-", "Grand Total": 0},
+            {"Region": "South", "VTC Mapping": "Telangana", "DC/DSD based on SKU": 1, "Grand Total": 0},
+            {"Region": "South", "VTC Mapping": "TN", "DC/DSD based on SKU": "-", "Grand Total": 0},
+            {"Region": "West", "VTC Mapping": "Goa", "DC/DSD based on SKU": 1, "Grand Total": 0},
+            {"Region": "West", "VTC Mapping": "GUJARAT", "DC/DSD based on SKU": "-", "Grand Total": 0},
+            {"Region": "West", "VTC Mapping": "Maharashtra", "DC/DSD based on SKU": 4, "Grand Total": 0},
+            {"Region": "Grand Total", "VTC Mapping": "Grand Total", "DC/DSD based on SKU": 11, "Grand Total": 0}
         ];
 
         const accountRows = [
@@ -292,6 +291,38 @@
             const body = document.getElementById('summaryBody');
             body.innerHTML = '';
 
+            // Map each VTC code to a unique list of account names
+            const vtcAccountMap = {};
+            accountRows.forEach(row => {
+                const vtc = row['VTC Mapping'];
+                const accountName = row['Account'];
+                if (!vtcAccountMap[vtc]) {
+                    vtcAccountMap[vtc] = new Set();
+                }
+                vtcAccountMap[vtc].add(accountName);
+            });
+
+            // Update row counters dynamically based on distinct groupings
+            let dynamicGrandTotalSum = 0;
+            summaryRows.forEach(row => {
+                const isTotal = row['Region'] === 'Grand Total' || row['VTC Mapping'] === 'Grand Total';
+                if (!isTotal) {
+                    const uniqueCount = vtcAccountMap[row['VTC Mapping']] ? vtcAccountMap[row['VTC Mapping']].size : 0;
+                    row['Grand Total'] = uniqueCount;
+                    
+                    // Add up visible matrices for the localized responsive grand running footer element
+                    if (!selectedRegionFilter || row['Region'] === selectedRegionFilter) {
+                        dynamicGrandTotalSum += uniqueCount;
+                    }
+                }
+            });
+
+            // Update data element placeholder for the terminal view configuration block
+            const grandTotalObj = summaryRows.find(row => row['Region'] === 'Grand Total' || row['VTC Mapping'] === 'Grand Total');
+            if (grandTotalObj) {
+                grandTotalObj['Grand Total'] = dynamicGrandTotalSum;
+            }
+
             summaryRows.forEach(row => {
                 const isTotal = row['Region'] === 'Grand Total' || row['VTC Mapping'] === 'Grand Total';
                 if (!isTotal && selectedRegionFilter && row['Region'] !== selectedRegionFilter) return;
@@ -383,7 +414,6 @@
                     groups[row.Account].push(row);
                 });
 
-                // FIXED: Calculates the distinct client accounts instead of individual data streams
                 const dynamicAccountCount = Object.keys(groups).length;
 
                 Object.keys(groups).forEach(accountName => {
@@ -430,7 +460,6 @@
                     }
                 });
 
-                // Update the bottom running footer status to display distinct grouped account counts cleanly
                 const footerRow = document.getElementById('accountFooterRow');
                 footerRow.className = 'h-5';
                 footerRow.innerHTML = `
