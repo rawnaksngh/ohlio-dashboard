@@ -168,17 +168,11 @@
             background: var(--neon-purple);
             color: #000;
         }
-        .notes-header-meta { font-size: 0.75rem; color: var(--neon-purple); text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; margin-top: 4px; }
         
         .notes-scroll-container {
             flex: 1;
             overflow-y: auto;
             padding-right: 10px;
-        }
-        .notes-grid-layout {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
         }
         .notes-full-row {
             grid-column: span 2;
@@ -188,20 +182,10 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             padding: 16px;
+            margin-bottom: 15px;
         }
-        .notes-section-title { 
-            font-size: 0.85rem; 
-            color: var(--neon-purple); 
-            text-transform: uppercase; 
-            margin-bottom: 8px; 
-            font-weight: 800; 
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .notes-body p { font-size: 0.82rem; color: #cccccc; line-height: 1.45; margin-bottom: 8px; }
-        .notes-body ul { margin-left: 18px; margin-top: 4px; margin-bottom: 4px; }
-        .notes-body li { font-size: 0.8rem; color: #a5b0b8; margin-bottom: 4px; line-height: 1.4; }
+        .notes-body ul { margin-left: 18px; }
+        .notes-body li { font-size: 0.85rem; color: #cccccc; margin-bottom: 8px; line-height: 1.4; }
 
         /* --- ZERO-JS ACCORDIONS (PURE CSS CLICK Toggle) --- */
         .accordion-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
@@ -352,74 +336,26 @@
                 <div class="notes-pop-top-bar">
                     <div>
                         <h2 style="font-size: 1.3rem; color: #fff; font-weight: 900;">Meeting Minutes (MoM)</h2>
-                        <div class="notes-header-meta">Date: 12 June 2026 &nbsp;|&nbsp; Duration: ~75 Minutes &nbsp;|&nbsp; Topic: Distribution, Store Expansion, Packaging, Sampling & Sales</div>
                     </div>
                     <span class="notes-pop-close" onclick="toggleNotes()">Close Terminal ×</span>
                 </div>
                 
                 <div class="notes-scroll-container notes-body">
-                    <div class="notes-grid-layout">
-                        
-                        <!-- Section 1 -->
-                        <div class="notes-card-block">
-                            <div class="notes-section-title">1. Store Listing & Expansion</div>
-                            <p>Discussion around current store presence and future expansion profiles. Special operational emphasis on execution loops within Delhi NCR listings.</p>
-                            <p>Team comprehensively reviewed total market potential stores versus currently active listings:</p>
-                            <ul>
-                               <li>Total target stores: approximately 22</li>
-                               <li>Currently active/listed: 4 stores</li>
-                            </ul>
-                            <p style="color:var(--neon-orange); font-weight:700;">Action: Footprint must be increased significantly.</p>
-                        </div>
-
-                        <!-- Section 2 -->
-                        <div class="notes-card-block">
-                            <div class="notes-section-title">2. Sales Targets & Account Coverage</div>
-                            <p>Deep dive into rigorous numerical pipelines and strategic store outreach plans:</p>
-                            <ul>
-                               <li>Targeting profile maps out 45 core stores/accounts.</li>
-                               <li>Progress velocity is tracked by specific numerical outputs and live store indexing counts.</li>
-                            </ul>
-                            <p>Management explicitly emphasized that performance discussions should remain strictly data-driven.</p>
-                        </div>
-
-                        <!-- Section 4 -->
-                        <div class="notes-card-block">
-                            <div class="notes-section-title">4. Sampling Program Execution</div>
-                            <p>Sampling strategies were evaluated exhaustively. Feedback received states that current baseline field performance is not fully satisfactory.</p>
-                            <p>Mandated critical tactical upgrades:</p>
-                            <ul>
-                               <li>Improve visual presentation parameters of sample assets.</li>
-                               <li>Enforce correct product assembly rules and deployment displays.</li>
-                               <li>Utilize sampling explicitly to trigger consumer trial and trial-to-purchase metrics.</li>
-                            </ul>
-                        </div>
-
-                        <!-- Section 5 -->
-                        <div class="notes-card-block">
-                            <div class="notes-section-title">5. Supply Chain & Product Availability</div>
-                            <p>Granular evaluation regarding product supply chains and distribution safety networks.</p>
-                            <p>Operational concerns were flagged: localized supply blockades or constraint points could negatively impact immediate-term execution numbers. Requirement tracking must immediately realign with actual consumer demand projections.</p>
-                        </div>
-
-                        <!-- Section 6 -->
-                        <div class="notes-card-block">
-                            <div class="notes-section-title">6. Quick Commerce Opportunity Window</div>
-                            <p>Quick Commerce integration paths reviewed as an alpha-priority growth pipeline. Operational requirements:</p>
-                            <ul>
-                               <li>Evaluate listing mechanics and timeline feasibilities.</li>
-                               <li>Confirm unit economics data margins and target profitability sheets.</li>
-                               <li>Optimize specialized channel packaging formats and exclusive delivery promotions.</li>
-                            </ul>
-                        </div>
-
-                        <!-- Section 7 -->
-                        <div class="notes-card-block">
-                            <div class="notes-section-title">7. Brand Visibility & Promotion</div>
-                            <p>Strategic overview of public facing displays and brand presence configurations.</p>
-                            <p>Strict structural rule established: Promotional events must feel native and luxury aligned. Avoid making campaigns look like overt, traditional advertising. Focus instead on dominant, organic in-store visibility enhancements.</p>
-                        </div>
-
+                    <div class="notes-card-block">
+                        <ul>
+                           <li>a chart drcp billed</li>
+                           <li>top sheet for regional account like report card</li>
+                           <li>current status target and achievement</li>
+                           <li>snap shot in mt regionak accounts 4 staes</li>
+                           <li>focus in mtr and standlone</li>
+                           <li>Target in mt regional accounts and achievemenrts</li>
+                           <li>Mt standalone data well decriebed</li>
+                           <li>Incress covarage</li>
+                           <li>IRHPL closing by deepak sir</li>
+                           <li>plan for tri city regional target</li>
+                           <li>Sampling in banglore(Danglers)</li>
+                           <li>Tejasvi samling plan of bell and window samplling</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -554,7 +490,7 @@
                     <div class="glass-card-link full-width-card notes-purple-highlight" onclick="toggleNotes()">
                         <div class="glass-card-text">
                             <h4>Last Meeting Notes</h4>
-                            <p>MoM 12 June: Store footprints, Q-Commerce & expansion</p>
+                            <p>MoM Status Log</p>
                         </div>
                         <span class="glass-card-arrow">📝</span>
                     </div>
