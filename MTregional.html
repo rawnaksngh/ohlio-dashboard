@@ -54,6 +54,7 @@
 
     <main class="flex-1 flex flex-row overflow-hidden w-full bg-slate-950">
 
+        <!-- LEFT SIDEBAR: Matrix & Snapshoot Report -->
         <section class="w-[280px] shrink-0 bg-slate-900/40 border-r border-slate-900 flex flex-col overflow-hidden">
             <div class="px-2 py-0.5 bg-slate-900 border-b border-slate-800 flex justify-between items-center shrink-0 h-6">
                 <span class="text-[9px] font-black text-slate-400 flex items-center gap-1 tracking-wider">
@@ -87,12 +88,49 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- DYNAMIC MINI SNAPSHOOT REPORT PANEL -->
+            <div class="border-t border-slate-800 bg-slate-900/80 p-2 shrink-0 space-y-1.5 shadow-[0_-4px_10px_rgba(0,0,0,0.4)]">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-1">
+                    <span class="text-[8px] font-black text-indigo-400 tracking-wider flex items-center gap-1">
+                        <i class="fa-solid fa-bolt text-amber-500 animate-pulse"></i> LIVE SCOPE REPORT
+                    </span>
+                    <span class="text-[7px] text-slate-500 font-mono tracking-tighter" id="reportScope">FILTER: ALL</span>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-1 text-[8px] font-mono">
+                    <div class="bg-slate-950/60 p-1 rounded border border-slate-900/80 flex flex-col">
+                        <span class="text-slate-500 leading-none">Total Accounts</span>
+                        <span class="text-[11px] font-black text-slate-100 mt-0.5" id="snapTotalAccounts">0</span>
+                    </div>
+                    <div class="bg-slate-950/60 p-1 rounded border border-slate-900/80 flex flex-col">
+                        <span class="text-slate-500 leading-none">Total Outlets</span>
+                        <span class="text-[11px] font-black text-indigo-300 mt-0.5" id="snapTotalStores">0</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-1 text-[8px] font-mono pt-0.5">
+                    <div class="bg-slate-950/60 p-1 rounded border border-slate-900/80 flex flex-col items-center">
+                        <span class="text-emerald-500 font-bold leading-none">PO RECVD</span>
+                        <span class="text-[10px] font-black text-emerald-400 mt-0.5" id="snapPOReceived">0</span>
+                    </div>
+                    <div class="bg-slate-950/60 p-1 rounded border border-slate-900/80 flex flex-col items-center">
+                        <span class="text-amber-500 font-bold leading-none">PENDING</span>
+                        <span class="text-[10px] font-black text-amber-400 mt-0.5" id="snapPOPending">0</span>
+                    </div>
+                    <div class="bg-slate-950/60 p-1 rounded border border-slate-900/80 flex flex-col items-center">
+                        <span class="text-purple-400 font-bold leading-none">PO VAL</span>
+                        <span class="text-[10px] font-black text-purple-300 mt-0.5" id="snapTotalValue">0</span>
+                    </div>
+                </div>
+            </div>
             
-            <div class="p-1 border-t border-slate-900 bg-slate-900/20 text-[8px] text-slate-500 font-mono tracking-tight lowercase normal-case">
+            <div class="p-1 border-t border-slate-900 bg-slate-900/20 text-[8px] text-slate-500 font-mono tracking-tight lowercase normal-case shrink-0">
                 * Select any underlining locator code to map data streams.
             </div>
         </section>
 
+        <!-- RIGHT PANE: Grid Data Matrix Table -->
         <section class="flex-1 bg-slate-950 flex flex-col overflow-hidden">
             
             <div class="p-1 bg-slate-900/20 border-b border-slate-900 flex flex-row justify-between items-center gap-2 shrink-0 h-6">
@@ -132,7 +170,7 @@
                         <tfoot class="sticky bottom-0 bg-slate-900 border-t border-slate-700 text-slate-100 font-bold z-10 shadow-[0_-2px_6px_rgba(0,0,0,0.6)]">
                             <tr id="accountFooterRow">
                             </tr>
-                        </tbody>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -226,7 +264,7 @@
             {"Region": "South", "VTC Mapping": "TN", "City": "Chennai", "Account": "Ajfan", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "South", "VTC Mapping": "TN", "City": "Chennai", "Account": "CROSSWORD BOOKSTORES PVT LTD", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "South", "VTC Mapping": "TN", "City": "Chennai", "Account": "Pothys", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "TN", "City": "Thanjavur", "Account": "Ajfan", "Status": "Pending", "PO Value": "-", "Remarks": ""},
+            {"Region": "South", "VTC Mapping": "Thanjavur", "Account": "Ajfan", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "West", "VTC Mapping": "Goa", "City": "Goa", "Account": "Magson", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "West", "VTC Mapping": "Goa", "City": "Goa", "Account": "Wellness", "Status": "Pending", "PO Value": "-", "Remarks": ""},
             {"Region": "West", "VTC Mapping": "GUJARAT", "City": "Ahmedabad", "Account": "DANGEE DUMS LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": ""},
@@ -279,7 +317,6 @@
 
         let selectedVtcFilter = null;
         let selectedRegionFilter = "";
-        let openAccounts = {};
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('headerRouteCounter').innerText = `${accountRows.length} Points`;
@@ -291,7 +328,6 @@
             const body = document.getElementById('summaryBody');
             body.innerHTML = '';
 
-            // Map each VTC code to a unique list of account names
             const vtcAccountMap = {};
             accountRows.forEach(row => {
                 const vtc = row['VTC Mapping'];
@@ -302,7 +338,6 @@
                 vtcAccountMap[vtc].add(accountName);
             });
 
-            // Update row counters dynamically based on distinct groupings
             let dynamicGrandTotalSum = 0;
             summaryRows.forEach(row => {
                 const isTotal = row['Region'] === 'Grand Total' || row['VTC Mapping'] === 'Grand Total';
@@ -310,14 +345,12 @@
                     const uniqueCount = vtcAccountMap[row['VTC Mapping']] ? vtcAccountMap[row['VTC Mapping']].size : 0;
                     row['Grand Total'] = uniqueCount;
                     
-                    // Add up visible matrices for the localized responsive grand running footer element
                     if (!selectedRegionFilter || row['Region'] === selectedRegionFilter) {
                         dynamicGrandTotalSum += uniqueCount;
                     }
                 }
             });
 
-            // Update data element placeholder for the terminal view configuration block
             const grandTotalObj = summaryRows.find(row => row['Region'] === 'Grand Total' || row['VTC Mapping'] === 'Grand Total');
             if (grandTotalObj) {
                 grandTotalObj['Grand Total'] = dynamicGrandTotalSum;
@@ -356,176 +389,127 @@
             });
         }
 
+        function toggleVtcFilter(vtcCode) {
+            if (selectedVtcFilter === vtcCode) {
+                selectedVtcFilter = null;
+            } else {
+                selectedVtcFilter = vtcCode;
+            }
+            generateSummaryPane();
+            applyFilteringAndRender();
+        }
+
         function handleRegionChange() {
             selectedRegionFilter = document.getElementById('regionFilter').value;
             selectedVtcFilter = null; 
-            openAccounts = {};
             generateSummaryPane();
             applyFilteringAndRender();
-        }
-
-        function toggleVtcFilter(vtcValue) {
-            selectedVtcFilter = (selectedVtcFilter === vtcValue) ? null : vtcValue;
-            openAccounts = {};
-            generateSummaryPane();
-            applyFilteringAndRender();
-        }
-
-        function toggleAccountDropdown(accountName) {
-            openAccounts[accountName] = !openAccounts[accountName];
-            applyFilteringAndRender(true);
-        }
-
-        function applyFilteringAndRender(isCollapsingOnly = false) {
-            const tbody = document.getElementById('accountBody');
-            const searchVal = document.getElementById('rightPaneSearch').value.toLowerCase().trim();
-            
-            const filtered = accountRows.filter(row => {
-                if(row['Region'] === 'Grand Total') return false;
-                const matchesRegion = selectedRegionFilter ? String(row['Region']).toLowerCase() === selectedRegionFilter.toLowerCase() : true;
-                const matchesVtc = selectedVtcFilter ? String(row['VTC Mapping']).toLowerCase() === selectedVtcFilter.toLowerCase() : true;
-                
-                let matchesSearch = true;
-                if (searchVal) {
-                    matchesSearch = 
-                        String(row['Region']).toLowerCase().includes(searchVal) ||
-                        String(row['City']).toLowerCase().includes(searchVal) ||
-                        String(row['Account']).toLowerCase().includes(searchVal) ||
-                        String(row['Status']).toLowerCase().includes(searchVal);
-                }
-                return matchesRegion && matchesVtc && matchesSearch;
-            });
-
-            tbody.innerHTML = '';
-            let grandTotalStores = 0;
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="7" class="text-center py-8 text-slate-600 font-mono text-[9px]">
-                            NO MOUNTED METRICS IN DATA STREAM
-                        </td>
-                    </tr>
-                `;
-            } else {
-                const groups = {};
-                filtered.forEach(row => {
-                    if (!groups[row.Account]) groups[row.Account] = [];
-                    groups[row.Account].push(row);
-                });
-
-                const dynamicAccountCount = Object.keys(groups).length;
-
-                Object.keys(groups).forEach(accountName => {
-                    const rows = groups[accountName];
-                    const hasMultiple = rows.length > 1;
-                    const isExpanded = !!openAccounts[accountName];
-                    
-                    let totalStores = accountStoreCounts[accountName] !== undefined ? accountStoreCounts[accountName] : rows.length;
-                    grandTotalStores += totalStores;
-
-                    if (hasMultiple) {
-                        const headerTr = document.createElement('tr');
-                        headerTr.className = 'bg-slate-900/50 hover:bg-slate-900 cursor-pointer border-b border-slate-900 text-slate-300 select-none h-5 font-bold';
-                        headerTr.onclick = () => toggleAccountDropdown(accountName);
-
-                        const commonStatus = rows[0]['Status'];
-                        const commonPO = rows[0]['PO Value'];
-                        const commonRemark = rows[0]['Remarks'];
-
-                        headerTr.innerHTML = `
-                            <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-500 font-medium">${rows[0]['Region'] || ''}</td>
-                            <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-400 italic">(${rows.length} cities)</td>
-                            <td class="py-0.5 px-2 border-r border-slate-950 text-slate-100 tracking-normal normal-case font-black flex items-center justify-between">
-                                <span class="flex items-center gap-1.5 text-indigo-400">
-                                    <i class="fa-solid ${isExpanded ? 'fa-chevron-down' : 'fa-chevron-right'} text-[7px] w-2"></i>
-                                    ${accountName}
-                                </span>
-                                <span class="text-[7.5px] font-mono text-indigo-400/80 bg-indigo-950/40 border border-indigo-900/30 px-1 rounded-sm lowercase">${rows.length} streams</span>
-                            </td>
-                            <td class="py-0.5 px-1.5 border-r border-slate-900 text-center font-black text-indigo-400 bg-slate-900/30">${totalStores}</td>
-                            <td class="py-0.5 px-1.5 border-r border-slate-900 text-amber-500/90 font-bold">${commonStatus}</td>
-                            <td class="py-0.5 px-1.5 border-r border-slate-900 text-emerald-500 font-bold">${commonPO}</td>
-                            <td class="py-0.5 px-1.5 text-slate-400 normal-case font-sans text-[8.5px] truncate max-w-[176px]" title="${commonRemark}">${commonRemark || '-'}</td>
-                        `;
-                        tbody.appendChild(headerTr);
-
-                        if (isExpanded) {
-                            rows.forEach(row => {
-                                renderRowElement(tbody, row, true);
-                            });
-                        }
-                    } else {
-                        renderRowElement(tbody, rows[0], false, totalStores);
-                    }
-                });
-
-                const footerRow = document.getElementById('accountFooterRow');
-                footerRow.className = 'h-5';
-                footerRow.innerHTML = `
-                    <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-400 font-black">TOTAL</td>
-                    <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-600">-</td>
-                    <td class="py-0.5 px-2 border-r border-slate-950 text-slate-400 font-bold tracking-tight lowercase normal-case">${dynamicAccountCount} accounts active</td>
-                    <td class="py-0.5 px-1.5 border-r border-slate-950 text-center font-black text-emerald-400 bg-emerald-950/20 text-[10px]">${grandTotalStores}</td>
-                    <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-600">-</td>
-                    <td class="py-0.5 px-1.5 border-r border-slate-950 text-slate-600">-</td>
-                    <td class="py-0.5 px-1.5 text-slate-500 text-[8px] italic font-normal tracking-tight">* localized running counter</td>
-                `;
-            }
-
-            if(!isCollapsingOnly) {
-                const statusBlob = document.getElementById('statusIndicatorBlob');
-                const label = document.getElementById('activeFilterLabel');
-                
-                if (selectedRegionFilter || selectedVtcFilter) {
-                    statusBlob.className = 'w-1 h-1 rounded-full bg-amber-400 animate-pulse';
-                    let filterTxt = '';
-                    if (selectedRegionFilter) filterTxt += `R: ${selectedRegionFilter}`;
-                    if (selectedVtcFilter) filterTxt += `${selectedRegionFilter ? ' | ' : ''}VTC: ${selectedVtcFilter}`;
-                    label.innerHTML = `<span class="text-amber-400 font-bold">${filterTxt}</span>`;
-                } else {
-                    statusBlob.className = 'w-1 h-1 rounded-full bg-indigo-500';
-                    label.innerText = 'All Accounts Matrix';
-                }
-
-                document.getElementById('activeCountBadge').innerText = `${filtered.length} lines`;
-            }
-        }
-
-        function renderRowElement(tbody, row, isSubNode, singleStoreCount = 1) {
-            const tr = document.createElement('tr');
-            tr.className = 'h-5 transition-colors font-mono';
-            tr.className += isSubNode 
-                ? ' bg-slate-950/40 hover:bg-slate-900/40 text-slate-400 border-b border-slate-900/40'
-                : ' hover:bg-slate-900 text-slate-300 border-b border-slate-900';
-
-            const poValue = row['PO Value'] !== undefined ? row['PO Value'] : '-';
-            const customRemarks = row['Remarks'] !== undefined ? row['Remarks'] : '';
-            
-            const indentStyle = isSubNode ? 'pl-5 text-slate-400/60 border-l border-indigo-900/40 italic text-[8.5px]' : '';
-
-            tr.innerHTML = `
-                <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-500 truncate max-w-[50px]">${row['Region'] || ''}</td>
-                <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-400 truncate max-w-[85px]">${row['City'] || ''}</td>
-                <td class="py-0.5 px-2 border-r border-slate-950 text-slate-100 font-bold tracking-normal normal-case truncate max-w-[150px] ${indentStyle}">
-                    ${isSubNode ? '<span class="text-indigo-600/50 mr-1">&bull;</span>' : ''}${row['Account'] || ''}
-                </td>
-                <td class="py-0.5 px-1.5 border-r border-slate-900 text-center font-bold text-slate-300">${isSubNode ? '-' : singleStoreCount}</td>
-                <td class="py-0.5 px-1.5 border-r border-slate-900 text-amber-500/90 font-bold">${row['Status'] || '-'}</td>
-                <td class="py-0.5 px-1.5 border-r border-slate-900 text-emerald-500 font-bold">${poValue}</td>
-                <td class="py-0.5 px-1.5 text-slate-400 max-w-[176px] truncate normal-case font-sans text-[8.5px]" title="${customRemarks}">${customRemarks || '-'}</td>
-            `;
-            tbody.appendChild(tr);
         }
 
         function resetAllFilters() {
             selectedVtcFilter = null;
             selectedRegionFilter = "";
-            openAccounts = {};
             document.getElementById('regionFilter').value = "";
-            document.getElementById('rightPaneSearch').value = '';
+            document.getElementById('rightPaneSearch').value = "";
             generateSummaryPane();
             applyFilteringAndRender();
+        }
+
+        function applyFilteringAndRender() {
+            const searchVal = document.getElementById('rightPaneSearch').value.toLowerCase().trim();
+            const accountBody = document.getElementById('accountBody');
+            accountBody.innerHTML = '';
+
+            let totalStoresSum = 0;
+            let totalPoValueSum = 0;
+            let filteredRowCount = 0;
+
+            // Live Snapshot counters
+            let snapAccountsCount = 0;
+            let snapPOReceivedCount = 0;
+            let snapPOPendingCount = 0;
+
+            // Set Pipeline Header Context Text
+            let pipelineLabel = "All Accounts Matrix";
+            if (selectedRegionFilter && selectedVtcFilter) {
+                pipelineLabel = `${selectedRegionFilter} // ${selectedVtcFilter}`;
+            } else if (selectedRegionFilter) {
+                pipelineLabel = `${selectedRegionFilter} Region`;
+            } else if (selectedVtcFilter) {
+                pipelineLabel = `State Hub: ${selectedVtcFilter}`;
+            }
+            document.getElementById('activeFilterLabel').innerText = pipelineLabel;
+            document.getElementById('reportScope').innerText = `SCOPE: ${selectedVtcFilter || selectedRegionFilter || 'GLOBAL'}`;
+
+            accountRows.forEach(row => {
+                if (selectedRegionFilter && row['Region'] !== selectedRegionFilter) return;
+                if (selectedVtcFilter && row['VTC Mapping'] !== selectedVtcFilter) return;
+
+                if (searchVal) {
+                    const match = row['Region'].toLowerCase().includes(searchVal) ||
+                                  row['VTC Mapping'].toLowerCase().includes(searchVal) ||
+                                  row['City'].toLowerCase().includes(searchVal) ||
+                                  row['Account'].toLowerCase().includes(searchVal) ||
+                                  row['Status'].toLowerCase().includes(searchVal) ||
+                                  row['Remarks'].toLowerCase().includes(searchVal);
+                    if (!match) return;
+                }
+
+                filteredRowCount++;
+                snapAccountsCount++;
+
+                const storeCount = accountStoreCounts[row['Account']] || 0;
+                totalStoresSum += storeCount;
+
+                let poVal = 0;
+                if (row['PO Value'] !== '-') {
+                    poVal = parseInt(row['PO Value']) || 0;
+                    totalPoValueSum += poVal;
+                }
+
+                if (row['Status'].toLowerCase().includes('received')) {
+                    snapPOReceivedCount++;
+                } else {
+                    snapPOPendingCount++;
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-900/60 transition-colors h-5 border-b border-slate-900/40 text-slate-300';
+
+                const statusColor = row['Status'].toLowerCase().includes('received') ? 'text-emerald-400 font-bold' : 'text-amber-500/90';
+                const poColor = poVal > 0 ? 'text-emerald-400 font-black' : 'text-slate-600';
+
+                tr.innerHTML = `
+                    <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-500 font-bold">${row['Region']}</td>
+                    <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-400 truncate max-w-[80px]" title="${row['City']}">${row['City']}</td>
+                    <td class="py-0.5 px-2 border-r border-slate-900 text-white font-medium truncate max-w-[150px]" title="${row['Account']}">${row['Account']}</td>
+                    <td class="py-0.5 px-1.5 border-r border-slate-900 text-center text-indigo-300 font-bold">${storeCount}</td>
+                    <td class="py-0.5 px-1.5 border-r border-slate-900 truncate max-w-[90px] ${statusColor} text-[8px] tracking-tight"><i class="fa-solid ${poVal > 0 ? 'fa-circle-check text-emerald-500' : 'fa-clock text-amber-600'} text-[7px] mr-1"></i>${row['Status']}</td>
+                    <td class="py-0.5 px-1.5 border-r border-slate-900 text-right ${poColor} font-mono">${row['PO Value']}</td>
+                    <td class="py-0.5 px-1.5 text-slate-400 font-sans tracking-tight lowercase normal-case truncate max-w-[180px]" title="${row['Remarks']}">${row['Remarks'] || '-'}</td>
+                `;
+                accountBody.appendChild(tr);
+            });
+
+            // Update dynamically generated counts on the UI view badges
+            document.getElementById('activeCountBadge').innerText = `${filteredRowCount} records`;
+            
+            // Update the Mini Snapshoot Report Elements
+            document.getElementById('snapTotalAccounts').innerText = snapAccountsCount;
+            document.getElementById('snapTotalStores').innerText = totalStoresSum;
+            document.getElementById('snapPOReceived').innerText = snapPOReceivedCount;
+            document.getElementById('snapPOPending').innerText = snapPOPendingCount;
+            document.getElementById('snapTotalValue').innerText = totalPoValueSum > 0 ? totalPoValueSum : '-';
+
+            // Populate Responsive Running Footer 
+            const footerRow = document.getElementById('accountFooterRow');
+            footerRow.innerHTML = `
+                <td colspan="3" class="py-1 px-2 border-r border-slate-800 text-right text-slate-400 font-mono tracking-wider">Matrix Summation:</td>
+                <td class="py-1 px-1.5 border-r border-slate-800 text-center text-indigo-400 font-black text-[10px]">${totalStoresSum}</td>
+                <td class="py-1 px-1.5 border-r border-slate-800 text-slate-500 text-[8px] font-mono tracking-tight lowercase font-normal italic">Active nodes pooled</td>
+                <td class="py-1 px-1.5 border-r border-slate-800 text-right text-emerald-400 font-black text-[10px]">${totalPoValueSum > 0 ? totalPoValueSum : '-'}</td>
+                <td class="py-1 px-1.5 text-slate-500 text-[7px] font-mono tracking-tighter normal-case">PO Vol Metrics mapped in real-time.</td>
+            `;
         }
     </script>
 </body>
