@@ -60,6 +60,14 @@
   .hint{font-size:12px;color:var(--ink-faint);display:flex;align-items:center;gap:7px}
   .hint svg{width:14px;height:14px;stroke:var(--teal)}
 
+  /* Navigation elements */
+  .nav-bar{margin-bottom:24px;display:flex;align-items:center}
+  .btn-home{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;
+    font-size:13px;color:var(--ink-soft);background:var(--panel);border:1px solid var(--line);
+    padding:8px 14px;border-radius:8px;box-shadow:0 1px 2px rgba(22,34,46,.04);transition:.13s}
+  .btn-home:hover{border-color:var(--teal);color:var(--teal-deep);background:#fcfdfe}
+  .btn-home svg{width:15px;height:15px;stroke:currentColor}
+
   /* Tables */
   .scroll{overflow-x:auto}
   table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
@@ -157,10 +165,10 @@
 </head>
 <body>
 <div class="wrap">
-  <!-- Home Button -->
-  <div class="fx" style="margin-bottom: 20px;">
-    <a href="home.html" class="act" style="display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+  <!-- TOP LEFT HOME BUTTON -->
+  <div class="nav-bar fx">
+    <a href="home.html" class="btn-home" title="Go to home page">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
       Home
     </a>
   </div>
@@ -169,7 +177,7 @@
     <div>
       <div class="eyebrow">Modern Trade &middot; India</div>
       <h1>Regional Account Status</h1>
-      <p class="sub">Regional roll-up on top. Pick a location to drill into every account and store beneath it.</p>
+     
     </div>
     <div class="stamp">
       <b id="stampAcc">&mdash;</b>
@@ -289,6 +297,14 @@ const fmtAcct = n => {
 };
 const regClass = r => "reg-tag reg-" + (r||"");
 
+// Total stores in the summary = sum of # Stores from the account detail rows for that location
+function detailRowsFor(loc){
+  if(loc==="Total") return DATA.detail;
+  if(loc==="Rest Of India") return DATA.detail.filter(d=>!NAMED.includes(d.location));
+  return DATA.detail.filter(d=>d.location===loc);
+}
+const detailStores = loc => detailRowsFor(loc).reduce((s,d)=>s+(d.stores||0),0);
+
 let selected = "Total";
 let currentRows = [];
 let sortKey = null, sortDir = 1;
@@ -314,7 +330,7 @@ DATA.summary.forEach(row=>{
       <svg class="chev" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
     </td>
     <td>${fmt(row.totalAccounts)}</td>
-    <td>${row.totalStores!=null?fmt(row.totalStores):'<span class="muted">&mdash;</span>'}</td>
+    <td>${fmt(detailStores(row.location))}</td>
     <td>${row.accountsListed!=null
         ? `<span class="mini">${fmt(row.accountsListed)}<span class="bar"><i style="width:${(listedRatio*100).toFixed(0)}%"></i></span></span>`
         : '<span class="muted">&mdash;</span>'}</td>
@@ -331,11 +347,7 @@ function dotColor(row){
 }
 
 // ---- filter logic ----
-function rowsFor(loc){
-  if(loc==="Total") return DATA.detail;
-  if(loc==="Rest Of India") return DATA.detail.filter(d=>!NAMED.includes(d.location));
-  return DATA.detail.filter(d=>d.location===loc);
-}
+function rowsFor(loc){ return detailRowsFor(loc); }
 
 function select(loc){
   selected = loc;
