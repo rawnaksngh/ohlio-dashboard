@@ -1,516 +1,485 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regional Account Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Precision ultra-thin scrollbar for high-density TV grids */
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #090d16;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 2px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #334155;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MT Regional Account Status</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef1f4;
+    --panel:#ffffff;
+    --ink:#16222e;
+    --ink-soft:#54636f;
+    --ink-faint:#8593a0;
+    --line:#dde3e9;
+    --line-soft:#eaeef2;
+    --teal:#0f766e;
+    --teal-deep:#0b5b55;
+    --teal-wash:#e2f1ef;
+    --amber:#d98613;
+    --amber-wash:#fbedd6;
+    --north:#2563a8;--south:#0f766e;--west:#b8543a;--east:#7a4fb0;--central:#a67c00;
+    --shadow:0 1px 2px rgba(22,34,46,.06),0 8px 28px -14px rgba(22,34,46,.28);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;font-size:14px;line-height:1.5;
+    padding:32px 20px 72px;
+  }
+  .wrap{max-width:1120px;margin:0 auto}
+  @media (prefers-reduced-motion:no-preference){
+    .fx{opacity:0;transform:translateY(8px);animation:rise .5s cubic-bezier(.2,.7,.3,1) forwards}
+  }
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  /* Masthead */
+  header.mast{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:22px;flex-wrap:wrap}
+  .eyebrow{font-family:"Space Grotesk";font-weight:600;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--teal);display:flex;align-items:center;gap:8px}
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--teal);display:inline-block}
+  h1{font-family:"Space Grotesk";font-weight:700;font-size:clamp(24px,3.4vw,34px);
+    letter-spacing:-.02em;margin:.28em 0 0;line-height:1.05}
+  .sub{color:var(--ink-soft);margin-top:6px;max-width:52ch}
+  .stamp{text-align:right;font-size:12px;color:var(--ink-faint)}
+  .stamp b{display:block;font-family:"Space Grotesk";font-size:22px;color:var(--ink);font-weight:700;letter-spacing:-.01em}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);overflow:hidden}
+  .card+.card{margin-top:22px}
+  .card-head{display:flex;align-items:center;justify-content:space-between;gap:14px;
+    padding:16px 20px;border-bottom:1px solid var(--line-soft);flex-wrap:wrap}
+  .card-title{font-family:"Space Grotesk";font-weight:600;font-size:15px;letter-spacing:.01em;
+    display:flex;align-items:center;gap:10px}
+  .col-note{font-size:12px;color:var(--ink-faint);cursor:help;font-weight:400;vertical-align:middle}
+  .hint{font-size:12px;color:var(--ink-faint);display:flex;align-items:center;gap:7px}
+  .hint svg{width:14px;height:14px;stroke:var(--teal)}
+
+  /* Tables */
+  .scroll{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+  th,td{text-align:right;padding:11px 14px;white-space:nowrap}
+  th:first-child,td:first-child,th.l,td.l{text-align:left}
+  thead th{font-family:"Space Grotesk";font-weight:600;font-size:11px;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--ink-faint);background:#f7f9fb;
+    border-bottom:1px solid var(--line);position:sticky;top:0}
+  tbody td{border-bottom:1px solid var(--line-soft);font-size:13.5px}
+
+  /* Summary table */
+  .summary tbody tr{cursor:pointer;transition:background .15s}
+  .summary tbody tr:hover{background:#f4f8f8}
+  .summary tbody tr.sel{background:var(--teal-wash)}
+  .summary tbody tr.sel td{border-bottom-color:#c7e4e0}
+  .summary tbody tr.total-row{cursor:pointer;background:#f7f9fb;font-weight:600}
+  .summary tbody tr.total-row.sel{background:var(--teal-wash)}
+  .loc-cell{display:inline-flex;align-items:center;gap:9px;font-weight:600;color:var(--ink)}
+  .loc-cell .dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;background:var(--ink-faint)}
+  .summary tbody tr.sel .loc-cell{color:var(--teal-deep)}
+  .chev{width:15px;height:15px;stroke:var(--teal);opacity:0;transform:translateX(-4px);transition:.15s}
+  .summary tbody tr:hover .chev,.summary tbody tr.sel .chev{opacity:1;transform:none}
+  .reg-tag{font-family:"Space Grotesk";font-size:11px;font-weight:600;letter-spacing:.02em;
+    padding:2px 9px;border-radius:999px;background:#eef2f6;color:var(--ink-soft)}
+  .reg-North{background:#e7f0fa;color:var(--north)}
+  .reg-South{background:#e2f1ef;color:var(--south)}
+  .reg-West{background:#f8ebe6;color:var(--west)}
+  .reg-East{background:#efe9f8;color:var(--east)}
+  .reg-Central{background:#f6efdb;color:var(--central)}
+  .muted{color:var(--ink-faint)}
+  .mini{display:inline-flex;align-items:center;gap:8px;justify-content:flex-end}
+  .bar{width:52px;height:6px;border-radius:3px;background:#e7edf1;overflow:hidden;flex:0 0 auto}
+  .bar > i{display:block;height:100%;background:var(--teal);border-radius:3px}
+
+  /* Detail toolbar */
+  .tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .pill{display:inline-flex;align-items:center;gap:8px;background:var(--teal-wash);color:var(--teal-deep);
+    font-weight:600;font-size:12.5px;padding:5px 12px;border-radius:999px}
+  .pill .x{cursor:pointer;width:15px;height:15px;display:grid;place-items:center;border-radius:50%;
+    background:rgba(15,118,110,.16)}
+  .pill .x:hover{background:rgba(15,118,110,.28)}
+  .search{position:relative}
+  .search input{font:inherit;font-size:13px;padding:7px 12px 7px 32px;border:1px solid var(--line);
+    border-radius:9px;background:#fff;width:190px;color:var(--ink)}
+  .search input:focus{outline:2px solid var(--teal);outline-offset:0;border-color:var(--teal)}
+  .search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:var(--ink-faint)}
+  .count{font-size:12.5px;color:var(--ink-soft)}
+  .count b{color:var(--ink);font-family:"Space Grotesk"}
+
+  /* Detail table */
+  .detail thead th{cursor:pointer;user-select:none}
+  .detail thead th .ar{opacity:0;font-size:9px;margin-left:3px}
+  .detail thead th.up .ar,.detail thead th.dn .ar{opacity:1}
+  .detail thead th.dn .ar{display:inline-block;transform:rotate(180deg)}
+  .detail tbody tr:hover{background:#f7f9fb}
+  .acct{font-weight:600;color:var(--ink)}
+  .tag{font-size:11px;padding:2px 8px;border-radius:6px;background:#eef2f6;color:var(--ink-soft);font-weight:500}
+  .tag.dc{background:#e2f1ef;color:var(--teal-deep)}
+  .tag.dsd{background:#eef2f6;color:var(--ink-soft)}
+  .tag.sku{background:#fbedd6;color:#a15f0b}
+  .yes{color:var(--teal);font-weight:600}
+  .no{color:var(--ink-faint)}
+  /* listed toggle */
+  .listed-count b{color:var(--ink);font-family:"Space Grotesk"}
+  .listed-count #listedTarget{color:var(--ink-faint)}
+  .act{font:inherit;font-size:12.5px;font-weight:600;color:var(--ink-soft);background:#fff;
+    border:1px solid var(--line);border-radius:8px;padding:6px 11px;cursor:pointer;transition:.13s}
+  .act:hover{border-color:var(--teal);color:var(--teal-deep)}
+  .act.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+  .act.primary:hover{background:var(--teal-deep);border-color:var(--teal-deep);color:#fff}
+  .act:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+  .toggle{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);
+    background:#f7f9fb;border-radius:999px;padding:3px 10px 3px 8px;cursor:pointer;
+    font-weight:600;font-size:12px;color:var(--ink-faint);transition:.13s;min-width:64px;justify-content:flex-start}
+  .toggle .knob{width:9px;height:9px;border-radius:50%;background:#c4ced7;transition:.13s;flex:0 0 auto}
+  .toggle:hover{border-color:var(--teal)}
+  .toggle.on{background:var(--teal-wash);border-color:#bfe0db;color:var(--teal-deep)}
+  .toggle.on .knob{background:var(--teal)}
+  .toggle:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+  td.listed-cell{text-align:left}
+  .save-status{font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;transition:opacity .3s}
+  .save-status.ok{color:var(--teal)}
+  .save-status.warn{color:var(--amber)}
+  .save-status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block}
+  .save-status:empty{display:none}
+  .empty{padding:44px 20px;text-align:center;color:var(--ink-faint)}
+  tfoot td{font-family:"Space Grotesk";font-weight:600;background:#f7f9fb;border-top:2px solid var(--line);font-size:13px}
+  footer.foot{margin-top:26px;text-align:center;font-size:11.5px;color:var(--ink-faint)}
+  @media (max-width:560px){
+    body{padding:20px 12px 56px}
+    .stamp{text-align:left}
+    .search input{width:140px}
+  }
+</style>
 </head>
-<body class="bg-slate-950 text-slate-200 font-sans antialiased h-screen flex flex-col overflow-hidden text-[9px] uppercase tracking-normal select-none">
+<body>
+<div class="wrap">
+  <!-- Home Button -->
+  <div class="fx" style="margin-bottom: 20px;">
+    <a href="home.html" class="act" style="display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+  </div>
 
-    <header class="bg-slate-900 border-b border-slate-800 px-2.5 py-0.5 flex flex-row justify-between items-center shrink-0 shadow-md h-7">
-        <div class="flex items-center gap-2">
-            <a href="home.html" class="bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white px-1 py-0.5 rounded transition duration-150" title="Go to Home">
-                <i class="fa-solid fa-house text-[8px]"></i>
-            </a>
-            <div class="bg-indigo-600 px-1 py-0.5 rounded text-white shadow-sm">
-                <i class="fa-solid fa-chart-line text-[8px]"></i>
-            </div>
-            <div class="flex items-baseline gap-1.5">
-                <h1 class="text-[10px] font-black tracking-wider text-white leading-none">Oli Ohh &bull; Grid System</h1>
-                <p class="text-[8px] text-indigo-400 font-mono tracking-normal lowercase p-0 m-0 leading-none">v2.2 // regional distribution interface</p>
-            </div>
-        </div>
-        
-        <div class="flex items-center gap-3 text-[8px]">
-            <div class="flex items-center gap-1 bg-slate-950 px-1.5 py-0.5 rounded border border-slate-800 text-slate-400 font-mono">
-                <span class="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>Routes:</span>
-                <span class="text-emerald-400 font-bold" id="headerRouteCounter">101 Points</span>
-            </div>
-            <button onclick="resetAllFilters()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-1.5 py-0.5 rounded border border-slate-700 transition flex items-center gap-1 font-bold cursor-pointer text-[8px]">
-                <i class="fa-solid fa-rotate-left text-slate-400"></i> Reset
-            </button>
-        </div>
-    </header>
+  <header class="mast fx">
+    <div>
+      <div class="eyebrow">Modern Trade &middot; India</div>
+      <h1>Regional Account Status</h1>
+      <p class="sub">Regional roll-up on top. Pick a location to drill into every account and store beneath it.</p>
+    </div>
+    <div class="stamp">
+      <b id="stampAcc">&mdash;</b>
+      accounts across <span id="stampLoc">&mdash;</span> locations
+    </div>
+  </header>
 
-    <main class="flex-1 flex flex-row overflow-hidden w-full bg-slate-950">
+  <!-- SUMMARY -->
+  <section class="card fx" style="animation-delay:.05s">
+    <div class="card-head">
+      <div class="card-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="8"/><rect x="12" y="6" width="3" height="12"/><rect x="17" y="13" width="3" height="5"/></svg>
+        Summary by location
+      </div>
+      <div class="hint">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        Click a row to filter
+      </div>
+    </div>
+    <div class="scroll">
+      <table class="summary">
+        <thead>
+          <tr>
+            <th class="l">Region</th>
+            <th class="l">Location</th>
+            <th>Total accounts</th>
+            <th>Total stores</th>
+            <th>Accounts listed</th>
+            <th>Stores billed</th>
+            <th>Jul plan</th>
+            <th>Jul achieved</th>
+          </tr>
+        </thead>
+        <tbody id="summaryBody"></tbody>
+      </table>
+    </div>
+  </section>
 
-        <!-- LEFT SIDEBAR: Matrix & Snapshoot Report -->
-        <section class="w-[280px] shrink-0 bg-slate-900/40 border-r border-slate-900 flex flex-col overflow-hidden">
-            <div class="px-2 py-0.5 bg-slate-900 border-b border-slate-800 flex justify-between items-center shrink-0 h-6">
-                <span class="text-[9px] font-black text-slate-400 flex items-center gap-1 tracking-wider">
-                    <i class="fa-solid fa-table-cells text-indigo-500"></i> Summary Matrix
-                </span>
-                <span class="text-[8px] bg-slate-950 text-slate-500 border border-slate-800 px-1 rounded font-mono font-bold">SYS/NAV</span>
-            </div>
+  <!-- DETAIL -->
+  <section class="card fx" style="animation-delay:.1s">
+    <div class="card-head">
+      <div class="card-title">Account detail</div>
+      <div class="tools">
+        <span id="filterPill"></span>
+        <span class="count">Showing <b id="rowCount">0</b> accounts</span>
+        <span class="count listed-count">Listed <b id="listedCount">0</b><span id="listedTarget"></span></span>
+        <label class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+          <input id="search" type="search" placeholder="Search account or city" aria-label="Search accounts">
+        </label>
+        <button class="act" id="markAll" title="Mark every row in this view as listed">All Yes</button>
+        <button class="act" id="clearAll" title="Mark every row in this view as not listed">All No</button>
+        <button class="act primary" id="exportCsv" title="Download the table with listed status as CSV">Export CSV</button>
+        <span class="save-status" id="saveStatus" aria-live="polite"></span>
+      </div>
+    </div>
+    <div class="scroll">
+      <table class="detail">
+        <thead>
+          <tr id="detailHead">
+            <th class="l" data-k="region">Region <span class="ar">&#9650;</span></th>
+            <th class="l" data-k="area">Serviced by <span class="ar">&#9650;</span></th>
+            <th class="l" data-k="location">Location <span class="ar">&#9650;</span></th>
+            <th class="l" data-k="city">City <span class="ar">&#9650;</span></th>
+            <th class="l" data-k="account">Account <span class="ar">&#9650;</span></th>
+            <th class="l" data-k="supply">Supply status <span class="ar">&#9650;</span></th>
+            <th data-k="stores"># Stores <span class="ar">&#9650;</span></th>
+            <th data-k="listed">Listed <span class="ar">&#9650;</span></th>
+          </tr>
+        </thead>
+        <tbody id="detailBody"></tbody>
+        <tfoot id="detailFoot"></tfoot>
+      </table>
+    </div>
+    <div class="empty" id="emptyState" hidden>No accounts match this view.</div>
+  </section>
 
-            <div class="p-1 bg-slate-900/60 border-b border-slate-800 shrink-0">
-                <select id="regionFilter" onchange="handleRegionChange()" class="w-full text-[9px] font-mono bg-slate-950 border border-slate-800 rounded px-1.5 py-0.5 text-slate-300 focus:outline-none focus:border-indigo-600 cursor-pointer h-5">
-                    <option value="">[ All Operational Regions ]</option>
-                    <option value="Central">Central</option>
-                    <option value="East">East</option>
-                    <option value="North">North</option>
-                    <option value="South">South</option>
-                    <option value="West">West</option>
-                </select>
-            </div>
+  <footer class="foot">Sourced from MTR_FINAL.xlsx &middot; click any location above to filter the account detail.</footer>
+</div>
 
-            <div class="flex-1 overflow-auto">
-                <table class="w-full border-collapse text-left text-[9px] font-mono leading-none">
-                    <thead class="sticky top-0 bg-slate-900 border-b border-slate-800 text-slate-400 font-bold z-10">
-                        <tr>
-                            <th class="py-1 px-1.5 border-r border-slate-950">Region</th>
-                            <th class="py-1 px-1.5 border-r border-slate-950">VTC</th>
-                            <th class="py-1 px-1 border-r border-slate-950 text-center text-purple-500 w-16">SKU Type</th>
-                            <th class="py-1 px-1.5 text-right text-slate-300 w-16">Total Accounts</th>
-                        </tr>
-                    </thead>
-                    <tbody id="summaryBody" class="divide-y divide-slate-900/60 bg-slate-950/20">
-                    </tbody>
-                </table>
-            </div>
+<script>
+const DATA = {"summary": [{"region": "North", "location": "NCR", "totalAccounts": 22, "totalStores": 22, "accountsListed": 13, "storesBilled": 13, "julyPlan": 6, "julyAch": 0}, {"region": "West", "location": "GUJARAT", "totalAccounts": 11, "totalStores": 11, "accountsListed": 1, "storesBilled": 4, "julyPlan": 2, "julyAch": 0}, {"region": "North", "location": "Tricity", "totalAccounts": 6, "totalStores": 6, "accountsListed": 3, "storesBilled": 4, "julyPlan": 2, "julyAch": 0}, {"region": "South", "location": "Karnataka", "totalAccounts": 5, "totalStores": 5, "accountsListed": 1, "storesBilled": 6, "julyPlan": 3, "julyAch": 0}, {"region": null, "location": "Rest Of India", "totalAccounts": 28, "totalStores": null, "accountsListed": null, "storesBilled": null, "julyPlan": null, "julyAch": null}, {"region": null, "location": "Total", "totalAccounts": 72, "totalStores": 44, "accountsListed": null, "storesBilled": null, "julyPlan": null, "julyAch": null}], "detail": [{"region": "Central", "area": "QC", "location": "Mp", "city": "Indore", "account": "Wellness", "supply": "DC/DSD based on SKU", "stores": 2, "acctCount": 1}, {"region": "East", "area": "QC", "location": "WB", "city": "Kolkata", "account": "FRANK ROSE", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Faridabad", "account": "Modern Bazaar", "supply": "DSD", "stores": 1, "acctCount": 0.25}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Faridabad", "account": "SHOP EXPRESS", "supply": "DSD", "stores": 2, "acctCount": 0.3333}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Gurgaon", "account": "ASIANA FOOD & BEVERAGE LLP", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Gurgaon", "account": "Daily Needs", "supply": "DSD", "stores": 1, "acctCount": 0.5}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Gurgaon", "account": "Dastak", "supply": "DSD", "stores": 2, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Gurgaon", "account": "FOODSTORIES PRIVATE LIMITED", "supply": "DSD", "stores": 1, "acctCount": 0.5}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Gurgaon", "account": "Geom365", "supply": "DSD", "stores": 3, "acctCount": 0.3333}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Gurgaon", "account": "Honey Money Top", "supply": "DSD", "stores": 1, "acctCount": 0.5}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Gurgaon", "account": "Marche Retail", "supply": "DSD", "stores": 6, "acctCount": 0.3333}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Gurgaon", "account": "Modern Bazaar", "supply": "DSD", "stores": 5, "acctCount": 0.25}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Gurgaon", "account": "NEEDS RETAIL", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Gurgaon", "account": "SHOP EXPRESS", "supply": "DSD", "stores": 4, "acctCount": 0.3333}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Gurgaon", "account": "Ssm Retail Pvt Ltd", "supply": "DSD", "stores": 9, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "NCR", "city": "New Delhi", "account": "FOODSTORIES PRIVATE LIMITED", "supply": "DSD", "stores": 1, "acctCount": 0.5}, {"region": "North", "area": "VTC", "location": "NCR", "city": "New Delhi", "account": "Geom365", "supply": "DSD", "stores": 15, "acctCount": 0.3333}, {"region": "North", "area": "VTC", "location": "NCR", "city": "New Delhi", "account": "Honey Money Top", "supply": "DSD", "stores": 2, "acctCount": 0.5}, {"region": "North", "area": "VTC", "location": "NCR", "city": "New Delhi", "account": "LOTS", "supply": "DSD", "stores": 3, "acctCount": 0.5}, {"region": "North", "area": "VTC", "location": "NCR", "city": "New Delhi", "account": "Marche Retail", "supply": "DSD", "stores": 3, "acctCount": 0.3333}, {"region": "North", "area": "VTC", "location": "NCR", "city": "New Delhi", "account": "Modern Bazaar", "supply": "DSD", "stores": 12, "acctCount": 0.25}, {"region": "North", "area": "VTC", "location": "NCR", "city": "New Delhi", "account": "NUTS N MORE", "supply": "DSD", "stores": 3, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "NCR", "city": "New Delhi", "account": "Worldwide delight Pvt Ltd", "supply": "DSD", "stores": 1, "acctCount": 0.5}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Noida - Ghaziabad", "account": "BuyBuy Technologies Private Limited", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Noida - Ghaziabad", "account": "Daily Needs", "supply": "DSD", "stores": 1, "acctCount": 0.5}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Noida - Ghaziabad", "account": "Fresh Lee", "supply": "DC", "stores": 5, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Noida - Ghaziabad", "account": "Geom365", "supply": "DSD", "stores": 4, "acctCount": 0.3333}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Noida - Ghaziabad", "account": "LOTS", "supply": "DSD", "stores": 2, "acctCount": 0.5}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Noida - Ghaziabad", "account": "M/S DEBON", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Noida - Ghaziabad", "account": "Marche Retail", "supply": "DSD", "stores": 2, "acctCount": 0.3333}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Noida - Ghaziabad", "account": "Modern Bazaar", "supply": "DSD", "stores": 3, "acctCount": 0.25}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Noida - Ghaziabad", "account": "SHOP EXPRESS", "supply": "DSD", "stores": 1, "acctCount": 0.3333}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Noida - Ghaziabad", "account": "Shreejee Foods", "supply": "DSD", "stores": 4, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Noida - Ghaziabad", "account": "Worldwide delight Pvt Ltd", "supply": "DSD", "stores": 1, "acctCount": 0.5}, {"region": "North", "area": "VTC", "location": "Rajasthan", "city": "Jaipur", "account": "JOIN COMMERCE PRIVATE LIMITED", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "Tricity", "city": "Chandigarh", "account": "ABHYUDAY ESSENTIALS", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "Tricity", "city": "Chandigarh", "account": "Modern Bazaar", "supply": "DSD", "stores": 1, "acctCount": 0.5}, {"region": "North", "area": "VTC", "location": "Tricity", "city": "Chandigarh", "account": "NU Farm Market LLP", "supply": "DSD", "stores": 2, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "Tricity", "city": "Chandigarh", "account": "Punjab Stores", "supply": "DSD", "stores": 1, "acctCount": 0.5}, {"region": "North", "area": "VTC", "location": "Tricity", "city": "Mohali", "account": "Modern Bazaar", "supply": "DSD", "stores": 1, "acctCount": 0.5}, {"region": "North", "area": "VTC", "location": "Tricity", "city": "Mohali", "account": "Punjab Stores", "supply": "DSD", "stores": 1, "acctCount": 0.5}, {"region": "North", "area": "VTC", "location": "Tricity", "city": "Panchkula", "account": "ABNI ENTERPRISES", "supply": "DSD", "stores": 2, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "Tricity", "city": "Panchkula", "account": "M/S ABHYUDAY FOOD ENTERPRISES", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "UP", "city": "Lucknow", "account": "NUTS WORLD", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "Uttarakhand", "city": "DEHRADUN", "account": "Fresh N Easy", "supply": "DSD", "stores": 2, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "Uttarakhand", "city": "DEHRADUN", "account": "NUTS N MORE", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "Uttarakhand", "city": "DEHRADUN", "account": "Suvidha", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "South", "area": "QC", "location": "AP", "city": "Guntur", "account": "Ratnadeep", "supply": "DC/DSD based on SKU", "stores": 3, "acctCount": 0.5}, {"region": "South", "area": "QC", "location": "AP", "city": "Vijayawada", "account": "Ratnadeep", "supply": "DC/DSD based on SKU", "stores": 10, "acctCount": 0.5}, {"region": "South", "area": "QC", "location": "Karnataka", "city": "Bangalore", "account": "Ajfan", "supply": "DC", "stores": 1, "acctCount": 1}, {"region": "South", "area": "QC", "location": "Karnataka", "city": "Bangalore", "account": "INDWELL RETAIL PRIVATE LIMITED", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "South", "area": "QC", "location": "Karnataka", "city": "Bangalore", "account": "Namdhari Agro Fresh Pvt. Ltd.", "supply": "DSD", "stores": 12, "acctCount": 1}, {"region": "South", "area": "QC", "location": "Karnataka", "city": "Bangalore", "account": "Ratnadeep", "supply": "DC/DSD based on SKU", "stores": 5, "acctCount": 1}, {"region": "South", "area": "QC", "location": "Karnataka", "city": "Bangalore", "account": "Wellness", "supply": "DC/DSD based on SKU", "stores": 1, "acctCount": 1}, {"region": "South", "area": "QC", "location": "Kerala", "city": "Calicut", "account": "Ajfan", "supply": "DC", "stores": 2, "acctCount": 1}, {"region": "South", "area": "QC", "location": "Kerala", "city": "Cochin", "account": "Pothys", "supply": "DSD", "stores": 1, "acctCount": 0.5}, {"region": "South", "area": "QC", "location": "Kerala", "city": "Trivandrum", "account": "Pothys", "supply": "DSD", "stores": 2, "acctCount": 0.5}, {"region": "South", "area": "QC", "location": "Telangana", "city": "Hyderabad", "account": "Ajfan", "supply": "DC", "stores": 1, "acctCount": 1}, {"region": "South", "area": "QC", "location": "Telangana", "city": "Hyderabad", "account": "Ratnadeep", "supply": "DC/DSD based on SKU", "stores": 119, "acctCount": 1}, {"region": "South", "area": "QC", "location": "Telangana", "city": "Hyderabad", "account": "USHODAYA SUPER MARKETS PRIVATE LIMITED", "supply": "DSD", "stores": 13, "acctCount": 1}, {"region": "South", "area": "VTC", "location": "Telangana", "city": "TELANGANA", "account": "FOODSTORIES PRIVATE LIMITED", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "South", "area": "QC", "location": "TN", "city": "Chennai", "account": "Ajfan", "supply": "DC", "stores": 2, "acctCount": 0.5}, {"region": "South", "area": "QC", "location": "TN", "city": "Chennai", "account": "CROSSWORD BOOKSTORES PVT LTD", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "South", "area": "QC", "location": "TN", "city": "Chennai", "account": "Pothys", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "South", "area": "QC", "location": "TN", "city": "Thanjavur", "account": "Ajfan", "supply": "DC", "stores": 2, "acctCount": 0.5}, {"region": "West", "area": "QC", "location": "Goa", "city": "Goa", "account": "Magson", "supply": "DC", "stores": 16, "acctCount": 1}, {"region": "West", "area": "QC", "location": "Goa", "city": "Goa", "account": "Wellness", "supply": "DC/DSD based on SKU", "stores": 6, "acctCount": 1}, {"region": "West", "area": "VTC", "location": "GUJARAT", "city": "Ahmedabad", "account": "DANGEE DUMS LIMITED", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "West", "area": "VTC", "location": "GUJARAT", "city": "Ahmedabad", "account": "MAGSON RETAIL AND DISTRIBUTION LIMITED", "supply": "DC", "stores": 1, "acctCount": 1}, {"region": "West", "area": "VTC", "location": "GUJARAT", "city": "Ahmedabad", "account": "NAMH MEDITECH PRIVATE LIMITED", "supply": "DSD", "stores": 4, "acctCount": 0.5}, {"region": "West", "area": "VTC", "location": "GUJARAT", "city": "Ahmedabad", "account": "SHREEJI KAJUWALA AND DRY FRUITS", "supply": "DSD", "stores": 4, "acctCount": 1}, {"region": "West", "area": "VTC", "location": "GUJARAT", "city": "Ahmedabad", "account": "SUPERCENTRE RETAILHUB PRIVATE LIMITED", "supply": "DSD", "stores": 5, "acctCount": 1}, {"region": "West", "area": "VTC", "location": "GUJARAT", "city": "Ahmedabad", "account": "SUPREME TRADERS", "supply": "DSD", "stores": 6, "acctCount": 1}, {"region": "West", "area": "VTC", "location": "GUJARAT", "city": "Rajkot", "account": "NAMH MEDITECH PRIVATE LIMITED", "supply": "DSD", "stores": 1, "acctCount": 0.5}, {"region": "West", "area": "VTC", "location": "GUJARAT", "city": "Rajkot", "account": "TIGMON FOODS LLP", "supply": "DC", "stores": 1, "acctCount": 0.5}, {"region": "West", "area": "VTC", "location": "GUJARAT", "city": "SURAT", "account": "TIGMON FOODS LLP", "supply": "DC", "stores": 1, "acctCount": 0.5}, {"region": "West", "area": "VTC", "location": "GUJARAT", "city": "VADODARA", "account": "CHANDAN SUPER MART", "supply": "DSD", "stores": 3, "acctCount": 1}, {"region": "West", "area": "VTC", "location": "GUJARAT", "city": "VADODARA", "account": "JAGDISH FARSHAN PVT LTD", "supply": "DSD", "stores": 13, "acctCount": 1}, {"region": "West", "area": "VTC", "location": "GUJARAT", "city": "VADODARA", "account": "JAGDISH FOODS PVTLTD", "supply": "DSD", "stores": 4, "acctCount": 1}, {"region": "West", "area": "VTC", "location": "GUJARAT", "city": "VADODARA", "account": "Suvidha", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "West", "area": "QC", "location": "Maharashtra", "city": "Mumbai", "account": "Ajfan", "supply": "DC", "stores": 1, "acctCount": 1}, {"region": "West", "area": "QC", "location": "Maharashtra", "city": "Mumbai", "account": "AVARYA RETAIL PRIVATE LIMITED", "supply": "DSD", "stores": 4, "acctCount": 1}, {"region": "West", "area": "QC", "location": "Maharashtra", "city": "Mumbai", "account": "CROSSWORD BOOKSTORES PVT LTD", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "West", "area": "QC", "location": "Maharashtra", "city": "Mumbai", "account": "Eden Super market", "supply": "DSD", "stores": 5, "acctCount": 1}, {"region": "West", "area": "QC", "location": "Maharashtra", "city": "Mumbai", "account": "MERICAN FOODS", "supply": "DSD", "stores": 1, "acctCount": 1}, {"region": "West", "area": "QC", "location": "Maharashtra", "city": "Mumbai", "account": "SOCIETY STORES RETAIL PVT LTD", "supply": "DSD", "stores": 7, "acctCount": 1}, {"region": "West", "area": "QC", "location": "Maharashtra", "city": "Mumbai", "account": "Wellness", "supply": "DC/DSD based on SKU", "stores": 30, "acctCount": 0.25}, {"region": "West", "area": "QC", "location": "Maharashtra", "city": "Nagpur", "account": "Wellness", "supply": "DC/DSD based on SKU", "stores": 2, "acctCount": 0.25}, {"region": "West", "area": "QC", "location": "Maharashtra", "city": "Nashik", "account": "Wellness", "supply": "DC/DSD based on SKU", "stores": 2, "acctCount": 0.25}, {"region": "West", "area": "QC", "location": "Maharashtra", "city": "Pune", "account": "Dorabjee", "supply": "DSD", "stores": 11, "acctCount": 1}, {"region": "West", "area": "QC", "location": "Maharashtra", "city": "Pune", "account": "FOOD JUNCTION", "supply": "DSD", "stores": 12, "acctCount": 1}, {"region": "West", "area": "QC", "location": "Maharashtra", "city": "Pune", "account": "Wellness", "supply": "DC/DSD based on SKU", "stores": 2, "acctCount": 0.25}, {"region": "North", "area": "VTC", "location": "NCR", "city": "Noida - Ghaziabad", "account": "VDH", "supply": "DSD", "stores": 2, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "NCR", "city": "New Delhi", "account": "Baniya Ki dukan", "supply": "DSD", "stores": 19, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "NCR", "city": "New Delhi", "account": "Raj Mandir", "supply": "DSD", "stores": 60, "acctCount": 1}, {"region": "North", "area": "VTC", "location": "NCR", "city": "New Delhi", "account": "Kondli Bazaar", "supply": "DSD", "stores": 4, "acctCount": 1}]};
+const NAMED = ["NCR","GUJARAT","Tricity","Karnataka"]; // rows that map 1:1 to detail locations
+DATA.detail.forEach((d,i)=>{ d._id = i; });
 
-            <!-- DYNAMIC MINI SNAPSHOOT REPORT PANEL -->
-            <div class="border-t border-slate-800 bg-slate-900/80 p-2 shrink-0 space-y-1.5 shadow-[0_-4px_10px_rgba(0,0,0,0.4)]">
-                <div class="flex justify-between items-center border-b border-slate-800 pb-1">
-                    <span class="text-[8px] font-black text-indigo-400 tracking-wider flex items-center gap-1">
-                        <i class="fa-solid fa-bolt text-amber-500 animate-pulse"></i> LIVE SCOPE REPORT
-                    </span>
-                    <span class="text-[7px] text-slate-500 font-mono tracking-tighter" id="reportScope">FILTER: ALL</span>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-1 text-[8px] font-mono">
-                    <div class="bg-slate-950/60 p-1 rounded border border-slate-900/80 flex flex-col">
-                        <span class="text-slate-500 leading-none">Total Accounts</span>
-                        <span class="text-[11px] font-black text-slate-100 mt-0.5" id="snapTotalAccounts">0</span>
-                    </div>
-                    <div class="bg-slate-950/60 p-1 rounded border border-slate-900/80 flex flex-col">
-                        <span class="text-slate-500 leading-none">Total Outlets</span>
-                        <span class="text-[11px] font-black text-indigo-300 mt-0.5" id="snapTotalStores">0</span>
-                    </div>
-                </div>
+// ---- listed status (editable; not in source, so user-set) ----
+const LS_KEY = "mtr_listed_v1";
+let listedState = {};
+let storageOK = false;
+try{
+  const t="__mtr_test__"; localStorage.setItem(t,"1"); localStorage.removeItem(t);
+  storageOK = true;
+  const raw = localStorage.getItem(LS_KEY); if(raw) listedState = JSON.parse(raw)||{};
+}catch(e){ storageOK = false; }
 
-                <div class="grid grid-cols-3 gap-1 text-[8px] font-mono pt-0.5">
-                    <div class="bg-slate-950/60 p-1 rounded border border-slate-900/80 flex flex-col items-center">
-                        <span class="text-emerald-500 font-bold leading-none">PO RECVD</span>
-                        <span class="text-[10px] font-black text-emerald-400 mt-0.5" id="snapPOReceived">0</span>
-                    </div>
-                    <div class="bg-slate-950/60 p-1 rounded border border-slate-900/80 flex flex-col items-center">
-                        <span class="text-amber-500 font-bold leading-none">PENDING</span>
-                        <span class="text-[10px] font-black text-amber-400 mt-0.5" id="snapPOPending">0</span>
-                    </div>
-                    <div class="bg-slate-950/60 p-1 rounded border border-slate-900/80 flex flex-col items-center">
-                        <span class="text-purple-400 font-bold leading-none">PO VAL</span>
-                        <span class="text-[10px] font-black text-purple-300 mt-0.5" id="snapTotalValue">0</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="p-1 border-t border-slate-900 bg-slate-900/20 text-[8px] text-slate-500 font-mono tracking-tight lowercase normal-case shrink-0">
-                * Select any underlining locator code to map data streams.
-            </div>
-        </section>
+let saveTimer=null;
+function flashSaved(){
+  const el=document.getElementById("saveStatus"); if(!el) return;
+  if(storageOK){ el.className="save-status ok"; el.textContent="Saved"; }
+  else{ el.className="save-status warn"; el.textContent="Saved for this session"; }
+  el.style.opacity="1";
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{ el.style.opacity=".55"; }, 1600);
+}
+function saveListed(){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(listedState)); }catch(e){}
+  flashSaved();
+}
+const isListed = id => !!listedState[id];
+function setListed(id,val){ if(val) listedState[id]=1; else delete listedState[id]; saveListed(); }
 
-        <!-- RIGHT PANE: Grid Data Matrix Table -->
-        <section class="flex-1 bg-slate-950 flex flex-col overflow-hidden">
-            
-            <div class="p-1 bg-slate-900/20 border-b border-slate-900 flex flex-row justify-between items-center gap-2 shrink-0 h-6">
-                <div class="flex items-center gap-1.5">
-                    <div id="statusIndicatorBlob" class="w-1 h-1 rounded-full bg-indigo-500"></div>
-                    <div class="text-[9px] font-mono">
-                        <span class="text-slate-500">Pipeline:</span>
-                        <span id="activeFilterLabel" class="text-slate-300 font-bold ml-1">All Accounts Matrix</span>
-                    </div>
-                    <span id="activeCountBadge" class="text-[8px] font-mono bg-slate-900 text-indigo-400 px-1 py-0.5 rounded border border-slate-800 font-bold ml-1">0 lines</span>
-                </div>
+const fmt = n => (n===null||n===undefined||n==="") ? "" : (Math.round(n*100)/100).toLocaleString("en-IN");
+const fmtAcct = n => {
+  if(n===null||n===undefined||n==="") return "";
+  const r = Math.round(n*100)/100;
+  return Number.isInteger(r) ? r.toLocaleString("en-IN") : r.toFixed(2).replace(/0$/,"");
+};
+const regClass = r => "reg-tag reg-" + (r||"");
 
-                <div class="relative w-48">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-1.5 text-slate-600">
-                        <i class="fa-solid fa-magnifying-glass text-[8px]"></i>
-                    </span>
-                    <input type="text" id="rightPaneSearch" oninput="applyFilteringAndRender()" placeholder="Search metrics or hubs..." class="w-full text-[9px] font-mono normal-case pl-4.5 pr-1 py-0.5 bg-slate-900 border border-slate-800 rounded focus:outline-none focus:border-indigo-600 text-slate-200 placeholder-slate-600 h-4.5">
-                </div>
-            </div>
+let selected = "Total";
+let currentRows = [];
+let sortKey = null, sortDir = 1;
+let query = "";
 
-            <div class="flex-1 overflow-auto flex flex-col">
-                <div class="flex-1 overflow-auto">
-                    <table class="w-full border-collapse text-left text-[9px] font-mono leading-none">
-                        <thead class="sticky top-0 bg-slate-900 border-b border-slate-800 text-slate-400 font-bold z-10">
-                            <tr>
-                                <th class="py-1 px-1.5 border-r border-slate-950 w-12">Region</th>
-                                <th class="py-1 px-1.5 border-r border-slate-950 w-20">City</th>
-                                <th class="py-1 px-2 border-r border-slate-950 text-slate-200 font-black">Account Name</th>
-                                <th class="py-1 px-1.5 border-r border-slate-950 text-center w-12">Stores</th>
-                                <th class="py-1 px-1.5 border-r border-slate-950 text-amber-500 w-24">Status</th>
-                                <th class="py-1 px-1.5 border-r border-slate-950 text-emerald-500 w-14">PO Value</th>
-                                <th class="py-1 px-1.5 text-slate-500 w-44">Remarks</th>
-                            </tr>
-                        </thead>
-                        <tbody id="accountBody" class="divide-y divide-slate-900">
-                        </tbody>
-                        <tfoot class="sticky bottom-0 bg-slate-900 border-t border-slate-700 text-slate-100 font-bold z-10 shadow-[0_-2px_6px_rgba(0,0,0,0.6)]">
-                            <tr id="accountFooterRow">
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-            
-        </section>
+// ---- header stamp ----
+document.getElementById("stampAcc").textContent = DATA.detail.length;
+document.getElementById("stampLoc").textContent =
+  new Set(DATA.detail.map(d=>d.location)).size;
 
-    </main>
+// ---- build summary ----
+const sbody = document.getElementById("summaryBody");
+DATA.summary.forEach(row=>{
+  const tr = document.createElement("tr");
+  tr.dataset.loc = row.location;
+  if(row.location==="Total") tr.classList.add("total-row");
+  const listedRatio = (row.totalAccounts && row.accountsListed!=null)
+      ? Math.min(1, row.accountsListed/row.totalAccounts) : null;
+  tr.innerHTML = `
+    <td class="l">${row.region ? `<span class="${regClass(row.region)}">${row.region}</span>` : `<span class="muted">&mdash;</span>`}</td>
+    <td class="l">
+      <span class="loc-cell"><span class="dot" style="background:${dotColor(row)}"></span>${row.location}
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span>
+    </td>
+    <td>${fmt(row.totalAccounts)}</td>
+    <td>${row.totalStores!=null?fmt(row.totalStores):'<span class="muted">&mdash;</span>'}</td>
+    <td>${row.accountsListed!=null
+        ? `<span class="mini">${fmt(row.accountsListed)}<span class="bar"><i style="width:${(listedRatio*100).toFixed(0)}%"></i></span></span>`
+        : '<span class="muted">&mdash;</span>'}</td>
+    <td>${row.storesBilled!=null?fmt(row.storesBilled):'<span class="muted">&mdash;</span>'}</td>
+    <td>${row.julyPlan!=null?fmt(row.julyPlan):'<span class="muted">&mdash;</span>'}</td>
+    <td>${row.julyAch!=null?fmt(row.julyAch):'<span class="muted">&mdash;</span>'}</td>`;
+  tr.addEventListener("click", ()=>select(row.location));
+  sbody.appendChild(tr);
+});
 
-    <script>
-        const summaryRows = [
-            {"Region": "Central", "VTC Mapping": "Mp", "DC/DSD based on SKU": 1, "Grand Total": 0},
-            {"Region": "East", "VTC Mapping": "WB", "DC/DSD based on SKU": "-", "Grand Total": 0},
-            {"Region": "North", "VTC Mapping": "NCR", "DC/DSD based on SKU": "-", "Grand Total": 0},
-            {"Region": "North", "VTC Mapping": "Rajasthan", "DC/DSD based on SKU": "-", "Grand Total": 0},
-            {"Region": "North", "VTC Mapping": "Tricity", "DC/DSD based on SKU": "-", "Grand Total": 0},
-            {"Region": "North", "VTC Mapping": "UP", "DC/DSD based on SKU": "-", "Grand Total": 0},
-            {"Region": "North", "VTC Mapping": "Uttarakhand", "DC/DSD based on SKU": "-", "Grand Total": 0},
-            {"Region": "South", "VTC Mapping": "AP", "DC/DSD based on SKU": 2, "Grand Total": 0},
-            {"Region": "South", "VTC Mapping": "Karnataka", "DC/DSD based on SKU": 2, "Grand Total": 0},
-            {"Region": "South", "VTC Mapping": "Kerala", "DC/DSD based on SKU": "-", "Grand Total": 0},
-            {"Region": "South", "VTC Mapping": "Telangana", "DC/DSD based on SKU": 1, "Grand Total": 0},
-            {"Region": "South", "VTC Mapping": "TN", "DC/DSD based on SKU": "-", "Grand Total": 0},
-            {"Region": "West", "VTC Mapping": "Goa", "DC/DSD based on SKU": 1, "Grand Total": 0},
-            {"Region": "West", "VTC Mapping": "GUJARAT", "DC/DSD based on SKU": "-", "Grand Total": 0},
-            {"Region": "West", "VTC Mapping": "Maharashtra", "DC/DSD based on SKU": 4, "Grand Total": 0},
-            {"Region": "Grand Total", "VTC Mapping": "Grand Total", "DC/DSD based on SKU": 11, "Grand Total": 0}
-        ];
+function dotColor(row){
+  const m={North:"var(--north)",South:"var(--south)",West:"var(--west)",East:"var(--east)",Central:"var(--central)"};
+  return m[row.region] || "var(--ink-faint)";
+}
 
-        const accountRows = [
-            {"Region": "Central", "VTC Mapping": "Mp", "City": "Indore", "Account": "Wellness", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "East", "VTC Mapping": "WB", "City": "Kolkata", "Account": "FRANK ROSE", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Faridabad", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for Response"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Faridabad", "Account": "SHOP EXPRESS", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "ASIANA FOOD & BEVERAGE LLP", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Daily Needs", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Dastak", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "FOODSTORIES PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Geom365", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Honey Money Top", "Status": "Pending", "PO Value": "-", "Remarks": "Meeting planned"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Marche Retail", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for Response"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "NEEDS RETAIL", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "SHOP EXPRESS", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Gurgaon", "Account": "Ssm Retail Pvt Ltd", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "FOODSTORIES PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Geom365", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Honey Money Top", "Status": "Pending", "PO Value": "-", "Remarks": "Meeting planned"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "LOTS", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Marche Retail", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for Response"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "NUTS N MORE", "Status": "Pending", "PO Value": "-", "Remarks": "Dry Fruit follow-up"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Worldwide delight Pvt Ltd", "Status": "Pending", "PO Value": "-", "Remarks": "Dry Fruit follow-up"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "BuyBuy Technologies Private Limited", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Daily Needs", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Fresh Lee", "Status": "Order received", "PO Value": 3, "Remarks": "Order placed"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Geom365", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "LOTS", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "M/S DEBON", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Marche Retail", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for Response"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "SHOP EXPRESS", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Shreejee Foods", "Status": "Order received", "PO Value": 1, "Remarks": "Order Placed"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "Worldwide delight Pvt Ltd", "Status": "Pending", "PO Value": "-", "Remarks": "Dry Fruit follow-up"},
-            {"Region": "North", "VTC Mapping": "Rajasthan", "City": "Jaipur", "Account": "JOIN COMMERCE PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "Tricity", "City": "Chandigarh", "Account": "ABHYUDAY ESSENTIALS", "Status": "Order received", "PO Value": 1, "Remarks": "Order placed"},
-            {"Region": "North", "VTC Mapping": "Tricity", "City": "Chandigarh", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for Response"},
-            {"Region": "North", "VTC Mapping": "Tricity", "City": "Chandigarh", "Account": "NU Farm Market LLP", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "Tricity", "City": "Chandigarh", "Account": "Punjab Stores", "Status": "Order received", "PO Value": 2, "Remarks": "Order placed"},
-            {"Region": "North", "VTC Mapping": "Tricity", "City": "Mohali", "Account": "Modern Bazaar", "Status": "Pending", "PO Value": "-", "Remarks": "Waiting for Response"},
-            {"Region": "North", "VTC Mapping": "Tricity", "City": "Mohali", "Account": "Punjab Stores", "Status": "Order received", "PO Value": 2, "Remarks": "Order placed"},
-            {"Region": "North", "VTC Mapping": "Tricity", "City": "Panchkula", "Account": "ABNI ENTERPRISES", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "Tricity", "City": "Panchkula", "Account": "M/S ABHYUDAY FOOD ENTERPRISES", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "UP", "City": "Lucknow", "Account": "NUTS WORLD", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "Uttarakhand", "City": "DEHRADUN", "Account": "Fresh N Easy", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "Uttarakhand", "City": "DEHRADUN", "Account": "NUTS N MORE", "Status": "Pending", "PO Value": "-", "Remarks": "Dry Fruit follow-up"},
-            {"Region": "North", "VTC Mapping": "Uttarakhand", "City": "DEHRADUN", "Account": "Suvidha", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "AP", "City": "Guntur", "Account": "Ratnadeep", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "AP", "City": "Vijayawada", "Account": "Ratnadeep", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "Karnataka", "City": "Bangalore", "Account": "Ajfan", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "Karnataka", "City": "Bangalore", "Account": "INDWELL RETAIL PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "Karnataka", "City": "Bangalore", "Account": "Namdhari Agro Fresh Pvt. Ltd.", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "Karnataka", "City": "Bangalore", "Account": "Ratnadeep", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "Karnataka", "City": "Bangalore", "Account": "Wellness", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "Kerala", "City": "Calicut", "Account": "Ajfan", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "Kerala", "City": "Cochin", "Account": "Pothys", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "Kerala", "City": "Trivandrum", "Account": "Pothys", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "Telangana", "City": "Hyderabad", "Account": "Ajfan", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "Telangana", "City": "Hyderabad", "Account": "Ratnadeep", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "Telangana", "City": "Hyderabad", "Account": "USHODAYA SUPER MARKETS PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "Telangana", "City": "TELANGANA", "Account": "FOODSTORIES PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
-            {"Region": "South", "VTC Mapping": "TN", "City": "Chennai", "Account": "Ajfan", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "TN", "City": "Chennai", "Account": "CROSSWORD BOOKSTORES PVT LTD", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "TN", "City": "Chennai", "Account": "Pothys", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "South", "VTC Mapping": "Thanjavur", "Account": "Ajfan", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "Goa", "City": "Goa", "Account": "Magson", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "Goa", "City": "Goa", "Account": "Wellness", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "GUJARAT", "City": "Ahmedabad", "Account": "DANGEE DUMS LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "GUJARAT", "City": "Ahmedabad", "Account": "MAGSON RETAIL AND DISTRIBUTION LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "GUJARAT", "City": "Ahmedabad", "Account": "NAMH MEDITECH PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "GUJARAT", "City": "Ahmedabad", "Account": "SHREEJI KAJUWALA AND DRY FRUITS", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "GUJARAT", "City": "Ahmedabad", "Account": "SUPERCENTRE RETAILHUB PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "GUJARAT", "City": "Ahmedabad", "Account": "SUPREME TRADERS", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "GUJARAT", "City": "Rajkot", "Account": "NAMH MEDITECH PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "GUJARAT", "City": "Rajkot", "Account": "TIGMON FOODS LLP", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "GUJARAT", "City": "SURAT", "Account": "TIGMON FOODS LLP", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "GUJARAT", "City": "VADODARA", "Account": "CHANDAN SUPER MART", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "GUJARAT", "City": "VADODARA", "Account": "JAGDISH FARSHAN PVT LTD", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "GUJARAT", "City": "VADODARA", "Account": "JAGDISH FOODS PVTLTD", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "GUJARAT", "City": "VADODARA", "Account": "Suvidha", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "Maharashtra", "City": "Mumbai", "Account": "Ajfan", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "Maharashtra", "City": "Mumbai", "Account": "AVARYA RETAIL PRIVATE LIMITED", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "Maharashtra", "City": "Mumbai", "Account": "CROSSWORD BOOKSTORES PVT LTD", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "Maharashtra", "City": "Mumbai", "Account": "Eden Super market", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "Maharashtra", "City": "Mumbai", "Account": "MERICAN FOODS", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "Maharashtra", "City": "Mumbai", "Account": "SOCIETY STORES RETAIL PVT LTD", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "Maharashtra", "City": "Mumbai", "Account": "Wellness", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "Maharashtra", "City": "Nagpur", "Account": "Wellness", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "Maharashtra", "City": "Nashik", "Account": "Wellness", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "Maharashtra", "City": "Pune", "Account": "Dorabjee", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "Maharashtra", "City": "Pune", "Account": "FOOD JUNCTION", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "West", "VTC Mapping": "Maharashtra", "City": "Pune", "Account": "Wellness", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "Noida - Ghaziabad", "Account": "VDH", "Status": "Order received", "PO Value": 1, "Remarks": "Order placed"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Baniya Ki dukan", "Status": "Pending", "PO Value": "-", "Remarks": "Product Sample shared"},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Raj Mandir", "Status": "Pending", "PO Value": "-", "Remarks": ""},
-            {"Region": "North", "VTC Mapping": "NCR", "City": "New Delhi", "Account": "Kondli Bazaar", "Status": "Order received", "PO Value": 1, "Remarks": "Order placed"}
-        ];
+// ---- filter logic ----
+function rowsFor(loc){
+  if(loc==="Total") return DATA.detail;
+  if(loc==="Rest Of India") return DATA.detail.filter(d=>!NAMED.includes(d.location));
+  return DATA.detail.filter(d=>d.location===loc);
+}
 
-        const accountStoreCounts = {
-            "Wellness": 44, "FRANK ROSE": 1, "Modern Bazaar": 23, "SHOP EXPRESS": 7, "ASIANA FOOD & BEVERAGE LLP": 1,
-            "Daily Needs": 2, "Dastak": 2, "FOODSTORIES PRIVATE LIMITED": 3, "Geom365": 22, "Honey Money Top": 5,
-            "Marche Retail": 13, "NEEDS RETAIL": 1, "Ssm Retail Pvt Ltd": 9, "LOTS": 7, "NUTS N MORE": 4,
-            "Worldwide delight Pvt Ltd": 3, "BuyBuy Technologies Private Limited": 1, "Fresh Lee": 7, "M/S DEBON": 1,
-            "Shreejee Foods": 5, "JOIN COMMERCE PRIVATE LIMITED": 1, "ABHYUDAY ESSENTIALS": 1, "NU Farm Market LLP": 2,
-            "Punjab Stores": 3, "ABNI ENTERPRISES": 2, "M/S ABHYUDAY FOOD ENTERPRISES": 1, "NUTS WORLD": 1,
-            "Fresh N Easy": 2, "Suvidha": 2, "Ratnadeep": 137, "Ajfan": 9, "INDWELL RETAIL PRIVATE LIMITED": 1,
-            "Namdhari Agro Fresh Pvt. Ltd.": 12, "Pothys": 4, "USHODAYA SUPER MARKETS PRIVATE LIMITED": 13,
-            "CROSSWORD BOOKSTORES PVT LTD": 2, "Magson": 17, "DANGEE DUMS LIMITED": 1, "MAGSON RETAIL AND DISTRIBUTION LIMITED": 1,
-            "NAMH MEDITECH PRIVATE LIMITED": 5, "SHREEJI KAJUWALA AND DRY FRUITS": 4, "SUPERCENTRE RETAILHUB PRIVATE LIMITED": 5,
-            "SUPREME TRADERS": 6, "TIGMON FOODS LLP": 2, "CHANDAN SUPER MART": 3, "JAGDISH FARSHAN PVT LTD": 13,
-            "JAGDISH FOODS PVTLTD": 4, "AVARYA RETAIL PRIVATE LIMITED": 4, "Eden Super market": 5, "MERICAN FOODS": 1,
-            "SOCIETY STORES RETAIL PVT LTD": 7, "Dorabjee": 11, "FOOD JUNCTION": 12, "VDH": 2, "Baniya Ki dukan": 19,
-            "Raj Mandir": 60, "Kondli Bazaar": 1
-        };
+function select(loc){
+  selected = loc;
+  [...sbody.children].forEach(tr=>tr.classList.toggle("sel", tr.dataset.loc===loc));
+  render();
+}
 
-        let selectedVtcFilter = null;
-        let selectedRegionFilter = "";
+// ---- sort ----
+document.getElementById("detailHead").addEventListener("click", e=>{
+  const th = e.target.closest("th"); if(!th) return;
+  const k = th.dataset.k;
+  if(sortKey===k){ sortDir*=-1; } else { sortKey=k; sortDir=1; }
+  [...document.querySelectorAll("#detailHead th")].forEach(h=>h.classList.remove("up","dn"));
+  th.classList.add(sortDir===1?"up":"dn");
+  render();
+});
 
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('headerRouteCounter').innerText = `${accountRows.length} Points`;
-            generateSummaryPane();
-            applyFilteringAndRender();
-        });
+// ---- search ----
+document.getElementById("search").addEventListener("input", e=>{
+  query = e.target.value.trim().toLowerCase();
+  render();
+});
 
-        function generateSummaryPane() {
-            const body = document.getElementById('summaryBody');
-            body.innerHTML = '';
+// ---- render detail ----
+const dbody = document.getElementById("detailBody");
+const dfoot = document.getElementById("detailFoot");
+function render(){
+  let rows = rowsFor(selected).slice();
+  if(query){
+    rows = rows.filter(d =>
+      (d.account||"").toLowerCase().includes(query) ||
+      (d.city||"").toLowerCase().includes(query));
+  }
+  if(sortKey){
+    rows.sort((a,b)=>{
+      if(sortKey==="listed") return (isListed(a._id)-isListed(b._id))*sortDir;
+      let x=a[sortKey], y=b[sortKey];
+      if(typeof x==="number" || typeof y==="number"){ x=x??-Infinity; y=y??-Infinity; return (x-y)*sortDir; }
+      return String(x||"").localeCompare(String(y||""))*sortDir;
+    });
+  }
+  currentRows = rows;
 
-            const vtcAccountMap = {};
-            accountRows.forEach(row => {
-                const vtc = row['VTC Mapping'];
-                const accountName = row['Account'];
-                if (!vtcAccountMap[vtc]) {
-                    vtcAccountMap[vtc] = new Set();
-                }
-                vtcAccountMap[vtc].add(accountName);
-            });
+  // filter pill
+  const pill = document.getElementById("filterPill");
+  if(selected==="Total"){ pill.innerHTML=""; }
+  else{
+    pill.innerHTML = `<span class="pill">${selected}
+      <span class="x" title="Clear filter" role="button" tabindex="0">
+        <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#0b5b55" stroke-width="3"><path d="M5 5l14 14M19 5L5 19"/></svg>
+      </span></span>`;
+    const x = pill.querySelector(".x");
+    x.addEventListener("click", ()=>select("Total"));
+    x.addEventListener("keydown", ev=>{ if(ev.key==="Enter"||ev.key===" ") select("Total"); });
+  }
 
-            let dynamicGrandTotalSum = 0;
-            summaryRows.forEach(row => {
-                const isTotal = row['Region'] === 'Grand Total' || row['VTC Mapping'] === 'Grand Total';
-                if (!isTotal) {
-                    const uniqueCount = vtcAccountMap[row['VTC Mapping']] ? vtcAccountMap[row['VTC Mapping']].size : 0;
-                    row['Grand Total'] = uniqueCount;
-                    
-                    if (!selectedRegionFilter || row['Region'] === selectedRegionFilter) {
-                        dynamicGrandTotalSum += uniqueCount;
-                    }
-                }
-            });
+  document.getElementById("rowCount").textContent = rows.length;
 
-            const grandTotalObj = summaryRows.find(row => row['Region'] === 'Grand Total' || row['VTC Mapping'] === 'Grand Total');
-            if (grandTotalObj) {
-                grandTotalObj['Grand Total'] = dynamicGrandTotalSum;
-            }
+  // listed tally + summary target for the active filter
+  const listedN = rows.reduce((s,d)=>s+(isListed(d._id)?1:0),0);
+  document.getElementById("listedCount").textContent = listedN;
+  const sumRow = DATA.summary.find(r=>r.location===selected);
+  const tgt = sumRow ? sumRow.accountsListed : null;
+  document.getElementById("listedTarget").textContent =
+    (tgt!=null) ? ` / ${tgt} target` : "";
 
-            summaryRows.forEach(row => {
-                const isTotal = row['Region'] === 'Grand Total' || row['VTC Mapping'] === 'Grand Total';
-                if (!isTotal && selectedRegionFilter && row['Region'] !== selectedRegionFilter) return;
+  const empty = document.getElementById("emptyState");
+  if(rows.length===0){ dbody.innerHTML=""; dfoot.innerHTML=""; empty.hidden=false; return; }
+  empty.hidden=true;
 
-                const tr = document.createElement('tr');
-                tr.className = 'h-5';
-                
-                if (isTotal) {
-                    tr.className += ' bg-slate-900 font-extrabold border-t border-slate-700 text-slate-100';
-                } else {
-                    const isActive = selectedVtcFilter === row['VTC Mapping'];
-                    tr.className += ` transition-all border-b border-slate-900/40 ${isActive ? 'bg-indigo-950/70 font-bold text-white border-l border-l-indigo-500' : 'hover:bg-slate-900/30 text-slate-300'}`;
-                }
+  dbody.innerHTML = rows.map(d=>{
+    const on = isListed(d._id);
+    return `
+    <tr>
+      <td class="l">${d.region?`<span class="${regClass(d.region)}">${d.region}</span>`:''}</td>
+      <td class="l muted">${d.area||''}</td>
+      <td class="l">${d.location||''}</td>
+      <td class="l">${d.city||''}</td>
+      <td class="l acct">${d.account||''}</td>
+      <td class="l">${supplyTag(d.supply)}</td>
+      <td>${d.stores!=null?fmt(d.stores):''}</td>
+      <td class="listed-cell">
+        <button class="toggle ${on?'on':''}" data-id="${d._id}" role="switch" aria-checked="${on}" aria-label="Listed status for ${(d.account||'').replace(/"/g,'')}">
+          <span class="knob"></span>${on?'Yes':'No'}
+        </button>
+      </td>
+    </tr>`;}).join("");
 
-                const sku = row['DC/DSD based on SKU'] !== '' ? row['DC/DSD based on SKU'] : '-';
+  const storeSum = rows.reduce((s,d)=>s+(d.stores||0),0);
+  dfoot.innerHTML = `<tr>
+    <td class="l" colspan="6">${rows.length} row${rows.length!==1?'s':''}</td>
+    <td>${fmt(storeSum)}</td>
+    <td class="l">${listedN} Yes</td>
+  </tr>`;
+}
 
-                let vtcMarkup = '';
-                if (isTotal) {
-                    vtcMarkup = `<span class="font-bold text-slate-500">Total</span>`;
-                } else {
-                    vtcMarkup = `<span class="underline decoration-slate-900 hover:decoration-indigo-500 text-indigo-400 cursor-pointer font-bold" onclick="toggleVtcFilter('${row['VTC Mapping']}')">${row['VTC Mapping']}</span>`;
-                }
+function supplyTag(s){
+  if(!s) return "";
+  const low = s.toLowerCase();
+  let cls = "dsd";
+  if(low.includes("sku")) cls="sku";
+  else if(low==="dc") cls="dc";
+  return `<span class="tag ${cls}">${s}</span>`;
+}
 
-                tr.innerHTML = `
-                    <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-500 truncate max-w-[65px]">${isTotal ? '' : row['Region']}</td>
-                    <td class="py-0.5 px-1.5 border-r border-slate-900 font-bold">${vtcMarkup}</td>
-                    <td class="py-0.5 px-1 border-r border-slate-900 text-center text-purple-400/90">${sku}</td>
-                    <td class="py-0.5 px-1.5 text-right font-black bg-slate-900/20">${row['Grand Total']}</td>
-                `;
-                body.appendChild(tr);
-            });
-        }
+// ---- listed toggle (event delegation) ----
+dbody.addEventListener("click", e=>{
+  const btn = e.target.closest(".toggle"); if(!btn) return;
+  const id = +btn.dataset.id;
+  setListed(id, !isListed(id));
+  render();
+});
 
-        function toggleVtcFilter(vtcCode) {
-            if (selectedVtcFilter === vtcCode) {
-                selectedVtcFilter = null;
-            } else {
-                selectedVtcFilter = vtcCode;
-            }
-            generateSummaryPane();
-            applyFilteringAndRender();
-        }
+document.getElementById("markAll").addEventListener("click", ()=>{
+  currentRows.forEach(d=>setListed(d._id,true)); render();
+});
+document.getElementById("clearAll").addEventListener("click", ()=>{
+  currentRows.forEach(d=>setListed(d._id,false)); render();
+});
 
-        function handleRegionChange() {
-            selectedRegionFilter = document.getElementById('regionFilter').value;
-            selectedVtcFilter = null; 
-            generateSummaryPane();
-            applyFilteringAndRender();
-        }
+// ---- CSV export (current view, with listed status) ----
+document.getElementById("exportCsv").addEventListener("click", ()=>{
+  const cols = [["region","Region"],["area","Area serviced by"],["location","Location"],
+    ["city","City"],["account","Account"],["supply","Supply Status"],
+    ["stores","# Stores"]];
+  const esc = v => { v = (v==null?"":String(v)); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
+  let csv = cols.map(c=>c[1]).concat("Listed").join(",")+"\n";
+  currentRows.forEach(d=>{
+    csv += cols.map(c=>esc(d[c[0]])).concat(isListed(d._id)?"Yes":"No").join(",")+"\n";
+  });
+  const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `mt-listed-${selected.replace(/\s+/g,"_")}.csv`;
+  document.body.appendChild(a); a.click(); a.remove();
+});
 
-        function resetAllFilters() {
-            selectedVtcFilter = null;
-            selectedRegionFilter = "";
-            document.getElementById('regionFilter').value = "";
-            document.getElementById('rightPaneSearch').value = "";
-            generateSummaryPane();
-            applyFilteringAndRender();
-        }
-
-        function applyFilteringAndRender() {
-            const searchVal = document.getElementById('rightPaneSearch').value.toLowerCase().trim();
-            const accountBody = document.getElementById('accountBody');
-            accountBody.innerHTML = '';
-
-            let totalStoresSum = 0;
-            let totalPoValueSum = 0;
-            let filteredRowCount = 0;
-
-            // Live Snapshot counters
-            let snapAccountsCount = 0;
-            let snapPOReceivedCount = 0;
-            let snapPOPendingCount = 0;
-
-            // Set Pipeline Header Context Text
-            let pipelineLabel = "All Accounts Matrix";
-            if (selectedRegionFilter && selectedVtcFilter) {
-                pipelineLabel = `${selectedRegionFilter} // ${selectedVtcFilter}`;
-            } else if (selectedRegionFilter) {
-                pipelineLabel = `${selectedRegionFilter} Region`;
-            } else if (selectedVtcFilter) {
-                pipelineLabel = `State Hub: ${selectedVtcFilter}`;
-            }
-            document.getElementById('activeFilterLabel').innerText = pipelineLabel;
-            document.getElementById('reportScope').innerText = `SCOPE: ${selectedVtcFilter || selectedRegionFilter || 'GLOBAL'}`;
-
-            accountRows.forEach(row => {
-                if (selectedRegionFilter && row['Region'] !== selectedRegionFilter) return;
-                if (selectedVtcFilter && row['VTC Mapping'] !== selectedVtcFilter) return;
-
-                if (searchVal) {
-                    const match = row['Region'].toLowerCase().includes(searchVal) ||
-                                  row['VTC Mapping'].toLowerCase().includes(searchVal) ||
-                                  row['City'].toLowerCase().includes(searchVal) ||
-                                  row['Account'].toLowerCase().includes(searchVal) ||
-                                  row['Status'].toLowerCase().includes(searchVal) ||
-                                  row['Remarks'].toLowerCase().includes(searchVal);
-                    if (!match) return;
-                }
-
-                filteredRowCount++;
-                snapAccountsCount++;
-
-                const storeCount = accountStoreCounts[row['Account']] || 0;
-                totalStoresSum += storeCount;
-
-                let poVal = 0;
-                if (row['PO Value'] !== '-') {
-                    poVal = parseInt(row['PO Value']) || 0;
-                    totalPoValueSum += poVal;
-                }
-
-                if (row['Status'].toLowerCase().includes('received')) {
-                    snapPOReceivedCount++;
-                } else {
-                    snapPOPendingCount++;
-                }
-
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-900/60 transition-colors h-5 border-b border-slate-900/40 text-slate-300';
-
-                const statusColor = row['Status'].toLowerCase().includes('received') ? 'text-emerald-400 font-bold' : 'text-amber-500/90';
-                const poColor = poVal > 0 ? 'text-emerald-400 font-black' : 'text-slate-600';
-
-                tr.innerHTML = `
-                    <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-500 font-bold">${row['Region']}</td>
-                    <td class="py-0.5 px-1.5 border-r border-slate-900 text-slate-400 truncate max-w-[80px]" title="${row['City']}">${row['City']}</td>
-                    <td class="py-0.5 px-2 border-r border-slate-900 text-white font-medium truncate max-w-[150px]" title="${row['Account']}">${row['Account']}</td>
-                    <td class="py-0.5 px-1.5 border-r border-slate-900 text-center text-indigo-300 font-bold">${storeCount}</td>
-                    <td class="py-0.5 px-1.5 border-r border-slate-900 truncate max-w-[90px] ${statusColor} text-[8px] tracking-tight"><i class="fa-solid ${poVal > 0 ? 'fa-circle-check text-emerald-500' : 'fa-clock text-amber-600'} text-[7px] mr-1"></i>${row['Status']}</td>
-                    <td class="py-0.5 px-1.5 border-r border-slate-900 text-right ${poColor} font-mono">${row['PO Value']}</td>
-                    <td class="py-0.5 px-1.5 text-slate-400 font-sans tracking-tight lowercase normal-case truncate max-w-[180px]" title="${row['Remarks']}">${row['Remarks'] || '-'}</td>
-                `;
-                accountBody.appendChild(tr);
-            });
-
-            // Update dynamically generated counts on the UI view badges
-            document.getElementById('activeCountBadge').innerText = `${filteredRowCount} records`;
-            
-            // Update the Mini Snapshoot Report Elements
-            document.getElementById('snapTotalAccounts').innerText = snapAccountsCount;
-            document.getElementById('snapTotalStores').innerText = totalStoresSum;
-            document.getElementById('snapPOReceived').innerText = snapPOReceivedCount;
-            document.getElementById('snapPOPending').innerText = snapPOPendingCount;
-            document.getElementById('snapTotalValue').innerText = totalPoValueSum > 0 ? totalPoValueSum : '-';
-
-            // Populate Responsive Running Footer 
-            const footerRow = document.getElementById('accountFooterRow');
-            footerRow.innerHTML = `
-                <td colspan="3" class="py-1 px-2 border-r border-slate-800 text-right text-slate-400 font-mono tracking-wider">Matrix Summation:</td>
-                <td class="py-1 px-1.5 border-r border-slate-800 text-center text-indigo-400 font-black text-[10px]">${totalStoresSum}</td>
-                <td class="py-1 px-1.5 border-r border-slate-800 text-slate-500 text-[8px] font-mono tracking-tight lowercase font-normal italic">Active nodes pooled</td>
-                <td class="py-1 px-1.5 border-r border-slate-800 text-right text-emerald-400 font-black text-[10px]">${totalPoValueSum > 0 ? totalPoValueSum : '-'}</td>
-                <td class="py-1 px-1.5 text-slate-500 text-[7px] font-mono tracking-tighter normal-case">PO Vol Metrics mapped in real-time.</td>
-            `;
-        }
-    </script>
+// init
+select("Total");
+(function(){
+  const el=document.getElementById("saveStatus");
+  if(!storageOK){ el.className="save-status warn"; el.textContent="Saved for this session"; el.style.opacity=".85"; }
+  else if(Object.keys(listedState).length){ el.className="save-status ok"; el.textContent="Marks restored"; el.style.opacity=".7"; }
+})();
+</script>
 </body>
 </html>
