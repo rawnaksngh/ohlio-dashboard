@@ -1,183 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>MT Standalone — Upload Master</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MT Standlone Report</title>
 <style>
   :root{
-    --paper:#EEF1F4;
-    --card:#FFFFFF;
-    --ink:#16222E;
-    --ink-soft:#5A6B7B;
-    --rule:#D8DFE6;
-    --green:#1F6F4A;
+    --ink:#1a1d24;
+    --paper:#f6f4ee;
+    --card:#ffffff;
+    --line:#e0dbcf;
+    --muted:#6b7280;
+    --accent:#2b5f4e;
+    --head:#1f2a37;
+    --zebra:#faf9f5;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:"Archivo","Segoe UI",Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;
-    padding:28px 20px 60px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--paper);color:var(--ink);line-height:1.5;
+    padding:0 20px 56px;-webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:920px;margin:0 auto}
+  .topbar{max-width:900px;margin:0 auto;padding:22px 0 24px}
+  .home-btn{
+    display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink);
+    font-weight:600;font-size:.9rem;background:var(--card);border:1px solid var(--line);
+    padding:9px 15px 9px 12px;border-radius:9px;transition:border-color .15s,box-shadow .15s;
+  }
+  .home-btn:hover{border-color:var(--accent);box-shadow:0 3px 10px rgba(0,0,0,.07)}
+  .home-btn svg{width:17px;height:17px}
 
-  .home{
-    display:inline-flex;align-items:center;gap:8px;
-    text-decoration:none;color:var(--ink);
-    background:var(--card);
-    border:1px solid var(--rule);
-    border-radius:8px;
-    padding:9px 14px 9px 11px;
-    font-size:14px;font-weight:600;
-    box-shadow:0 1px 0 rgba(22,34,46,.04);
-    transition:background .15s ease, transform .15s ease, border-color .15s ease;
-  }
-  .home:hover{background:#F7F9FB;border-color:#BFC9D2;transform:translateY(-1px)}
-  .home:focus-visible{outline:2px solid var(--green);outline-offset:2px}
-  .home svg{width:16px;height:16px;stroke:var(--green);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  header{max-width:900px;margin:0 auto 22px}
+  h1{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--muted);margin-top:6px;font-size:.92rem}
 
-  header{margin:30px 0 22px}
-  .eyebrow{
-    font-family:"IBM Plex Mono",ui-monospace,monospace;
-    font-size:11px;letter-spacing:.16em;text-transform:uppercase;
-    color:var(--ink-soft);margin-bottom:8px;
+  .card{
+    max-width:900px;margin:0 auto;background:var(--card);
+    border:1px solid var(--line);border-radius:12px;overflow:hidden;
   }
-  h1{font-size:29px;font-weight:700;letter-spacing:-.015em}
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;min-width:640px}
+  th,td{padding:13px 18px;text-align:right;font-variant-numeric:tabular-nums}
+  th:first-child,td:first-child{text-align:left}
 
-  .panel{
-    background:var(--card);
-    border:1px solid var(--rule);
-    border-radius:12px;
-    overflow:hidden;
+  .grouphead th{
+    background:#f0ede4;color:var(--ink);font-size:.82rem;font-weight:700;
+    text-align:center;padding:11px 18px;border-bottom:1px solid var(--line);
   }
-  .scroll{overflow-x:auto}
-  table{border-collapse:collapse;width:100%;min-width:660px}
-  th,td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--rule)}
-  thead th{
-    font-family:"IBM Plex Mono",ui-monospace,monospace;
-    font-size:10.5px;font-weight:500;
-    letter-spacing:.1em;text-transform:uppercase;
-    color:var(--ink-soft);
-    background:#F7F9FB;
-    white-space:nowrap;
-    vertical-align:bottom;
+  .grouphead th.g-all{color:var(--accent)}
+  .grouphead th:first-child{background:#f0ede4}
+
+  thead tr.cols th{
+    background:var(--head);color:#fff;font-size:.78rem;font-weight:600;
+    letter-spacing:.02em;white-space:nowrap;
   }
-  td{font-size:14.5px}
-  .num{
-    text-align:right;
-    font-family:"IBM Plex Mono",ui-monospace,monospace;
-    font-variant-numeric:tabular-nums;
-    font-weight:500;
+  tbody td{border-bottom:1px solid #efece3;font-size:.95rem}
+  tbody td:first-child{font-weight:600}
+  tbody tr:nth-child(even){background:var(--zebra)}
+  tbody tr:hover{background:#f2efe6}
+  .dash{color:#b7b1a2}
+
+  tr.total-row td{
+    background:var(--head);color:#fff;font-weight:700;font-size:.98rem;border-bottom:none;
   }
-  th.num{text-align:right}
-  .loc{font-weight:600}
-  .region{
-    font-family:"IBM Plex Mono",ui-monospace,monospace;
-    font-size:11px;letter-spacing:.06em;text-transform:uppercase;
-    color:var(--ink-soft);
+  .footnote{
+    max-width:900px;margin:14px auto 0;color:var(--muted);font-size:.8rem;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
   }
-  tbody tr:hover{background:#F9FBFC}
-  tr.total td{
-    border-bottom:none;border-top:2px solid var(--ink);
-    background:#F7F9FB;font-weight:700;
-  }
-  footer{
-    margin-top:14px;font-size:12.5px;color:var(--ink-soft);
-    font-family:"IBM Plex Mono",ui-monospace,monospace;
-  }
-  @media (max-width:560px){
-    h1{font-size:24px}
-    body{padding:20px 14px 44px}
-  }
-  @media (prefers-reduced-motion:reduce){*{transition:none !important}}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <a class="home" href="home.html">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/><path d="M10 20v-6h4v6"/></svg>
-    Home
-  </a>
+  <div class="topbar">
+    <a class="home-btn" href="home.html" aria-label="Back to home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/></svg>
+      Home
+    </a>
+  </div>
 
   <header>
-    <div class="eyebrow">MT Standalone · Upload Master</div>
-    <h1>Store billing status by location</h1>
+    <h1>MT Standlone Report</h1>
+    <p class="sub">Region-wise store coverage and case volume — overall and July.</p>
   </header>
 
-  <div class="panel">
-    <div class="scroll">
+  <div class="card">
+    <div class="table-wrap">
       <table>
         <thead>
-          <tr>
+          <tr class="grouphead">
+            <th></th>
+            <th class="g-all" colspan="3">Overall</th>
+            <th class="g-jul" colspan="2">July</th>
+          </tr>
+          <tr class="cols">
             <th>Region</th>
-            <th>Location</th>
-            <th class="num">Total Stores</th>
-            <th class="num">No of stores Billed</th>
-            <th class="num">July plan of<br>account listed</th>
-            <th class="num">July ach of<br>account listed</th>
+            <th>Total coverage</th>
+            <th>Billed stores</th>
+            <th>Total cases</th>
+            <th>July billed stores</th>
+            <th>July cases</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="region">North</td>
-            <td class="loc">NCR</td>
-            <td class="num">592</td>
-            <td class="num">203</td>
-            <td class="num">0</td>
-            <td class="num">0</td>
-          </tr>
-          <tr>
-            <td class="region">West</td>
-            <td class="loc">GUJARAT</td>
-            <td class="num">141</td>
-            <td class="num">22</td>
-            <td class="num">0</td>
-            <td class="num">0</td>
-          </tr>
-          <tr>
-            <td class="region">North</td>
-            <td class="loc">Tricity</td>
-            <td class="num">110</td>
-            <td class="num">27</td>
-            <td class="num">0</td>
-            <td class="num">0</td>
-          </tr>
-          <tr>
-            <td class="region">South</td>
-            <td class="loc">Karnataka</td>
-            <td class="num">212</td>
-            <td class="num">5</td>
-            <td class="num">0</td>
-            <td class="num">0</td>
-          </tr>
-          <tr>
-            <td class="region"></td>
-            <td class="loc">Rest Of India</td>
-            <td class="num"></td>
-            <td class="num"></td>
-            <td class="num"></td>
-            <td class="num"></td>
-          </tr>
-          <tr class="total">
-            <td class="region"></td>
-            <td class="loc">Total</td>
-            <td class="num">1055</td>
-            <td class="num">257</td>
-            <td class="num"></td>
-            <td class="num"></td>
-          </tr>
+          <tr><td>NCR</td><td>452</td><td>184</td><td>127.5</td><td>2</td><td>0.16</td></tr>
+          <tr><td>GUJARAT</td><td>103</td><td>18</td><td>4.8</td><td>7</td><td>1.33</td></tr>
+          <tr><td>Tricity</td><td>74</td><td>23</td><td>6.6</td><td>2</td><td>0.33</td></tr>
+          <tr><td>Banglore</td><td>4</td><td>4</td><td>1.3</td><td>0</td><td>0</td></tr>
+          <tr><td>W UP</td><td>42</td><td>41</td><td>13.3</td><td>41</td><td>13.33</td></tr>
+          <tr><td>Rest of india</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td></tr>
+          <tr class="total-row"><td>Total</td><td>675</td><td>270</td><td>153.5</td><td>52</td><td>15.15</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <footer>Source: mt_standlone_upload_master.xlsx · Sheet1</footer>
-</div>
+  <div class="footnote">
+    <span>Source: mt_standlone_upload_formate_in_github.xlsx</span>
+    <span id="genline"></span>
+  </div>
+
+<script>
+  document.getElementById('genline').textContent =
+    "Generated " + new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+</script>
 </body>
 </html>
