@@ -141,7 +141,6 @@
             padding: 30px;
             z-index: 3000;
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
-            display: none;
             flex-direction: column;
         }
         .notes-pop-top-bar {
@@ -173,9 +172,6 @@
             flex: 1;
             overflow-y: auto;
             padding-right: 10px;
-        }
-        .notes-full-row {
-            grid-column: span 2;
         }
         .notes-card-block {
             background: rgba(255, 255, 255, 0.02);
@@ -431,21 +427,23 @@
             <div class="chart-section" style="display:flex;flex-direction:column;gap:14px;">
                 <span class="metrics-heading">MTD Execution Status</span>
                 <div class="charts-container">
+                    <!-- VALUE CARD -->
                     <div class="mini-chart-card">
                         <div class="chart-top-bar">
                             <span class="chart-title-lbl">Value MTD</span>
-                            <span class="chart-pct-badge" style="color:var(--neon-cyan);">65.5%</span>
+                            <span class="chart-pct-badge" style="color:var(--neon-cyan);">88.0%</span>
                         </div>
                         <div class="compact-track">
-                            <div class="compact-fill" style="width:65.5%; background:var(--neon-cyan);"></div>
-                            <div class="milestone-pin pin-cyan" style="left:49%;">📍10L</div>
+                            <div class="compact-fill" style="width:88.0%; background:var(--neon-cyan);"></div>
+                            <div class="milestone-pin pin-cyan" style="left:88%;">📍2M</div>
                         </div>
                         <div class="chart-bottom-data">
-                            <div>Achieved: <span class="hl-val">13.10 Lakhs</span></div>
+                            <div>Achieved: <span class="hl-val">17.60 Lakhs</span></div>
                             <div>Target: <span>20.00 Lakhs</span></div>
                         </div>
                     </div>
 
+                    <!-- COVERAGE CARD -->
                     <div class="mini-chart-card">
                         <div class="chart-top-bar">
                             <span class="chart-title-lbl">Coverage MTD</span>
@@ -453,7 +451,7 @@
                         </div>
                         <div class="compact-track">
                             <div class="compact-fill" style="width:51.0%; background:var(--neon-orange);"></div>
-                            <div class="milestone-pin pin-orange" style="left:38%;">📍200</div>
+                            <div class="milestone-pin pin-orange" style="left:51%;">📍500</div>
                         </div>
                         <div class="chart-bottom-data">
                             <div>Achieved: <span class="hl-val">255 Stores</span></div>
@@ -461,18 +459,19 @@
                         </div>
                     </div>
 
+                    <!-- VOLUME CARD -->
                     <div class="mini-chart-card">
                         <div class="chart-top-bar">
                             <span class="chart-title-lbl">Volume MTD</span>
-                            <span class="chart-pct-badge" style="color:var(--neon-purple);">96.7%</span>
+                            <span class="chart-pct-badge" style="color:var(--neon-purple);">52.8%</span>
                         </div>
                         <div class="compact-track">
-                            <div class="compact-fill" style="width:96.7%; background:var(--neon-purple);"></div>
-                            <div class="milestone-pin pin-purple" style="left:74%;">📍15K</div>
+                            <div class="compact-fill" style="width:52.8%; background:var(--neon-purple);"></div>
+                            <div class="milestone-pin pin-purple" style="left:52.8%;">📍50K</div>
                         </div>
                         <div class="chart-bottom-data">
-                            <div>Achieved: <span class="hl-val">19,332 Pcs</span></div>
-                            <div>Target: <span>20,000 Pcs</span></div>
+                            <div>Achieved: <span class="hl-val">26,388 Pcs</span></div>
+                            <div>Target: <span>50,000 Pcs</span></div>
                         </div>
                     </div>
                 </div>
