@@ -10,6 +10,7 @@
             --glass-border: rgba(255, 255, 255, 0.1);
             --ios-cyan: #00ffd5;
             --ios-purple: #af52de;
+            --ios-yellow: #ffd60a;
             --bg-dark: #05070a;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'SF Pro Display', -apple-system, sans-serif; }
@@ -32,6 +33,30 @@
         .header { text-align: center; margin-bottom: 50px; }
         h1 { font-size: 3rem; font-weight: 900; letter-spacing: -2px; text-transform: uppercase; background: linear-gradient(#fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .meta { color: var(--ios-cyan); font-size: 0.7rem; letter-spacing: 4px; margin-top: 10px; opacity: 0.8; text-transform: uppercase; }
+
+        /* ---------- Sales Table ---------- */
+        .table-panel {
+            background: var(--glass); backdrop-filter: blur(40px); border: 1px solid var(--glass-border);
+            border-radius: 40px; padding: 35px; width: 100%; max-width: 1200px; margin-bottom: 50px;
+        }
+        .panel-title { letter-spacing: 2px; font-weight: 700; color: var(--ios-cyan); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 22px; }
+        .table-scroll { width: 100%; overflow-x: auto; }
+        table.sales { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 760px; }
+        table.sales th, table.sales td { padding: 14px 16px; text-align: center; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.06); white-space: nowrap; }
+        table.sales thead th { font-weight: 800; text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem; }
+
+        .grp-amjj { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
+        .grp-mtd { background: rgba(175, 82, 222, 0.18); color: #e0b6f5; }
+        .col-account { background: rgba(255, 214, 10, 0.14); color: var(--ios-yellow); text-align: left; }
+        .sub-amjj { background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.6); }
+        .sub-mtd { background: rgba(175, 82, 222, 0.08); color: rgba(224,182,245,0.75); }
+
+        table.sales tbody td.account { text-align: left; font-weight: 600; color: #fff; }
+        table.sales tbody td.mtd { background: rgba(175, 82, 222, 0.05); }
+        table.sales tbody tr:hover td { background: rgba(255,255,255,0.04); }
+        table.sales tbody tr:hover td.mtd { background: rgba(175, 82, 222, 0.10); }
+        table.sales tbody tr:last-child td { border-bottom: none; }
+        .num { font-variant-numeric: tabular-nums; color: rgba(255,255,255,0.9); }
 
         .platform-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; width: 100%; max-width: 1200px; margin-bottom: 50px; align-items: start; }
         
@@ -79,6 +104,12 @@
 
         .blinkit { color: #f8cb46; } .zepto { color: #af52de; } .instamart { color: #ff6d2e; }
         .amazon { color: #00a8e1; } .flipkart { color: #2874f0; } .bigbasket { color: #84c225; }
+
+        @media (max-width: 600px) {
+            body { padding: 90px 12px 30px 12px; }
+            h1 { font-size: 2rem; }
+            .table-panel { padding: 22px 16px; border-radius: 28px; }
+        }
     </style>
 </head>
 <body>
@@ -94,6 +125,85 @@
     <div class="header">
         <h1>Integration Grid</h1>
         <div class="meta">Operations Sync • Verified April 2026</div>
+    </div>
+
+    <div class="table-panel">
+        <div class="panel-title">Account Performance</div>
+        <div class="table-scroll">
+            <table class="sales">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="col-account">Account</th>
+                        <th colspan="3" class="grp-amjj">AMJJ26</th>
+                        <th colspan="3" class="grp-mtd">MTD Jul'26</th>
+                    </tr>
+                    <tr>
+                        <th class="sub-amjj">Total Case (AMJJ26)</th>
+                        <th class="sub-amjj">Total Pcs (AMJJ26)</th>
+                        <th class="sub-amjj">Value Lakhs (AMJJ26)</th>
+                        <th class="sub-mtd">Total Case</th>
+                        <th class="sub-mtd">Total Pcs</th>
+                        <th class="sub-mtd">Value Lakhs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="account">Blinkit</td>
+                        <td class="num">47.83</td>
+                        <td class="num">1721.88</td>
+                        <td class="num">1.07</td>
+                        <td class="num mtd">18</td>
+                        <td class="num mtd">648</td>
+                        <td class="num mtd">0.40</td>
+                    </tr>
+                    <tr>
+                        <td class="account">Zepto</td>
+                        <td class="num">420</td>
+                        <td class="num">15120</td>
+                        <td class="num">10.09</td>
+                        <td class="num mtd">134</td>
+                        <td class="num mtd">4824</td>
+                        <td class="num mtd">3.22</td>
+                    </tr>
+                    <tr>
+                        <td class="account">Intamart</td>
+                        <td class="num"></td>
+                        <td class="num"></td>
+                        <td class="num"></td>
+                        <td class="num mtd"></td>
+                        <td class="num mtd"></td>
+                        <td class="num mtd"></td>
+                    </tr>
+                    <tr>
+                        <td class="account">Amazon Now</td>
+                        <td class="num"></td>
+                        <td class="num"></td>
+                        <td class="num"></td>
+                        <td class="num mtd"></td>
+                        <td class="num mtd"></td>
+                        <td class="num mtd"></td>
+                    </tr>
+                    <tr>
+                        <td class="account">Flipkart Minutes</td>
+                        <td class="num"></td>
+                        <td class="num"></td>
+                        <td class="num"></td>
+                        <td class="num mtd"></td>
+                        <td class="num mtd"></td>
+                        <td class="num mtd"></td>
+                    </tr>
+                    <tr>
+                        <td class="account">BigBasket</td>
+                        <td class="num"></td>
+                        <td class="num"></td>
+                        <td class="num"></td>
+                        <td class="num mtd"></td>
+                        <td class="num mtd"></td>
+                        <td class="num mtd"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="platform-grid" id="grid"></div>
