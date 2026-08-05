@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oli-Ohh | Channel Summary (Dark)</title>
+    <title>Oli-Ohh | Scheme Summary (Dark)</title>
     <style>
         /* SF Pro Style Typography */
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        body { 
-            background: #000000; 
+        body {
+            background: #000000;
             color: #ffffff;
             padding: 30px 20px;
             -webkit-font-smoothing: antialiased;
@@ -71,7 +71,7 @@
 
         /* GROUPED TABLE CONTAINER */
         .table-wrapper {
-            background: #1c1c1e; 
+            background: #1c1c1e;
             border-radius: 12px;
             overflow-x: auto;
             border: 0.5px solid #38383a;
@@ -93,90 +93,49 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             border-bottom: 0.5px solid #38383a;
+            white-space: nowrap;
         }
 
         td {
             padding: 18px 20px;
             border-bottom: 0.5px solid #38383a;
-            vertical-align: top;
+            vertical-align: middle;
             font-size: 15px;
         }
 
         tr:last-child td { border-bottom: none; }
 
-        .channel-name {
+        th.num, td.num { text-align: right; }
+
+        .scheme-name {
             font-size: 17px;
             font-weight: 600;
             color: #0a84ff;
-            margin-bottom: 6px;
         }
 
-        .badge {
-            font-size: 11px;
-            background: rgba(10, 132, 255, 0.15);
-            color: #0a84ff;
-            padding: 3px 8px;
-            border-radius: 6px;
+        .landing {
             font-weight: 600;
-        }
-
-        /* LANDING PRICE CARD */
-        .landing-card {
-            background: #242426;
-            border: 1px solid #30d158;
-            border-radius: 10px;
-            padding: 12px;
-            box-shadow: 0 4px 12px rgba(48, 209, 88, 0.1);
-        }
-
-        .landing-label {
-            font-size: 10px;
-            font-weight: 700;
             color: #30d158;
-            text-transform: uppercase;
-            margin-bottom: 4px;
         }
 
-        .landing-price {
-            font-size: 18px;
+        .margin {
             font-weight: 700;
-            color: #ffffff;
-            line-height: 1.4;
-        }
-
-        .scheme-text {
-            font-size: 13px;
-            line-height: 1.6;
-            color: #f2f2f7;
-            white-space: pre-line;
-        }
-
-        .hold { color: #636366; text-decoration: line-through; }
-        .active { color: #32d74b; font-weight: 500; }
-
-        .markup-highlight {
             color: #ffd60a;
-            font-weight: 700;
-            font-size: 16px;
         }
 
-        .markdown-small {
-            font-size: 12px;
+        .muted {
             color: #8e8e93;
-            margin-top: 4px;
+            font-size: 13px;
         }
 
-        .approver-tag {
-            font-size: 11px;
-            color: #8e8e93;
-            margin-top: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        .date {
+            font-size: 13px;
+            color: #f2f2f7;
+            white-space: nowrap;
         }
 
-        .check-icon { color: #30d158; font-weight: bold; }
-
+        /* Rows shown in bold in the source sheet */
+        tr.emphasis td { font-weight: 700; }
     </style>
 </head>
 <body>
@@ -189,73 +148,68 @@
 
     <div class="header">
         <h1>Oli-Ohh Pasta</h1>
-        <p>AMJ 2026 Cycle • Scheme Summary</p>
+        <p>Scheme Summary</p>
     </div>
 
     <div class="table-wrapper">
         <table>
             <thead>
                 <tr>
-                    <th>Channel Details</th>
-                    <th>Schemes (Status)</th>
-                    <th>Trade Price</th>
-                    <th style="color: #30d158;">Net Landing</th>
-                    <th>Markup</th>
-                    <th>Validity</th>
+                    <th>Scheme Name</th>
+                    <th class="num">MRP</th>
+                    <th class="num">Net Landing</th>
+                    <th class="num">Margin %</th>
+                    <th class="num">Min Bill Qty</th>
+                    <th>Method of Disbursement</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
                 </tr>
             </thead>
-            <tbody id="ios-dark-data">
-                </tbody>
+            <tbody>
+                <tr class="emphasis">
+                    <td class="scheme-name">Buy 6 Pcs get 5% scheme</td>
+                    <td class="num">89</td>
+                    <td class="num landing">73.52</td>
+                    <td class="num margin">21.1%</td>
+                    <td class="num">6</td>
+                    <td>On Bill</td>
+                    <td class="date">07-May-25</td>
+                    <td class="date">21-Dec-26</td>
+                </tr>
+                <tr class="emphasis">
+                    <td class="scheme-name">Buy 12 Pcs get 10% scheme</td>
+                    <td class="num">89</td>
+                    <td class="num landing">69.65</td>
+                    <td class="num margin">27.8%</td>
+                    <td class="num">12</td>
+                    <td>On Bill</td>
+                    <td class="date">05-May-25</td>
+                    <td class="date">21-Dec-26</td>
+                </tr>
+                <tr>
+                    <td class="scheme-name">Buy 24 Pcs get 12% scheme</td>
+                    <td class="num">89</td>
+                    <td class="num landing">68.12</td>
+                    <td class="num margin">30.7%</td>
+                    <td class="num">24</td>
+                    <td>On Bill</td>
+                    <td class="date">01-Jun-25</td>
+                    <td class="date">21-Dec-26</td>
+                </tr>
+                <tr>
+                    <td class="scheme-name">Buy 36 Pcs get 15% scheme</td>
+                    <td class="num">89</td>
+                    <td class="num landing">65.78</td>
+                    <td class="num margin">35.3%</td>
+                    <td class="num">36</td>
+                    <td>On Bill</td>
+                    <td class="date">01-Jun-25</td>
+                    <td class="date">21-Dec-26</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </div>
-
-<script>
-    const channels = ["General Trade", "MR Standalone", "Wholesale", "MT Regional"];
-    const tableBody = document.getElementById('ios-dark-data');
-
-    channels.forEach(name => {
-        tableBody.innerHTML += `
-            <tr>
-                <td>
-                    <div class="channel-name">${name}</div>
-                    <span class="badge">F2 FREQUENCY</span>
-                    <div class="approver-tag">
-                        <span class="check-icon">✓</span> Verified: Deepak Sir
-                    </div>
-                </td>
-                <td class="scheme-text">
-                    <div class="hold">6 Pcs (10%) - Hold</div>
-                    <div class="hold">12 Pcs (10%) - Hold</div>
-                    <div class="active">36 Pcs (12%) - Started</div>
-                    <div class="active">72 Pcs (15%) - Started</div>
-                </td>
-                <td>
-                    <div style="font-weight: 600;">₹89.00 <span style="font-size: 11px; color:#8e8e93;">MRP</span></div>
-                    <div style="font-size: 13px; color: #8e8e93; margin-top: 4px;">RLP: ₹77.39</div>
-                </td>
-                <td>
-                    <div class="landing-card">
-                        <div class="landing-label">Net Cost</div>
-                        <div class="landing-price">
-                            ₹68.12 <small style="font-size: 11px; color: #8e8e93;">(1C)</small><br>
-                            ₹65.78 <small style="font-size: 11px; color: #8e8e93;">(2C)</small>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="markup-highlight">30.65%</div>
-                    <div class="markdown-small">MKDN: 23.46%</div>
-                    <div class="markup-highlight" style="margin-top: 8px;">35.29%</div>
-                    <div class="markdown-small">MKDN: 26.08%</div>
-                </td>
-                <td style="font-size: 12px; color: #8e8e93; line-height: 1.4;">
-                    01/04/2026<br>to<br>30/06/2026
-                </td>
-            </tr>
-        `;
-    });
-</script>
 
 </body>
 </html>
