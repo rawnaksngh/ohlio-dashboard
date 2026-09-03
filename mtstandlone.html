@@ -21,7 +21,7 @@
     background:var(--paper);color:var(--ink);line-height:1.5;
     padding:0 20px 56px;-webkit-font-smoothing:antialiased;
   }
-  .topbar{max-width:900px;margin:0 auto;padding:22px 0 24px}
+  .topbar{max-width:1080px;margin:0 auto;padding:22px 0 24px}
   .home-btn{
     display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink);
     font-weight:600;font-size:.9rem;background:var(--card);border:1px solid var(--line);
@@ -30,22 +30,22 @@
   .home-btn:hover{border-color:var(--accent);box-shadow:0 3px 10px rgba(0,0,0,.07)}
   .home-btn svg{width:17px;height:17px}
 
-  header{max-width:900px;margin:0 auto 22px}
+  header{max-width:1080px;margin:0 auto 22px}
   h1{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.02em;font-weight:700}
   .sub{color:var(--muted);margin-top:6px;font-size:.92rem}
 
   .card{
-    max-width:900px;margin:0 auto;background:var(--card);
+    max-width:1080px;margin:0 auto;background:var(--card);
     border:1px solid var(--line);border-radius:12px;overflow:hidden;
   }
   .table-wrap{overflow-x:auto}
-  table{width:100%;border-collapse:collapse;min-width:640px}
-  th,td{padding:13px 18px;text-align:right;font-variant-numeric:tabular-nums}
+  table{width:100%;border-collapse:collapse;min-width:990px}
+  th,td{padding:13px 16px;text-align:right;font-variant-numeric:tabular-nums}
   th:first-child,td:first-child{text-align:left}
 
   .grouphead th{
     background:#f0ede4;color:var(--ink);font-size:.82rem;font-weight:700;
-    text-align:center;padding:11px 18px;border-bottom:1px solid var(--line);
+    text-align:center;padding:11px 16px;border-bottom:1px solid var(--line);
   }
   .grouphead th.g-all{color:var(--accent)}
   .grouphead th:first-child{background:#f0ede4}
@@ -60,11 +60,17 @@
   tbody tr:hover{background:#f2efe6}
   .dash{color:#b7b1a2}
 
+  td.trend{text-align:center;font-size:1.05rem;font-weight:700}
+  .trend-up{color:#15803d}
+  .trend-down{color:#c02626}
+  tr.total-row td .trend-up{color:#4ade80}
+  tr.total-row td .trend-down{color:#ff6b5e}
+
   tr.total-row td{
     background:var(--head);color:#fff;font-weight:700;font-size:.98rem;border-bottom:none;
   }
   .footnote{
-    max-width:900px;margin:14px auto 0;color:var(--muted);font-size:.8rem;
+    max-width:1080px;margin:14px auto 0;color:var(--muted);font-size:.8rem;
     display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
   }
 </style>
@@ -80,7 +86,7 @@
 
   <header>
     <h1>MT Standlone Report</h1>
-    <p class="sub">Region-wise store coverage and case volume — overall and August.</p>
+    <p class="sub">Region-wise store coverage and case volume — overall and June to August.</p>
   </header>
 
   <div class="card">
@@ -90,32 +96,40 @@
           <tr class="grouphead">
             <th></th>
             <th class="g-all" colspan="3">Overall</th>
-            <th class="g-jul" colspan="2">August</th>
+            <th colspan="2">June</th>
+            <th colspan="2">July</th>
+            <th colspan="2">August</th>
+            <th></th>
           </tr>
           <tr class="cols">
             <th>Region</th>
             <th>Total coverage</th>
             <th>Billed stores</th>
             <th>Total cases</th>
+            <th>June billed stores</th>
+            <th>June cases</th>
+            <th>July billed stores</th>
+            <th>July cases</th>
             <th>August billed stores</th>
             <th>August cases</th>
+            <th>Trend</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>NCR</td><td>440</td><td>200</td><td>155.64</td><td>11</td><td>12.94</td></tr>
-          <tr><td>GUJARAT</td><td>103</td><td>21</td><td>6.17</td><td>3</td><td>0.67</td></tr>
-          <tr><td>Tricity</td><td>210</td><td>33</td><td>11.64</td><td>3</td><td>1.00</td></tr>
-          <tr><td>Banglore</td><td>209</td><td>5</td><td>1.00</td><td>0</td><td>-0.67</td></tr>
-          <tr><td>W UP</td><td>277</td><td>277</td><td>78.25</td><td>57</td><td>13.08</td></tr>
-          <tr><td>Rest of india</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td></tr>
-          <tr class="total-row"><td>Total</td><td>1239</td><td>536</td><td>252.69</td><td>74</td><td>27.03</td></tr>
+          <tr><td>NCR</td><td>862</td><td>211</td><td>161.92</td><td>86</td><td>54.33</td><td>21</td><td>11.31</td><td>23</td><td>19.22</td><td class="trend"><span class="trend-down">&#9660;</span></td></tr>
+          <tr><td>GUJARAT</td><td>136</td><td>24</td><td>7.50</td><td>12</td><td>3.50</td><td>11</td><td>2.00</td><td>8</td><td>2.00</td><td class="trend"><span class="trend-down">&#9660;</span></td></tr>
+          <tr><td>Tricity</td><td>204</td><td>34</td><td>12.31</td><td>9</td><td>2.00</td><td>12</td><td>4.31</td><td>5</td><td>1.67</td><td class="trend"><span class="trend-down">&#9660;</span></td></tr>
+          <tr><td>Banglore</td><td>210</td><td>5</td><td>1.00</td><td>4</td><td>1.33</td><td>1</td><td>0.33</td><td>0</td><td>-0.67</td><td class="trend"><span class="trend-down">&#9660;</span></td></tr>
+          <tr><td>W UP</td><td>326</td><td>319</td><td>90.50</td><td>0</td><td>0.00</td><td>220</td><td>65.17</td><td>102</td><td>25.33</td><td class="trend"><span class="trend-up">&#9650;</span></td></tr>
+          <tr><td>Rest of india</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="dash">–</td><td class="trend dash">–</td></tr>
+          <tr class="total-row"><td>Total</td><td>1738</td><td>593</td><td>273.22</td><td>111</td><td>61.17</td><td>265</td><td>83.11</td><td>138</td><td>47.56</td><td class="trend"><span class="trend-down">&#9660;</span></td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
   <div class="footnote">
-    <span>Source: latest_mt_standlone.xlsx — Billed = "Billed Store Overall (AMJJA26)" flag 1 · Coverage carried from previous report (W UP shown at 277 = billed minimum)</span>
+    <span>Source: mt_standlone_data.xlsx — Billed = "Billed Store Overall (AMJJA26)" flag 1 · Coverage = store count in file · W UP = WUP-MRT + WUP-MBD + WUP-MZN + WUP-ALI · Trend = August cases vs June cases</span>
     <span id="genline"></span>
   </div>
 
