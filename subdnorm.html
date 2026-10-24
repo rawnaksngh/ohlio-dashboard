@@ -245,6 +245,43 @@
             }
         }
 
+
+        /* --- TABLE VIEW --- */
+        .table-wrap {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            overflow-x: auto;
+        }
+        .norms-table { width: 100%; border-collapse: collapse; min-width: 560px; }
+        .norms-table th {
+            text-align: left; padding: 16px 22px;
+            font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+            color: var(--accent-cyan); border-bottom: 1px solid rgba(0, 242, 255, 0.35);
+            background: rgba(0, 242, 255, 0.04);
+        }
+        .norms-table td { padding: 14px 22px; border-bottom: 1px solid var(--glass-border); vertical-align: top; }
+        .norms-table tr.grp-start td { border-top: 1px solid rgba(0, 242, 255, 0.25); }
+        .norms-table tbody tr:last-child td { border-bottom: none; }
+        .norms-table td.cat {
+            font-size: 12px; font-weight: 700; letter-spacing: 1.5px; color: var(--accent-cyan);
+            text-shadow: 0 0 15px rgba(0, 242, 255, 0.3); white-space: nowrap;
+            border-right: 1px solid var(--glass-border); width: 220px;
+        }
+        .norms-table .dot {
+            display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+            background: var(--accent-cyan); box-shadow: var(--thread-glow);
+            margin-right: 10px; vertical-align: middle;
+        }
+        .norms-table td.norm { font-size: 15px; font-weight: 600; color: var(--text-bright); width: 260px; }
+        .norms-table td.det { font-size: 14px; font-weight: 300; color: var(--text-dim); line-height: 1.5; }
+        .norms-table tbody tr:hover td:not(.cat) { background: rgba(255, 255, 255, 0.04); }
+        @media (max-width: 650px) {
+            .norms-table td, .norms-table th { padding: 12px 14px; }
+            .norms-table td.cat { white-space: normal; width: auto; }
+        }
     </style>
 </head>
 <body>
@@ -263,236 +300,33 @@
             <h1>SUB-D NORMS</h1>
         </header>
 
-        <div class="category-group">
-            <div class="category-header">
-                <div class="thread-node"></div>
-                <div class="category-label">LOCATION & COVERAGE</div>
-            </div>
-            <div class="items-container">
-                <div class="main-thread"></div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Service Gap Area Identified</div>
-                        <div class="item-details">Location where direct service is not available</div>
-                    </div>
-                </div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">High Potential Market</div>
-                        <div class="item-details">City identified for expansion and growth</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="category-group">
-            <div class="category-header">
-                <div class="thread-node"></div>
-                <div class="category-label">ELIGIBILITY CRITERIA</div>
-            </div>
-            <div class="items-container">
-                <div class="main-thread"></div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Experience</div>
-                        <div class="item-details">2–3 years in FMCG/Food distribution</div>
-                    </div>
-                </div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Order Booking Capability</div>
-                        <div class="item-details">Able to handle order booking & delivery</div>
-                    </div>
-                </div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Existing Brand Handling</div>
-                        <div class="item-details">Currently managing FMCG/Food brands</div>
-                    </div>
-                </div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Market Reputation</div>
-                        <div class="item-details">Good reputation in the market</div>
-                    </div>
-                </div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Retailer Network</div>
-                        <div class="item-details">Strong retailer connectivity</div>
-                    </div>
-                </div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Basic Knowledge</div>
-                        <div class="item-details">Sales, billing & collection understanding</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="category-group">
-            <div class="category-header">
-                <div class="thread-node"></div>
-                <div class="category-label">DISTRIBUTOR MARGIN</div>
-            </div>
-            <div class="items-container">
-                <div class="main-thread"></div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Margin Agreement</div>
-                        <div class="item-details">8% margin on primary retailing Includes delivery & operational cost</div>
-                    </div>
-                </div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Profitability Check</div>
-                        <div class="item-details">Ensures sustainable operations</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="category-group">
-            <div class="category-header">
-                <div class="thread-node"></div>
-                <div class="category-label">CREDIT NORMS</div>
-            </div>
-            <div class="items-container">
-                <div class="main-thread"></div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Credit Period</div>
-                        <div class="item-details">12 days credit allowed</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="category-group">
-            <div class="category-header">
-                <div class="thread-node"></div>
-                <div class="category-label">CLAIMS</div>
-            </div>
-            <div class="items-container">
-                <div class="main-thread"></div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Brand Margin</div>
-                        <div class="item-details">Fixed brand margin</div>
-                    </div>
-                </div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Scheme Claims</div>
-                        <div class="item-details">Additional schemes reimbursed by VTC</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="category-group">
-            <div class="category-header">
-                <div class="thread-node"></div>
-                <div class="category-label">IT INFRASTRUCTURE</div>
-            </div>
-            <div class="items-container">
-                <div class="main-thread"></div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Software Support</div>
-                        <div class="item-details">Provided by VTC at no cost</div>
-                    </div>
-                </div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Hardware/Internet Setup</div>
-                        <div class="item-details">Managed by Sub-Distributor</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="category-group">
-            <div class="category-header">
-                <div class="thread-node"></div>
-                <div class="category-label">FRONT SALES TEAM</div>
-            </div>
-            <div class="items-container">
-                <div class="main-thread"></div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Cost Inclusion</div>
-                        <div class="item-details">Included in margin structure</div>
-                    </div>
-                </div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">VTC Salesperson Impact</div>
-                        <div class="item-details">Margin differs if VTC provides seller</div>
-                    </div>
-                </div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Distributor Sales Team</div>
-                        <div class="item-details">Separate margin if managed by distributor</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="category-group">
-            <div class="category-header">
-                <div class="thread-node"></div>
-                <div class="category-label">SALE RETURN</div>
-            </div>
-            <div class="items-container">
-                <div class="main-thread"></div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Fresh Return</div>
-                        <div class="item-details">Approval Required</div>
-                    </div>
-                </div>
-                <div class="item-row">
-                    <div class="branch-thread"></div>
-                    <div class="item-content">
-                        <div class="item-title">Damage/Expired</div>
-                        <div class="item-details">Approval Required</div>
-                    </div>
-                </div>
-            </div>
+        <div class="table-wrap">
+            <table class="norms-table">
+                <thead><tr><th>Category</th><th>Norm</th><th>Details</th></tr></thead>
+                <tbody>
+                <tr><td class="cat" rowspan="2"><span class="dot"></span>LOCATION & COVERAGE</td><td class="norm">Service Gap Area Identified</td><td class="det">Location where direct service is not available</td></tr>
+                <tr><td class="norm">High Potential Market</td><td class="det">City identified for expansion and growth</td></tr>
+                <tr class="grp-start"><td class="cat" rowspan="6"><span class="dot"></span>ELIGIBILITY CRITERIA</td><td class="norm">Experience</td><td class="det">2–3 years in FMCG/Food distribution</td></tr>
+                <tr><td class="norm">Order Booking Capability</td><td class="det">Able to handle order booking & delivery</td></tr>
+                <tr><td class="norm">Existing Brand Handling</td><td class="det">Currently managing FMCG/Food brands</td></tr>
+                <tr><td class="norm">Market Reputation</td><td class="det">Good reputation in the market</td></tr>
+                <tr><td class="norm">Retailer Network</td><td class="det">Strong retailer connectivity</td></tr>
+                <tr><td class="norm">Basic Knowledge</td><td class="det">Sales, billing & collection understanding</td></tr>
+                <tr class="grp-start"><td class="cat" rowspan="2"><span class="dot"></span>DISTRIBUTOR MARGIN</td><td class="norm">Margin Agreement</td><td class="det">8% margin on primary retailing Includes delivery & operational cost</td></tr>
+                <tr><td class="norm">Profitability Check</td><td class="det">Ensures sustainable operations</td></tr>
+                <tr class="grp-start"><td class="cat" rowspan="1"><span class="dot"></span>CREDIT NORMS</td><td class="norm">Credit Period</td><td class="det">12 days credit allowed</td></tr>
+                <tr class="grp-start"><td class="cat" rowspan="2"><span class="dot"></span>CLAIMS</td><td class="norm">Brand Margin</td><td class="det">Fixed brand margin</td></tr>
+                <tr><td class="norm">Scheme Claims</td><td class="det">Additional schemes reimbursed by VTC</td></tr>
+                <tr class="grp-start"><td class="cat" rowspan="2"><span class="dot"></span>IT INFRASTRUCTURE</td><td class="norm">Software Support</td><td class="det">Provided by VTC at no cost</td></tr>
+                <tr><td class="norm">Hardware/Internet Setup</td><td class="det">Managed by Sub-Distributor</td></tr>
+                <tr class="grp-start"><td class="cat" rowspan="3"><span class="dot"></span>FRONT SALES TEAM</td><td class="norm">Cost Inclusion</td><td class="det">Included in margin structure</td></tr>
+                <tr><td class="norm">VTC Salesperson Impact</td><td class="det">Margin differs if VTC provides seller</td></tr>
+                <tr><td class="norm">Distributor Sales Team</td><td class="det">Separate margin if managed by distributor</td></tr>
+                <tr class="grp-start"><td class="cat" rowspan="2"><span class="dot"></span>SALE RETURN</td><td class="norm">Fresh Return</td><td class="det">Approval Required</td></tr>
+                <tr><td class="norm">Damage/Expired</td><td class="det">Approval Required</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('mousemove', (e) => {
-            const threads = document.querySelectorAll('.main-thread');
-            const x = (window.innerWidth / 2 - e.pageX) / 50;
-            
-            threads.forEach(thread => {
-                thread.style.transform = `translateX(${x}px)`;
-            });
-        });
-    </script>
 </body>
 </html>
