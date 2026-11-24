@@ -197,6 +197,28 @@
                 padding: 1rem;
             }
         }
+        /* Orders history & repeat orders report card */
+        .section-label { color: var(--text-muted); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 0.9rem; }
+        .section-label span { color: var(--text-main); }
+        .kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .kpi-row .card { padding: 1.1rem 1.2rem; }
+        .kpi-row .metric-large { font-size: 1.5rem; margin: 0.5rem 0 0.25rem; }
+        .kpi-accent { color: var(--accent-green); }
+        .report-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 1.5rem; margin-bottom: 2.5rem; }
+        table.orders { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        table.orders th { color: var(--text-muted); font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; text-align: right; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--border-color); }
+        table.orders td { text-align: right; padding: 0.6rem; border-bottom: 1px solid rgba(46, 52, 64, 0.6); font-variant-numeric: tabular-nums; }
+        table.orders th:first-child, table.orders td:first-child { text-align: left; }
+        table.orders tr.total td { font-weight: 700; border-bottom: none; border-top: 1px solid var(--border-color); }
+        table.orders td.rep { color: var(--accent-green); font-weight: 600; }
+        table.orders td.zero { color: var(--text-muted); }
+        .obar { display: inline-block; height: 6px; border-radius: 3px; background: var(--blue-traffic); vertical-align: middle; margin-right: 0.5rem; }
+        .repeat-list { list-style: none; margin-top: 1rem; }
+        .repeat-list li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.65rem 0; border-top: 1px solid rgba(46, 52, 64, 0.6); font-size: 0.88rem; }
+        .repeat-list .gap { color: var(--accent-green); font-weight: 600; white-space: nowrap; }
+        .report-note { color: var(--text-muted); font-size: 0.75rem; line-height: 1.5; margin-top: 1rem; }
+        @media (max-width: 1024px) { .kpi-row { grid-template-columns: repeat(3, 1fr); } .report-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
@@ -208,8 +230,84 @@
             Home
         </a>
         <div class="dashboard-title">Oli Ohh Analytics</div>
-        <div style="color: var(--text-muted); font-size: 0.9rem;">May 1–Jul 24, 2026</div>
+        <div style="color: var(--text-muted); font-size: 0.9rem;">Updated 24 Nov 2026</div>
     </div>
+
+    <!-- Orders history & repeat orders (source: Shopify admin, oliohh.in, pulled 24 Nov'26) -->
+    <div class="section-label">Orders history &amp; repeat orders &middot; <span>May 1&ndash;Nov 24, 2026</span></div>
+    <div class="kpi-row">
+        <div class="card">
+            <span class="card-title">Total orders</span>
+            <div class="metric-large">87</div>
+            <div class="metric-sub">since the first order in May</div>
+        </div>
+        <div class="card">
+            <span class="card-title">Total sales</span>
+            <div class="metric-large">₹23,800.50</div>
+            <div class="metric-sub">incl. tax and shipping</div>
+        </div>
+        <div class="card">
+            <span class="card-title">Avg order value</span>
+            <div class="metric-large">₹273.57</div>
+            <div class="metric-sub">total sales &divide; orders</div>
+        </div>
+        <div class="card">
+            <span class="card-title">Customers</span>
+            <div class="metric-large">83</div>
+            <div class="metric-sub">unique buyers</div>
+        </div>
+        <div class="card">
+            <span class="card-title">Repeat customers</span>
+            <div class="metric-large kpi-accent">4</div>
+            <div class="metric-sub">each has ordered <strong>twice</strong></div>
+        </div>
+        <div class="card">
+            <span class="card-title">Repeat rate</span>
+            <div class="metric-large kpi-accent">4.8%</div>
+            <div class="metric-sub"><strong>4</strong> of <strong>83</strong> customers</div>
+        </div>
+    </div>
+
+    <div class="report-grid">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title" style="border-bottom: 1px dashed var(--text-muted);">Orders history by month</span>
+            </div>
+            <table class="orders">
+                <thead>
+                    <tr><th>Month</th><th>Orders</th><th>Total sales</th><th>Avg order</th><th>New customers</th><th>Repeat orders</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>May</td><td><span class="obar" style="width:6px"></span>4</td><td>₹692.10</td><td>₹173.03</td><td>4</td><td class="zero">0</td></tr>
+                    <tr><td>Jun</td><td><span class="obar" style="width:60px"></span>38</td><td>₹8,409.10</td><td>₹221.29</td><td>38</td><td class="zero">0</td></tr>
+                    <tr><td>Jul</td><td><span class="obar" style="width:32px"></span>20</td><td>₹6,261.55</td><td>₹313.08</td><td>20</td><td class="zero">0</td></tr>
+                    <tr><td>Aug</td><td><span class="obar" style="width:9px"></span>6</td><td>₹2,390.80</td><td>₹398.47</td><td>4</td><td class="rep">2</td></tr>
+                    <tr><td>Sep</td><td><span class="obar" style="width:14px"></span>9</td><td>₹2,912.80</td><td>₹323.64</td><td>8</td><td class="rep">1</td></tr>
+                    <tr><td>Oct</td><td><span class="obar" style="width:6px"></span>4</td><td>₹1,201.20</td><td>₹300.30</td><td>4</td><td class="zero">0</td></tr>
+                    <tr><td>Nov (MTD)</td><td><span class="obar" style="width:9px"></span>6</td><td>₹1,932.95</td><td>₹322.16</td><td>5</td><td class="rep">1</td></tr>
+                    <tr class="total"><td>Total</td><td>87</td><td>₹23,800.50</td><td>₹273.57</td><td>83</td><td class="rep">4</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title" style="border-bottom: 1px dashed var(--text-muted);">Repeat orders</span>
+                <span class="metric-sub">4 of 87 orders</span>
+            </div>
+            <div class="metric-large">₹1,769.60</div>
+            <div class="metric-sub">from repeat orders &mdash; <strong>7.4%</strong> of total sales</div>
+            <ul class="repeat-list">
+                <li><span>Customer 1 &middot; 12 Jul &rarr; 14 Aug</span><span class="gap">33 days</span></li>
+                <li><span>Customer 2 &middot; 13 Jul &rarr; 18 Aug</span><span class="gap">36 days</span></li>
+                <li><span>Customer 3 &middot; 26 Sep &rarr; 7 Nov</span><span class="gap">42 days</span></li>
+                <li><span>Customer 4 &middot; 17 Sep, two orders</span><span class="gap">same day</span></li>
+            </ul>
+            <div class="report-note">Three customers came back after 33&ndash;42 days (about 37 days on average). The fourth placed two orders minutes apart on the same day.</div>
+        </div>
+    </div>
+
+    <div class="section-label">Marketing &amp; traffic &middot; <span>May 1&ndash;Jul 24, 2026</span></div>
 
     <!-- Main Section (Top Two Row Cards) -->
     <div class="dashboard-grid">
