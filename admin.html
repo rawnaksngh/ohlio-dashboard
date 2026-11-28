@@ -208,6 +208,7 @@ table.sheet td.n{text-align:right;font-variant-numeric:tabular-nums}
           <li data-s="store"><i></i>Saving file and sheets to Supabase</li>
           <li data-s="analyse"><i></i>Analysing against field mappings</li>
           <li data-s="publish"><i></i>Publishing to live dashboard</li>
+          <li data-s="clean"><i></i>Removing previous Excel files from Supabase</li>
         </ul>
       </div>
 
@@ -246,7 +247,7 @@ table.sheet td.n{text-align:right;font-variant-numeric:tabular-nums}
     <div data-pane="history" class="hidden">
       <div class="panel">
         <h2>Upload history</h2>
-        <p class="lead">Every Excel that has been uploaded. Download the original, run the analysis again, or undo the latest publish.</p>
+        <p class="lead">Every Excel that has been uploaded. Only the newest file is kept in Supabase; older ones are removed automatically. Download or re-run the current file, or undo the latest publish.</p>
         <div class="tbl-wrap" id="historyWrap"><div class="empty">Loading…</div></div>
       </div>
     </div>
@@ -470,7 +471,7 @@ async function loadSheets(uploadId) {
   return { sheets: sheets, order: order };
 }
 async function loadLatestWorkbook() {
-  var up = S.uploads.find(function (u) { return u.status !== 'failed'; });
+  var up = S.uploads.find(function (u) { return u.status !== 'failed' && u.storage_path; });
   if (!up) { wbInfo(); return; }
   try {
     var s = await loadSheets(up.id);
@@ -615,6 +616,7 @@ async function handleFile(file) {
     step('store', 'ok');
 
     cur = 'analyse'; step('analyse', 'run');
+    await Promise.all([loadMappings(), loadValues()]);   // always analyse against the latest saved mappings
     var a = analyse(wb, uploadId);
     a.totalRows = totalRows;
     step('analyse', 'ok');
@@ -627,6 +629,10 @@ async function handleFile(file) {
       must(await db.from('uploads').update({ status: 'analysed', summary: summaryOf(a) }).eq('id', uploadId));
       step('publish', '');
     }
+    cur = 'clean'; step('clean', 'run');
+    var removed = await removePreviousFiles(uploadId, path);
+    step('clean', 'ok');
+    a.removed = removed;
     showAnalysis(a);
     await loadUploads(); renderHistory(); renderFields();
   } catch (err) {
@@ -635,6 +641,38 @@ async function handleFile(file) {
     if (uploadId) try { await db.from('uploads').update({ status: 'failed', summary: { error: String(err.message || err) } }).eq('id', uploadId); } catch (e) {}
     toast('Upload failed: ' + (err.message || err), 6000);
   }
+}
+
+// Keep only the newest Excel in Supabase: delete older files from storage and their saved sheet rows.
+// Upload history keeps the file names and what changed; undo still works from the change log.
+async function removePreviousFiles(keepId, keepPath) {
+  var old = must(await db.from('uploads').select('id,storage_path').neq('id', keepId)) || [];
+  var paths = old.map(function (u) { return u.storage_path; }).filter(Boolean);
+  // also sweep any stray files (e.g. from a failed upload) still sitting in the bucket
+  try {
+    var years = (await db.storage.from(BUCKET).list('', { limit: 100 })).data || [];
+    for (var i = 0; i < years.length; i++) {
+      if (years[i].id) { if (years[i].name !== keepPath) paths.push(years[i].name); continue; }
+      var months = (await db.storage.from(BUCKET).list(years[i].name, { limit: 100 })).data || [];
+      for (var j = 0; j < months.length; j++) {
+        var dir = years[i].name + '/' + months[j].name;
+        if (months[j].id) { if (dir !== keepPath) paths.push(dir); continue; }
+        var files = (await db.storage.from(BUCKET).list(dir, { limit: 1000 })).data || [];
+        files.forEach(function (f) { var fp = dir + '/' + f.name; if (fp !== keepPath) paths.push(fp); });
+      }
+    }
+  } catch (e) { console.warn('Could not list old files', e); }
+  paths = paths.filter(function (p, i) { return p && p !== keepPath && paths.indexOf(p) === i; });
+  for (var k = 0; k < paths.length; k += 100) {
+    var r = await db.storage.from(BUCKET).remove(paths.slice(k, k + 100));
+    if (r.error) throw r.error;
+  }
+  if (old.length) {
+    var ids = old.map(function (u) { return u.id; });
+    must(await db.from('excel_sheets').delete().in('upload_id', ids));
+    must(await db.from('uploads').update({ storage_path: null, sheet_count: null }).in('id', ids));
+  }
+  return paths.length;
 }
 
 function analyse(wb, uploadId) {
@@ -680,7 +718,7 @@ function showAnalysis(a) {
   $('#resultPanel').classList.remove('hidden');
   $('#resTitle').textContent = 'Analysis · ' + a.file;
   $('#resLead').textContent = a.published
-    ? 'Published to the live dashboard. Open any page to see the new figures.'
+    ? 'Published to the live dashboard. Open any page to see the new figures.' + (a.removed ? ' ' + a.removed + ' previous file(s) removed from Supabase.' : '')
     : (a.changes.length ? 'Not published yet. Review the changes, then publish.' : 'Nothing to publish.');
   $('#publishBtn').classList.toggle('hidden', a.published || !a.changes.length);
   var flagged = a.changes.filter(function (c) { return c.flag; }).length;
@@ -1067,7 +1105,8 @@ function renderHistory() {
       '<td class="num">' + esc(u.sheet_count == null ? '—' : u.sheet_count) + '</td><td class="num">' + esc(sm.changed == null ? '—' : sm.changed) + '</td>' +
       '<td><span class="tag ' + tag + '">' + esc(st) + '</span></td><td class="row" style="justify-content:flex-end">' +
       (u.storage_path ? '<button class="btn ghost sm" data-dl="' + esc(u.id) + '">Download</button>' : '') +
-      (st !== 'failed' ? '<button class="btn ghost sm" data-rerun="' + esc(u.id) + '">Re-run</button>' : '') +
+      (st !== 'failed' && u.storage_path ? '<button class="btn ghost sm" data-rerun="' + esc(u.id) + '">Re-run</button>' : '') +
+      (!u.storage_path && st !== 'failed' ? '<span class="small muted">file removed</span>' : '') +
       (latestPub && latestPub.id === u.id ? '<button class="btn danger sm" data-undo="' + esc(u.id) + '">Undo</button>' : '') + '</td></tr>';
   });
   $('#historyWrap').innerHTML = h + '</tbody></table>';
