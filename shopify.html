@@ -233,8 +233,8 @@
         <div style="color: var(--text-muted); font-size: 0.9rem;">Updated 24 Nov 2026</div>
     </div>
 
-    <!-- Orders history & repeat orders (source: Shopify admin, oliohh.in, pulled 24 Nov'26) -->
-    <div class="section-label">Orders history &amp; repeat orders &middot; <span>May 1&ndash;Nov 24, 2026</span></div>
+    <!-- Orders history & repeat orders (source: Shopify store oliohh.in; refreshed automatically via Supabase) -->
+    <div class="section-label">Orders history &amp; repeat orders &middot; <span data-live="x.period">May 1&ndash;Nov 24, 2026</span></div>
     <div class="kpi-row">
         <div class="card">
             <span class="card-title">Total orders</span>
@@ -264,7 +264,7 @@
         <div class="card">
             <span class="card-title">Repeat rate</span>
             <div class="metric-large kpi-accent" data-live="m.repeat-rate" data-live-row="Repeat rate" data-live-col="Value">4.8%</div>
-            <div class="metric-sub"><strong>4</strong> of <strong>83</strong> customers</div>
+            <div class="metric-sub"><strong data-live="x.rr-num">4</strong> of <strong data-live="x.rr-den">83</strong> customers</div>
         </div>
     </div>
 
@@ -273,7 +273,8 @@
             <div class="card-header">
                 <span class="card-title" style="border-bottom: 1px dashed var(--text-muted);">Orders history by month</span>
             </div>
-            <table class="orders">
+            <script type="application/json" data-live="x.monthly"></script>
+            <table class="orders" id="ordersTable">
                 <thead>
                     <tr><th>Month</th><th>Orders</th><th>Total sales</th><th>Avg order</th><th>New customers</th><th>Repeat orders</th></tr>
                 </thead>
@@ -293,10 +294,10 @@
         <div class="card">
             <div class="card-header">
                 <span class="card-title" style="border-bottom: 1px dashed var(--text-muted);">Repeat orders</span>
-                <span class="metric-sub">4 of 87 orders</span>
+                <span class="metric-sub" data-live="x.repeat-orders-sub">4 of 87 orders</span>
             </div>
             <div class="metric-large" data-live="m.repeat-orders" data-live-row="Repeat orders" data-live-col="Value">₹1,769.60</div>
-            <div class="metric-sub">from repeat orders &mdash; <strong>7.4%</strong> of total sales</div>
+            <div class="metric-sub">from repeat orders &mdash; <strong data-live="x.repeat-share">7.4%</strong> of total sales</div>
             <ul class="repeat-list">
                 <li><span>Customer 1 &middot; 12 Jul &rarr; 14 Aug</span><span class="gap">33 days</span></li>
                 <li><span>Customer 2 &middot; 13 Jul &rarr; 18 Aug</span><span class="gap">36 days</span></li>
@@ -419,6 +420,24 @@
 
     </div>
 
+<script>
+  // Orders-by-month table: rebuilt from the live Shopify feed so new months appear automatically
+  (function () {
+    function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function render() {
+      var src = document.querySelector('script[data-live="x.monthly"]'), rows;
+      try { rows = JSON.parse((src && src.textContent || '').trim()); } catch (e) { return; }
+      if (!Array.isArray(rows) || !rows.length) return;
+      var body = document.querySelector('#ordersTable tbody');
+      body.innerHTML = rows.map(function (r) {
+        var rep = '<td class="' + (r.total || r.rep > 0 ? 'rep' : 'zero') + '">' + esc(r.rep) + '</td>';
+        if (r.total) return '<tr class="total"><td>Total</td><td>' + esc(r.orders) + '</td><td>' + esc(r.sales) + '</td><td>' + esc(r.avg) + '</td><td>' + esc(r.new) + '</td>' + rep + '</tr>';
+        return '<tr><td>' + esc(r.label) + '</td><td><span class="obar" style="width:' + (+r.bar || 0) + 'px"></span>' + esc(r.orders) + '</td><td>' + esc(r.sales) + '</td><td>' + esc(r.avg) + '</td><td>' + esc(r.new) + '</td>' + rep + '</tr>';
+      }).join('');
+    }
+    document.addEventListener('oli-live-update', render);
+  })();
+</script>
 <script src="live-sync.js" defer></script>
 </body>
 </html>

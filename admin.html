@@ -337,6 +337,8 @@ var PAGES = [
   { file: 'shopify.html', name: 'Shopify' }
 ];
 var BUCKET = 'excel-uploads', CHUNK = 1000;
+// pages filled automatically from another source, not from the Excel
+var AUTO = { shopify: 'Auto · from Shopify store' };
 
 var db = window.__OLI_CLIENT || window.supabase.createClient(CFG.url, CFG.key);
 var S = {
@@ -433,6 +435,7 @@ async function loadFields() {
       var page = p.file.replace(/\.html?$/i, '');
       $$('[data-live]', doc).forEach(function (el, i) {
         var id = el.getAttribute('data-live'), def = clean(el.textContent);
+        if (/^x\./.test(id)) return;
         list.push({
           key: page + '|' + id, page: page, pageName: p.name, order: i, id: id,
           row: el.getAttribute('data-live-row') || '', col: el.getAttribute('data-live-col') || '',
@@ -678,6 +681,7 @@ async function removePreviousFiles(keepId, keepPath) {
 function analyse(wb, uploadId) {
   var a = { uploadId: uploadId, file: wb.name, sheets: wb.order.length, changes: [], same: 0, missing: [], unmapped: 0, published: false };
   S.fields.forEach(function (f) {
+    if (AUTO[f.page]) return;
     var mp = S.mappings[f.key];
     if (!mp) { a.unmapped++; return; }
     var res = resolve(mp, wb);
@@ -767,7 +771,7 @@ function renderFields() {
     var open = q || openPages[page];
     html += '<div class="page-block' + (open ? ' open' : '') + '" data-page="' + esc(page) + '"><div class="page-head"><span class="chev">▶</span><b>' + esc(p.name) + '</b>' +
       '<span class="small muted">' + fs.length + ' fields</span><div class="spacer"></div>' +
-      '<span class="tag ' + (m === fs.length ? 'ok' : m ? 'warn' : 'off') + '">' + m + '/' + fs.length + ' mapped</span>' +
+      (AUTO[page] ? '<span class="tag ok">' + esc(AUTO[page]) + '</span>' : '<span class="tag ' + (m === fs.length ? 'ok' : m ? 'warn' : 'off') + '">' + m + '/' + fs.length + ' mapped</span>') +
       '<span class="tag ' + (l ? 'ok' : 'off') + '">' + l + ' live</span>' +
       '<a class="btn ghost sm" href="' + esc(p.file) + '" target="_blank" onclick="event.stopPropagation()">Open page</a></div>' +
       '<div class="page-body"><table class="t"><thead><tr><th>Field</th><th class="num">Showing now</th><th>Excel source</th><th>Status</th><th></th></tr></thead><tbody>';
@@ -775,8 +779,9 @@ function renderFields() {
       var mp = S.mappings[f.key], v = S.values[f.key];
       var src = !mp ? '—' : mp.mode === 'cell' ? mp.sheet + '!' + mp.cell : mp.sheet + ' · ' + describe(mp);
       var st = v ? '<span class="tag ok">Live · ' + esc(fmtTime(v.updated_at)) + '</span>' : (mp ? '<span class="tag warn">Mapped · waiting</span>' : '<span class="tag off">Page figure</span>');
+      if (AUTO[f.page]) { src = AUTO[f.page]; }
       html += '<tr><td class="fld-label"><b>' + esc(f.row) + '</b><small>' + esc(f.col) + '</small></td><td class="num">' + esc(currentValue(f) || '—') + '</td>' +
-        '<td class="src">' + esc(src) + '</td><td>' + st + '</td><td><button class="btn ghost sm" data-map="' + esc(f.key) + '">' + (mp ? 'Edit' : 'Map') + '</button></td></tr>';
+        '<td class="src">' + esc(src) + '</td><td>' + st + '</td><td>' + (AUTO[f.page] ? '' : '<button class="btn ghost sm" data-map="' + esc(f.key) + '">' + (mp ? 'Edit' : 'Map') + '</button>') + '</td></tr>';
     });
     html += '</tbody></table></div></div>';
   });
@@ -1049,7 +1054,7 @@ function openSuggestions() {
   if (!S.wb) return toast('Upload an Excel first.');
   SUG = [];
   S.fields.forEach(function (f) {
-    if (S.mappings[f.key]) return;
+    if (S.mappings[f.key] || AUTO[f.page]) return;
     var g = bestGuess(f); if (!g) return;
     var rows = S.wb.sheets[g.sheet], fm = Object.assign({}, f.fmt);
     var mp = { field_key: f.key, page: f.page, label: f.row + ' · ' + f.col, sheet: g.sheet, mode: 'row', label_col: g.labelCol,
@@ -1063,7 +1068,7 @@ function openSuggestions() {
     if (isFinite(pageN) && pageN !== 0 && isFinite(conv) && (Math.abs(conv / pageN) > 10 || Math.abs(conv / pageN) < 0.1)) conf = 'Low';
     SUG.push({ f: f, mp: mp, conf: conf, val: formatValue(raw, mp), where: g.sheet + '!' + a1(g.r, g.c) });
   });
-  var unm = S.fields.filter(function (f) { return !S.mappings[f.key]; }).length;
+  var unm = S.fields.filter(function (f) { return !S.mappings[f.key] && !AUTO[f.page]; }).length;
   $('#sugLead').textContent = SUG.length + ' suggestion(s) for ' + unm + ' unmapped field(s) in “' + S.wb.name + '”. Untick anything that looks wrong; you can fine-tune any field later.';
   var h = '';
   if (!SUG.length) h = '<div class="empty">No confident matches found. Map fields by hand from <b>Dashboard fields</b> → <b>Map</b>. It takes one click per number.</div>';
