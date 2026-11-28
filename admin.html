@@ -328,6 +328,7 @@ var PAGES = [
   { file: 'quick-commerce.html', name: 'Quick Commerce' },
   { file: 'ecommerce.html', name: 'E-Commerce' },
   { file: 'mtstandlone.html', name: 'MT Standalone' },
+  { file: 'general-trade.html', name: 'General Trade' },
   { file: 'NCR.html', name: 'NCR' },
   { file: 'CHD.html', name: 'Chandigarh' },
   { file: 'GUJURAT.html', name: 'Gujarat' },
@@ -517,6 +518,18 @@ function readWorkbook(buf, name) {
   });
   return { name: name, sheets: sheets, order: order };
 }
+function whereText(mp) {
+  var t = colName(mp.label_col) + ' = ' + (mp.label_text === '*' ? 'any' : mp.label_text);
+  if (mp.filter_col != null) t += ' and ' + colName(mp.filter_col) + ' = ' + mp.filter_text;
+  return t;
+}
+function describe(mp) {
+  if (mp.mode === 'cell') return mp.cell;
+  if (mp.mode === 'row') return 'row “' + mp.label_text + '” · col ' + colName(mp.value_col);
+  if (mp.mode === 'count') return 'count of rows where ' + whereText(mp);
+  if (mp.mode === 'ratio') return 'Σ' + colName(mp.value_col) + ' ÷ Σ' + colName(mp.value_col2) + ' where ' + whereText(mp);
+  return 'Σ' + colName(mp.value_col) + ' where ' + whereText(mp);
+}
 function findSheet(wb, name) {
   if (!wb) return null;
   if (wb.sheets[name]) return name;
@@ -527,21 +540,22 @@ function resolve(mp, wb) {
   var sn = findSheet(wb, mp.sheet);
   if (!sn) return { found: false, why: 'Sheet “' + mp.sheet + '” not in this file' };
   var rows = wb.sheets[sn], r = -1, c = mp.value_col;
-  if (mp.mode === 'sum' || mp.mode === 'ratio') {
-    var want0 = norm(String(mp.label_text || '').replace(/\*$/, '')), prefix = /\*$/.test(mp.label_text || '');
-    var hit = function (v) { var n = norm(cellText(v)); return prefix ? n.indexOf(want0) === 0 : n === want0; };
+  if (mp.mode === 'sum' || mp.mode === 'ratio' || mp.mode === 'count') {
+    var matcher = function (pat) {
+      var w = norm(String(pat || '').replace(/\*$/, '')), pre = /\*$/.test(pat || '');
+      return function (v) { var n = norm(cellText(v)); if (!n) return false; return pre ? n.indexOf(w) === 0 : n === w; };
+    };
+    var hit = matcher(mp.label_text), fhit = mp.filter_col == null ? null : matcher(mp.filter_text);
     var a = 0, b = 0, cnt = 0;
     rows.forEach(function (row) {
-      if (!row || !hit(row[mp.label_col])) return;
+      if (!row || !hit(row[mp.label_col]) || (fhit && !fhit(row[mp.filter_col]))) return;
       var x = num(row[mp.value_col]); if (isFinite(x)) a += x;
       if (mp.mode === 'ratio') { var y = num(row[mp.value_col2]); if (isFinite(y)) b += y; }
       cnt++;
     });
-    if (!cnt) return { found: false, why: 'No rows with “' + mp.label_text + '” in column ' + colName(mp.label_col) + ' of ' + sn };
-    var v = mp.mode === 'ratio' ? (b ? a / b : 0) : a;
-    var desc = mp.mode === 'ratio'
-      ? sn + ' · Σ' + colName(mp.value_col) + ' ÷ Σ' + colName(mp.value_col2) + ' where ' + colName(mp.label_col) + ' = ' + mp.label_text
-      : sn + ' · Σ' + colName(mp.value_col) + ' where ' + colName(mp.label_col) + ' = ' + mp.label_text + ' (' + cnt + ' rows)';
+    if (!cnt) return { found: false, why: 'No rows match ' + whereText(mp) + ' in ' + sn };
+    var v = mp.mode === 'ratio' ? (b ? a / b : 0) : mp.mode === 'count' ? cnt : a;
+    var desc = sn + ' · ' + describe(mp) + ' (' + cnt + ' rows)';
     return { found: true, raw: v, display: formatValue(v, mp), where: desc };
   }
   if (mp.mode === 'cell') {
@@ -721,10 +735,7 @@ function renderFields() {
       '<div class="page-body"><table class="t"><thead><tr><th>Field</th><th class="num">Showing now</th><th>Excel source</th><th>Status</th><th></th></tr></thead><tbody>';
     shown.forEach(function (f) {
       var mp = S.mappings[f.key], v = S.values[f.key];
-      var src = !mp ? '—' : mp.mode === 'cell' ? mp.sheet + '!' + mp.cell
-        : mp.mode === 'sum' ? mp.sheet + ' · total of ' + colName(mp.value_col) + ' where ' + colName(mp.label_col) + ' = “' + mp.label_text + '”'
-        : mp.mode === 'ratio' ? mp.sheet + ' · ' + colName(mp.value_col) + ' ÷ ' + colName(mp.value_col2) + ' where ' + colName(mp.label_col) + ' = “' + mp.label_text + '”'
-        : mp.sheet + ' · row “' + mp.label_text + '” · col ' + colName(mp.value_col);
+      var src = !mp ? '—' : mp.mode === 'cell' ? mp.sheet + '!' + mp.cell : mp.sheet + ' · ' + describe(mp);
       var st = v ? '<span class="tag ok">Live · ' + esc(fmtTime(v.updated_at)) + '</span>' : (mp ? '<span class="tag warn">Mapped · waiting</span>' : '<span class="tag off">Page figure</span>');
       html += '<tr><td class="fld-label"><b>' + esc(f.row) + '</b><small>' + esc(f.col) + '</small></td><td class="num">' + esc(currentValue(f) || '—') + '</td>' +
         '<td class="src">' + esc(src) + '</td><td>' + st + '</td><td><button class="btn ghost sm" data-map="' + esc(f.key) + '">' + (mp ? 'Edit' : 'Map') + '</button></td></tr>';
@@ -762,7 +773,7 @@ function openMap(f) {
     var sn = findSheet(S.wb, mp.sheet) || S.wb.order[0];
     M.sheet = sn; M.mode = mp.mode;
     if (mp.mode === 'cell') { var p = parseA1(mp.cell); if (p) { M.r = p.r; M.c = p.c; } }
-    else if (mp.mode === 'ratio') { M.keep = mp; M.c = mp.value_col; M.labelCol = mp.label_col; M.r = -2; }
+    else if (mp.mode === 'ratio' || mp.mode === 'count' || mp.filter_col != null) { M.keep = mp; M.c = mp.value_col; M.labelCol = mp.label_col; M.r = -2; }
     else {
       var rows = S.wb.sheets[sn], want = norm(mp.label_text);
       var wantP = want.replace(/\*$/, '');
@@ -777,8 +788,8 @@ function openMap(f) {
   $('#mSheet').value = M.sheet;
   $('#mFind').value = '';
   $$('#mMode button').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-m') === M.mode); });
-  $('#mHint').textContent = M.mode === 'ratio'
-    ? 'This field is a ratio of two totals (set up for you). Click a cell only if you want to replace it.'
+  $('#mHint').textContent = M.keep
+    ? 'This field is calculated for you: ' + describe(M.keep) + '. Click a cell only if you want to replace it.'
     : 'Click the cell that holds this number. “Follow row label” finds the row by its name each time; “Total of all rows with this label” adds up every row with the same label (e.g. all NCR sellers).';
   $('#mRemove').classList.toggle('hidden', !mp);
   $('#mReset').classList.toggle('hidden', !S.values[f.key]);
@@ -800,10 +811,11 @@ function modalMapping() {
   var rows = S.wb.sheets[M.sheet] || [];
   var mp = { field_key: M.f.key, page: M.f.page, label: M.f.row + ' · ' + M.f.col, sheet: M.sheet, mode: M.mode,
     mult: mult, decimals: $('#mDec').value === '' ? null : +$('#mDec').value, prefix: $('#mPre').value, suffix: $('#mSuf').value, commas: $('#mCom').value === '1' };
-  mp.value_col2 = null;
-  if (M.mode === 'ratio' && M.keep) { mp.label_col = M.keep.label_col; mp.label_text = M.keep.label_text; mp.value_col = M.keep.value_col; mp.value_col2 = M.keep.value_col2; mp.cell = null; }
+  mp.value_col2 = null; mp.filter_col = null; mp.filter_text = null;
+  if (M.keep && M.r === -2) {
+    ['mode', 'label_col', 'label_text', 'value_col', 'value_col2', 'filter_col', 'filter_text', 'cell'].forEach(function (k) { mp[k] = M.keep[k] == null ? null : M.keep[k]; });
+  }
   else if (M.mode === 'cell') { mp.cell = a1(M.r, M.c); mp.label_col = null; mp.label_text = null; mp.value_col = null; }
-  else if (M.mode === 'sum' && M.keep && M.r === -2) { mp.label_col = M.keep.label_col; mp.label_text = M.keep.label_text; mp.value_col = M.keep.value_col; mp.cell = null; }
   else { mp.label_col = M.labelCol; mp.label_text = clean(cellText((rows[M.r] || [])[M.labelCol])); mp.value_col = M.c; mp.cell = null; }
   return mp;
 }
@@ -848,7 +860,7 @@ function drawGrid() {
   $('#mGrid').innerHTML = h;
 }
 function updatePreview() {
-  if (M.mode === 'ratio' || (M.mode === 'sum' && M.r === -2)) {
+  if (M.keep && M.r === -2) {
     var kr = resolve(modalMapping(), S.wb);
     $('#mSave').disabled = false;
     $('#mPreview').innerHTML = kr.found ? '<span class="muted">' + esc(kr.where) + ' → </span><b>' + esc(kr.display) + '</b>' : '<span class="muted">' + esc(kr.why) + '</span>';
@@ -871,7 +883,7 @@ function updatePreview() {
 $('#mGrid').addEventListener('click', function (e) {
   var td = e.target.closest('td[data-r]'); if (!td) return;
   M.r = +td.getAttribute('data-r'); M.c = +td.getAttribute('data-c');
-  if (M.mode === 'ratio') { M.mode = 'sum'; $$('#mMode button').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-m') === 'sum'); }); }
+  if (M.mode === 'ratio' || M.mode === 'count') { M.mode = 'sum'; $$('#mMode button').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-m') === 'sum'); }); }
   M.keep = null;
   M.labelCol = pickLabelCol(S.wb.sheets[M.sheet][M.r] || [], M.c, M.f);
   var raw = (S.wb.sheets[M.sheet][M.r] || [])[M.c];

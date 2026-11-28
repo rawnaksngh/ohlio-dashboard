@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>General Trade Report</title>
+<style>
+  :root{
+    --ink:#1a1d24;
+    --paper:#f6f4ee;
+    --card:#ffffff;
+    --line:#e0dbcf;
+    --muted:#6b7280;
+    --accent:#2b5f4e;
+    --head:#1f2a37;
+    --zebra:#faf9f5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--paper);color:var(--ink);line-height:1.5;
+    padding:0 16px 32px;-webkit-font-smoothing:antialiased;
+  }
+  .topbar{max-width:1080px;margin:0 auto;padding:14px 0 12px}
+  .home-btn{
+    display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink);
+    font-weight:600;font-size:.9rem;background:var(--card);border:1px solid var(--line);
+    padding:9px 15px 9px 12px;border-radius:9px;transition:border-color .15s,box-shadow .15s;
+  }
+  .home-btn:hover{border-color:var(--accent);box-shadow:0 3px 10px rgba(0,0,0,.07)}
+  .home-btn svg{width:17px;height:17px}
+
+  header{max-width:1080px;margin:0 auto 12px}
+  h1{font-size:clamp(1.3rem,3vw,1.7rem);letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--muted);margin-top:3px;font-size:.82rem}
+
+  .card{
+    max-width:1080px;margin:0 auto;background:var(--card);
+    border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  }
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;table-layout:fixed}
+  th,td{padding:7px 8px;text-align:right;font-variant-numeric:tabular-nums}
+  th:first-child,td:first-child{text-align:left}
+
+  .grouphead th{
+    background:#f0ede4;color:var(--ink);font-size:.72rem;font-weight:700;
+    text-align:center;padding:6px 8px;border-bottom:1px solid var(--line);
+  }
+  .grouphead th.g-all{color:var(--accent)}
+  .grouphead th:first-child{background:#f0ede4}
+
+  thead tr.cols th{
+    background:var(--head);color:#fff;font-size:.66rem;font-weight:600;
+    letter-spacing:.01em;white-space:normal;line-height:1.25;vertical-align:bottom;
+  }
+  tbody td{border-bottom:1px solid #efece3;font-size:.82rem;white-space:nowrap}
+  tbody td:first-child{font-weight:600}
+  tbody tr:nth-child(even){background:var(--zebra)}
+  tbody tr:hover{background:#f2efe6}
+  .dash{color:#b7b1a2}
+
+  td.trend{text-align:center;font-size:.9rem;font-weight:700}
+  .trend-up{color:#15803d}
+  .trend-down{color:#c02626}
+  tr.total-row td .trend-up{color:#4ade80}
+  tr.total-row td .trend-down{color:#ff6b5e}
+
+  tr.total-row td{
+    background:var(--head);color:#fff;font-weight:700;font-size:.85rem;border-bottom:none;
+  }
+  .footnote{
+    max-width:1080px;margin:10px auto 0;color:var(--muted);font-size:.72rem;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+  .src{color:var(--muted)}
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <a class="home-btn" href="home.html" aria-label="Back to home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/></svg>
+      Home
+    </a>
+  </div>
+
+  <header>
+    <h1>General Trade Report</h1>
+    <p class="sub">Region-wise General Trade outlet coverage, cases and value — overall and August to November (November month-to-date).</p>
+  </header>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr class="grouphead">
+            <th></th>
+            <th class="g-all" colspan="4">Overall</th>
+            <th colspan="2">August</th>
+            <th colspan="2">September</th>
+            <th colspan="2">October</th>
+            <th colspan="2">November (MTD)</th>
+            <th></th>
+          </tr>
+          <tr class="cols">
+            <th style="width:11%">Region</th>
+            <th>Total coverage</th>
+            <th>Billed stores</th>
+            <th>Total cases</th>
+            <th>Total value</th>
+            <th>Aug billed stores</th>
+            <th>Aug cases</th>
+            <th>Sep billed stores</th>
+            <th>Sep cases</th>
+            <th>Oct billed stores</th>
+            <th>Oct cases</th>
+            <th>Nov billed stores</th>
+            <th>Nov cases</th>
+            <th style="width:6%">Trend</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>NCR</td><td data-live="t0.ncr.c1" data-live-row="NCR" data-live-col="Overall · Total coverage">27</td><td data-live="t0.ncr.c2" data-live-row="NCR" data-live-col="Overall · Billed stores">9</td><td data-live="t0.ncr.c3" data-live-row="NCR" data-live-col="Overall · Total cases">312.75</td><td data-live="t0.ncr.c4" data-live-row="NCR" data-live-col="Overall · Total value">4.37 L</td><td data-live="t0.ncr.c5" data-live-row="NCR" data-live-col="August · Aug billed stores">4</td><td data-live="t0.ncr.c6" data-live-row="NCR" data-live-col="August · Aug cases">3.17</td><td data-live="t0.ncr.c7" data-live-row="NCR" data-live-col="September · Sep billed stores">4</td><td data-live="t0.ncr.c8" data-live-row="NCR" data-live-col="September · Sep cases">1.75</td><td data-live="t0.ncr.c9" data-live-row="NCR" data-live-col="October · Oct billed stores">6</td><td data-live="t0.ncr.c10" data-live-row="NCR" data-live-col="October · Oct cases">6.08</td><td data-live="t0.ncr.c11" data-live-row="NCR" data-live-col="November (MTD) · Nov billed stores">5</td><td data-live="t0.ncr.c12" data-live-row="NCR" data-live-col="November (MTD) · Nov cases">216.94</td><td class="trend"></td></tr>
+          <tr><td>Chandigarh</td><td data-live="t0.chandigarh.c1" data-live-row="Chandigarh" data-live-col="Overall · Total coverage">2</td><td data-live="t0.chandigarh.c2" data-live-row="Chandigarh" data-live-col="Overall · Billed stores">1</td><td data-live="t0.chandigarh.c3" data-live-row="Chandigarh" data-live-col="Overall · Total cases">1.33</td><td data-live="t0.chandigarh.c4" data-live-row="Chandigarh" data-live-col="Overall · Total value">0.04 L</td><td data-live="t0.chandigarh.c5" data-live-row="Chandigarh" data-live-col="August · Aug billed stores">1</td><td data-live="t0.chandigarh.c6" data-live-row="Chandigarh" data-live-col="August · Aug cases">1.00</td><td data-live="t0.chandigarh.c7" data-live-row="Chandigarh" data-live-col="September · Sep billed stores">0</td><td data-live="t0.chandigarh.c8" data-live-row="Chandigarh" data-live-col="September · Sep cases">0.00</td><td data-live="t0.chandigarh.c9" data-live-row="Chandigarh" data-live-col="October · Oct billed stores">0</td><td data-live="t0.chandigarh.c10" data-live-row="Chandigarh" data-live-col="October · Oct cases">0.00</td><td data-live="t0.chandigarh.c11" data-live-row="Chandigarh" data-live-col="November (MTD) · Nov billed stores">0</td><td data-live="t0.chandigarh.c12" data-live-row="Chandigarh" data-live-col="November (MTD) · Nov cases">0.00</td><td class="trend"></td></tr>
+          <tr><td>Gujarat</td><td data-live="t0.gujarat.c1" data-live-row="Gujarat" data-live-col="Overall · Total coverage">6</td><td data-live="t0.gujarat.c2" data-live-row="Gujarat" data-live-col="Overall · Billed stores">0</td><td data-live="t0.gujarat.c3" data-live-row="Gujarat" data-live-col="Overall · Total cases">0.00</td><td data-live="t0.gujarat.c4" data-live-row="Gujarat" data-live-col="Overall · Total value">0.00 L</td><td data-live="t0.gujarat.c5" data-live-row="Gujarat" data-live-col="August · Aug billed stores">0</td><td data-live="t0.gujarat.c6" data-live-row="Gujarat" data-live-col="August · Aug cases">0.00</td><td data-live="t0.gujarat.c7" data-live-row="Gujarat" data-live-col="September · Sep billed stores">0</td><td data-live="t0.gujarat.c8" data-live-row="Gujarat" data-live-col="September · Sep cases">0.00</td><td data-live="t0.gujarat.c9" data-live-row="Gujarat" data-live-col="October · Oct billed stores">0</td><td data-live="t0.gujarat.c10" data-live-row="Gujarat" data-live-col="October · Oct cases">0.00</td><td data-live="t0.gujarat.c11" data-live-row="Gujarat" data-live-col="November (MTD) · Nov billed stores">0</td><td data-live="t0.gujarat.c12" data-live-row="Gujarat" data-live-col="November (MTD) · Nov cases">0.00</td><td class="trend"></td></tr>
+          <tr class="total-row"><td>Total</td><td data-live="t0.total.c1" data-live-row="Total" data-live-col="Overall · Total coverage">35</td><td data-live="t0.total.c2" data-live-row="Total" data-live-col="Overall · Billed stores">10</td><td data-live="t0.total.c3" data-live-row="Total" data-live-col="Overall · Total cases">314.08</td><td data-live="t0.total.c4" data-live-row="Total" data-live-col="Overall · Total value">4.41 L</td><td data-live="t0.total.c5" data-live-row="Total" data-live-col="August · Aug billed stores">5</td><td data-live="t0.total.c6" data-live-row="Total" data-live-col="August · Aug cases">4.17</td><td data-live="t0.total.c7" data-live-row="Total" data-live-col="September · Sep billed stores">4</td><td data-live="t0.total.c8" data-live-row="Total" data-live-col="September · Sep cases">1.75</td><td data-live="t0.total.c9" data-live-row="Total" data-live-col="October · Oct billed stores">6</td><td data-live="t0.total.c10" data-live-row="Total" data-live-col="October · Oct cases">6.08</td><td data-live="t0.total.c11" data-live-row="Total" data-live-col="November (MTD) · Nov billed stores">5</td><td data-live="t0.total.c12" data-live-row="Total" data-live-col="November (MTD) · Nov cases">216.94</td><td class="trend"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <span class="src">Source: DCR · Retailer SKU Wise Value (Type = General Trade). Trend compares November MTD cases with October.</span>
+    <span id="genline"></span>
+  </div>
+
+<script>
+  document.getElementById('genline').textContent =
+    "Generated " + new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  // Trend arrow: November (MTD) cases vs October cases, recalculated whenever live figures arrive
+  function gtTrend(){
+    document.querySelectorAll('tbody tr').forEach(function(tr){
+      var c = tr.children, n = c.length;
+      var oct = parseFloat((c[n-4].textContent||'').replace(/,/g,'')), nov = parseFloat((c[n-2].textContent||'').replace(/,/g,''));
+      var t = tr.querySelector('td.trend');
+      if (!t) return;
+      if (!isFinite(oct) || !isFinite(nov) || (oct === 0 && nov === 0)) { t.className = 'trend dash'; t.textContent = '–'; return; }
+      t.className = 'trend';
+      t.innerHTML = nov >= oct ? '<span class="trend-up">&#9650;</span>' : '<span class="trend-down">&#9660;</span>';
+    });
+  }
+  gtTrend();
+  document.addEventListener('oli-live-update', gtTrend);
+</script>
+<script src="live-sync.js" defer></script>
+</body>
+</html>

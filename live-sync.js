@@ -70,6 +70,15 @@
       '.oli-live-dot{width:7px;height:7px;border-radius:50%;background:#7c8794}' +
       '.oli-live-badge.on .oli-live-dot{background:#00ffd5;box-shadow:0 0 0 0 rgba(0,255,213,.6);animation:oliPulse 2s infinite}' +
       '@keyframes oliPulse{0%{box-shadow:0 0 0 0 rgba(0,255,213,.55)}70%{box-shadow:0 0 0 7px rgba(0,255,213,0)}100%{box-shadow:0 0 0 0 rgba(0,255,213,0)}}' +
+      '.oli-live-badge.sync .oli-live-dot,.oli-live-chip.sync .oli-live-dot{background:#ffb547;animation:oliSpin 1s linear infinite;border-radius:2px}' +
+      '@keyframes oliSpin{to{transform:rotate(360deg)}}' +
+      '.oli-live-chip{display:inline-flex;align-items:center;gap:8px;margin-top:8px;padding:5px 12px;border-radius:999px;' +
+      'background:rgba(0,255,213,.08);border:1px solid rgba(0,255,213,.35);color:#bffff3;font:700 10.5px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:1.2px;text-transform:uppercase}' +
+      '.oli-live-chip .oli-live-dot{width:8px;height:8px;border-radius:50%;background:#7c8794}' +
+      '.oli-live-chip.on .oli-live-dot{background:#00ffd5;animation:oliPulse 2s infinite}' +
+      '.oli-live-chip.sync{border-color:rgba(255,181,71,.5);color:#ffe2b3;background:rgba(255,181,71,.08)}' +
+      '.oli-live-chip.off{border-color:rgba(255,255,255,.15);color:#9aa3ad;background:rgba(255,255,255,.04)}' +
+      '.oli-live-chip .oli-live-sub{font-weight:600;letter-spacing:.4px;text-transform:none;opacity:.75}' +
       '.oli-live-flash{animation:oliFlash 1.6s ease}' +
       '@keyframes oliFlash{0%{background-color:rgba(0,255,213,.45)}100%{background-color:transparent}}' +
       '@media print{.oli-live-badge{display:none}}';
@@ -79,17 +88,32 @@
     try { return new Date(ts).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); }
     catch (e) { return ''; }
   }
+  // states: connecting → syncing → live (connected · synced hh:mm) ; offline when Supabase can't be reached
+  var current = 'connecting', syncTimer = null, lastSync = null;
+  function clock(d) { try { return d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } }
   function status(state) {
+    current = state;
     if (!badge) {
       badge = document.createElement('div'); badge.className = 'oli-live-badge';
       badge.innerHTML = '<span class="oli-live-dot"></span><span class="oli-live-txt"></span>';
       document.body.appendChild(badge);
     }
-    badge.classList.toggle('on', state === 'live');
-    badge.querySelector('.oli-live-txt').textContent =
-      state === 'live' ? 'LIVE' + (latest ? ' · updated ' + fmtTime(latest) : '') :
-      state === 'connecting' ? 'Connecting…' : 'Offline · saved figures';
+    var main = state === 'live' ? 'LIVE · CONNECTED' : state === 'syncing' ? 'SYNCING…' : state === 'connecting' ? 'CONNECTING…' : 'OFFLINE';
+    var sub = state === 'live' ? (lastSync ? 'synced ' + clock(lastSync) : '') + (latest ? ' · data ' + fmtTime(latest) : '')
+      : state === 'offline' ? 'showing saved figures' : '';
+    badge.className = 'oli-live-badge' + (state === 'live' ? ' on' : state === 'syncing' ? ' sync' : '');
+    badge.querySelector('.oli-live-txt').textContent = main + (state === 'live' && lastSync ? ' · synced ' + clock(lastSync) : state === 'offline' ? ' · saved figures' : '');
+    document.querySelectorAll('[data-live-status]').forEach(function (chip) {
+      chip.className = 'oli-live-chip' + (state === 'live' ? ' on' : state === 'syncing' || state === 'connecting' ? ' sync' : ' off');
+      chip.innerHTML = '<span class="oli-live-dot"></span><span>' + main + '</span>' + (sub ? '<span class="oli-live-sub">' + sub.replace(/^ · /, '') + '</span>' : '');
+    });
   }
+  function synced() {
+    lastSync = new Date();
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(function () { status('live'); }, 900);
+  }
+  function syncing() { status('syncing'); }
   function bump(ts) { if (ts && (!latest || ts > latest)) latest = ts; }
 
   // ---------- connect ----------
@@ -106,26 +130,35 @@
     loadSdk(function () {
       var client = window.__OLI_CLIENT || window.supabase.createClient(CFG.url, CFG.key, { auth: { persistSession: false } });
       var prefix = PAGE + '|';
-      client.from('dashboard_values').select('field_key,value,updated_at').eq('page', PAGE).then(function (r) {
-        if (r.error) { status('offline'); return; }
-        (r.data || []).forEach(function (row) { apply(row.field_key.slice(prefix.length), row.value, false); bump(row.updated_at); });
-        status('live');
-      });
+      function pull() {
+        syncing();
+        return client.from('dashboard_values').select('field_key,value,updated_at').eq('page', PAGE).then(function (r) {
+          if (r.error) { status('offline'); return; }
+          (r.data || []).forEach(function (row) { apply(row.field_key.slice(prefix.length), row.value, false); bump(row.updated_at); });
+          announce(); synced();
+        }, function () { status('offline'); });
+      }
+      pull();
+      // catch up after the tab was hidden or the network dropped
+      document.addEventListener('visibilitychange', function () { if (!document.hidden) pull(); });
+      window.addEventListener('online', pull);
       client.channel('oli-live-' + PAGE)
         .on('postgres_changes', { event: '*', schema: 'public', table: 'dashboard_values', filter: 'page=eq.' + PAGE }, function (p) {
           var row = p.eventType === 'DELETE' ? p.old : p.new;
           if (!row || !row.field_key) return;
+          syncing();
           apply(row.field_key.slice(prefix.length), p.eventType === 'DELETE' ? null : row.value, true);
           bump(p.eventType === 'DELETE' ? new Date().toISOString() : row.updated_at);
-          status('live');
+          announce(); synced();
         })
         .subscribe(function (s) {
-          if (s === 'SUBSCRIBED') status('live');
+          if (s === 'SUBSCRIBED') { if (current !== 'syncing') status('live'); }
           else if (s === 'CHANNEL_ERROR' || s === 'TIMED_OUT' || s === 'CLOSED') status('offline');
         });
     });
   }
 
+  var _an; function announce() { clearTimeout(_an); _an = setTimeout(function () { document.dispatchEvent(new CustomEvent('oli-live-update')); }, 50); }
   window.OliLive = { pageId: pageId, apply: apply, fields: fields };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
