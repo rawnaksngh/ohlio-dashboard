@@ -444,12 +444,12 @@
                         </div>
                         <div class="kpi-grid no-pct">
                             <span class="kpi-period">MTD</span>
-                            <div class="kpi-track"><div class="kpi-fill" style="width:28.4%; background:var(--neon-cyan);"></div></div>
-                            <span class="kpi-nums"><b>12.77</b></span>
+                            <div class="kpi-track"><div class="kpi-fill" style="width:28.4%; background:var(--neon-cyan);" data-live-bar="k.value.mtd"></div></div>
+                            <span class="kpi-nums"><b data-live="k.value.mtd" data-live-row="Value" data-live-col="MTD">12.77</b></span>
 
                             <span class="kpi-period">YTD</span>
-                            <div class="kpi-track"><div class="kpi-fill" style="width:92.0%; background:var(--neon-cyan);"></div></div>
-                            <span class="kpi-nums"><b>41.40</b></span>
+                            <div class="kpi-track"><div class="kpi-fill" style="width:92.0%; background:var(--neon-cyan);" data-live-bar="k.value.ytd"></div></div>
+                            <span class="kpi-nums"><b data-live="k.value.ytd" data-live-row="Value" data-live-col="YTD">41.40</b></span>
                         </div>
                     </div>
 
@@ -461,12 +461,12 @@
                         </div>
                         <div class="kpi-grid no-pct">
                             <span class="kpi-period">MTD</span>
-                            <div class="kpi-track"><div class="kpi-fill" style="width:10.7%; background:var(--neon-orange);"></div></div>
-                            <span class="kpi-nums"><b>128</b></span>
+                            <div class="kpi-track"><div class="kpi-fill" style="width:10.7%; background:var(--neon-orange);" data-live-bar="k.coverage.mtd"></div></div>
+                            <span class="kpi-nums"><b data-live="k.coverage.mtd" data-live-row="Coverage" data-live-col="MTD">128</b></span>
 
                             <span class="kpi-period">YTD</span>
-                            <div class="kpi-track"><div class="kpi-fill" style="width:89.2%; background:var(--neon-orange);"></div></div>
-                            <span class="kpi-nums"><b>1,071</b></span>
+                            <div class="kpi-track"><div class="kpi-fill" style="width:89.2%; background:var(--neon-orange);" data-live-bar="k.coverage.ytd"></div></div>
+                            <span class="kpi-nums"><b data-live="k.coverage.ytd" data-live-row="Coverage" data-live-col="YTD">1,071</b></span>
                         </div>
                     </div>
 
@@ -478,12 +478,12 @@
                         </div>
                         <div class="kpi-grid no-pct">
                             <span class="kpi-period">MTD</span>
-                            <div class="kpi-track"><div class="kpi-fill" style="width:33.2%; background:var(--neon-purple);"></div></div>
-                            <span class="kpi-nums"><b>23,904</b></span>
+                            <div class="kpi-track"><div class="kpi-fill" style="width:33.2%; background:var(--neon-purple);" data-live-bar="k.volume.mtd"></div></div>
+                            <span class="kpi-nums"><b data-live="k.volume.mtd" data-live-row="Volume" data-live-col="MTD">23,904</b></span>
 
                             <span class="kpi-period">YTD</span>
-                            <div class="kpi-track"><div class="kpi-fill" style="width:94.0%; background:var(--neon-purple);"></div></div>
-                            <span class="kpi-nums"><b>67,716</b></span>
+                            <div class="kpi-track"><div class="kpi-fill" style="width:94.0%; background:var(--neon-purple);" data-live-bar="k.volume.ytd"></div></div>
+                            <span class="kpi-nums"><b data-live="k.volume.ytd" data-live-row="Volume" data-live-col="YTD">67,716</b></span>
                         </div>
                     </div>
                 </div>
@@ -548,5 +548,6 @@
             notesPop.style.display = (notesPop.style.display === 'flex') ? 'none' : 'flex';
         }
     </script>
+<script src="live-sync.js" defer></script>
 </body>
 </html>

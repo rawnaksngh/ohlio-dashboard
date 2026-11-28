@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oli-Ohh | Admin · Data Upload</title>
+<meta name="theme-color" content="#0f172a">
+<meta name="robots" content="noindex">
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cyan:#00ffd5; --blue:#00a6ff; --red:#ff5d6c; --amber:#ffb547; --green:#3ddc97;
+  --bg:#070b10; --panel:rgba(18,24,32,.86); --panel2:rgba(255,255,255,.04);
+  --line:rgba(255,255,255,.1); --text:#eef6f8; --sub:rgba(238,246,248,.55);
+  --r:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+body{min-height:100vh;background:radial-gradient(1200px 600px at 10% -10%,rgba(0,255,213,.12),transparent 60%),
+  radial-gradient(900px 500px at 110% 10%,rgba(0,166,255,.12),transparent 60%),var(--bg);color:var(--text)}
+button{cursor:pointer;font:inherit}
+input,select{font:inherit;color:var(--text)}
+.hidden{display:none!important}
+.muted{color:var(--sub)}
+.small{font-size:.78rem}
+
+/* ---------- login ---------- */
+#loginView{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-card{width:100%;max-width:420px;background:var(--panel);border:1px solid var(--line);border-radius:32px;padding:44px 36px;
+  backdrop-filter:blur(20px);box-shadow:0 30px 70px rgba(0,0,0,.5);text-align:center;animation:rise .8s cubic-bezier(.16,1,.3,1)}
+@keyframes rise{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+.login-card img{width:64px;height:64px;object-fit:contain;border-radius:16px;margin-bottom:14px}
+.login-card h1{font-size:2rem;font-weight:800;letter-spacing:-1px;text-shadow:0 0 16px rgba(0,255,213,.3)}
+.eyebrow{font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--sub);margin:6px 0 26px}
+.field{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;outline:none;transition:.2s}
+.field:focus{border-color:var(--cyan);background:rgba(255,255,255,.09)}
+.btn{background:var(--cyan);color:#001b17;border:none;border-radius:14px;padding:14px 20px;font-weight:800;letter-spacing:.5px;transition:.2s}
+.btn:hover{background:#fff}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.block{width:100%}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.btn.ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+.btn.sm{padding:8px 13px;border-radius:10px;font-size:.78rem}
+.btn.danger{background:transparent;color:var(--red);border:1px solid rgba(255,93,108,.4)}
+.btn.danger:hover{background:rgba(255,93,108,.12)}
+.err{color:var(--red);font-size:.82rem;min-height:1.2em;margin-top:10px}
+.back{display:inline-block;margin-top:22px;font-size:.72rem;letter-spacing:1px;color:var(--sub);text-decoration:none}
+.back:hover{color:var(--cyan)}
+
+/* ---------- app shell ---------- */
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:14px 24px;
+  background:rgba(7,11,16,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+header.top img{width:34px;height:34px;object-fit:contain;border-radius:9px}
+header.top .title{font-weight:800;font-size:1.05rem}
+header.top .title span{display:block;font-size:.68rem;font-weight:700;letter-spacing:2px;color:var(--sub);text-transform:uppercase}
+.spacer{flex:1}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);font-size:.72rem;font-weight:700}
+.dot{width:7px;height:7px;border-radius:50%;background:#7c8794}
+.pill.on .dot{background:var(--cyan);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,255,213,.55)}70%{box-shadow:0 0 0 7px rgba(0,255,213,0)}100%{box-shadow:none}}
+nav.tabs{display:flex;gap:6px;padding:16px 24px 0;max-width:1240px;margin:0 auto;flex-wrap:wrap}
+nav.tabs button{background:transparent;border:1px solid transparent;color:var(--sub);padding:9px 16px;border-radius:12px;font-weight:700;font-size:.85rem}
+nav.tabs button.active{color:var(--text);background:var(--panel2);border-color:var(--line)}
+main{max-width:1240px;margin:0 auto;padding:18px 24px 80px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px;margin-bottom:18px}
+.panel h2{font-size:1.05rem;font-weight:800;margin-bottom:4px}
+.panel .lead{font-size:.82rem;color:var(--sub);margin-bottom:16px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+/* drop zone */
+.drop{display:block;border:2px dashed rgba(0,255,213,.35);border-radius:var(--r);padding:40px 20px;text-align:center;transition:.2s;cursor:pointer;background:rgba(0,255,213,.03)}
+.drop:hover,.drop.over{border-color:var(--cyan);background:rgba(0,255,213,.08)}
+.drop .big{font-size:1.15rem;font-weight:800;margin:8px 0 4px}
+.drop svg{width:42px;height:42px;stroke:var(--cyan)}
+.toggle{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--sub);cursor:pointer;user-select:none}
+.toggle input{accent-color:var(--cyan);width:16px;height:16px}
+
+/* steps */
+.steps{list-style:none;margin-top:18px;display:grid;gap:8px}
+.steps li{display:flex;align-items:center;gap:10px;font-size:.86rem;color:var(--sub)}
+.steps li i{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex:none;display:grid;place-items:center;font-style:normal;font-size:.7rem}
+.steps li.run{color:var(--text)} .steps li.run i{border-color:var(--cyan);border-top-color:transparent;animation:spin .8s linear infinite}
+.steps li.ok{color:var(--text)} .steps li.ok i{background:var(--cyan);border-color:var(--cyan);color:#001b17}
+.steps li.ok i::after{content:'✓'}
+.steps li.bad{color:var(--red)} .steps li.bad i{border-color:var(--red)} .steps li.bad i::after{content:'!'}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:6px 0 18px}
+.stat{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:14px}
+.stat b{display:block;font-size:1.6rem;font-weight:800;letter-spacing:-.5px}
+.stat span{font-size:.72rem;color:var(--sub);font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.stat.cy b{color:var(--cyan)} .stat.am b{color:var(--amber)} .stat.rd b{color:var(--red)}
+
+/* tables */
+.tbl-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}
+table.t{width:100%;border-collapse:collapse;font-size:.82rem}
+table.t th{position:sticky;top:0;background:#111821;text-align:left;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--sub);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.t td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:middle}
+table.t tr:hover td{background:rgba(255,255,255,.02)}
+.num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.old{color:var(--sub);text-decoration:line-through}
+.new{color:var(--cyan);font-weight:700}
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.68rem;font-weight:800;letter-spacing:.4px}
+.tag.ok{background:rgba(0,255,213,.12);color:var(--cyan)}
+.tag.warn{background:rgba(255,181,71,.14);color:var(--amber)}
+.tag.bad{background:rgba(255,93,108,.14);color:var(--red)}
+.tag.off{background:rgba(255,255,255,.06);color:var(--sub)}
+
+/* mapping */
+.page-block{border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.page-head{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--panel2);cursor:pointer}
+.page-head b{font-size:.95rem}
+.page-head .chev{transition:.2s;color:var(--sub)}
+.page-block.open .chev{transform:rotate(90deg)}
+.page-body{display:none}
+.page-block.open .page-body{display:block}
+.fld-label b{font-weight:700}
+.fld-label small{display:block;color:var(--sub);font-size:.72rem}
+.src{font-family:ui-monospace,Menlo,monospace;font-size:.74rem;color:var(--sub)}
+.search{background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:10px;padding:9px 12px;outline:none;min-width:220px}
+.search:focus{border-color:var(--cyan)}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:16px}
+.modal-card{width:100%;max-width:1100px;max-height:94vh;display:flex;flex-direction:column;background:#0d131a;border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.modal-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:flex-start}
+.modal-head h3{font-size:1.05rem;font-weight:800}
+.modal-body{padding:16px 22px;overflow:auto;flex:1}
+.modal-foot{padding:14px 22px;border-top:1px solid var(--line);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.grid-wrap{overflow:auto;max-height:46vh;border:1px solid var(--line);border-radius:12px;margin-top:10px}
+table.sheet{border-collapse:collapse;font-size:.76rem}
+table.sheet th{position:sticky;top:0;background:#131b24;color:var(--sub);font-weight:700;padding:5px 8px;border:1px solid rgba(255,255,255,.06);z-index:1}
+table.sheet th.rn{left:0;z-index:2}
+table.sheet td{padding:5px 8px;border:1px solid rgba(255,255,255,.06);white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+table.sheet td.rn{position:sticky;left:0;background:#131b24;color:var(--sub);cursor:default;text-align:right}
+table.sheet td:hover:not(.rn){background:rgba(0,255,213,.08)}
+table.sheet td.sel{background:rgba(0,255,213,.28)!important;color:#fff;font-weight:700;outline:2px solid var(--cyan)}
+table.sheet td.lbl{background:rgba(0,166,255,.18)}
+table.sheet td.n{text-align:right;font-variant-numeric:tabular-nums}
+.fmt{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+.fmt label{font-size:.7rem;font-weight:700;color:var(--sub);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:5px}
+.fmt input,.fmt select,.inp{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:10px;padding:9px 11px;outline:none}
+.fmt select option,.inp option{background:#0d131a}
+.preview{margin-left:auto;font-size:.9rem}
+.preview b{color:var(--cyan);font-size:1.1rem}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{background:transparent;border:none;color:var(--sub);padding:8px 12px;font-size:.78rem;font-weight:700}
+.seg button.on{background:var(--cyan);color:#001b17}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(30px);opacity:0;z-index:80;background:#101820;border:1px solid var(--line);
+  padding:12px 18px;border-radius:14px;font-size:.85rem;font-weight:600;transition:.3s;box-shadow:0 14px 40px rgba(0,0,0,.5)}
+.toast.show{opacity:1;transform:translateX(-50%)}
+.empty{padding:28px;text-align:center;color:var(--sub);font-size:.86rem}
+@media (max-width:700px){header.top{padding:12px 14px}main{padding:14px}nav.tabs{padding:12px 14px 0}.hide-sm{display:none}}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<section id="loginView">
+  <form class="login-card" id="loginForm" autocomplete="on">
+    <img src="logo.png" alt="Oli-Ohh">
+    <h1>Admin</h1>
+    <p class="eyebrow">Data Upload · Live Sync</p>
+    <input class="field" type="email" id="email" placeholder="Admin email" autocomplete="username" required>
+    <input class="field" type="password" id="password" placeholder="Password" autocomplete="current-password" required>
+    <button class="btn block" type="submit" id="loginBtn">Sign in</button>
+    <p class="err" id="loginErr"></p>
+    <a class="back" href="home.html">← BACK TO DASHBOARD</a>
+  </form>
+</section>
+
+<!-- ============ APP ============ -->
+<section id="appView" class="hidden">
+  <header class="top">
+    <img src="logo.png" alt="">
+    <div class="title">Oli-Ohh Admin<span>Excel → Supabase → Live dashboard</span></div>
+    <div class="spacer"></div>
+    <span class="pill" id="livePill"><span class="dot"></span><span id="liveTxt">Connecting…</span></span>
+    <span class="small muted hide-sm" id="who"></span>
+    <button class="btn ghost sm" id="pwBtn">Change password</button>
+    <button class="btn ghost sm" id="logoutBtn">Sign out</button>
+  </header>
+
+  <nav class="tabs">
+    <button data-tab="upload" class="active">Upload &amp; analyse</button>
+    <button data-tab="fields">Dashboard fields</button>
+    <button data-tab="history">Upload history</button>
+  </nav>
+
+  <main>
+    <!-- UPLOAD -->
+    <div data-pane="upload">
+      <div class="panel">
+        <h2>Upload the full Excel</h2>
+        <p class="lead">The whole workbook (every sheet) is saved to Supabase. It's then analysed against your field mappings, and every page of the dashboard updates live.</p>
+        <label class="drop" id="drop">
+          <input type="file" id="fileInput" accept=".xlsx,.xls,.xlsm,.xlsb,.csv" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+          <div class="big">Drop Excel here or click to choose</div>
+          <div class="small muted">.xlsx · .xls · .csv · up to 50 MB</div>
+        </label>
+        <div class="row" style="margin-top:14px">
+          <label class="toggle"><input type="checkbox" id="autoPublish" checked> Publish to the live dashboard straight after analysis</label>
+        </div>
+        <ul class="steps hidden" id="steps">
+          <li data-s="read"><i></i>Reading workbook</li>
+          <li data-s="store"><i></i>Saving file and sheets to Supabase</li>
+          <li data-s="analyse"><i></i>Analysing against field mappings</li>
+          <li data-s="publish"><i></i>Publishing to live dashboard</li>
+        </ul>
+      </div>
+
+      <div class="panel hidden" id="resultPanel">
+        <div class="row" style="justify-content:space-between">
+          <div><h2 id="resTitle">Analysis</h2><p class="lead" id="resLead"></p></div>
+          <div class="row">
+            <button class="btn sm hidden" id="publishBtn">Publish changes</button>
+            <button class="btn ghost sm" id="suggestBtn2">Suggest mappings for new fields</button>
+          </div>
+        </div>
+        <div class="stats" id="resStats"></div>
+        <div class="tbl-wrap" id="resTableWrap"></div>
+      </div>
+    </div>
+
+    <!-- FIELDS -->
+    <div data-pane="fields" class="hidden">
+      <div class="panel">
+        <div class="row" style="justify-content:space-between;align-items:flex-start">
+          <div>
+            <h2>Dashboard fields</h2>
+            <p class="lead" id="fieldsLead">Every number on the dashboard and which Excel cell feeds it. Map a field once; every future upload fills it automatically.</p>
+          </div>
+          <div class="row">
+            <input class="search" id="fieldSearch" placeholder="Search fields…">
+            <button class="btn sm" id="suggestBtn">Suggest mappings</button>
+          </div>
+        </div>
+        <div class="small muted" id="wbInfo" style="margin-bottom:12px"></div>
+        <div id="pagesList"><div class="empty">Loading dashboard pages…</div></div>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div data-pane="history" class="hidden">
+      <div class="panel">
+        <h2>Upload history</h2>
+        <p class="lead">Every Excel that has been uploaded. Download the original, run the analysis again, or undo the latest publish.</p>
+        <div class="tbl-wrap" id="historyWrap"><div class="empty">Loading…</div></div>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- mapping modal -->
+<div class="modal hidden" id="mapModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div style="flex:1">
+        <div class="small muted" id="mPage"></div>
+        <h3 id="mTitle"></h3>
+        <div class="small muted">Currently showing: <b id="mCurrent" style="color:var(--text)"></b></div>
+      </div>
+      <button class="btn ghost sm" data-close>Close</button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <select class="inp" id="mSheet" style="max-width:280px"></select>
+        <input class="search" id="mFind" placeholder="Find text in sheet (e.g. Blinkit)">
+        <div class="seg" id="mMode"><button data-m="row" class="on">Follow row label</button><button data-m="cell">Fixed cell</button></div>
+      </div>
+      <div class="small muted" style="margin-top:8px" id="mHint">Click the cell that holds this number. With “Follow row label”, the value is found by its row name each time, so it still works if rows move.</div>
+      <div class="grid-wrap" id="mGrid"></div>
+      <div class="fmt">
+        <div><label>Convert</label>
+          <select id="mMult">
+            <option value="1">As in Excel</option>
+            <option value="0.00001">₹ → Lakhs (÷ 1,00,000)</option>
+            <option value="0.0000001">₹ → Crores (÷ 1,00,00,000)</option>
+            <option value="36">Cases → Pcs (× 36)</option>
+            <option value="100">Fraction → % (× 100)</option>
+            <option value="custom">Custom multiplier…</option>
+          </select>
+        </div>
+        <div class="hidden" id="mCustomWrap"><label>Multiplier</label><input id="mCustom" type="number" step="any" value="1"></div>
+        <div><label>Decimals</label><input id="mDec" type="number" min="0" max="6"></div>
+        <div><label>Prefix</label><input id="mPre" placeholder="e.g. ₹"></div>
+        <div><label>Suffix</label><input id="mSuf" placeholder="e.g.  L or %"></div>
+        <div><label>Thousands separator</label><select id="mCom"><option value="1">Yes (1,234)</option><option value="0">No (1234)</option></select></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn danger sm" id="mRemove">Remove mapping</button>
+      <button class="btn ghost sm" id="mReset" title="Go back to the figure saved in the page">Reset to page figure</button>
+      <div class="preview" id="mPreview">Pick a cell</div>
+      <button class="btn" id="mSave" disabled>Save &amp; publish</button>
+    </div>
+  </div>
+</div>
+
+<!-- suggestions modal -->
+<div class="modal hidden" id="sugModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div style="flex:1"><h3>Suggested mappings</h3><div class="small muted" id="sugLead"></div></div>
+      <button class="btn ghost sm" data-close>Close</button>
+    </div>
+    <div class="modal-body"><div class="tbl-wrap" id="sugWrap"></div></div>
+    <div class="modal-foot">
+      <label class="toggle"><input type="checkbox" id="sugAll" checked> Select all</label>
+      <div class="spacer"></div>
+      <button class="btn" id="sugAccept">Accept selected &amp; publish</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script>
+(function () {
+'use strict';
+var CFG = window.OLI_SUPABASE || { url: 'https://xujgslalxvuddsjnyyfv.supabase.co', key: 'sb_publishable_wENzyo941znj0HeV9smINw_1RJQLNSt' };
+var PAGES = [
+  { file: 'home.html', name: 'Home · Command Center' },
+  { file: 'quick-commerce.html', name: 'Quick Commerce' },
+  { file: 'ecommerce.html', name: 'E-Commerce' },
+  { file: 'mtstandlone.html', name: 'MT Standalone' },
+  { file: 'NCR.html', name: 'NCR' },
+  { file: 'CHD.html', name: 'Chandigarh' },
+  { file: 'GUJURAT.html', name: 'Gujarat' },
+  { file: 'westup.html', name: 'West UP' },
+  { file: 'shopify.html', name: 'Shopify' }
+];
+var BUCKET = 'excel-uploads', CHUNK = 1000;
+
+var db = window.__OLI_CLIENT || window.supabase.createClient(CFG.url, CFG.key);
+var S = {
+  user: null, fields: [], byKey: {}, values: {}, mappings: {},
+  wb: null,          // { name, uploadId, sheets: { name: rows[][] }, order: [] }
+  analysis: null, uploads: []
+};
+
+/* ---------------- helpers ---------------- */
+var $ = function (s, r) { return (r || document).querySelector(s); };
+var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+function esc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function clean(t) { return String(t == null ? '' : t).replace(/\s+/g, ' ').trim(); }
+function norm(t) { return clean(t).toLowerCase().replace(/[^a-z0-9%]+/g, ' ').trim(); }
+function toast(msg, ms) { var t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(function () { t.classList.remove('show'); }, ms || 3200); }
+function num(v) {
+  if (typeof v === 'number') return v;
+  var m = String(v == null ? '' : v).replace(/,/g, '').match(/-?\d+(\.\d+)?/);
+  return m ? parseFloat(m[0]) : NaN;
+}
+function colName(c) { var s = ''; c++; while (c > 0) { var m = (c - 1) % 26; s = String.fromCharCode(65 + m) + s; c = Math.floor((c - 1) / 26); } return s; }
+function a1(r, c) { return colName(c) + (r + 1); }
+function parseA1(ref) {
+  var m = /^([A-Z]+)(\d+)$/i.exec(clean(ref)); if (!m) return null;
+  var c = 0; m[1].toUpperCase().split('').forEach(function (ch) { c = c * 26 + ch.charCodeAt(0) - 64; });
+  return { r: +m[2] - 1, c: c - 1 };
+}
+function fmtTime(ts) { try { return new Date(ts).toLocaleString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }); } catch (e) { return ts; } }
+function cellText(v) { return v == null ? '' : (v instanceof Date ? v.toISOString().slice(0, 10) : String(v)); }
+function must(r) { if (r && r.error) throw new Error(r.error.message || String(r.error)); return r ? r.data : null; }
+
+/* number format inferred from the figure already on the page, e.g. "35.59 L", "₹23,800.50", "29.5%" */
+function inferFormat(text) {
+  var m = /^(\D*?)(-?[\d,]*\.?\d+)(.*)$/.exec(clean(text));
+  if (!m) return { prefix: '', suffix: '', decimals: 0, commas: true };
+  var d = m[2].indexOf('.') >= 0 ? m[2].split('.')[1].length : 0;
+  return { prefix: m[1], suffix: m[3], decimals: d, commas: m[2].indexOf(',') >= 0 || Math.abs(num(m[2])) < 1000 };
+}
+function formatValue(raw, mp) {
+  var n = num(raw);
+  if (!isFinite(n)) return clean(cellText(raw));
+  n = n * (+mp.mult || 1);
+  var d = mp.decimals == null ? 2 : +mp.decimals;
+  var s = n.toLocaleString('en-IN', { minimumFractionDigits: d, maximumFractionDigits: d, useGrouping: !!mp.commas });
+  return (mp.prefix || '') + s + (mp.suffix || '');
+}
+function currentValue(f) { var v = S.values[f.key]; return v ? v.value : f.def; }
+
+/* ---------------- auth ---------------- */
+$('#loginForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  var btn = $('#loginBtn'); btn.disabled = true; $('#loginErr').textContent = '';
+  try {
+    var r = await db.auth.signInWithPassword({ email: $('#email').value.trim(), password: $('#password').value });
+    if (r.error) throw r.error;
+    await enter(r.data.user);
+  } catch (err) {
+    $('#loginErr').textContent = /invalid/i.test(err.message) ? 'Wrong email or password.' : err.message;
+  } finally { btn.disabled = false; }
+});
+$('#logoutBtn').onclick = async function () { await db.auth.signOut(); location.reload(); };
+$('#pwBtn').onclick = async function () {
+  var p = prompt('New password (at least 8 characters):');
+  if (!p) return;
+  if (p.length < 8) return toast('Password must be at least 8 characters.');
+  var r = await db.auth.updateUser({ password: p });
+  toast(r.error ? 'Could not change password: ' + r.error.message : 'Password changed.');
+};
+
+async function enter(user) {
+  var ok = await db.rpc('is_admin');
+  if (ok.error || !ok.data) {
+    await db.auth.signOut();
+    $('#loginErr').textContent = 'This account is not an admin.';
+    return;
+  }
+  S.user = user;
+  $('#who').textContent = user.email;
+  $('#loginView').classList.add('hidden');
+  $('#appView').classList.remove('hidden');
+  await Promise.all([loadFields(), loadValues(), loadMappings(), loadUploads()]);
+  renderFields(); renderHistory();
+  subscribe();
+  loadLatestWorkbook();
+}
+
+/* ---------------- data ---------------- */
+async function loadFields() {
+  var list = [];
+  await Promise.all(PAGES.map(async function (p) {
+    try {
+      var html = await (await fetch(p.file, { cache: 'no-store' })).text();
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var page = p.file.replace(/\.html?$/i, '');
+      $$('[data-live]', doc).forEach(function (el, i) {
+        var id = el.getAttribute('data-live'), def = clean(el.textContent);
+        list.push({
+          key: page + '|' + id, page: page, pageName: p.name, order: i, id: id,
+          row: el.getAttribute('data-live-row') || '', col: el.getAttribute('data-live-col') || '',
+          def: def, fmt: inferFormat(def)
+        });
+      });
+    } catch (e) { console.warn('Could not read', p.file, e); }
+  }));
+  var po = {}; PAGES.forEach(function (p, i) { po[p.file.replace(/\.html?$/i, '')] = i; });
+  list.sort(function (a, b) { return po[a.page] - po[b.page] || a.order - b.order; });
+  list.forEach(function (f) {
+    if (f.def) return;
+    var sib = list.find(function (o) { return o.page === f.page && o.col === f.col && o.def && /^t\d/.test(o.id) === /^t\d/.test(f.id); });
+    if (sib) f.fmt = Object.assign({}, sib.fmt);
+  });
+  S.fields = list; S.byKey = {}; list.forEach(function (f) { S.byKey[f.key] = f; });
+}
+async function loadValues() {
+  var rows = must(await db.from('dashboard_values').select('*'));
+  S.values = {}; (rows || []).forEach(function (r) { S.values[r.field_key] = r; });
+}
+async function loadMappings() {
+  var rows = must(await db.from('field_mappings').select('*'));
+  S.mappings = {}; (rows || []).forEach(function (r) { S.mappings[r.field_key] = r; });
+}
+async function loadUploads() {
+  S.uploads = must(await db.from('uploads').select('*').order('uploaded_at', { ascending: false }).limit(40)) || [];
+}
+async function loadSheets(uploadId) {
+  var rows = must(await db.from('excel_sheets').select('sheet_name,chunk_index,rows').eq('upload_id', uploadId).order('id', { ascending: true }));
+  var sheets = {}, order = [];
+  (rows || []).forEach(function (r) {
+    if (!sheets[r.sheet_name]) { sheets[r.sheet_name] = []; order.push(r.sheet_name); }
+    Array.prototype.push.apply(sheets[r.sheet_name], r.rows || []);
+  });
+  return { sheets: sheets, order: order };
+}
+async function loadLatestWorkbook() {
+  var up = S.uploads.find(function (u) { return u.status !== 'failed'; });
+  if (!up) { wbInfo(); return; }
+  try {
+    var s = await loadSheets(up.id);
+    if (!S.wb) S.wb = { name: up.file_name, uploadId: up.id, sheets: s.sheets, order: s.order };
+  } catch (e) { console.warn(e); }
+  wbInfo();
+}
+function wbInfo() {
+  $('#wbInfo').innerHTML = S.wb
+    ? 'Mapping against <b>' + esc(S.wb.name) + '</b> · ' + S.wb.order.length + ' sheet(s)'
+    : 'Upload an Excel first, then map each field to its cell.';
+}
+
+function subscribe() {
+  db.channel('admin-live')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'dashboard_values' }, function (p) {
+      if (p.eventType === 'DELETE') delete S.values[(p.old || {}).field_key];
+      else S.values[p.new.field_key] = p.new;
+      renderFieldsSoon();
+    })
+    .subscribe(function (s) {
+      var on = s === 'SUBSCRIBED';
+      $('#livePill').classList.toggle('on', on);
+      $('#liveTxt').textContent = on ? 'Live sync on' : (s === 'CHANNEL_ERROR' || s === 'TIMED_OUT' ? 'Live sync offline' : 'Connecting…');
+    });
+}
+var _rf; function renderFieldsSoon() { clearTimeout(_rf); _rf = setTimeout(renderFields, 150); }
+
+/* ---------------- workbook reading ---------------- */
+function readWorkbook(buf, name) {
+  var wb = XLSX.read(buf, { type: 'array', cellDates: true });
+  var sheets = {}, order = [];
+  wb.SheetNames.forEach(function (sn) {
+    var ws = wb.Sheets[sn];
+    var rows = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true, defval: null, blankrows: true });
+    rows = rows.map(function (r) { return (r || []).map(function (v) { return v instanceof Date ? v.toISOString().slice(0, 10) : (v === undefined ? null : v); }); });
+    // copy merged-cell text into every cell of the merge so grouped headers and row labels match
+    (ws['!merges'] || []).forEach(function (m) {
+      var v = rows[m.s.r] && rows[m.s.r][m.s.c];
+      if (typeof v !== 'string' || !v.trim()) return;
+      for (var r = m.s.r; r <= m.e.r; r++) { rows[r] = rows[r] || []; for (var c = m.s.c; c <= m.e.c; c++) if (rows[r][c] == null) rows[r][c] = v; }
+    });
+    while (rows.length && !(rows[rows.length - 1] || []).some(function (v) { return v != null && v !== ''; })) rows.pop();
+    sheets[sn] = rows; order.push(sn);
+  });
+  return { name: name, sheets: sheets, order: order };
+}
+function findSheet(wb, name) {
+  if (!wb) return null;
+  if (wb.sheets[name]) return name;
+  var n = norm(name), hit = wb.order.find(function (s) { return norm(s) === n; });
+  return hit || wb.order.find(function (s) { return norm(s).indexOf(n) >= 0 || n.indexOf(norm(s)) >= 0; }) || null;
+}
+function resolve(mp, wb) {
+  var sn = findSheet(wb, mp.sheet);
+  if (!sn) return { found: false, why: 'Sheet “' + mp.sheet + '” not in this file' };
+  var rows = wb.sheets[sn], r = -1, c = mp.value_col;
+  if (mp.mode === 'cell') {
+    var p = parseA1(mp.cell); if (!p) return { found: false, why: 'Bad cell ' + mp.cell };
+    r = p.r; c = p.c;
+  } else {
+    var want = norm(mp.label_text);
+    for (var i = 0; i < rows.length && r < 0; i++) if (norm(cellText((rows[i] || [])[mp.label_col])) === want) r = i;
+    for (i = 0; i < rows.length && r < 0; i++) if ((rows[i] || []).some(function (v) { return norm(cellText(v)) === want; })) r = i;
+    if (r < 0) return { found: false, why: 'Row “' + mp.label_text + '” not found in ' + sn };
+  }
+  var raw = (rows[r] || [])[c];
+  if (raw == null || raw === '') return { found: false, why: 'Cell ' + sn + '!' + a1(r, c) + ' is empty', where: sn + '!' + a1(r, c) };
+  return { found: true, raw: raw, display: formatValue(raw, mp), where: sn + '!' + a1(r, c) };
+}
+
+/* ---------------- upload flow ---------------- */
+var drop = $('#drop');
+['dragenter', 'dragover'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
+['dragleave', 'drop'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('over'); }); });
+drop.addEventListener('drop', function (e) { var f = e.dataTransfer.files[0]; if (f) handleFile(f); });
+$('#fileInput').addEventListener('change', function (e) { var f = e.target.files[0]; if (f) handleFile(f); e.target.value = ''; });
+try { var ap = localStorage.getItem('oli_admin_autopublish'); if (ap !== null) $('#autoPublish').checked = ap === '1'; } catch (e) {}
+$('#autoPublish').onchange = function () { try { localStorage.setItem('oli_admin_autopublish', this.checked ? '1' : '0'); } catch (e) {} };
+
+function step(s, state) {
+  var li = $('#steps li[data-s="' + s + '"]'); li.className = state || '';
+}
+async function handleFile(file) {
+  if (file.size > 50 * 1024 * 1024) return toast('File is larger than 50 MB.');
+  $('#steps').classList.remove('hidden');
+  $$('#steps li').forEach(function (li) { li.className = ''; });
+  $('#resultPanel').classList.add('hidden');
+  var cur = 'read', uploadId = null;
+  try {
+    step('read', 'run');
+    var buf = await file.arrayBuffer();
+    var wb = readWorkbook(buf, file.name);
+    var totalRows = wb.order.reduce(function (a, s) { return a + wb.sheets[s].length; }, 0);
+    step('read', 'ok');
+
+    cur = 'store'; step('store', 'run');
+    var d = new Date(), path = d.getFullYear() + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getTime() + '_' + file.name.replace(/[^\w.\-]+/g, '_');
+    var up = await db.storage.from(BUCKET).upload(path, file, { contentType: file.type || 'application/octet-stream', upsert: false });
+    if (up.error) throw up.error;
+    var ins = must(await db.from('uploads').insert({ file_name: file.name, storage_path: path, file_size: file.size, sheet_count: wb.order.length, status: 'uploaded' }).select().single());
+    uploadId = ins.id;
+    var chunks = [];
+    wb.order.forEach(function (sn) {
+      var rows = wb.sheets[sn];
+      if (!rows.length) chunks.push({ upload_id: uploadId, sheet_name: sn, chunk_index: 0, row_offset: 0, row_count: 0, rows: [] });
+      for (var i = 0, k = 0; i < rows.length; i += CHUNK, k++)
+        chunks.push({ upload_id: uploadId, sheet_name: sn, chunk_index: k, row_offset: i, row_count: Math.min(CHUNK, rows.length - i), rows: rows.slice(i, i + CHUNK) });
+    });
+    for (var j = 0; j < chunks.length; j += 5) must(await db.from('excel_sheets').insert(chunks.slice(j, j + 5)));
+    wb.uploadId = uploadId; S.wb = wb; wbInfo();
+    step('store', 'ok');
+
+    cur = 'analyse'; step('analyse', 'run');
+    var a = analyse(wb, uploadId);
+    a.totalRows = totalRows;
+    step('analyse', 'ok');
+
+    if ($('#autoPublish').checked) {
+      cur = 'publish'; step('publish', 'run');
+      await publish(a);
+      step('publish', 'ok');
+    } else {
+      must(await db.from('uploads').update({ status: 'analysed', summary: summaryOf(a) }).eq('id', uploadId));
+      step('publish', '');
+    }
+    showAnalysis(a);
+    await loadUploads(); renderHistory(); renderFields();
+  } catch (err) {
+    console.error(err);
+    step(cur, 'bad');
+    if (uploadId) try { await db.from('uploads').update({ status: 'failed', summary: { error: String(err.message || err) } }).eq('id', uploadId); } catch (e) {}
+    toast('Upload failed: ' + (err.message || err), 6000);
+  }
+}
+
+function analyse(wb, uploadId) {
+  var a = { uploadId: uploadId, file: wb.name, sheets: wb.order.length, changes: [], same: 0, missing: [], unmapped: 0, published: false };
+  S.fields.forEach(function (f) {
+    var mp = S.mappings[f.key];
+    if (!mp) { a.unmapped++; return; }
+    var res = resolve(mp, wb);
+    if (!res.found) { a.missing.push({ f: f, why: res.why }); return; }
+    var old = currentValue(f);
+    if (res.display === old) { a.same++; return; }
+    var o = num(old), n = num(res.display), flag = '';
+    if (isFinite(o) && isFinite(n) && o !== 0 && Math.abs((n - o) / o) > 0.5) flag = 'big';
+    if (isFinite(o) && isFinite(n) && n < o && /ytd|amj|overall|total/i.test(f.col + ' ' + f.row)) flag = 'drop';
+    a.changes.push({ f: f, old: old, val: res.display, raw: res.raw, where: res.where, flag: flag });
+  });
+  S.analysis = a;
+  return a;
+}
+function summaryOf(a) {
+  return { changed: a.changes.length, unchanged: a.same, missing: a.missing.length, unmapped: a.unmapped, sheets: a.sheets, rows: a.totalRows,
+    fields: a.changes.slice(0, 300).map(function (c) { return { key: c.f.key, old: c.old, new: c.val, where: c.where }; }) };
+}
+async function publish(a) {
+  var rows = a.changes.map(function (c) {
+    var n = num(c.raw);
+    return { field_key: c.f.key, page: c.f.page, label: c.f.row + ' · ' + c.f.col, value: c.val, raw: isFinite(n) ? n : null, upload_id: a.uploadId };
+  });
+  for (var i = 0; i < rows.length; i += 200) must(await db.from('dashboard_values').upsert(rows.slice(i, i + 200), { onConflict: 'field_key' }));
+  rows.forEach(function (r) { S.values[r.field_key] = r; });
+  if (a.uploadId) must(await db.from('uploads').update({ status: 'published', summary: summaryOf(a) }).eq('id', a.uploadId));
+  a.published = true;
+}
+$('#publishBtn').onclick = async function () {
+  if (!S.analysis) return;
+  this.disabled = true;
+  try { await publish(S.analysis); showAnalysis(S.analysis); await loadUploads(); renderHistory(); renderFields(); toast('Published. The dashboard is updating live.'); }
+  catch (e) { toast('Publish failed: ' + e.message, 6000); }
+  this.disabled = false;
+};
+
+function showAnalysis(a) {
+  $('#resultPanel').classList.remove('hidden');
+  $('#resTitle').textContent = 'Analysis · ' + a.file;
+  $('#resLead').textContent = a.published
+    ? 'Published to the live dashboard. Open any page to see the new figures.'
+    : (a.changes.length ? 'Not published yet. Review the changes, then publish.' : 'Nothing to publish.');
+  $('#publishBtn').classList.toggle('hidden', a.published || !a.changes.length);
+  var flagged = a.changes.filter(function (c) { return c.flag; }).length;
+  $('#resStats').innerHTML =
+    '<div class="stat"><b>' + a.sheets + '</b><span>Sheets saved</span></div>' +
+    (a.totalRows != null ? '<div class="stat"><b>' + a.totalRows.toLocaleString('en-IN') + '</b><span>Rows saved</span></div>' : '') +
+    '<div class="stat cy"><b>' + a.changes.length + '</b><span>Fields ' + (a.published ? 'updated' : 'to update') + '</span></div>' +
+    '<div class="stat"><b>' + a.same + '</b><span>Unchanged</span></div>' +
+    '<div class="stat ' + (flagged ? 'am' : '') + '"><b>' + flagged + '</b><span>Worth a look</span></div>' +
+    '<div class="stat ' + (a.missing.length ? 'rd' : '') + '"><b>' + a.missing.length + '</b><span>Not found in file</span></div>' +
+    '<div class="stat"><b>' + a.unmapped + '</b><span>Not mapped yet</span></div>';
+  var h = '';
+  if (!a.changes.length && !a.missing.length) {
+    h = '<div class="empty">' + (a.unmapped === S.fields.length
+      ? 'No fields are mapped yet. Click <b>Suggest mappings for new fields</b> or open <b>Dashboard fields</b> to connect each number to its Excel cell.'
+      : 'Every mapped figure already matches this file.') + '</div>';
+  } else {
+    h = '<table class="t"><thead><tr><th>Page</th><th>Field</th><th class="num">Before</th><th class="num">After</th><th>From</th><th>Check</th></tr></thead><tbody>';
+    a.changes.forEach(function (c) {
+      var tag = c.flag === 'big' ? '<span class="tag warn">Changed &gt;50%</span>' : c.flag === 'drop' ? '<span class="tag warn">Running total went down</span>' : '<span class="tag ok">OK</span>';
+      h += '<tr><td>' + esc(c.f.pageName) + '</td><td class="fld-label"><b>' + esc(c.f.row) + '</b><small>' + esc(c.f.col) + '</small></td>' +
+        '<td class="num old">' + esc(c.old) + '</td><td class="num new">' + esc(c.val) + '</td><td class="src">' + esc(c.where) + '</td><td>' + tag + '</td></tr>';
+    });
+    a.missing.forEach(function (m) {
+      h += '<tr><td>' + esc(m.f.pageName) + '</td><td class="fld-label"><b>' + esc(m.f.row) + '</b><small>' + esc(m.f.col) + '</small></td>' +
+        '<td class="num">' + esc(currentValue(m.f)) + '</td><td class="num muted">kept</td><td class="src">' + esc(m.why) + '</td><td><span class="tag bad">Not found</span></td></tr>';
+    });
+    h += '</tbody></table>';
+  }
+  $('#resTableWrap').innerHTML = h;
+}
+
+/* ---------------- fields list ---------------- */
+var openPages = {};
+$('#fieldSearch').addEventListener('input', renderFields);
+function renderFields() {
+  var q = norm($('#fieldSearch').value), html = '';
+  var mappedCount = 0, liveCount = 0;
+  PAGES.forEach(function (p) {
+    var page = p.file.replace(/\.html?$/i, '');
+    var fs = S.fields.filter(function (f) { return f.page === page; });
+    var shown = fs.filter(function (f) { return !q || norm(f.pageName + ' ' + f.row + ' ' + f.col + ' ' + currentValue(f)).indexOf(q) >= 0; });
+    if (!shown.length) return;
+    var m = fs.filter(function (f) { return S.mappings[f.key]; }).length, l = fs.filter(function (f) { return S.values[f.key]; }).length;
+    mappedCount += m; liveCount += l;
+    var open = q || openPages[page];
+    html += '<div class="page-block' + (open ? ' open' : '') + '" data-page="' + esc(page) + '"><div class="page-head"><span class="chev">▶</span><b>' + esc(p.name) + '</b>' +
+      '<span class="small muted">' + fs.length + ' fields</span><div class="spacer"></div>' +
+      '<span class="tag ' + (m === fs.length ? 'ok' : m ? 'warn' : 'off') + '">' + m + '/' + fs.length + ' mapped</span>' +
+      '<span class="tag ' + (l ? 'ok' : 'off') + '">' + l + ' live</span>' +
+      '<a class="btn ghost sm" href="' + esc(p.file) + '" target="_blank" onclick="event.stopPropagation()">Open page</a></div>' +
+      '<div class="page-body"><table class="t"><thead><tr><th>Field</th><th class="num">Showing now</th><th>Excel source</th><th>Status</th><th></th></tr></thead><tbody>';
+    shown.forEach(function (f) {
+      var mp = S.mappings[f.key], v = S.values[f.key];
+      var src = mp ? (mp.mode === 'cell' ? mp.sheet + '!' + mp.cell : mp.sheet + ' · row “' + mp.label_text + '” · col ' + colName(mp.value_col)) : '—';
+      var st = v ? '<span class="tag ok">Live · ' + esc(fmtTime(v.updated_at)) + '</span>' : (mp ? '<span class="tag warn">Mapped · waiting</span>' : '<span class="tag off">Page figure</span>');
+      html += '<tr><td class="fld-label"><b>' + esc(f.row) + '</b><small>' + esc(f.col) + '</small></td><td class="num">' + esc(currentValue(f) || '—') + '</td>' +
+        '<td class="src">' + esc(src) + '</td><td>' + st + '</td><td><button class="btn ghost sm" data-map="' + esc(f.key) + '">' + (mp ? 'Edit' : 'Map') + '</button></td></tr>';
+    });
+    html += '</tbody></table></div></div>';
+  });
+  $('#pagesList').innerHTML = html || '<div class="empty">No fields match.</div>';
+  $('#fieldsLead').textContent = S.fields.length + ' numbers across ' + PAGES.length + ' pages · ' + mappedCount + ' mapped · ' + liveCount + ' live.';
+}
+$('#pagesList').addEventListener('click', function (e) {
+  var b = e.target.closest('[data-map]');
+  if (b) return openMap(S.byKey[b.getAttribute('data-map')]);
+  var head = e.target.closest('.page-head');
+  if (head) { var blk = head.parentNode, pg = blk.getAttribute('data-page'); openPages[pg] = !blk.classList.contains('open'); blk.classList.toggle('open'); }
+});
+
+/* ---------------- mapping modal ---------------- */
+var M = { f: null, sheet: null, r: -1, c: -1, labelCol: -1, mode: 'row' };
+function openModal(id) { $(id).classList.remove('hidden'); }
+function closeModal(id) { $(id).classList.add('hidden'); }
+$$('[data-close]').forEach(function (b) { b.onclick = function () { closeModal('#' + b.closest('.modal').id); }; });
+
+function openMap(f) {
+  if (!f) return;
+  if (!S.wb) return toast('Upload an Excel first, then map fields to it.');
+  M = { f: f, sheet: null, r: -1, c: -1, labelCol: -1, mode: 'row' };
+  var mp = S.mappings[f.key];
+  $('#mPage').textContent = f.pageName;
+  $('#mTitle').textContent = f.row + ' · ' + f.col;
+  $('#mCurrent').textContent = currentValue(f) || '—';
+  $('#mSheet').innerHTML = S.wb.order.map(function (s) { return '<option>' + esc(s) + '</option>'; }).join('');
+  var fmt = mp ? { prefix: mp.prefix, suffix: mp.suffix, decimals: mp.decimals, commas: mp.commas, mult: mp.mult } : f.fmt;
+  setFmt(fmt, mp ? mp.mult : 1);
+  if (mp) {
+    var sn = findSheet(S.wb, mp.sheet) || S.wb.order[0];
+    M.sheet = sn; M.mode = mp.mode;
+    if (mp.mode === 'cell') { var p = parseA1(mp.cell); if (p) { M.r = p.r; M.c = p.c; } }
+    else {
+      var rows = S.wb.sheets[sn], want = norm(mp.label_text);
+      for (var i = 0; i < rows.length; i++) if (norm(cellText((rows[i] || [])[mp.label_col])) === want) { M.r = i; break; }
+      M.c = mp.value_col; M.labelCol = mp.label_col;
+    }
+  } else {
+    var g = bestGuess(f);
+    M.sheet = g ? g.sheet : S.wb.order[0];
+    if (g) { M.r = g.r; M.c = g.c; M.labelCol = g.labelCol; }
+  }
+  $('#mSheet').value = M.sheet;
+  $('#mFind').value = '';
+  $$('#mMode button').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-m') === M.mode); });
+  $('#mRemove').classList.toggle('hidden', !mp);
+  $('#mReset').classList.toggle('hidden', !S.values[f.key]);
+  drawGrid(); updatePreview();
+  openModal('#mapModal');
+  var sel = $('#mGrid td.sel'); if (sel) sel.scrollIntoView({ block: 'center', inline: 'center' });
+}
+function setFmt(fmt, mult) {
+  var opts = ['1', '0.00001', '0.0000001', '36', '100'], m = String(+mult || 1);
+  $('#mMult').value = opts.indexOf(m) >= 0 ? m : 'custom';
+  $('#mCustom').value = +mult || 1;
+  $('#mCustomWrap').classList.toggle('hidden', $('#mMult').value !== 'custom');
+  $('#mDec').value = fmt.decimals == null ? 2 : fmt.decimals;
+  $('#mPre').value = fmt.prefix || ''; $('#mSuf').value = fmt.suffix || '';
+  $('#mCom').value = fmt.commas === false ? '0' : '1';
+}
+function modalMapping() {
+  var mult = $('#mMult').value === 'custom' ? +$('#mCustom').value || 1 : +$('#mMult').value;
+  var rows = S.wb.sheets[M.sheet] || [];
+  var mp = { field_key: M.f.key, page: M.f.page, label: M.f.row + ' · ' + M.f.col, sheet: M.sheet, mode: M.mode,
+    mult: mult, decimals: $('#mDec').value === '' ? null : +$('#mDec').value, prefix: $('#mPre').value, suffix: $('#mSuf').value, commas: $('#mCom').value === '1' };
+  if (M.mode === 'cell') { mp.cell = a1(M.r, M.c); mp.label_col = null; mp.label_text = null; mp.value_col = null; }
+  else { mp.label_col = M.labelCol; mp.label_text = clean(cellText((rows[M.r] || [])[M.labelCol])); mp.value_col = M.c; mp.cell = null; }
+  return mp;
+}
+function pickLabelCol(row, c, f) {
+  // the text cell on this row that names it — prefer one that matches the field's row label
+  var want = norm(f.row), best = -1, bestScore = -1;
+  for (var i = 0; i < row.length; i++) {
+    if (i === c) continue;
+    var v = row[i]; if (typeof v !== 'string' || !v.trim() || isFinite(num(v)) && /^\s*[-\d.,%₹]+\s*$/.test(v)) continue;
+    var n = norm(v), s = (n === want ? 100 : (want && (n.indexOf(want) >= 0 || want.indexOf(n) >= 0) ? 50 : 0)) + (i < c ? 10 : 0) - Math.abs(c - i) * 0.1;
+    if (s > bestScore) { bestScore = s; best = i; }
+  }
+  return best;
+}
+function drawGrid() {
+  var rows = S.wb.sheets[M.sheet] || [];
+  var q = norm($('#mFind').value);
+  var width = Math.min(60, rows.reduce(function (w, r) { return Math.max(w, (r || []).length); }, 0) || 1);
+  var idx = [];
+  for (var i = 0; i < rows.length; i++) {
+    if (!q || (rows[i] || []).some(function (v) { return norm(cellText(v)).indexOf(q) >= 0; }) || i === M.r) idx.push(i);
+    if (idx.length >= 400) break;
+  }
+  var h = '<table class="sheet"><thead><tr><th class="rn"></th>';
+  for (var c = 0; c < width; c++) h += '<th>' + colName(c) + '</th>';
+  h += '</tr></thead><tbody>';
+  idx.forEach(function (r) {
+    var row = rows[r] || [];
+    h += '<tr><td class="rn">' + (r + 1) + '</td>';
+    for (var c = 0; c < width; c++) {
+      var v = row[c], t = cellText(v), cls = typeof v === 'number' ? 'n' : '';
+      if (r === M.r && c === M.c) cls += ' sel';
+      else if (M.mode === 'row' && r === M.r && c === M.labelCol) cls += ' lbl';
+      if (typeof v === 'number') t = Math.abs(v) < 1e15 ? +v.toFixed(4) : v;
+      h += '<td class="' + cls + '" data-r="' + r + '" data-c="' + c + '" title="' + esc(a1(r, c) + ': ' + t) + '">' + esc(t) + '</td>';
+    }
+    h += '</tr>';
+  });
+  h += '</tbody></table>';
+  if (!rows.length) h = '<div class="empty">This sheet is empty.</div>';
+  else if (!idx.length) h = '<div class="empty">No rows contain “' + esc($('#mFind').value) + '”.</div>';
+  $('#mGrid').innerHTML = h;
+}
+function updatePreview() {
+  var ok = M.r >= 0 && M.c >= 0 && (M.mode === 'cell' || M.labelCol >= 0);
+  $('#mSave').disabled = !ok;
+  if (M.r < 0) { $('#mPreview').innerHTML = 'Pick a cell'; return; }
+  if (M.mode === 'row' && M.labelCol < 0) { $('#mPreview').innerHTML = '<span class="muted">This row has no text label — switch to “Fixed cell”.</span>'; return; }
+  var mp = modalMapping(), raw = (S.wb.sheets[M.sheet][M.r] || [])[M.c];
+  var how = M.mode === 'row' ? 'row “' + esc(mp.label_text) + '”, column ' + colName(M.c) : a1(M.r, M.c);
+  $('#mPreview').innerHTML = '<span class="muted">' + how + ' → </span><b>' + esc(formatValue(raw, mp)) + '</b>';
+}
+$('#mGrid').addEventListener('click', function (e) {
+  var td = e.target.closest('td[data-r]'); if (!td) return;
+  M.r = +td.getAttribute('data-r'); M.c = +td.getAttribute('data-c');
+  M.labelCol = pickLabelCol(S.wb.sheets[M.sheet][M.r] || [], M.c, M.f);
+  var raw = (S.wb.sheets[M.sheet][M.r] || [])[M.c];
+  // percentages stored as fractions in Excel
+  if (/%/.test($('#mSuf').value) && typeof raw === 'number' && Math.abs(raw) <= 1.5 && $('#mMult').value === '1') { $('#mMult').value = '100'; }
+  drawGrid(); updatePreview();
+});
+$('#mSheet').onchange = function () { M.sheet = this.value; M.r = M.c = M.labelCol = -1; drawGrid(); updatePreview(); };
+$('#mFind').addEventListener('input', drawGrid);
+$$('#mMode button').forEach(function (b) {
+  b.onclick = function () { M.mode = b.getAttribute('data-m'); $$('#mMode button').forEach(function (x) { x.classList.toggle('on', x === b); }); drawGrid(); updatePreview(); };
+});
+['#mDec', '#mPre', '#mSuf', '#mCom', '#mCustom'].forEach(function (id) { $(id).addEventListener('input', updatePreview); });
+$('#mMult').onchange = function () { $('#mCustomWrap').classList.toggle('hidden', this.value !== 'custom'); updatePreview(); };
+
+async function saveMappings(list) {
+  // list of mapping objects; save then publish their values from the current workbook
+  for (var i = 0; i < list.length; i += 200) must(await db.from('field_mappings').upsert(list.slice(i, i + 200).map(function (m) { var c = Object.assign({}, m); c.updated_at = new Date().toISOString(); return c; }), { onConflict: 'field_key' }));
+  list.forEach(function (m) { S.mappings[m.field_key] = m; });
+  var rows = [];
+  list.forEach(function (m) {
+    var f = S.byKey[m.field_key], res = resolve(m, S.wb);
+    if (!f || !res.found || res.display === currentValue(f)) return;
+    var n = num(res.raw);
+    rows.push({ field_key: f.key, page: f.page, label: f.row + ' · ' + f.col, value: res.display, raw: isFinite(n) ? n : null, upload_id: S.wb.uploadId || null });
+  });
+  for (i = 0; i < rows.length; i += 200) must(await db.from('dashboard_values').upsert(rows.slice(i, i + 200), { onConflict: 'field_key' }));
+  rows.forEach(function (r) { S.values[r.field_key] = Object.assign({ updated_at: new Date().toISOString() }, r); });
+  return rows.length;
+}
+$('#mSave').onclick = async function () {
+  this.disabled = true;
+  try {
+    var n = await saveMappings([modalMapping()]);
+    closeModal('#mapModal'); renderFields();
+    toast(n ? 'Saved and published live.' : 'Mapping saved. The figure already matches.');
+  } catch (e) { toast('Could not save: ' + e.message, 6000); }
+  this.disabled = false;
+};
+$('#mRemove').onclick = async function () {
+  if (!confirm('Remove this mapping? Future uploads will stop updating this field.')) return;
+  try { must(await db.from('field_mappings').delete().eq('field_key', M.f.key)); delete S.mappings[M.f.key]; closeModal('#mapModal'); renderFields(); toast('Mapping removed.'); }
+  catch (e) { toast(e.message, 6000); }
+};
+$('#mReset').onclick = async function () {
+  if (!confirm('Show the figure saved in the page again instead of the uploaded value?')) return;
+  try { must(await db.from('dashboard_values').delete().eq('field_key', M.f.key)); delete S.values[M.f.key]; closeModal('#mapModal'); renderFields(); toast('Back to the page figure.'); }
+  catch (e) { toast(e.message, 6000); }
+};
+
+/* ---------------- suggestions (auto-match) ---------------- */
+var STOP = 'oli ohh summary report the of and till date data apr may jun jul aug sep oct nov dec jan feb mar 2024 2025 2026 2027 24 25 26 27'.split(' ');
+var SYN = { case: 'cases', cs: 'cases', cse: 'cases', ctn: 'cases', val: 'value', lakhs: 'value', lakh: 'value', lacs: 'value', lac: 'value', amount: 'value', amt: 'value', sales: 'value', rs: 'value',
+  pcs: 'pcs', pieces: 'pcs', piece: 'pcs', qty: 'pcs', units: 'pcs', bill: 'billed', billing: 'billed', stores: 'stores', store: 'stores', outlets: 'stores', outlet: 'stores',
+  visit: 'visited', visits: 'visited', cov: 'coverage', ytd: 'ytd', amjjason: 'ytd', amj: 'ytd', overall: 'ytd', cumulative: 'ytd', mtd: 'mtd', month: 'mtd' };
+function toks(t) {
+  return norm(t).split(' ').filter(Boolean).map(function (w) { return SYN[w] || w; }).filter(function (w) { return STOP.indexOf(w) < 0; });
+}
+function rowCore(f) {
+  if (/^g\d/.test(f.id)) return toks(f.row).filter(function (w) { return ['ytd', 'mtd'].indexOf(w) < 0; }).join(' ');
+  return norm(f.row);
+}
+var GENERIC = ['ecom', 'ecommerce', 'e', 'commerce', 'online', 'qcom', 'quick', 'mt', 'store', 'stores', 'total', 'pvt', 'ltd', 'india', 'channel', 'account'];
+function nameMatch(core, label) {
+  if (label === core) return 3;
+  if (core.length < 3 || label.length < 3) return 0;
+  var a = core.split(' '), b = label.split(' '), longer = a.length >= b.length ? a : b, shorter = longer === a ? b : a;
+  if (!shorter.every(function (w) { return longer.indexOf(w) >= 0; })) return 0;
+  var extra = longer.filter(function (w) { return shorter.indexOf(w) < 0; });
+  return extra.every(function (w) { return GENERIC.indexOf(w) >= 0; }) ? 2 : 0;
+}
+function colToks(f) {
+  if (/^m\./.test(f.id)) return [];
+  var t = toks(f.col);
+  if (/^g\d/.test(f.id)) toks(f.row).forEach(function (w) { if (w === 'ytd' || w === 'mtd') t.push(w); });
+  return t;
+}
+var _idx = null;
+function sheetIndex() {
+  if (_idx && _idx.wb === S.wb) return _idx;
+  var labels = [];
+  S.wb.order.forEach(function (sn) {
+    (S.wb.sheets[sn] || []).forEach(function (row, r) {
+      (row || []).forEach(function (v, c) { if (typeof v === 'string' && v.trim() && !/^[-\d.,%₹\s]+$/.test(v)) labels.push({ sheet: sn, r: r, c: c, n: norm(v) }); });
+    });
+  });
+  _idx = { wb: S.wb, labels: labels, head: {} };
+  return _idx;
+}
+function headerText(sn, r, c) {
+  var rows = S.wb.sheets[sn], parts = [];
+  for (var i = r - 1; i >= 0 && i >= r - 15; i--) { var v = (rows[i] || [])[c]; if (typeof v === 'string' && v.trim()) parts.unshift(v); }
+  return parts.join(' ');
+}
+function bestGuess(f) {
+  if (!S.wb) return null;
+  var core = rowCore(f); if (!core) return null;
+  var ct = colToks(f), ix = sheetIndex(), best = null;
+  ix.labels.forEach(function (L) {
+    var rs = nameMatch(core, L.n);
+    if (!rs) return;
+    var sheetBonus = norm(L.sheet).indexOf(norm(f.page)) >= 0 || norm(f.pageName).indexOf(norm(L.sheet)) >= 0 ? 1.5 : 0;
+    var row = S.wb.sheets[L.sheet][L.r] || [];
+    for (var c = 0; c < row.length; c++) {
+      if (c === L.c || typeof row[c] !== 'number') continue;
+      var ht = toks(headerText(L.sheet, L.r, c)), hit = 0;
+      ct.forEach(function (w) { if (ht.indexOf(w) >= 0) hit++; });
+      // a single-value field (e.g. "Total orders") sits right next to its label
+      var near = ct.length <= 1 && c === L.c + 1 ? 0.6 : 0;
+      var score = rs * 2 + hit * 3 + near + sheetBonus - (ct.length && !hit && !near ? 5 : 0) - Math.abs(c - L.c) * 0.02;
+      if (!best || score > best.score) best = { sheet: L.sheet, r: L.r, c: c, labelCol: L.c, score: score, hit: hit, rs: rs, need: ct.length, near: near, sb: sheetBonus };
+    }
+  });
+  if (!best || best.score < 6) return null;
+  best.conf = best.need === 0 ? (best.rs === 3 && best.near && best.sb ? 'High' : 'Medium')
+    : best.rs === 3 && best.hit >= Math.min(2, best.need) ? 'High' : best.hit >= 1 ? 'Medium' : 'Low';
+  return best;
+}
+var SUG = [];
+function openSuggestions() {
+  if (!S.wb) return toast('Upload an Excel first.');
+  SUG = [];
+  S.fields.forEach(function (f) {
+    if (S.mappings[f.key]) return;
+    var g = bestGuess(f); if (!g) return;
+    var rows = S.wb.sheets[g.sheet], fm = Object.assign({}, f.fmt);
+    var mp = { field_key: f.key, page: f.page, label: f.row + ' · ' + f.col, sheet: g.sheet, mode: 'row', label_col: g.labelCol,
+      label_text: clean(cellText(rows[g.r][g.labelCol])), value_col: g.c, cell: null, mult: 1, decimals: fm.decimals, prefix: fm.prefix, suffix: fm.suffix, commas: fm.commas };
+    var raw = rows[g.r][g.c];
+    // guess a unit conversion if the page shows Lakhs or % and the Excel holds rupees or fractions
+    var pageN = num(f.def);
+    if (/\bL\b|lakh/i.test(f.fmt.suffix + ' ' + f.col) && raw > 10000 && isFinite(pageN) && pageN < 10000) mp.mult = 0.00001;
+    if (/%/.test(f.fmt.suffix) && Math.abs(raw) <= 1.5) mp.mult = 100;
+    var conf = g.conf, conv = num(raw) * mp.mult;
+    if (isFinite(pageN) && pageN !== 0 && isFinite(conv) && (Math.abs(conv / pageN) > 10 || Math.abs(conv / pageN) < 0.1)) conf = 'Low';
+    SUG.push({ f: f, mp: mp, conf: conf, val: formatValue(raw, mp), where: g.sheet + '!' + a1(g.r, g.c) });
+  });
+  var unm = S.fields.filter(function (f) { return !S.mappings[f.key]; }).length;
+  $('#sugLead').textContent = SUG.length + ' suggestion(s) for ' + unm + ' unmapped field(s) in “' + S.wb.name + '”. Untick anything that looks wrong; you can fine-tune any field later.';
+  var h = '';
+  if (!SUG.length) h = '<div class="empty">No confident matches found. Map fields by hand from <b>Dashboard fields</b> → <b>Map</b>. It takes one click per number.</div>';
+  else {
+    h = '<table class="t"><thead><tr><th></th><th>Page</th><th>Field</th><th class="num">Page now</th><th class="num">From Excel</th><th>Cell</th><th>Match</th></tr></thead><tbody>';
+    SUG.forEach(function (s, i) {
+      h += '<tr><td><input type="checkbox" data-sug="' + i + '"' + (s.conf !== 'Low' ? ' checked' : '') + ' style="accent-color:var(--cyan)"></td><td>' + esc(s.f.pageName) + '</td>' +
+        '<td class="fld-label"><b>' + esc(s.f.row) + '</b><small>' + esc(s.f.col) + '</small></td><td class="num">' + esc(currentValue(s.f)) + '</td>' +
+        '<td class="num new">' + esc(s.val) + '</td><td class="src">' + esc(s.where) + ' · “' + esc(s.mp.label_text) + '”</td>' +
+        '<td><span class="tag ' + (s.conf === 'High' ? 'ok' : s.conf === 'Medium' ? 'warn' : 'bad') + '">' + s.conf + '</span></td></tr>';
+    });
+    h += '</tbody></table>';
+  }
+  $('#sugWrap').innerHTML = h;
+  $('#sugAccept').disabled = !SUG.length;
+  openModal('#sugModal');
+}
+$('#suggestBtn').onclick = openSuggestions;
+$('#suggestBtn2').onclick = openSuggestions;
+$('#sugAll').onchange = function () { var on = this.checked; $$('[data-sug]').forEach(function (c) { c.checked = on; }); };
+$('#sugAccept').onclick = async function () {
+  var picked = $$('[data-sug]').filter(function (c) { return c.checked; }).map(function (c) { return SUG[+c.getAttribute('data-sug')].mp; });
+  if (!picked.length) return toast('Nothing selected.');
+  this.disabled = true;
+  try { var n = await saveMappings(picked); closeModal('#sugModal'); renderFields(); toast(picked.length + ' mapping(s) saved · ' + n + ' figure(s) published live.'); }
+  catch (e) { toast('Could not save: ' + e.message, 6000); }
+  this.disabled = false;
+};
+
+/* ---------------- history ---------------- */
+function renderHistory() {
+  if (!S.uploads.length) { $('#historyWrap').innerHTML = '<div class="empty">No uploads yet.</div>'; return; }
+  var latestPub = S.uploads.find(function (u) { return u.status === 'published'; });
+  var h = '<table class="t"><thead><tr><th>File</th><th>Uploaded</th><th class="num">Sheets</th><th class="num">Fields changed</th><th>Status</th><th></th></tr></thead><tbody>';
+  S.uploads.forEach(function (u) {
+    var sm = u.summary || {}, st = u.status;
+    var tag = st === 'published' ? 'ok' : st === 'failed' ? 'bad' : st === 'reverted' ? 'off' : 'warn';
+    h += '<tr><td><b>' + esc(u.file_name) + '</b>' + (sm.error ? '<div class="small" style="color:var(--red)">' + esc(sm.error) + '</div>' : '') + '</td><td>' + esc(fmtTime(u.uploaded_at)) + '</td>' +
+      '<td class="num">' + esc(u.sheet_count == null ? '—' : u.sheet_count) + '</td><td class="num">' + esc(sm.changed == null ? '—' : sm.changed) + '</td>' +
+      '<td><span class="tag ' + tag + '">' + esc(st) + '</span></td><td class="row" style="justify-content:flex-end">' +
+      (u.storage_path ? '<button class="btn ghost sm" data-dl="' + esc(u.id) + '">Download</button>' : '') +
+      (st !== 'failed' ? '<button class="btn ghost sm" data-rerun="' + esc(u.id) + '">Re-run</button>' : '') +
+      (latestPub && latestPub.id === u.id ? '<button class="btn danger sm" data-undo="' + esc(u.id) + '">Undo</button>' : '') + '</td></tr>';
+  });
+  $('#historyWrap').innerHTML = h + '</tbody></table>';
+}
+$('#historyWrap').addEventListener('click', async function (e) {
+  var b = e.target.closest('button'); if (!b) return;
+  var id = b.getAttribute('data-dl') || b.getAttribute('data-rerun') || b.getAttribute('data-undo');
+  var u = S.uploads.find(function (x) { return x.id === id; }); if (!u) return;
+  b.disabled = true;
+  try {
+    if (b.hasAttribute('data-dl')) {
+      var r = await db.storage.from(BUCKET).createSignedUrl(u.storage_path, 120, { download: u.file_name });
+      if (r.error) throw r.error; location.href = r.data.signedUrl;
+    } else if (b.hasAttribute('data-rerun')) {
+      var s = await loadSheets(u.id);
+      S.wb = { name: u.file_name, uploadId: u.id, sheets: s.sheets, order: s.order }; wbInfo();
+      var a = analyse(S.wb, u.id);
+      a.totalRows = s.order.reduce(function (t, n) { return t + s.sheets[n].length; }, 0);
+      if ($('#autoPublish').checked) await publish(a);
+      switchTab('upload'); showAnalysis(a); await loadUploads(); renderHistory(); renderFields();
+    } else if (b.hasAttribute('data-undo')) {
+      if (!confirm('Undo “' + u.file_name + '”? Every figure it changed goes back to what it was before.')) { b.disabled = false; return; }
+      var hist = must(await db.from('dashboard_value_history').select('field_key,old_value,id').eq('upload_id', u.id).order('id', { ascending: true })) || [];
+      var first = {}; hist.forEach(function (h) { if (!(h.field_key in first)) first[h.field_key] = h.old_value; });
+      var keys = Object.keys(first), del = [], back = [];
+      keys.forEach(function (k) {
+        var f = S.byKey[k];
+        if (first[k] == null || (f && first[k] === f.def)) del.push(k);
+        else back.push({ field_key: k, page: k.split('|')[0], label: f ? f.row + ' · ' + f.col : null, value: first[k], raw: null, upload_id: null });
+      });
+      if (del.length) must(await db.from('dashboard_values').delete().in('field_key', del));
+      if (back.length) must(await db.from('dashboard_values').upsert(back, { onConflict: 'field_key' }));
+      must(await db.from('uploads').update({ status: 'reverted' }).eq('id', u.id));
+      await Promise.all([loadValues(), loadUploads()]); renderHistory(); renderFields();
+      toast('Undone · ' + keys.length + ' figure(s) restored.');
+    }
+  } catch (err) { toast(err.message || String(err), 6000); }
+  b.disabled = false;
+});
+
+/* ---------------- tabs ---------------- */
+function switchTab(t) {
+  $$('nav.tabs button').forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-tab') === t); });
+  $$('[data-pane]').forEach(function (p) { p.classList.toggle('hidden', p.getAttribute('data-pane') !== t); });
+}
+$$('nav.tabs button').forEach(function (b) { b.onclick = function () { switchTab(b.getAttribute('data-tab')); }; });
+
+/* ---------------- boot ---------------- */
+(async function () {
+  var s = await db.auth.getSession();
+  if (s.data && s.data.session) await enter(s.data.session.user);
+})();
+window.__OLI_ADMIN = S;
+})();
+</script>
+</body>
+</html>

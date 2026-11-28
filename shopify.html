@@ -238,32 +238,32 @@
     <div class="kpi-row">
         <div class="card">
             <span class="card-title">Total orders</span>
-            <div class="metric-large">87</div>
+            <div class="metric-large" data-live="m.total-orders" data-live-row="Total orders" data-live-col="Value">87</div>
             <div class="metric-sub">since the first order in May</div>
         </div>
         <div class="card">
             <span class="card-title">Total sales</span>
-            <div class="metric-large">₹23,800.50</div>
+            <div class="metric-large" data-live="m.total-sales" data-live-row="Total sales" data-live-col="Value">₹23,800.50</div>
             <div class="metric-sub">incl. tax and shipping</div>
         </div>
         <div class="card">
             <span class="card-title">Avg order value</span>
-            <div class="metric-large">₹273.57</div>
+            <div class="metric-large" data-live="m.avg-order-value" data-live-row="Avg order value" data-live-col="Value">₹273.57</div>
             <div class="metric-sub">total sales &divide; orders</div>
         </div>
         <div class="card">
             <span class="card-title">Customers</span>
-            <div class="metric-large">83</div>
+            <div class="metric-large" data-live="m.customers" data-live-row="Customers" data-live-col="Value">83</div>
             <div class="metric-sub">unique buyers</div>
         </div>
         <div class="card">
             <span class="card-title">Repeat customers</span>
-            <div class="metric-large kpi-accent">4</div>
+            <div class="metric-large kpi-accent" data-live="m.repeat-customers" data-live-row="Repeat customers" data-live-col="Value">4</div>
             <div class="metric-sub">each has ordered <strong>twice</strong></div>
         </div>
         <div class="card">
             <span class="card-title">Repeat rate</span>
-            <div class="metric-large kpi-accent">4.8%</div>
+            <div class="metric-large kpi-accent" data-live="m.repeat-rate" data-live-row="Repeat rate" data-live-col="Value">4.8%</div>
             <div class="metric-sub"><strong>4</strong> of <strong>83</strong> customers</div>
         </div>
     </div>
@@ -278,14 +278,14 @@
                     <tr><th>Month</th><th>Orders</th><th>Total sales</th><th>Avg order</th><th>New customers</th><th>Repeat orders</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td>May</td><td><span class="obar" style="width:6px"></span>4</td><td>₹692.10</td><td>₹173.03</td><td>4</td><td class="zero">0</td></tr>
-                    <tr><td>Jun</td><td><span class="obar" style="width:60px"></span>38</td><td>₹8,409.10</td><td>₹221.29</td><td>38</td><td class="zero">0</td></tr>
-                    <tr><td>Jul</td><td><span class="obar" style="width:32px"></span>20</td><td>₹6,261.55</td><td>₹313.08</td><td>20</td><td class="zero">0</td></tr>
-                    <tr><td>Aug</td><td><span class="obar" style="width:9px"></span>6</td><td>₹2,390.80</td><td>₹398.47</td><td>4</td><td class="rep">2</td></tr>
-                    <tr><td>Sep</td><td><span class="obar" style="width:14px"></span>9</td><td>₹2,912.80</td><td>₹323.64</td><td>8</td><td class="rep">1</td></tr>
-                    <tr><td>Oct</td><td><span class="obar" style="width:6px"></span>4</td><td>₹1,201.20</td><td>₹300.30</td><td>4</td><td class="zero">0</td></tr>
-                    <tr><td>Nov (MTD)</td><td><span class="obar" style="width:9px"></span>6</td><td>₹1,932.95</td><td>₹322.16</td><td>5</td><td class="rep">1</td></tr>
-                    <tr class="total"><td>Total</td><td>87</td><td>₹23,800.50</td><td>₹273.57</td><td>83</td><td class="rep">4</td></tr>
+                    <tr><td>May</td><td data-live="t0.may.c1" data-live-row="May" data-live-col="Orders"><span class="obar" style="width:6px"></span>4</td><td data-live="t0.may.c2" data-live-row="May" data-live-col="Total sales">₹692.10</td><td data-live="t0.may.c3" data-live-row="May" data-live-col="Avg order">₹173.03</td><td data-live="t0.may.c4" data-live-row="May" data-live-col="New customers">4</td><td class="zero" data-live="t0.may.c5" data-live-row="May" data-live-col="Repeat orders">0</td></tr>
+                    <tr><td>Jun</td><td data-live="t0.jun.c1" data-live-row="Jun" data-live-col="Orders"><span class="obar" style="width:60px"></span>38</td><td data-live="t0.jun.c2" data-live-row="Jun" data-live-col="Total sales">₹8,409.10</td><td data-live="t0.jun.c3" data-live-row="Jun" data-live-col="Avg order">₹221.29</td><td data-live="t0.jun.c4" data-live-row="Jun" data-live-col="New customers">38</td><td class="zero" data-live="t0.jun.c5" data-live-row="Jun" data-live-col="Repeat orders">0</td></tr>
+                    <tr><td>Jul</td><td data-live="t0.jul.c1" data-live-row="Jul" data-live-col="Orders"><span class="obar" style="width:32px"></span>20</td><td data-live="t0.jul.c2" data-live-row="Jul" data-live-col="Total sales">₹6,261.55</td><td data-live="t0.jul.c3" data-live-row="Jul" data-live-col="Avg order">₹313.08</td><td data-live="t0.jul.c4" data-live-row="Jul" data-live-col="New customers">20</td><td class="zero" data-live="t0.jul.c5" data-live-row="Jul" data-live-col="Repeat orders">0</td></tr>
+                    <tr><td>Aug</td><td data-live="t0.aug.c1" data-live-row="Aug" data-live-col="Orders"><span class="obar" style="width:9px"></span>6</td><td data-live="t0.aug.c2" data-live-row="Aug" data-live-col="Total sales">₹2,390.80</td><td data-live="t0.aug.c3" data-live-row="Aug" data-live-col="Avg order">₹398.47</td><td data-live="t0.aug.c4" data-live-row="Aug" data-live-col="New customers">4</td><td class="rep" data-live="t0.aug.c5" data-live-row="Aug" data-live-col="Repeat orders">2</td></tr>
+                    <tr><td>Sep</td><td data-live="t0.sep.c1" data-live-row="Sep" data-live-col="Orders"><span class="obar" style="width:14px"></span>9</td><td data-live="t0.sep.c2" data-live-row="Sep" data-live-col="Total sales">₹2,912.80</td><td data-live="t0.sep.c3" data-live-row="Sep" data-live-col="Avg order">₹323.64</td><td data-live="t0.sep.c4" data-live-row="Sep" data-live-col="New customers">8</td><td class="rep" data-live="t0.sep.c5" data-live-row="Sep" data-live-col="Repeat orders">1</td></tr>
+                    <tr><td>Oct</td><td data-live="t0.oct.c1" data-live-row="Oct" data-live-col="Orders"><span class="obar" style="width:6px"></span>4</td><td data-live="t0.oct.c2" data-live-row="Oct" data-live-col="Total sales">₹1,201.20</td><td data-live="t0.oct.c3" data-live-row="Oct" data-live-col="Avg order">₹300.30</td><td data-live="t0.oct.c4" data-live-row="Oct" data-live-col="New customers">4</td><td class="zero" data-live="t0.oct.c5" data-live-row="Oct" data-live-col="Repeat orders">0</td></tr>
+                    <tr><td>Nov (MTD)</td><td data-live="t0.nov-mtd.c1" data-live-row="Nov (MTD)" data-live-col="Orders"><span class="obar" style="width:9px"></span>6</td><td data-live="t0.nov-mtd.c2" data-live-row="Nov (MTD)" data-live-col="Total sales">₹1,932.95</td><td data-live="t0.nov-mtd.c3" data-live-row="Nov (MTD)" data-live-col="Avg order">₹322.16</td><td data-live="t0.nov-mtd.c4" data-live-row="Nov (MTD)" data-live-col="New customers">5</td><td class="rep" data-live="t0.nov-mtd.c5" data-live-row="Nov (MTD)" data-live-col="Repeat orders">1</td></tr>
+                    <tr class="total"><td>Total</td><td data-live="t0.total.c1" data-live-row="Total" data-live-col="Orders">87</td><td data-live="t0.total.c2" data-live-row="Total" data-live-col="Total sales">₹23,800.50</td><td data-live="t0.total.c3" data-live-row="Total" data-live-col="Avg order">₹273.57</td><td data-live="t0.total.c4" data-live-row="Total" data-live-col="New customers">83</td><td class="rep" data-live="t0.total.c5" data-live-row="Total" data-live-col="Repeat orders">4</td></tr>
                 </tbody>
             </table>
         </div>
@@ -295,7 +295,7 @@
                 <span class="card-title" style="border-bottom: 1px dashed var(--text-muted);">Repeat orders</span>
                 <span class="metric-sub">4 of 87 orders</span>
             </div>
-            <div class="metric-large">₹1,769.60</div>
+            <div class="metric-large" data-live="m.repeat-orders" data-live-row="Repeat orders" data-live-col="Value">₹1,769.60</div>
             <div class="metric-sub">from repeat orders &mdash; <strong>7.4%</strong> of total sales</div>
             <ul class="repeat-list">
                 <li><span>Customer 1 &middot; 12 Jul &rarr; 14 Aug</span><span class="gap">33 days</span></li>
@@ -318,7 +318,7 @@
                 <span class="card-title" style="border-bottom: 1px dashed var(--text-muted);">Sales attributed to marketing</span>
                 <span class="card-title" style="font-size: 1.1rem; line-height: 1;">—</span>
             </div>
-            <div class="metric-large">₹11,821.10</div>
+            <div class="metric-large" data-live="m.sales-attributed-to-marketing" data-live-row="Sales attributed to marketing" data-live-col="Value">₹11,821.10</div>
             <div class="metric-sub">of <strong>₹13,392.20</strong> total store sales</div>
             
             <!-- Simulated Mini Area Chart Line -->
@@ -374,7 +374,7 @@
                 </div>
                 <span class="metric-sub">2,531 sessions</span>
             </div>
-            <div class="metric-large" style="margin-top: 1.5rem; font-size: 1.6rem;">₹9,134.40</div>
+            <div class="metric-large" style="margin-top: 1.5rem; font-size: 1.6rem;" data-live="m.instagram" data-live-row="Instagram" data-live-col="Value">₹9,134.40</div>
             <div class="metric-sub">Order value for <strong>36 orders</strong> at <strong>1.42%</strong> conversion rate.</div>
         </div>
 
@@ -387,7 +387,7 @@
                 </div>
                 <span class="metric-sub">629 sessions</span>
             </div>
-            <div class="metric-large" style="margin-top: 1.5rem; font-size: 1.6rem;">₹2,548.70</div>
+            <div class="metric-large" style="margin-top: 1.5rem; font-size: 1.6rem;" data-live="m.google-search" data-live-row="Google Search" data-live-col="Value">₹2,548.70</div>
             <div class="metric-sub">Order value for <strong>11 orders</strong> at <strong>1.74%</strong> conversion rate.</div>
         </div>
 
@@ -400,7 +400,7 @@
                 </div>
                 <span class="metric-sub">1,126 sessions</span>
             </div>
-            <div class="metric-large" style="margin-top: 1.5rem; font-size: 1.6rem;">₹1,374.00</div>
+            <div class="metric-large" style="margin-top: 1.5rem; font-size: 1.6rem;" data-live="m.direct" data-live-row="Direct" data-live-col="Value">₹1,374.00</div>
             <div class="metric-sub">Order value for <strong>7 orders</strong> at <strong>0.62%</strong> conversion rate.</div>
         </div>
 
@@ -413,11 +413,12 @@
                 </div>
                 <span class="metric-sub">2 sessions</span>
             </div>
-            <div class="metric-large" style="margin-top: 1.5rem; font-size: 1.6rem;">₹138.00</div>
+            <div class="metric-large" style="margin-top: 1.5rem; font-size: 1.6rem;" data-live="m.shopify" data-live-row="Shopify" data-live-col="Value">₹138.00</div>
             <div class="metric-sub">Order value for <strong>1 order</strong> at <strong>50%</strong> conversion rate.</div>
         </div>
 
     </div>
 
+<script src="live-sync.js" defer></script>
 </body>
 </html>
